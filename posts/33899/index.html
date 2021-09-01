@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Red Team,Tookits,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文梳理总结各个攻击链阶段红队常用的武器、工具...">
+<meta name="keywords" content="Red Team,Tookits">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红队渗透武器工具库">
+<meta property="og:url" content="https://l0n9.cc/posts/33899/index.html">
+<meta property="og:site_name" content="L0n9">
+<meta property="og:description" content="本文梳理总结各个攻击链阶段红队常用的武器、工具...">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/red_tookit.png">
+<meta property="og:updated_time" content="2021-08-13T09:00:54.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="红队渗透武器工具库">
+<meta name="twitter:description" content="本文梳理总结各个攻击链阶段红队常用的武器、工具...">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/red_tookit.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://l0n9.cc/posts/33899/">
+
+
+
+
+
+  <title>红队渗透武器工具库 | L0n9</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">L0n9</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-攻防">
+          <a href="/security/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-navicon"></i> <br>
+            
+            攻防
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://l0n9.cc/posts/33899/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="L0n9">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/hexo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">红队渗透武器工具库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-04T21:54:08+08:00">
+                2021-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/红队渗透/" itemprop="url" rel="index">
+                    <span itemprop="name">红队渗透</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center>本文梳理总结各个攻击链阶段红队常用的武器、工具...</center>
+
+<a id="more"></a>
+<hr>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/red_tookit.png" alt></p>
+<h2 id="0x00-核心工具"><a href="#0x00-核心工具" class="headerlink" title="0x00 核心工具"></a>0x00 核心工具</h2><h3 id="Metasploit"><a href="#Metasploit" class="headerlink" title="Metasploit"></a>Metasploit</h3><ul>
+<li><a href="https://github.com/13o-bbr-bbq/machine_learning_security/tree/master/DeepExploit" target="_blank" rel="noopener">https://github.com/13o-bbr-bbq/machine_learning_security/tree/master/DeepExploit</a> 结合机器学习与msf的全自动测试工具</li>
+<li><a href="https://github.com/r00t-3xp10it/Meterpreter_Paranoid_Mode-SSL" target="_blank" rel="noopener">https://github.com/r00t-3xp10it/Meterpreter_Paranoid_Mode-SSL</a> 一个可以创建SSL/TLS shell连接的脚本</li>
+<li><a href="https://github.com/NullArray/AutoSploit" target="_blank" rel="noopener">https://github.com/NullArray/AutoSploit</a> 利用Shodan 搜索引擎收集目标, 并自动调用设定的msf模块对目标发动攻击</li>
+<li><a href="https://github.com/WazeHell/metateta" target="_blank" rel="noopener">https://github.com/WazeHell/metateta</a> 使用msf脚本，根据特定协议进行扫描</li>
+<li><a href="https://github.com/fbkcs/msf-elf-in-memory-execution" target="_blank" rel="noopener">https://github.com/fbkcs/msf-elf-in-memory-execution</a> Metasploit模块, 用于在内存中执行ELF文件</li>
+<li><a href="https://github.com/ElevenPaths/Eternalblue-Doublepulsar-Metasploit" target="_blank" rel="noopener">https://github.com/ElevenPaths/Eternalblue-Doublepulsar-Metasploit</a> metasploit双星攻击利用文件</li>
+<li><a href="https://github.com/darkoperator/Metasploit-Plugins" target="_blank" rel="noopener">https://github.com/darkoperator/Metasploit-Plugins</a> msf扩展资产搜集与帮助插件</li>
+<li><a href="https://github.com/D4Vinci/One-Lin3r" target="_blank" rel="noopener">https://github.com/D4Vinci/One-Lin3r</a> metasploit、payload辅助查询工具</li>
+<li><a href="https://github.com/shizzz477/msploitego" target="_blank" rel="noopener">https://github.com/shizzz477/msploitego</a> 将msf数据库与maltego进行图形化展示</li>
+<li><a href="https://github.com/scriptjunkie/msfgui" target="_blank" rel="noopener">https://github.com/scriptjunkie/msfgui</a> metasploit的GUI界面，话说现在msf对windows支持也挺好的</li>
+</ul>
+<h3 id="CobaltStrike"><a href="#CobaltStrike" class="headerlink" title="CobaltStrike"></a>CobaltStrike</h3><ul>
+<li><a href="https://github.com/rsmudge/armitage" target="_blank" rel="noopener">https://github.com/rsmudge/armitage</a> CobaltStrike社区版，调用msf，一对多带界面</li>
+<li><a href="https://github.com/anbai-inc/CobaltStrike_Hanization" target="_blank" rel="noopener">https://github.com/anbai-inc/CobaltStrike_Hanization</a> CobaltStrike2.5汉化版，以msf库为基础，3.0以后改版</li>
+<li><a href="https://github.com/rsmudge/cortana-scripts" target="_blank" rel="noopener">https://github.com/rsmudge/cortana-scripts</a> 用于cs2.x与armitage的可拓展插件，cvs3.x的为AggressorScripts</li>
+<li><a href="https://github.com/harleyQu1nn/AggressorScripts" target="_blank" rel="noopener">https://github.com/harleyQu1nn/AggressorScripts</a> cs3.0以后的脚本搜集</li>
+<li><a href="https://github.com/FortyNorthSecurity/AggressorAssessor" target="_blank" rel="noopener">https://github.com/FortyNorthSecurity/AggressorAssessor</a> cs3.x自动化攻击脚本集合</li>
+<li><a href="https://github.com/verctor/CS_xor64" target="_blank" rel="noopener">https://github.com/verctor/CS_xor64</a> 生成cobaltstrike所需的xor64.bin</li>
+<li><a href="https://github.com/ryhanson/ExternalC2" target="_blank" rel="noopener">https://github.com/ryhanson/ExternalC2</a> 一个用于将通信渠道与Cobalt Strike External C2服务器集成的库</li>
+<li><a href="https://github.com/threatexpress/cs2modrewrite" target="_blank" rel="noopener">https://github.com/threatexpress/cs2modrewrite</a> 用于将Cobalt Strike配置文件转换为mod_rewrite脚本的工具</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/CatMyFish" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/CatMyFish</a> 搜索分类域，为Cobalt Strike beacon C&amp;C设置白名单域</li>
+<li><a href="https://github.com/threatexpress/malleable-c2" target="_blank" rel="noopener">https://github.com/threatexpress/malleable-c2</a> 利用jquery文件进行C2通讯，在文件内做了JS混淆绕过防火墙</li>
+<li><a href="https://github.com/dcsync/pycobalt" target="_blank" rel="noopener">https://github.com/dcsync/pycobalt</a> py3,Python API for Cobalt Strike</li>
+<li><a href="https://www.cobaltstrike.com/aggressor-script/cobaltstrike.html" target="_blank" rel="noopener">https://www.cobaltstrike.com/aggressor-script/cobaltstrike.html</a> CobaltStrike相关插件编写，一对多带界面</li>
+</ul>
+<h3 id="Empire"><a href="#Empire" class="headerlink" title="Empire"></a>Empire</h3><ul>
+<li><a href="https://github.com/EmpireProject/Empire-GUI" target="_blank" rel="noopener">https://github.com/EmpireProject/Empire-GUI</a> empire的node.js界面</li>
+<li><a href="https://github.com/interference-security/empire-web" target="_blank" rel="noopener">https://github.com/interference-security/empire-web</a> empire的web界面</li>
+<li><a href="https://github.com/byt3bl33d3r/DeathStar" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/DeathStar</a> py3,调用Empire RESTful API 自动化获取域管权限的</li>
+</ul>
+<h3 id="Burpsuite"><a href="#Burpsuite" class="headerlink" title="Burpsuite"></a>Burpsuite</h3><ul>
+<li><a href="https://github.com/PortSwigger" target="_blank" rel="noopener">https://github.com/PortSwigger</a> burpsuite官方插件库</li>
+<li><a href="https://github.com/snoopysecurity/awesome-burp-extensions" target="_blank" rel="noopener">https://github.com/snoopysecurity/awesome-burp-extensions</a> awesome系列之burp拓展</li>
+<li><a href="https://github.com/d3vilbug/HackBar" target="_blank" rel="noopener">https://github.com/d3vilbug/HackBar</a> 集成hackbar</li>
+<li><a href="https://github.com/PortSwigger/turbo-intruder" target="_blank" rel="noopener">https://github.com/PortSwigger/turbo-intruder</a> 比Burp自带的Intruder 更快，一分钟打1.61万次请求</li>
+<li><a href="https://github.com/Ebryx/AES-Killer" target="_blank" rel="noopener">https://github.com/Ebryx/AES-Killer</a> burp插件，破解aes加密的插件</li>
+<li><a href="https://github.com/bugcrowd/HUNT" target="_blank" rel="noopener">https://github.com/bugcrowd/HUNT</a> 可以将burpsuite扫描器功能扩展的更加强大，同时支持zapproxy扩展</li>
+<li><a href="https://github.com/wagiro/BurpBounty" target="_blank" rel="noopener">https://github.com/wagiro/BurpBounty</a> burp插件增强主动与被动扫描功能</li>
+<li><a href="https://github.com/nccgroup/BurpSuiteHTTPSmuggler" target="_blank" rel="noopener">https://github.com/nccgroup/BurpSuiteHTTPSmuggler</a> Burp拓展, 使用几种技巧绕过WAF</li>
+<li><a href="https://github.com/PortSwigger/command-injection-attacker" target="_blank" rel="noopener">https://github.com/PortSwigger/command-injection-attacker</a> burp插件，命令注入漏洞检测</li>
+<li><a href="https://github.com/nccgroup/freddy" target="_blank" rel="noopener">https://github.com/nccgroup/freddy</a> burp插件，自动识别Java/.NET 应用程序中的反序列化漏洞</li>
+<li><a href="https://github.com/modzero/interestingFileScanner" target="_blank" rel="noopener">https://github.com/modzero/interestingFileScanner</a> burp插件，增强敏感文件扫描</li>
+<li><a href="https://github.com/summitt/Burp-Non-HTTP-Extension" target="_blank" rel="noopener">https://github.com/summitt/Burp-Non-HTTP-Extension</a> burp插件，布置dns服务器抓取流量</li>
+<li><a href="https://github.com/ilmila/J2EEScan" target="_blank" rel="noopener">https://github.com/ilmila/J2EEScan</a> burp拓展，扫描J2EE应用</li>
+<li><a href="https://github.com/JGillam/burp-co2" target="_blank" rel="noopener">https://github.com/JGillam/burp-co2</a> 集成了sqlmap，菜刀，字典生成等</li>
+<li><a href="https://github.com/swisskyrepo/SSRFmap" target="_blank" rel="noopener">https://github.com/swisskyrepo/SSRFmap</a> burp插件，检测ssrf漏洞</li>
+<li><a href="https://github.com/codewatchorg/sqlipy" target="_blank" rel="noopener">https://github.com/codewatchorg/sqlipy</a> burp与sqlmap联动插件</li>
+</ul>
+<h3 id="Recommend"><a href="#Recommend" class="headerlink" title="Recommend"></a>Recommend</h3><ul>
+<li><a href="https://github.com/zmap/zgrab2" target="_blank" rel="noopener">https://github.com/zmap/zgrab2</a> Go版端口扫描器 ✨</li>
+<li><a href="https://github.com/RustScan/RustScan" target="_blank" rel="noopener">https://github.com/RustScan/RustScan</a> Rust版端口扫描器 ✨</li>
+<li><a href="https://github.com/foryujian/yjdirscan" target="_blank" rel="noopener">https://github.com/foryujian/yjdirscan</a>  御剑目录扫描 ✨</li>
+<li><a href="https://github.com/maurosoria/dirsearch" target="_blank" rel="noopener">https://github.com/maurosoria/dirsearch</a>  dirsearch - Web path scanner 目录扫描工具 ✨</li>
+<li><a href="https://github.com/chaitin/xray" target="_blank" rel="noopener">https://github.com/chaitin/xray</a>  一款功能强大的安全评估工具 - Xray ✨ </li>
+<li><a href="https://github.com/zhzyker/vulmap" target="_blank" rel="noopener">https://github.com/zhzyker/vulmap</a>  Vulmap 是一款 web 漏洞扫描和验证工具 ✨</li>
+<li><a href="https://github.com/w-digital-scanner/w9scan" target="_blank" rel="noopener">https://github.com/w-digital-scanner/w9scan</a>  w9scan 一款全能型的网站漏洞扫描器 ✨</li>
+<li><a href="https://github.com/ysrc/xunfeng" target="_blank" rel="noopener">https://github.com/ysrc/xunfeng</a>  巡风是一款适用于企业内网的漏洞快速应急、巡航扫描系统 ✨</li>
+<li><a href="https://github.com/WyAtu/Perun" target="_blank" rel="noopener">https://github.com/WyAtu/Perun</a>  Perun 网络资产漏洞扫描器/扫描框架 ✨</li>
+<li><a href="https://github.com/awake1t/linglong" target="_blank" rel="noopener">https://github.com/awake1t/linglong</a>  linglong 一款甲方资产巡航扫描系统。系统定位是发现资产，进行端口爆破 ✨</li>
+<li><a href="https://github.com/knownsec/pocsuite3" target="_blank" rel="noopener">https://github.com/knownsec/pocsuite3</a>  pocsuite3 开源的远程漏洞测试框架 ✨</li>
+<li><a href="https://github.com/opensec-cn/kunpeng" target="_blank" rel="noopener">https://github.com/opensec-cn/kunpeng</a>  kunpeng是一个Golang编写的开源POC框架/库 ✨</li>
+<li><a href="https://github.com/k8gege/Ladon" target="_blank" rel="noopener">https://github.com/k8gege/Ladon</a>  Ladon一款用于大型网络渗透的多线程插件化综合扫描神器 ✨</li>
+<li><a href="https://github.com/Xyntax/POC-T" target="_blank" rel="noopener">https://github.com/Xyntax/POC-T</a>  POC-T 渗透测试插件化并发框架 ✨</li>
+<li><a href="https://github.com/trustedsec/unicorn" target="_blank" rel="noopener">https://github.com/trustedsec/unicorn</a> Unicorn是一个简单的工具，用于使用 PowerShell 降级攻击并将 shellcode 直接注入内存 ✨</li>
+<li><a href="https://www.shellterproject.com/" target="_blank" rel="noopener">https://www.shellterproject.com/</a> Shellter是一个动态 shellcode 注入工具，也是有史以来第一个真正的动态 PE 感染器 ✨</li>
+<li><a href="https://github.com/Veil-Framework/Veil" target="_blank" rel="noopener">https://github.com/Veil-Framework/Veil</a> Veil是一种工具，旨在生成绕过常见反病毒解决方案的 metasploit 有效载荷 ✨</li>
+<li><a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="noopener">https://github.com/trustedsec/social-engineer-toolkit</a> Social-Engineer Toolkit是一个为社会工程设计的开源渗透测试框架 ✨</li>
+<li><a href="https://github.com/secretsquirrel/the-backdoor-factory" target="_blank" rel="noopener">https://github.com/secretsquirrel/the-backdoor-factory</a> 后门工厂 (BDF)将使用用户所需的 shellcode 修补可执行二进制文件，并继续正常执行预修补状态 ✨</li>
+<li><a href="https://github.com/PowerShellEmpire/PowerTools/" target="_blank" rel="noopener">https://github.com/PowerShellEmpire/PowerTools/</a> ✨</li>
+<li><a href="https://github.com/beefproject/beef" target="_blank" rel="noopener">https://github.com/beefproject/beef</a> BeEF是浏览器开发框架的缩写 ✨</li>
+<li><a href="https://github.com/sensepost/reGeorg" target="_blank" rel="noopener">https://github.com/sensepost/reGeorg</a> reGeorg是 reDuh 的继任者，拥有一个堡垒网络服务器并通过 DMZ 创建 SOCKS 代理 ✨</li>
+<li><a href="https://github.com/n1nj4sec/pupy" target="_blank" rel="noopener">https://github.com/n1nj4sec/pupy</a> Pupy是一个开源、跨平台（Windows、Linux、OSX、Android）远程管理和后期开发工具，主要用 python 编写 ✨</li>
+<li><a href="https://github.com/FunnyWolf/Viper" target="_blank" rel="noopener">https://github.com/FunnyWolf/Viper</a>  Viper - metasploit-framework 图形化内网渗透工具 ✨</li>
+<li><a href="https://github.com/rebeyond/Behinder" target="_blank" rel="noopener">https://github.com/rebeyond/Behinder</a>  “冰蝎”动态二进制加密网站管理客户端 ✨</li>
+<li><a href="https://github.com/Chora10/Cknife" target="_blank" rel="noopener">https://github.com/Chora10/Cknife</a>  Cknife 中国菜刀 ✨</li>
+<li><a href="https://github.com/2Quico/antSword" target="_blank" rel="noopener">https://github.com/2Quico/antSword</a>  中国蚁剑是一款跨平台的开源网站管理工具 ✨</li>
+<li><a href="https://github.com/BeichenDream/Godzilla" target="_blank" rel="noopener">https://github.com/BeichenDream/Godzilla</a>  Godzilla 哥斯拉 ✨</li>
+<li><a href="https://github.com/0dayCTF/reverse-shell-generator" target="_blank" rel="noopener">https://github.com/0dayCTF/reverse-shell-generator</a> 反弹shell生成器 ✨</li>
+<li><a href="https://github.com/fatedier/frp" target="_blank" rel="noopener">https://github.com/fatedier/frp</a>  frp 专注于内网穿透的高性能的反向代理应用 ✨</li>
+<li><a href="https://github.com/ehang-io/nps" target="_blank" rel="noopener">https://github.com/ehang-io/nps</a>  nps 轻量级、高性能、功能强大的内网穿透代理服务器 ✨</li>
+<li><a href="https://github.com/L-codes/Neo-reGeorg" target="_blank" rel="noopener">https://github.com/L-codes/Neo-reGeorg</a>  Neo-reGeorg 改进的reGeorg版本 ✨</li>
+<li><a href="https://github.com/iagox86/dnscat2" target="_blank" rel="noopener">https://github.com/iagox86/dnscat2</a>  dnscat2 是一个DNS隧道工具 ✨</li>
+<li><a href="https://github.com/ntop/n2n" target="_blank" rel="noopener">https://github.com/ntop/n2n</a>  n2n 开源的点对点穿透工具 ✨</li>
+<li><a href="https://github.com/inconshreveable/ngrok" target="_blank" rel="noopener">https://github.com/inconshreveable/ngrok</a>  ngrok 正/反向代理，内网穿透，端口转发 ✨</li>
+<li><a href="https://github.com/snail007/goproxy" target="_blank" rel="noopener">https://github.com/snail007/goproxy</a>  goproxy 一款轻量级、功能强大、高性能的多种代理工具 ✨</li>
+<li><a href="https://github.com/Ne0nd0g/merlin" target="_blank" rel="noopener">https://github.com/Ne0nd0g/merlin</a> Merlin是一个用 golang 编写的跨平台后开发 HTTP/2 命令和控制服务器和代理 ✨</li>
+<li><a href="https://github.com/Marten4n6/EvilOSX" target="_blank" rel="noopener">https://github.com/Marten4n6/EvilOSX</a> EvilOSX适用于 macOS / OS X 的邪恶 RAT（远程管理工具）✨</li>
+<li><a href="https://github.com/byt3bl33d3r/CrackMapExec" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/CrackMapExec</a> CrackMapExec是用于渗透测试网络的瑞士军刀 ✨</li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank" rel="noopener">https://github.com/PowerShellMafia/PowerSploit</a> PowerSploit是 Microsoft PowerShell 模块的集合，可用于在评估的所有阶段为渗透测试人员提供帮助 ✨</li>
+<li><a href="https://github.com/samratashok/nishang" target="_blank" rel="noopener">https://github.com/samratashok/nishang</a> Nishang是一个脚本和有效载荷的框架和集合，它支持使用 PowerShell 进行攻击性安全、渗透测试和红队 ✨</li>
+<li><a href="https://github.com/gentilkiwi/mimikatz" target="_blank" rel="noopener">https://github.com/gentilkiwi/mimikatz</a> Mimikatz是一个开源实用程序，可用于查看来自 Windows lsass 的凭据信息 ✨</li>
+<li><a href="https://github.com/AlessandroZ/LaZagne" target="_blank" rel="noopener">https://github.com/AlessandroZ/LaZagne</a> LaZagne项目是一个跨平台开源应用程序，用于检索存储在本地计算机上的大量密码 ✨</li>
+<li><a href="https://github.com/huntergregal/mimipenguin" target="_blank" rel="noopener">https://github.com/huntergregal/mimipenguin</a> mimipenguin是一个转储当前 linux 桌面用户的登录密码的工具 ✨</li>
+<li><a href="https://github.com/TryCatchHCF/Cloakify" target="_blank" rel="noopener">https://github.com/TryCatchHCF/Cloakify</a> CloakifyFactory和 Cloakify 工具集 - 数据渗透和渗透；规避 DLP/MLS 设备；分析师的社会工程学；击败数据白名单控制；逃避 AV 检测 ✨</li>
+<li><a href="https://github.com/ytisf/PyExfil" target="_blank" rel="noopener">https://github.com/ytisf/PyExfil</a> PyExfil一个用于数据泄露的 Python 包 ✨</li>
+<li><a href="https://github.com/Rizer0/Log-killer" target="_blank" rel="noopener">https://github.com/Rizer0/Log-killer</a> linux/windows日志清除 ✨</li>
+<li><a href="https://github.com/LasCC/Hack-Tools" target="_blank" rel="noopener">https://github.com/LasCC/Hack-Tools</a>  Hack-Tools 适用于红队的浏览器扩展插件 ✨</li>
+<li><a href="https://github.com/FelisCatus/SwitchyOmega" target="_blank" rel="noopener">https://github.com/FelisCatus/SwitchyOmega</a>  SwitchyOmega 浏览器的代理插件 ✨</li>
+<li><a href="https://github.com/outflanknl/RedELK/" target="_blank" rel="noopener">https://github.com/outflanknl/RedELK/</a> RedELK Red Team 的 SIEM - 易于部署的 Red Team 工具，用于跟踪和警告 Blue Team 活动以及更好的长期运营可用性 ✨</li>
+<li><a href="https://github.com/redcanaryco/atomic-red-team" target="_blank" rel="noopener">https://github.com/redcanaryco/atomic-red-team</a> Atomic Red Team - 映射到 Miter ATT&amp;CK 框架的小型且高度便携的检测测试 ✨</li>
+</ul>
+<h2 id="0x01-目标侦查"><a href="#0x01-目标侦查" class="headerlink" title="0x01    目标侦查"></a>0x01    目标侦查</h2><h3 id="侦查框架"><a href="#侦查框架" class="headerlink" title="侦查框架"></a>侦查框架</h3><ul>
+<li><a href="https://www.paterva.com/web7/downloads.php" target="_blank" rel="noopener">https://www.paterva.com/web7/downloads.php</a> Maltego是一个独特的平台，旨在向组织拥有和运营的环境提供清晰的威胁图片 ✨</li>
+<li><a href="https://github.com/smicallef/spiderfoot" target="_blank" rel="noopener">https://github.com/smicallef/spiderfoot</a> SpiderFoot是开源足迹和情报收集工具 ✨</li>
+<li><a href="https://github.com/DataSploit/datasploit" target="_blank" rel="noopener">https://github.com/DataSploit/datasploit</a> datasploit是一个 OSINT 框架，用于对公司、人员、电话号码、比特币地址等执行各种侦察技术，聚合所有原始数据，并以多种格式提供数据 ✨</li>
+<li><a href="https://github.com/lanmaster53/recon-ng" target="_blank" rel="noopener">https://github.com/lanmaster53/recon-ng</a> Recon-ng是一个用 Python 编写的全功能 Web 侦察框架 ✨</li>
+<li><a href="https://github.com/zsdevX/DarkEye" target="_blank" rel="noopener">https://github.com/zsdevX/DarkEye</a>  DarkEye 渗透测试情报收集工具</li>
+<li><a href="https://github.com/kelvinBen/AppInfoScanner" target="_blank" rel="noopener">https://github.com/kelvinBen/AppInfoScanner</a>  AppInfoScanner 适用于红队的移动端(Android、iOS、WEB、H5、静态网站)信息收集工具</li>
+</ul>
+<h3 id="1-域名信息"><a href="#1-域名信息" class="headerlink" title="1. 域名信息"></a>1. 域名信息</h3><h4 id="a-Whois信息"><a href="#a-Whois信息" class="headerlink" title="a. Whois信息"></a>a. Whois信息</h4><ul>
+<li><a href="https://x.threatbook.cn/" target="_blank" rel="noopener">https://x.threatbook.cn/</a>  微步</li>
+<li><a href="https://who.is/" target="_blank" rel="noopener">https://who.is/</a>  国外的whois信息查询</li>
+<li><a href="http://whois.chinaz.com/" target="_blank" rel="noopener">http://whois.chinaz.com/</a> 站长之家</li>
+<li><a href="https://whois.aizhan.com/" target="_blank" rel="noopener">https://whois.aizhan.com/</a>  爱站</li>
+</ul>
+<h4 id="b-子域名发现"><a href="#b-子域名发现" class="headerlink" title="b. 子域名发现"></a>b. 子域名发现</h4><ul>
+<li><a href="https://github.com/lijiejie/subDomainsBrute" target="_blank" rel="noopener">https://github.com/lijiejie/subDomainsBrute</a> subDomainBrute是通过DNS爆破来找到子域名</li>
+<li><a href="https://github.com/aboul3la/Sublist3r" target="_blank" rel="noopener">https://github.com/aboul3la/Sublist3r</a> Sublist3r在暴力破解的基础上，通过接口枚举来获取域名 ✨</li>
+<li><a href="https://github.com/FeeiCN/ESD" target="_blank" rel="noopener">https://github.com/FeeiCN/ESD</a> ESD支持泛解析域名，速度快，字典全，收集渠道丰富</li>
+<li><a href="https://github.com/shmilylty/OneForAll" target="_blank" rel="noopener">https://github.com/shmilylty/OneForAll</a> OneForAll支持被动搜索域名，子域爆破，子域接管，端口探测，指纹识别等 ✨</li>
+<li><a href="https://github.com/projectdiscovery/dnsprobe" target="_blank" rel="noopener">https://github.com/projectdiscovery/dnsprobe</a> dnsprobe是go语言编写的dns查询工具，边读边爆破</li>
+<li><a href="https://github.com/projectdiscovery/subfinder" target="_blank" rel="noopener">https://github.com/projectdiscovery/subfinder</a> subfinder通过各种接口来发现有效子域名 ✨</li>
+<li><a href="https://github.com/blechschmidt/massdns" target="_blank" rel="noopener">https://github.com/blechschmidt/massdns</a> Massdn 是一个简单的高性能 DNS 存根解析器</li>
+<li><a href="https://github.com/yunxu1/dnsub" target="_blank" rel="noopener">https://github.com/yunxu1/dnsub</a>  dnsub一款好用的子域名扫描工具</li>
+</ul>
+<h4 id="c-域名侦查"><a href="#c-域名侦查" class="headerlink" title="c. 域名侦查"></a>c. 域名侦查</h4><ul>
+<li><a href="https://github.com/michenriksen/aquatone" target="_blank" rel="noopener">https://github.com/michenriksen/aquatone</a> AQUATONE是一套用于对域名进行侦察的工具</li>
+<li><a href="https://github.com/BishopFox/spoofcheck" target="_blank" rel="noopener">https://github.com/BishopFox/spoofcheck</a> spoofcheck一个检查域是否可以被欺骗的程序</li>
+<li><a href="https://github.com/darkoperator/dnsrecon" target="_blank" rel="noopener">https://github.com/darkoperator/dnsrecon</a> dnsrecon一个工具 DNS 枚举脚本 ✨</li>
+</ul>
+<h4 id="d-备案信息"><a href="#d-备案信息" class="headerlink" title="d. 备案信息"></a>d. 备案信息</h4><ul>
+<li><a href="https://www.tianyancha.com/" target="_blank" rel="noopener">https://www.tianyancha.com/</a>  天眼查</li>
+<li><a href="http://www.beianbeian.com/" target="_blank" rel="noopener">http://www.beianbeian.com/</a>  ICP备案查询网</li>
+<li><a href="http://www.gsxt.gov.cn/index.html" target="_blank" rel="noopener">http://www.gsxt.gov.cn/index.html</a> 国家企业信用信息公示系统</li>
+</ul>
+<h4 id="e-CDN验证"><a href="#e-CDN验证" class="headerlink" title="e. CDN验证"></a>e. CDN验证</h4><ul>
+<li><a href="http://ping.chinaz.com/" target="_blank" rel="noopener">http://ping.chinaz.com/</a> 多地ping ✨</li>
+</ul>
+<h3 id="2-IP发现"><a href="#2-IP发现" class="headerlink" title="2. IP发现"></a>2. IP发现</h3><ul>
+<li><a href="https://github.com/ChrisTruncer/Just-Metadata" target="_blank" rel="noopener">https://github.com/ChrisTruncer/Just-Metadata</a> Just-Metadata是一种收集和分析有关 IP 地址的元数据的工具</li>
+<li><a href="https://github.com/nccgroup/typofinder" target="_blank" rel="noopener">https://github.com/nccgroup/typofinder</a> Typfinder显示 IP 地址国家/地区的域拼写错误查找器</li>
+<li><a href="http://toolbar.netcraft.com/" target="_blank" rel="noopener">http://toolbar.netcraft.com/</a> 查询域名历史ip</li>
+<li><a href="http://www.webscan.cc/" target="_blank" rel="noopener">http://www.webscan.cc/</a> C段主机探测</li>
+</ul>
+<h3 id="3-互联网信息收集"><a href="#3-互联网信息收集" class="headerlink" title="3. 互联网信息收集"></a>3. 互联网信息收集</h3><h4 id="a-Google-Hacking"><a href="#a-Google-Hacking" class="headerlink" title="a. Google Hacking"></a>a. Google Hacking</h4><ul>
+<li><a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener">https://www.exploit-db.com/google-hacking-database</a></li>
+<li><a href="https://github.com/m3n0sd0n4ld/uDork" target="_blank" rel="noopener">https://github.com/m3n0sd0n4ld/uDork</a></li>
+<li><a href="https://github.com/opsdisk/pagodo" target="_blank" rel="noopener">https://github.com/opsdisk/pagodo</a> ✨</li>
+</ul>
+<h4 id="b-资产测绘"><a href="#b-资产测绘" class="headerlink" title="b. 资产测绘"></a>b. 资产测绘</h4><ul>
+<li><a href="https://github.com/atdpa4sw0rd/Search-Tools" target="_blank" rel="noopener">https://github.com/atdpa4sw0rd/Search-Tools</a></li>
+<li><a href="https://www.shodan.io/" target="_blank" rel="noopener">https://www.shodan.io/</a></li>
+<li><a href="https://censys.io/" target="_blank" rel="noopener">https://censys.io/</a></li>
+<li><a href="https://www.zoomeye.org/" target="_blank" rel="noopener">https://www.zoomeye.org/</a> ✨</li>
+<li><a href="https://fofa.so/" target="_blank" rel="noopener">https://fofa.so/</a>  ✨</li>
+<li><a href="https://cn.gobies.org/" target="_blank" rel="noopener">https://cn.gobies.org/</a></li>
+<li><a href="https://github.com/lcvvvv/kscan" target="_blank" rel="noopener">https://github.com/lcvvvv/kscan</a>  Kscan - 简单好用的资产测绘工具</li>
+</ul>
+<h4 id="c-Github"><a href="#c-Github" class="headerlink" title="c. Github"></a>c. Github</h4><ul>
+<li><a href="https://github.com/metac0rtex/GitHarvester" target="_blank" rel="noopener">https://github.com/metac0rtex/GitHarvester</a> GitHarvester该工具用于从 GitHub 中收集信息，例如 google dork</li>
+<li><a href="https://github.com/obheda12/GitDorker" target="_blank" rel="noopener">https://github.com/obheda12/GitDorker</a>  GitDorker Python程序，使用Github dorks从Github搜索敏感信息 ✨</li>
+<li><a href="https://github.com/VKSRC/Github-Monitor" target="_blank" rel="noopener">https://github.com/VKSRC/Github-Monitor</a> Github敏感信息监控 ✨</li>
+<li><a href="https://github.com/FeeiCN/GSIL" target="_blank" rel="noopener">https://github.com/FeeiCN/GSIL</a></li>
+<li><a href="https://github.com/hisxo/gitGraber" target="_blank" rel="noopener">https://github.com/hisxo/gitGraber</a> Github敏感数据搜索</li>
+</ul>
+<h4 id="d-邮箱"><a href="#d-邮箱" class="headerlink" title="d. 邮箱"></a>d. 邮箱</h4><ul>
+<li><a href="https://github.com/killswitch-GUI/SimplyEmail" target="_blank" rel="noopener">https://github.com/killswitch-GUI/SimplyEmail</a> SimplyEmail电子邮件侦查变得快速而简单，并有一个可构建的框架 ✨</li>
+<li><a href="https://github.com/thewhiteh4t/pwnedOrNot" target="_blank" rel="noopener">https://github.com/thewhiteh4t/pwnedOrNot</a> pwnedOrNot是一个 Python 脚本，用于检查电子邮件帐户是否因数据泄露而被盗用，如果电子邮件帐户被盗用，它将继续查找被盗用帐户的密码</li>
+</ul>
+<h4 id="e-网盘搜索"><a href="#e-网盘搜索" class="headerlink" title="e. 网盘搜索"></a>e. 网盘搜索</h4><ul>
+<li><a href="http://www.panduoduo.top/" target="_blank" rel="noopener">http://www.panduoduo.top/</a> 盘多多</li>
+<li><a href="https://www.chongbuluo.com/" target="_blank" rel="noopener">https://www.chongbuluo.com/</a> 虫部落</li>
+</ul>
+<h4 id="f-云服务信息"><a href="#f-云服务信息" class="headerlink" title="f. 云服务信息"></a>f. 云服务信息</h4><ul>
+<li><a href="https://github.com/bbb31/slurp" target="_blank" rel="noopener">https://github.com/bbb31/slurp</a></li>
+<li><a href="https://github.com/jordanpotti/CloudScraper" target="_blank" rel="noopener">https://github.com/jordanpotti/CloudScraper</a> ✨</li>
+</ul>
+<h3 id="4-服务器信息收集"><a href="#4-服务器信息收集" class="headerlink" title="4. 服务器信息收集"></a>4. 服务器信息收集</h3><h4 id="a-端口扫描"><a href="#a-端口扫描" class="headerlink" title="a. 端口扫描"></a>a. 端口扫描</h4><ul>
+<li><a href="https://github.com/nmap/nmap" target="_blank" rel="noopener">https://github.com/nmap/nmap</a> ✨</li>
+<li><a href="https://github.com/robertdavidgraham/masscan" target="_blank" rel="noopener">https://github.com/robertdavidgraham/masscan</a></li>
+<li><a href="https://github.com/zmap/zgrab2" target="_blank" rel="noopener">https://github.com/zmap/zgrab2</a> Go版端口扫描器 ✨</li>
+<li><a href="https://github.com/RustScan/RustScan" target="_blank" rel="noopener">https://github.com/RustScan/RustScan</a> Rust版端口扫描器 ✨</li>
+<li><a href="https://github.com/awake1t/PortBrute" target="_blank" rel="noopener">https://github.com/awake1t/PortBrute</a>  PortBrute 一款跨平台小巧的端口爆破工具</li>
+</ul>
+<h3 id="5-网站信息收集"><a href="#5-网站信息收集" class="headerlink" title="5. 网站信息收集"></a>5. 网站信息收集</h3><h4 id="a-指纹识别"><a href="#a-指纹识别" class="headerlink" title="a. 指纹识别"></a>a. 指纹识别</h4><ul>
+<li><a href="http://www.yunsee.cn/info.html" target="_blank" rel="noopener">http://www.yunsee.cn/info.html</a> 云悉</li>
+<li><a href="http://whatweb.bugscaner.com/look/" target="_blank" rel="noopener">http://whatweb.bugscaner.com/look/</a>  whatweb工具</li>
+<li><a href="https://github.com/AliasIO/Wappalyzer" target="_blank" rel="noopener">https://github.com/AliasIO/Wappalyzer</a> ✨</li>
+<li><a href="https://github.com/n4xh4ck5/CMSsc4n" target="_blank" rel="noopener">https://github.com/n4xh4ck5/CMSsc4n</a> CMS指纹识别</li>
+<li><a href="https://github.com/salesforce/ja3" target="_blank" rel="noopener">https://github.com/salesforce/ja3</a> </li>
+<li><a href="https://github.com/fingerprintjs/fingerprintjs" target="_blank" rel="noopener">https://github.com/fingerprintjs/fingerprintjs</a> 浏览器指纹识别 ✨</li>
+</ul>
+<h4 id="b-网络目录扫描"><a href="#b-网络目录扫描" class="headerlink" title="b. 网络目录扫描"></a>b. 网络目录扫描</h4><ul>
+<li><a href="https://github.com/foryujian/yjdirscan" target="_blank" rel="noopener">https://github.com/foryujian/yjdirscan</a>  御剑目录扫描 ✨</li>
+<li><a href="https://github.com/maurosoria/dirsearch" target="_blank" rel="noopener">https://github.com/maurosoria/dirsearch</a>  dirsearch - Web path scanner 目录扫描工具 ✨</li>
+<li><a href="https://github.com/ring04h/weakfilescan" target="_blank" rel="noopener">https://github.com/ring04h/weakfilescan</a></li>
+<li><a href="https://github.com/Xyntax/DirBrute" target="_blank" rel="noopener">https://github.com/Xyntax/DirBrute</a></li>
+<li><a href="https://github.com/0Kee-Team/crawlergo" target="_blank" rel="noopener">https://github.com/0Kee-Team/crawlergo</a> 路径爬虫 ✨</li>
+</ul>
+<h4 id="c-WAF识别"><a href="#c-WAF识别" class="headerlink" title="c. WAF识别"></a>c. WAF识别</h4><ul>
+<li><a href="https://github.com/EnableSecurity/wafw00f" target="_blank" rel="noopener">https://github.com/EnableSecurity/wafw00f</a> ✨</li>
+<li><a href="https://github.com/Ekultek/WhatWaf" target="_blank" rel="noopener">https://github.com/Ekultek/WhatWaf</a> ✨</li>
+</ul>
+<h3 id="6-敏感信息"><a href="#6-敏感信息" class="headerlink" title="6. 敏感信息"></a>6. 敏感信息</h3><h4 id="a-Git-SVN源码泄露"><a href="#a-Git-SVN源码泄露" class="headerlink" title="a. Git/SVN源码泄露"></a>a. Git/SVN源码泄露</h4><ul>
+<li><a href="https://github.com/dxa4481/truffleHog" target="_blank" rel="noopener">https://github.com/dxa4481/truffleHog</a> truffleHog在 git 存储库中搜索秘密，深入挖掘提交历史和分支 ✨</li>
+<li><a href="https://github.com/lijiejie/GitHack" target="_blank" rel="noopener">https://github.com/lijiejie/GitHack</a></li>
+</ul>
+<h4 id="b-文档元数据"><a href="#b-文档元数据" class="headerlink" title="b. 文档元数据"></a>b. 文档元数据</h4><ul>
+<li><a href="https://github.com/laramies/metagoofil" target="_blank" rel="noopener">https://github.com/laramies/metagoofil</a> Metagoofil是一种用于提取目标网站中可用公共文档（pdf、doc、xls、ppt 等）元数据的工具</li>
+</ul>
+<h4 id="c-CI信息泄露"><a href="#c-CI信息泄露" class="headerlink" title="c. CI信息泄露"></a>c. CI信息泄露</h4><ul>
+<li><a href="https://github.com/lc/secretz" target="_blank" rel="noopener">https://github.com/lc/secretz</a></li>
+</ul>
+<h4 id="d-密码信息"><a href="#d-密码信息" class="headerlink" title="d. 密码信息"></a>d. 密码信息</h4><ul>
+<li><a href="https://github.com/berzerk0/Probable-Wordlists" target="_blank" rel="noopener">https://github.com/berzerk0/Probable-Wordlists</a> ✨</li>
+<li><a href="https://github.com/Mebus/cupp" target="_blank" rel="noopener">https://github.com/Mebus/cupp</a> ✨</li>
+<li><a href="https://github.com/x899/chrome_password_grabber" target="_blank" rel="noopener">https://github.com/x899/chrome_password_grabber</a></li>
+<li><a href="https://github.com/ihebski/DefaultCreds-cheat-sheet" target="_blank" rel="noopener">https://github.com/ihebski/DefaultCreds-cheat-sheet</a> ✨</li>
+</ul>
+<h3 id="6-社交信息"><a href="#6-社交信息" class="headerlink" title="6. 社交信息"></a>6. 社交信息</h3><ul>
+<li><a href="https://github.com/SpiderLabs/social_mapper" target="_blank" rel="noopener">https://github.com/SpiderLabs/social_mapper</a> Social Mapper OSINT 社交媒体映射工具，获取姓名和图像（或 LinkedIn 公司名称）列表，并在多个社交媒体网站上大规模执行自动目标搜索 ✨</li>
+<li><a href="https://github.com/laramies/theHarvester" target="_blank" rel="noopener">https://github.com/laramies/theHarvester</a> theHarvester是一种用于从不同公共来源收集子域名、电子邮件地址、虚拟主机、开放端口/横幅和员工姓名的工具 ✨</li>
+<li><a href="https://github.com/vysecurity/LinkedInt" target="_blank" rel="noopener">https://github.com/vysecurity/LinkedInt</a> LinkedInt LinkedIn Recon 工具</li>
+<li><a href="https://github.com/m8r0wn/CrossLinked" target="_blank" rel="noopener">https://github.com/m8r0wn/CrossLinked</a> CrossLinked LinkedIn 枚举工具，通过搜索引擎抓取从组织中提取有效员工姓名</li>
+</ul>
+<h2 id="0x02-渗透攻击"><a href="#0x02-渗透攻击" class="headerlink" title="0x02    渗透攻击"></a>0x02    渗透攻击</h2><h3 id="1-漏洞挖掘"><a href="#1-漏洞挖掘" class="headerlink" title="1. 漏洞挖掘"></a>1. 漏洞挖掘</h3><h4 id="1-web应用扫描器"><a href="#1-web应用扫描器" class="headerlink" title="1. web应用扫描器"></a>1. web应用扫描器</h4><ul>
+<li><a href="https://github.com/chaitin/xray" target="_blank" rel="noopener">https://github.com/chaitin/xray</a>  一款功能强大的安全评估工具 - Xray ✨ </li>
+<li><a href="https://github.com/zhzyker/vulmap" target="_blank" rel="noopener">https://github.com/zhzyker/vulmap</a>  Vulmap 是一款 web 漏洞扫描和验证工具 ✨</li>
+<li><a href="https://github.com/w-digital-scanner/w9scan" target="_blank" rel="noopener">https://github.com/w-digital-scanner/w9scan</a>  w9scan 一款全能型的网站漏洞扫描器 ✨</li>
+<li><a href="https://github.com/HXSecurity/DongTaiDoc" target="_blank" rel="noopener">https://github.com/HXSecurity/DongTaiDoc</a>  DongTaiDoc 灵芝IAST是一款交互式应用安全评估工具</li>
+</ul>
+<h4 id="b-系统服务扫描器"><a href="#b-系统服务扫描器" class="headerlink" title="b. 系统服务扫描器"></a>b. 系统服务扫描器</h4><ul>
+<li><a href="https://github.com/gobysec/Goby" target="_blank" rel="noopener">https://github.com/gobysec/Goby</a>  网络安全测试工具 - Goby</li>
+<li><a href="https://github.com/ysrc/xunfeng" target="_blank" rel="noopener">https://github.com/ysrc/xunfeng</a>  巡风是一款适用于企业内网的漏洞快速应急、巡航扫描系统 ✨</li>
+<li><a href="https://github.com/WyAtu/Perun" target="_blank" rel="noopener">https://github.com/WyAtu/Perun</a>  Perun 网络资产漏洞扫描器/扫描框架 ✨</li>
+<li><a href="https://github.com/awake1t/linglong" target="_blank" rel="noopener">https://github.com/awake1t/linglong</a>  linglong 一款甲方资产巡航扫描系统。系统定位是发现资产，进行端口爆破 ✨</li>
+</ul>
+<h4 id="c-通用漏洞扫描器"><a href="#c-通用漏洞扫描器" class="headerlink" title="c. 通用漏洞扫描器"></a>c. 通用漏洞扫描器</h4><ul>
+<li><a href="https://github.com/knownsec/pocsuite3" target="_blank" rel="noopener">https://github.com/knownsec/pocsuite3</a>  pocsuite3 开源的远程漏洞测试框架 ✨</li>
+<li><a href="https://github.com/amcai/myscan" target="_blank" rel="noopener">https://github.com/amcai/myscan</a>  Myscan 被动扫描器</li>
+<li><a href="https://github.com/lz520520/railgun" target="_blank" rel="noopener">https://github.com/lz520520/railgun</a>  Railgun是一款GUI界面的渗透工具，综合类的扫描工具</li>
+<li><a href="https://github.com/opensec-cn/kunpeng" target="_blank" rel="noopener">https://github.com/opensec-cn/kunpeng</a>  kunpeng是一个Golang编写的开源POC框架/库 ✨</li>
+<li><a href="https://github.com/DSO-Lab/pocscan" target="_blank" rel="noopener">https://github.com/DSO-Lab/pocscan</a>  pocscan PoC扫描器 主要用于指纹识别后，进行漏洞精准扫描</li>
+<li><a href="https://github.com/k8gege/Ladon" target="_blank" rel="noopener">https://github.com/k8gege/Ladon</a>  Ladon一款用于大型网络渗透的多线程插件化综合扫描神器 ✨</li>
+<li><a href="https://github.com/shadow1ng/fscan" target="_blank" rel="noopener">https://github.com/shadow1ng/fscan</a>  fscan 一款内网扫描工具，方便一键 ✨</li>
+<li><a href="https://github.com/Xyntax/POC-T" target="_blank" rel="noopener">https://github.com/Xyntax/POC-T</a>  POC-T 渗透测试插件化并发框架 ✨</li>
+<li><a href="https://github.com/shack2/SNETCracker" target="_blank" rel="noopener">https://github.com/shack2/SNETCracker</a>  SNETCracker 超级弱口令检查工具</li>
+<li><a href="https://github.com/Acmesec/PoCBox" target="_blank" rel="noopener">https://github.com/Acmesec/PoCBox</a>  PoCBox - 漏洞测试验证辅助平台</li>
+</ul>
+<h3 id="2-武器化"><a href="#2-武器化" class="headerlink" title="2. 武器化"></a>2. 武器化</h3><ul>
+<li><a href="https://github.com/WyAtu/CVE-2018-20250" target="_blank" rel="noopener">https://github.com/WyAtu/CVE-2018-20250</a> 针对 CVE-2018-20250 的WinRAR 远程代码执行概念漏洞利用证明</li>
+<li><a href="https://github.com/rxwx/CVE-2017-8570" target="_blank" rel="noopener">https://github.com/rxwx/CVE-2017-8570</a> 针对 CVE-2017-8570 的复合名称概念验证漏洞利用</li>
+<li><a href="https://github.com/bhdresh/CVE-2017-8759" target="_blank" rel="noopener">https://github.com/bhdresh/CVE-2017-8759</a> 漏洞利用工具包 CVE-2017-8759是一个方便的 Python 脚本，它为渗透测试人员和安全研究人员提供了一种快速有效的方法来测试 Microsoft .NET Framework RCE</li>
+<li><a href="https://github.com/unamer/CVE-2017-11882" target="_blank" rel="noopener">https://github.com/unamer/CVE-2017-11882</a> CVE-2017-11882 Exploit 最多接受超过 17k 字节长的命令/代码</li>
+<li><a href="https://github.com/anbai-inc/CVE-2018-4878" target="_blank" rel="noopener">https://github.com/anbai-inc/CVE-2018-4878</a> Adobe Flash 漏洞利用CVE-2018-4878</li>
+<li><a href="https://github.com/bhdresh/CVE-2017-0199" target="_blank" rel="noopener">https://github.com/bhdresh/CVE-2017-0199</a> 漏洞利用工具包 CVE-2017-0199是一个方便的 Python 脚本，它为渗透测试人员和安全研究人员提供了一种快速有效的方法来测试 Microsoft Office RCE</li>
+<li><a href="https://github.com/nccgroup/demiguise" target="_blank" rel="noopener">https://github.com/nccgroup/demiguise</a> demiguise是RedTeams的 HTA 加密工具</li>
+<li><a href="https://github.com/0xdeadbeefJERKY/Office-DDE-Payloads" target="_blank" rel="noopener">https://github.com/0xdeadbeefJERKY/Office-DDE-Payloads</a> Office-DDE-Payloads脚本和模板集合，用于生成嵌入了 DDE、无宏命令执行技术的 Office 文档</li>
+<li><a href="https://github.com/mdsecactivebreach/CACTUSTORCH" target="_blank" rel="noopener">https://github.com/mdsecactivebreach/CACTUSTORCH</a> 用于对手模拟的CACTUSTORCH有效载荷生成</li>
+<li><a href="https://github.com/mdsecactivebreach/SharpShooter" target="_blank" rel="noopener">https://github.com/mdsecactivebreach/SharpShooter</a> SharpShooter是一个有效载荷创建框架，用于检索和执行任意 CSharp 源代码</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/DKMC" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/DKMC</a> Don’t kill my cat是一种工具，可以生成存储在多语言图像中的混淆 shellcode</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/MaliciousMacroGenerator" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/MaliciousMacroGenerator</a> 恶意宏生成器实用程序简单的实用程序设计可生成混淆的宏，其中还包括 AV / 沙盒逃逸机制</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/SCT-obfuscator" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/SCT-obfuscator</a> SCT 混淆器Cobalt Strike SCT 有效载荷混淆器</li>
+<li><a href="https://github.com/danielbohannon/Invoke-Obfuscation" target="_blank" rel="noopener">https://github.com/danielbohannon/Invoke-Obfuscation</a> 调用混淆PowerShell 混淆器</li>
+<li><a href="https://github.com/danielbohannon/Invoke-CradleCrafter" target="_blank" rel="noopener">https://github.com/danielbohannon/Invoke-CradleCrafter</a> Invoke-CradleCrafter PowerShell 远程下载摇篮生成器和混淆器</li>
+<li><a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank" rel="noopener">https://github.com/danielbohannon/Invoke-DOSfuscation</a> Invoke-DOSfuscation cmd.exe 命令混淆生成器和检测测试工具</li>
+<li><a href="https://github.com/vysec/morphHTA" target="_blank" rel="noopener">https://github.com/vysec/morphHTA</a> morphHTA变形 Cobalt Strike 的 evil.HTA</li>
+<li><a href="https://github.com/trustedsec/unicorn" target="_blank" rel="noopener">https://github.com/trustedsec/unicorn</a> Unicorn是一个简单的工具，用于使用 PowerShell 降级攻击并将 shellcode 直接注入内存 ✨</li>
+<li><a href="https://www.shellterproject.com/" target="_blank" rel="noopener">https://www.shellterproject.com/</a> Shellter是一个动态 shellcode 注入工具，也是有史以来第一个真正的动态 PE 感染器 ✨</li>
+<li><a href="https://github.com/Arno0x/EmbedInHTML" target="_blank" rel="noopener">https://github.com/Arno0x/EmbedInHTML</a> EmbedInHTML在 HTML 文件中嵌入和隐藏任何文件</li>
+<li><a href="https://github.com/secretsquirrel/SigThief" target="_blank" rel="noopener">https://github.com/secretsquirrel/SigThief</a> SigThief窃取签名并一次制作一个无效签名</li>
+<li><a href="https://github.com/Veil-Framework/Veil" target="_blank" rel="noopener">https://github.com/Veil-Framework/Veil</a> Veil是一种工具，旨在生成绕过常见反病毒解决方案的 metasploit 有效载荷 ✨</li>
+<li><a href="https://github.com/Arvanaghi/CheckPlease" target="_blank" rel="noopener">https://github.com/Arvanaghi/CheckPlease</a> CheckPlease沙盒规避模块使用 PowerShell、Python、Go、Ruby、C、C#、Perl 和 Rust 编写</li>
+<li><a href="https://github.com/peewpw/Invoke-PSImage" target="_blank" rel="noopener">https://github.com/peewpw/Invoke-PSImage</a> Invoke-PSImage是一种将 PowerShell 脚本嵌入到 PNG 文件的像素中并生成要执行的 oneliner 的工具</li>
+<li><a href="https://github.com/curi0usJack/luckystrike" target="_blank" rel="noopener">https://github.com/curi0usJack/luckystrike</a> LuckyStrike基于 PowerShell 的实用程序，用于创建恶意 Office 宏文档</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/ClickOnceGenerator" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/ClickOnceGenerator</a> ClickOnceGenerator红队快速恶意 ClickOnceGenerator</li>
+<li><a href="https://github.com/sevagas/macro_pack" target="_blank" rel="noopener">https://github.com/sevagas/macro_pack</a> macro_pack是@EmericNasi的一个工具，用于自动混淆和生成 MS Office 文档、VB 脚本和其他格式，用于渗透测试、演示和社会工程评估 ✨</li>
+<li><a href="https://github.com/Cn33liz/StarFighters" target="_blank" rel="noopener">https://github.com/Cn33liz/StarFighters</a> StarFighters基于 JavaScript 和 VBScript 的 Empire Launcher</li>
+<li><a href="https://github.com/trustedsec/nps_payload" target="_blank" rel="noopener">https://github.com/trustedsec/nps_payload</a> nps_payload此脚本将为基本的入侵检测避免生成有效负载</li>
+<li><a href="https://github.com/bhdresh/SocialEngineeringPayloads" target="_blank" rel="noopener">https://github.com/bhdresh/SocialEngineeringPayloads</a> SocialEngineeringPayloads用于凭据盗窃和鱼叉式网络钓鱼攻击的社会工程技巧和有效载荷的集合</li>
+<li><a href="https://github.com/trustedsec/social-engineer-toolkit" target="_blank" rel="noopener">https://github.com/trustedsec/social-engineer-toolkit</a> Social-Engineer Toolkit是一个为社会工程设计的开源渗透测试框架 ✨</li>
+<li><a href="https://github.com/ryhanson/phishery" target="_blank" rel="noopener">https://github.com/ryhanson/phishery</a> Phishery是一个启用 SSL 的简单 HTTP 服务器，其主要目的是通过基本身份验证钓鱼凭据</li>
+<li><a href="https://github.com/p3nt4/PowerShdll" target="_blank" rel="noopener">https://github.com/p3nt4/PowerShdll</a> PowerShdll使用 rundll32 运行 PowerShell</li>
+<li><a href="https://github.com/api0cradle/UltimateAppLockerByPassList" target="_blank" rel="noopener">https://github.com/api0cradle/UltimateAppLockerByPassList</a> 终极 AppLocker绕过列表此存储库的目标是记录绕过 AppLocker 的最常见技术</li>
+<li><a href="https://github.com/sensepost/ruler" target="_blank" rel="noopener">https://github.com/sensepost/ruler</a> Ruler是一种工具，允许您通过 MAPI/HTTP 或 RPC/HTTP 协议与 Exchange 服务器进行远程交互 ✨</li>
+<li><a href="https://github.com/enigma0x3/Generate-Macro" target="_blank" rel="noopener">https://github.com/enigma0x3/Generate-Macro</a> Generate-Macro是一个独立的 PowerShell 脚本，它将生成具有指定负载和持久性方法的恶意 Microsoft Office 文档</li>
+<li><a href="https://github.com/infosecn1nja/MaliciousMacroMSBuild" target="_blank" rel="noopener">https://github.com/infosecn1nja/MaliciousMacroMSBuild</a> 恶意宏 MSBuild 生成器生成恶意宏并通过 MSBuild 应用程序白名单绕过来执行 Powershell 或 Shellcode</li>
+<li><a href="https://github.com/threatexpress/metatwin" target="_blank" rel="noopener">https://github.com/threatexpress/metatwin</a> Meta Twin被设计为文件资源克隆器</li>
+<li><a href="https://github.com/mwrlabs/wePWNise" target="_blank" rel="noopener">https://github.com/mwrlabs/wePWNise</a> WePWNise生成要在 Office 文档或模板中使用的与架构无关的 VBA 代码，并自动绕过应用程序控制和漏洞利用缓解软件</li>
+<li><a href="https://github.com/tyranid/DotNetToJScript" target="_blank" rel="noopener">https://github.com/tyranid/DotNetToJScript</a> DotNetToJScript一种用于创建 JScript 文件的工具，该文件从内存加载 .NET v2 程序集</li>
+<li><a href="https://github.com/cobbr/PSAmsi" target="_blank" rel="noopener">https://github.com/cobbr/PSAmsi</a> PSAmsi是一种用于审核和破解 AMSI签名的工具</li>
+<li><a href="https://github.com/stephenfewer/ReflectiveDLLInjection" target="_blank" rel="noopener">https://github.com/stephenfewer/ReflectiveDLLInjection</a> 反射 DLL 注入是一种库注入技术，其中采用反射编程的概念来执行将库从内存加载到主机进程中 ✨</li>
+<li><a href="https://github.com/CroweCyber​​security/ps1encode" target="_blank" rel="noopener">https://github.com/CroweCyber​​security/ps1encode</a> ps1encode用于生成和编码基于 powershell 的 metasploit 有效载荷</li>
+<li><a href="https://github.com/3gstudent/Worse-PDF" target="_blank" rel="noopener">https://github.com/3gstudent/Worse-PDF</a> 更糟糕的 PDF会将普通 PDF 文件变成恶意文件</li>
+<li><a href="https://github.com/hlldz/SpookFlare" target="_blank" rel="noopener">https://github.com/hlldz/SpookFlare</a> SpookFlare对绕过安全措施有不同的看法，它让您有机会绕过客户端检测和网络端检测的端点对策</li>
+<li><a href="https://github.com/GreatSCT/GreatSCT" target="_blank" rel="noopener">https://github.com/GreatSCT/GreatSCT</a> GreatSCT是一个开源项目，用于生成应用程序白名单绕过 ✨</li>
+<li><a href="https://github.com/Ben0xA/nps" target="_blank" rel="noopener">https://github.com/Ben0xA/nps</a> nps在没有 powershell 的情况下运行 powershell ✨</li>
+<li><a href="https://github.com/r00t-3xp10it/Meterpreter_Paranoid_Mode-SSL" target="_blank" rel="noopener">https://github.com/r00t-3xp10it/Meterpreter_Paranoid_Mode-SSL</a> Meterpreter_Paranoid_Mode.sh允许用户通过检查它所连接的处理程序的证书来保护 Meterpreter 的分段/无分段连接</li>
+<li><a href="https://github.com/khr0x40sh/MacroShop" target="_blank" rel="noopener">https://github.com/khr0x40sh/MacroShop</a> MacroShop一组脚本，以帮助通过 Office 宏交付有效负载</li>
+<li><a href="https://github.com/leechristensen/UnmanagedPowerShell" target="_blank" rel="noopener">https://github.com/leechristensen/UnmanagedPowerShell</a> UnmanagedPowerShell从非托管进程执行 PowerShell</li>
+<li><a href="https://github.com/Genetic-Malware/Ebowla" target="_blank" rel="noopener">https://github.com/Genetic-Malware/Ebowla</a> 用于制作环境键控有效载荷的Ebowla框架 ✨</li>
+<li><a href="https://github.com/DidierStevens/DidierStevensSuite/blob/master/make-pdf-embedded.py" target="_blank" rel="noopener">https://github.com/DidierStevens/DidierStevensSuite/blob/master/make-pdf-embedded.py</a> make-pdf-embedded一个工具，用于创建带有嵌入文件的 PDF 文档</li>
+<li><a href="https://github.com/govolution/avet" target="_blank" rel="noopener">https://github.com/govolution/avet</a> avet (AntiVirusEvasionTool) 的目标是使用不同规避技术的具有可执行文件的 Windows 机器 ✨</li>
+<li><a href="https://github.com/outflanknl/EvilClippy" target="_blank" rel="noopener">https://github.com/outflanknl/EvilClippy</a> EvilClippy用于创建恶意 MS Office 文档的跨平台助手</li>
+<li><a href="https://github.com/d35ha/CallObfuscator" target="_blank" rel="noopener">https://github.com/d35ha/CallObfuscator</a> CallObfuscator混淆来自静态分析工具和调试器的 windows api</li>
+<li><a href="https://github.com/TheWover/donut" target="_blank" rel="noopener">https://github.com/TheWover/donut</a> Donut是一种 shellcode 生成工具，可从 .NET 程序集创建与位置无关的 shellcode 有效载荷 ✨</li>
+</ul>
+<h3 id="3-防御绕过"><a href="#3-防御绕过" class="headerlink" title="3. 防御绕过"></a>3. 防御绕过</h3><h4 id="a-键盘记录器"><a href="#a-键盘记录器" class="headerlink" title="a. 键盘记录器"></a>a. 键盘记录器</h4><ul>
+<li><a href="https://github.com/cheetz/ceylogger/blob/master/skeleton" target="_blank" rel="noopener">https://github.com/cheetz/ceylogger/blob/master/skeleton</a></li>
+<li><a href="https://github.com/cheetz/ceylogger/tree/master/version3" target="_blank" rel="noopener">https://github.com/cheetz/ceylogger/tree/master/version3</a></li>
+<li><a href="https://github.com/cheetz/thpDropper.git" target="_blank" rel="noopener">https://github.com/cheetz/thpDropper.git</a></li>
+</ul>
+<h4 id="b-payload混淆"><a href="#b-payload混淆" class="headerlink" title="b. payload混淆"></a>b. payload混淆</h4><ul>
+<li><a href="https://github.com/cyberspacekittens/metasploit-payloads" target="_blank" rel="noopener">https://github.com/cyberspacekittens/metasploit-payloads</a></li>
+<li><a href="https://github.com/thealpiste/C_ReverseHTTPS_Shellcode" target="_blank" rel="noopener">https://github.com/thealpiste/C_ReverseHTTPS_Shellcode</a></li>
+</ul>
+<h4 id="c-沙盒绕过免杀"><a href="#c-沙盒绕过免杀" class="headerlink" title="c. 沙盒绕过免杀"></a>c. 沙盒绕过免杀</h4><ul>
+<li><a href="https://github.com/mdsecactivebreach/CACTUSTORCH" target="_blank" rel="noopener">https://github.com/mdsecactivebreach/CACTUSTORCH</a></li>
+<li><a href="https://github.com/mdsecactivebreach/SharpShooter" target="_blank" rel="noopener">https://github.com/mdsecactivebreach/SharpShooter</a> ✨</li>
+</ul>
+<h4 id="d-应用白名单绕过"><a href="#d-应用白名单绕过" class="headerlink" title="d. 应用白名单绕过"></a>d. 应用白名单绕过</h4><ul>
+<li><a href="https://github.com/GreatSCT/GreatSCT" target="_blank" rel="noopener">https://github.com/GreatSCT/GreatSCT</a> ✨</li>
+</ul>
+<h4 id="e-Code-Caves"><a href="#e-Code-Caves" class="headerlink" title="e. Code Caves"></a>e. Code Caves</h4><ul>
+<li><a href="https://github.com/secretsquirrel/the-backdoor-factory" target="_blank" rel="noopener">https://github.com/secretsquirrel/the-backdoor-factory</a> 后门工厂 (BDF)将使用用户所需的 shellcode 修补可执行二进制文件，并继续正常执行预修补状态 ✨</li>
+</ul>
+<h4 id="f-powershell混淆"><a href="#f-powershell混淆" class="headerlink" title="f. powershell混淆"></a>f. powershell混淆</h4><ul>
+<li><a href="https://github.com/danielbohannon/Invoke-Obfuscation" target="_blank" rel="noopener">https://github.com/danielbohannon/Invoke-Obfuscation</a> ✨</li>
+<li><a href="https://github.com/danielbohannon/Invoke-CradleCrafter" target="_blank" rel="noopener">https://github.com/danielbohannon/Invoke-CradleCrafter</a></li>
+</ul>
+<h4 id="g-NoPowerShell"><a href="#g-NoPowerShell" class="headerlink" title="g. NoPowerShell"></a>g. NoPowerShell</h4><ul>
+<li><a href="https://github.com/PowerShellEmpire/PowerTools/" target="_blank" rel="noopener">https://github.com/PowerShellEmpire/PowerTools/</a> ✨</li>
+</ul>
+<h3 id="4-投递利用"><a href="#4-投递利用" class="headerlink" title="4. 投递利用"></a>4. 投递利用</h3><h4 id="a-载荷投递"><a href="#a-载荷投递" class="headerlink" title="a. 载荷投递"></a>a. 载荷投递</h4><h5 id="网络钓鱼"><a href="#网络钓鱼" class="headerlink" title="网络钓鱼"></a>网络钓鱼</h5><ul>
+<li><a href="https://github.com/securestate/king-phisher" target="_blank" rel="noopener">https://github.com/securestate/king-phisher</a> King Phisher是一种通过模拟现实世界的网络钓鱼攻击来测试和提高用户意识的工具</li>
+<li><a href="https://github.com/Raikia/FiercePhish" target="_blank" rel="noopener">https://github.com/Raikia/FiercePhish</a> FiercePhish是一个成熟的网络钓鱼框架，用于管理所有网络钓鱼活动 ✨</li>
+<li><a href="https://github.com/fireeye/ReelPhish/" target="_blank" rel="noopener">https://github.com/fireeye/ReelPhish/</a> ReelPhish是一种实时两因素网络钓鱼工具</li>
+<li><a href="https://github.com/gophish/gophish" target="_blank" rel="noopener">https://github.com/gophish/gophish</a> Gophish是一个开源网络钓鱼工具包，专为企业和渗透测试人员设计 ✨</li>
+<li><a href="https://github.com/ustayready/CredSniper" target="_blank" rel="noopener">https://github.com/ustayready/CredSniper</a> CredSniper是一个使用 Python 微框架 Flask 和 Jinja2 模板编写的网络钓鱼框架，支持捕获 2FA 令牌</li>
+<li><a href="https://github.com/fireeye/PwnAuth" target="_blank" rel="noopener">https://github.com/fireeye/PwnAuth</a> PwnAuth一个用于启动和管理 OAuth 滥用活动的 Web 应用程序框架</li>
+<li><a href="https://github.com/pentestgeek/phishing-frenzy" target="_blank" rel="noopener">https://github.com/pentestgeek/phishing-frenzy</a> 网络钓鱼狂潮Ruby on Rails 网络钓鱼框架</li>
+<li><a href="https://github.com/L4bF0x/PhishingPretexts" target="_blank" rel="noopener">https://github.com/L4bF0x/PhishingPretexts</a> 网络钓鱼借口是用于攻击性网络钓鱼活动的借口库</li>
+<li><a href="https://github.com/drk1wi/Modlishka" target="_blank" rel="noopener">https://github.com/drk1wi/Modlishka</a> Modlishka是一种灵活而强大的反向代理，它将您的道德网络钓鱼活动提升到一个新的水平 ✨</li>
+<li><a href="https://github.com/kgretzky/evilginx2" target="_blank" rel="noopener">https://github.com/kgretzky/evilginx2</a> Evilginx2是一个中间人攻击框架，用于任何 Web 服务的网络钓鱼凭据和会话 cookie ✨</li>
+</ul>
+<h5 id="水坑攻击"><a href="#水坑攻击" class="headerlink" title="水坑攻击"></a>水坑攻击</h5><ul>
+<li><a href="https://github.com/beefproject/beef" target="_blank" rel="noopener">https://github.com/beefproject/beef</a> BeEF是浏览器开发框架的缩写 ✨</li>
+</ul>
+<h4 id="b-Web漏洞利用"><a href="#b-Web漏洞利用" class="headerlink" title="b. Web漏洞利用"></a>b. Web漏洞利用</h4><h5 id="基本工具"><a href="#基本工具" class="headerlink" title="基本工具"></a>基本工具</h5><ul>
+<li><a href="https://portswigger.net/burp" target="_blank" rel="noopener">https://portswigger.net/burp</a> ✨</li>
+<li><a href="https://builtwith.com/" target="_blank" rel="noopener">https://builtwith.com/</a></li>
+<li><a href="https://github.com/RetireJS/retire.js/" target="_blank" rel="noopener">https://github.com/RetireJS/retire.js/</a></li>
+<li><a href="https://github.com/OJ/gobuster" target="_blank" rel="noopener">https://github.com/OJ/gobuster</a></li>
+</ul>
+<h5 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h5><ul>
+<li><a href="https://xsshunter.com/" target="_blank" rel="noopener">https://xsshunter.com/</a></li>
+<li><a href="https://github.com/Varbaek/xsser" target="_blank" rel="noopener">https://github.com/Varbaek/xsser</a> ✨</li>
+</ul>
+<h5 id="注入攻击"><a href="#注入攻击" class="headerlink" title="注入攻击"></a>注入攻击</h5><ul>
+<li><a href="http://sqlmap.org/" target="_blank" rel="noopener">http://sqlmap.org/</a> ✨</li>
+<li><a href="https://github.com/youngyangyang04/NoSQLAttack" target="_blank" rel="noopener">https://github.com/youngyangyang04/NoSQLAttack</a></li>
+<li><a href="https://github.com/codingo/NoSQLMap" target="_blank" rel="noopener">https://github.com/codingo/NoSQLMap</a> ✨</li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection" target="_blank" rel="noopener">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection</a></li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection" target="_blank" rel="noopener">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection</a></li>
+</ul>
+<h5 id="反序列化攻击"><a href="#反序列化攻击" class="headerlink" title="反序列化攻击"></a>反序列化攻击</h5><ul>
+<li><a href="https://github.com/frohoff/ysoserial" target="_blank" rel="noopener">https://github.com/frohoff/ysoserial</a> ✨</li>
+<li><a href="https://github.com/NickstaDB/SerializationDumper" target="_blank" rel="noopener">https://github.com/NickstaDB/SerializationDumper</a></li>
+<li><a href="https://github.com/mbechler/marshalsec" target="_blank" rel="noopener">https://github.com/mbechler/marshalsec</a> ✨</li>
+<li><a href="https://github.com/JackOfMostTrades/gadgetinspector" target="_blank" rel="noopener">https://github.com/JackOfMostTrades/gadgetinspector</a></li>
+</ul>
+<h5 id="模版注入"><a href="#模版注入" class="headerlink" title="模版注入"></a>模版注入</h5><ul>
+<li><a href="https://github.com/epinna/tplmap" target="_blank" rel="noopener">https://github.com/epinna/tplmap</a> ✨</li>
+</ul>
+<h5 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h5><ul>
+<li><a href="https://github.com/swisskyrepo/SSRFmap" target="_blank" rel="noopener">https://github.com/swisskyrepo/SSRFmap</a> ✨</li>
+<li><a href="https://github.com/bcoles/ssrf_proxy" target="_blank" rel="noopener">https://github.com/bcoles/ssrf_proxy</a></li>
+</ul>
+<h5 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h5><ul>
+<li><a href="https://github.com/luisfontes19/xxexploiter" target="_blank" rel="noopener">https://github.com/luisfontes19/xxexploiter</a> ✨</li>
+<li><a href="https://github.com/enjoiz/XXEinjector" target="_blank" rel="noopener">https://github.com/enjoiz/XXEinjector</a></li>
+</ul>
+<h5 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h5><ul>
+<li><a href="https://github.com/D35m0nd142/LFISuite" target="_blank" rel="noopener">https://github.com/D35m0nd142/LFISuite</a></li>
+</ul>
+<h5 id="命令注入"><a href="#命令注入" class="headerlink" title="命令注入"></a>命令注入</h5><ul>
+<li><a href="https://github.com/commixproject/commix" target="_blank" rel="noopener">https://github.com/commixproject/commix</a> ✨</li>
+</ul>
+<h5 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h5><ul>
+<li><a href="https://github.com/Lucifer1993/TPscan" target="_blank" rel="noopener">https://github.com/Lucifer1993/TPscan</a> ThinkPHP漏洞检测</li>
+<li><a href="https://github.com/OWASP/joomscan" target="_blank" rel="noopener">https://github.com/OWASP/joomscan</a> Joomla漏洞检测</li>
+<li><a href="https://github.com/immunIT/drupwn" target="_blank" rel="noopener">https://github.com/immunIT/drupwn</a> Drupal漏洞检测</li>
+</ul>
+<h4 id="c-系统-协议漏洞利用"><a href="#c-系统-协议漏洞利用" class="headerlink" title="c. 系统/协议漏洞利用"></a>c. 系统/协议漏洞利用</h4><h5 id="struts"><a href="#struts" class="headerlink" title="struts"></a>struts</h5><ul>
+<li><a href="https://github.com/Lucifer1993/struts-scan" target="_blank" rel="noopener">https://github.com/Lucifer1993/struts-scan</a> ✨</li>
+</ul>
+<h5 id="shiro"><a href="#shiro" class="headerlink" title="shiro"></a>shiro</h5><ul>
+<li><a href="https://github.com/sv3nbeast/ShiroScan" target="_blank" rel="noopener">https://github.com/sv3nbeast/ShiroScan</a> Shiro&lt;=1.2.4反序列化检测工具 ✨</li>
+</ul>
+<h5 id="fastjson"><a href="#fastjson" class="headerlink" title="fastjson"></a>fastjson</h5><ul>
+<li><a href="https://github.com/wyzxxz/fastjson_rce_tool" target="_blank" rel="noopener">https://github.com/wyzxxz/fastjson_rce_tool</a> fastjson命令执行利用工具 ✨</li>
+</ul>
+<h5 id="JDNI"><a href="#JDNI" class="headerlink" title="JDNI"></a>JDNI</h5><ul>
+<li><a href="https://github.com/veracode-research/rogue-jndi" target="_blank" rel="noopener">https://github.com/veracode-research/rogue-jndi</a></li>
+</ul>
+<h5 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h5><ul>
+<li><a href="https://github.com/brendan-rius/c-jwt-cracker" target="_blank" rel="noopener">https://github.com/brendan-rius/c-jwt-cracker</a></li>
+</ul>
+<h5 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h5><ul>
+<li><a href="https://github.com/mitmproxy/mitmproxy" target="_blank" rel="noopener">https://github.com/mitmproxy/mitmproxy</a>  ✨</li>
+<li><a href="https://github.com/byt3bl33d3r/MITMf" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/MITMf</a></li>
+<li><a href="https://github.com/jtesta/ssh-mitm" target="_blank" rel="noopener">https://github.com/jtesta/ssh-mitm</a></li>
+<li><a href="https://github.com/lgandx/Responder" target="_blank" rel="noopener">https://github.com/lgandx/Responder</a></li>
+<li><a href="https://github.com/h2non/toxy" target="_blank" rel="noopener">https://github.com/h2non/toxy</a></li>
+<li><a href="https://github.com/bettercap/bettercap" target="_blank" rel="noopener">https://github.com/bettercap/bettercap</a> ✨</li>
+</ul>
+<h5 id="DDoS"><a href="#DDoS" class="headerlink" title="DDoS"></a>DDoS</h5><ul>
+<li><a href="https://github.com/OffensivePython/Saddam" target="_blank" rel="noopener">https://github.com/OffensivePython/Saddam</a></li>
+</ul>
+<h2 id="0x03-后渗透"><a href="#0x03-后渗透" class="headerlink" title="0x03    后渗透"></a>0x03    后渗透</h2><h3 id="1-权限提升"><a href="#1-权限提升" class="headerlink" title="1. 权限提升"></a>1. 权限提升</h3><h4 id="a-Linux提权"><a href="#a-Linux提权" class="headerlink" title="a. Linux提权"></a>a. Linux提权</h4><p><strong>提权漏洞</strong></p>
+<ul>
+<li><a href="https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs" target="_blank" rel="noopener">https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs</a> ✨</li>
+<li><a href="https://github.com/SecWiki/linux-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/linux-kernel-exploits</a> ✨</li>
+<li><a href="https://github.com/xairy/kernel-exploits" target="_blank" rel="noopener">https://github.com/xairy/kernel-exploits</a></li>
+</ul>
+<p><strong>提权脚本</strong></p>
+<ul>
+<li><a href="https://github.com/jondonas/linux-exploit-suggester-2" target="_blank" rel="noopener">https://github.com/jondonas/linux-exploit-suggester-2</a> ✨</li>
+<li><a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS" target="_blank" rel="noopener">https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS</a> ✨</li>
+<li><a href="https://github.com/rebootuser/LinEnum" target="_blank" rel="noopener">https://github.com/rebootuser/LinEnum</a> ✨</li>
+<li><a href="https://github.com/redcode-labs/Bashark" target="_blank" rel="noopener">https://github.com/redcode-labs/Bashark</a> ✨</li>
+<li><a href="https://github.com/mzet-/linux-exploit-suggester" target="_blank" rel="noopener">https://github.com/mzet-/linux-exploit-suggester</a> ✨</li>
+<li><a href="https://github.com/sleventyeleven/linuxprivchecker" target="_blank" rel="noopener">https://github.com/sleventyeleven/linuxprivchecker</a> ✨</li>
+<li><a href="https://github.com/diego-treitos/linux-smart-enumeration" target="_blank" rel="noopener">https://github.com/diego-treitos/linux-smart-enumeration</a></li>
+</ul>
+<h4 id="b-Windows提权"><a href="#b-Windows提权" class="headerlink" title="b. Windows提权"></a>b. Windows提权</h4><p><strong>域提权</strong></p>
+<ul>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1" target="_blank" rel="noopener">https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1</a> PowerView是一种 PowerShell 工具，用于在 Windows 域上获得网络态势感知</li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Get-GPPPassword.ps1" target="_blank" rel="noopener">https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Get-GPPPassword.ps1</a> Get-GPPPassword检索通过组策略首选项推送的帐户的明文密码和其他信息</li>
+<li><a href="https://github.com/fox-it/Invoke-ACLPwn" target="_blank" rel="noopener">https://github.com/fox-it/Invoke-ACLPwn</a> Invoke-ACLpwn是一种工具，可自动发现和窃取 Active Directory 中配置不安全的 ACL</li>
+<li><a href="https://github.com/BloodHoundAD/BloodHound" target="_blank" rel="noopener">https://github.com/BloodHoundAD/BloodHound</a> BloodHound使用图论来揭示 Active Directory 环境中隐藏且通常是意外的关系  ✨</li>
+<li><a href="https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek" target="_blank" rel="noopener">https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek</a> PyKEK（Python Kerberos Exploitation Kit），一个用于操作 KRB5 相关数据的 Python 库 ✨</li>
+<li><a href="https://github.com/l0ss/Grouper" target="_blank" rel="noopener">https://github.com/l0ss/Grouper</a> Grouper PowerShell 脚本，用于帮助查找 AD 组策略中的易受攻击的设置</li>
+<li><a href="https://github.com/sense-of-security/ADRecon" target="_blank" rel="noopener">https://github.com/sense-of-security/ADRecon</a> ADRecon是一种工具，它以特殊格式的 Microsoft Excel 报告从 AD 环境中提取各种工件（如下突出显示），该报告包括带有指标的摘要视图，以便于分析</li>
+<li><a href="https://github.com/canix1/ADACLScanner" target="_blank" rel="noopener">https://github.com/canix1/ADACLScanner</a> ADACLScanner一种用于 Active Directory 中 ACL 的脚本</li>
+<li><a href="https://github.com/cyberark/ACLight" target="_blank" rel="noopener">https://github.com/cyberark/ACLight</a> ACLight一个有用的脚本，用于高级发现可能被定位的域特权帐户 - 包括影子管理员</li>
+<li><a href="https://github.com/leoloobeek/LAPSToolkit" target="_blank" rel="noopener">https://github.com/leoloobeek/LAPSToolkit</a> LAPSToolkit是一种审计和攻击 LAPS 环境的工具</li>
+<li><a href="https://www.pingcastle.com/download" target="_blank" rel="noopener">https://www.pingcastle.com/download</a> PingCastle是一个免费的、基于 Windows 的实用程序，用于审核 AD 基础架构的风险级别并检查易受攻击的做法 ✨</li>
+<li><a href="https://github.com/cyberark/RiskySPN" target="_blank" rel="noopener">https://github.com/cyberark/RiskySPN</a> RiskySPNs是一组 PowerShell 脚本，专注于检测和滥用与 SPN（服务主体名称）关联的帐户</li>
+<li><a href="https://github.com/machosec/Mystique" target="_blank" rel="noopener">https://github.com/machosec/Mystique</a> Mystique是一个使用 Kerberos S4U 扩展的 PowerShell 工具，该模块可以帮助蓝队识别有风险的 Kerberos 委托配置，以及红队通过利用 KCD 和协议转换来冒充任意用户</li>
+<li><a href="https://github.com/GhostPack/Rubeus" target="_blank" rel="noopener">https://github.com/GhostPack/Rubeus</a> Rubeus是一个用于原始 Kerberos 交互和滥用的 C# 工具集 ✨</li>
+<li><a href="https://github.com/gentilkiwi/kekeo" target="_blank" rel="noopener">https://github.com/gentilkiwi/kekeo</a> kekeo是一个小工具箱，我已经开始在 C 中操作 Microsoft Kerberos</li>
+</ul>
+<p><strong>本地提权</strong></p>
+<ul>
+<li><a href="https://github.com/hfiref0x/UACME" target="_blank" rel="noopener">https://github.com/hfiref0x/UACME</a> UACMe是一种开源评估工具，其中包含许多绕过多个版本操作系统上的 Windows 用户帐户控制的方法 ✨</li>
+<li><a href="https://github.com/SecWiki/windows-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/windows-kernel-exploits</a> windows-kernel-exploits集合 windows 内核漏洞利用 ✨</li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1" target="_blank" rel="noopener">https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1</a> PowerUp旨在成为依赖错误配置的常见 Windows 权限提升向量的交换所</li>
+<li><a href="https://github.com/rsmudge/ElevateKit" target="_blank" rel="noopener">https://github.com/rsmudge/ElevateKit</a> Elevate Kit演示了如何通过 Cobalt Strike 的 Beacon 负载使用第三方权限提升攻击</li>
+<li><a href="https://github.com/rasta-mouse/Sherlock" target="_blank" rel="noopener">https://github.com/rasta-mouse/Sherlock</a> Sherlock一个 PowerShell 脚本，用于快速查找本地提权漏洞的缺失软件补丁</li>
+<li><a href="https://github.com/0xbadjuju/Tokenvator" target="_blank" rel="noopener">https://github.com/0xbadjuju/Tokenvator</a> Tokenvator是一种使用 Windows 令牌提升权限的工具</li>
+</ul>
+<h3 id="2-权限维持"><a href="#2-权限维持" class="headerlink" title="2. 权限维持"></a>2. 权限维持</h3><ul>
+<li><a href="https://github.com/SECFORCE/Tunna" target="_blank" rel="noopener">https://github.com/SECFORCE/Tunna</a> Tunna是一组工具，它将包装和隧道通过 HTTP 的任何 TCP 通信 ✨</li>
+<li><a href="https://github.com/sensepost/reGeorg" target="_blank" rel="noopener">https://github.com/sensepost/reGeorg</a> reGeorg是 reDuh 的继任者，拥有一个堡垒网络服务器并通过 DMZ 创建 SOCKS 代理 ✨</li>
+<li><a href="https://github.com/wonderqs/Blade" target="_blank" rel="noopener">https://github.com/wonderqs/Blade</a> Blade是一个基于控制台的 webshel​​l 连接工具，目前正在开发中，旨在成为 Chooper 的替代选择</li>
+<li><a href="https://github.com/threatexpress/tinyshell" target="_blank" rel="noopener">https://github.com/threatexpress/tinyshell</a> TinyShell Web Shell 框架</li>
+<li><a href="https://github.com/Sw4mpf0x/PowerLurk" target="_blank" rel="noopener">https://github.com/Sw4mpf0x/PowerLurk</a> PowerLurk是用于构建恶意 WMI 事件订阅的 PowerShell 工具集</li>
+<li><a href="https://github.com/HarmJ0y/DAMP" target="_blank" rel="noopener">https://github.com/HarmJ0y/DAMP</a> DAMP自主 ACL 修改项目：通过基于主机的安全描述符修改实现持久性</li>
+</ul>
+<h3 id="3-命令与控制"><a href="#3-命令与控制" class="headerlink" title="3. 命令与控制"></a>3. 命令与控制</h3><h4 id="综合工具"><a href="#综合工具" class="headerlink" title="综合工具"></a>综合工具</h4><ul>
+<li><a href="https://cobaltstrike.com/" target="_blank" rel="noopener">https://cobaltstrike.com/</a> Cobalt Strike是用于对手模拟和红队行动的软件 ✨</li>
+<li><a href="https://github.com/EmpireProject/Empire" target="_blank" rel="noopener">https://github.com/EmpireProject/Empire</a> Empire是一个后开发框架，包括一个纯 PowerShell2.0 Windows 代理和一个纯 Python 2.6/2.7 Linux/OS X 代理 ✨</li>
+<li><a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener">https://github.com/rapid7/metasploit-framework</a> Metasploit Framework是一个计算机安全项目，它提供有关安全漏洞的信息并帮助渗透测试和 IDS 签名开发 ✨</li>
+<li><a href="https://github.com/n1nj4sec/pupy" target="_blank" rel="noopener">https://github.com/n1nj4sec/pupy</a> Pupy是一个开源、跨平台（Windows、Linux、OSX、Android）远程管理和后期开发工具，主要用 python 编写 ✨</li>
+<li><a href="https://github.com/FunnyWolf/Viper" target="_blank" rel="noopener">https://github.com/FunnyWolf/Viper</a>  Viper - metasploit-framework 图形化内网渗透工具 ✨</li>
+</ul>
+<h4 id="a-webshell管理"><a href="#a-webshell管理" class="headerlink" title="a. webshell管理"></a>a. webshell管理</h4><ul>
+<li><a href="https://github.com/rebeyond/Behinder" target="_blank" rel="noopener">https://github.com/rebeyond/Behinder</a>  “冰蝎”动态二进制加密网站管理客户端 ✨</li>
+<li><a href="https://github.com/Chora10/Cknife" target="_blank" rel="noopener">https://github.com/Chora10/Cknife</a>  Cknife 中国菜刀 ✨</li>
+<li><a href="https://github.com/2Quico/antSword" target="_blank" rel="noopener">https://github.com/2Quico/antSword</a>  中国蚁剑是一款跨平台的开源网站管理工具 ✨</li>
+<li><a href="https://github.com/BeichenDream/Godzilla" target="_blank" rel="noopener">https://github.com/BeichenDream/Godzilla</a>  Godzilla 哥斯拉 ✨</li>
+<li><a href="https://github.com/boy-hack/WebshellManager" target="_blank" rel="noopener">https://github.com/boy-hack/WebshellManager</a>  WebshellManager,一句话WEB端管理工具</li>
+</ul>
+<h4 id="b-反弹shell"><a href="#b-反弹shell" class="headerlink" title="b. 反弹shell"></a>b. 反弹shell</h4><ul>
+<li><a href="https://github.com/0dayCTF/reverse-shell-generator" target="_blank" rel="noopener">https://github.com/0dayCTF/reverse-shell-generator</a> 反弹shell生成器 ✨</li>
+</ul>
+<h4 id="c-代理转发"><a href="#c-代理转发" class="headerlink" title="c. 代理转发"></a>c. 代理转发</h4><ul>
+<li><a href="https://www.proxifier.com/" target="_blank" rel="noopener">https://www.proxifier.com/</a>  proxifier 全平台代理工具，支持多种socks协议</li>
+<li><a href="https://github.com/fatedier/frp" target="_blank" rel="noopener">https://github.com/fatedier/frp</a>  frp 专注于内网穿透的高性能的反向代理应用 ✨</li>
+<li><a href="https://github.com/ehang-io/nps" target="_blank" rel="noopener">https://github.com/ehang-io/nps</a>  nps 轻量级、高性能、功能强大的内网穿透代理服务器 ✨</li>
+<li><a href="https://github.com/EddieIvan01/iox" target="_blank" rel="noopener">https://github.com/EddieIvan01/iox</a>  iox 端口转发、内网代理工具</li>
+<li><a href="https://github.com/FelisCatus/SwitchyOmega" target="_blank" rel="noopener">https://github.com/FelisCatus/SwitchyOmega</a>  SwitchyOmega 浏览器的代理插件</li>
+<li><a href="https://github.com/L-codes/Neo-reGeorg" target="_blank" rel="noopener">https://github.com/L-codes/Neo-reGeorg</a>  Neo-reGeorg 改进的reGeorg版本 ✨</li>
+<li><a href="https://github.com/alex-sector/dns2tcp" target="_blank" rel="noopener">https://github.com/alex-sector/dns2tcp</a>  dns2tcp是一款利用dns协议传输tcp数据的工具</li>
+<li><a href="https://github.com/iagox86/dnscat2" target="_blank" rel="noopener">https://github.com/iagox86/dnscat2</a>  dnscat2 是一个DNS隧道工具 ✨</li>
+<li><a href="https://github.com/nccgroup/ABPTTS" target="_blank" rel="noopener">https://github.com/nccgroup/ABPTTS</a>  ABPTTS 基于ssl加密的http隧道工具</li>
+<li><a href="http://rootkiter.com/Termite/" target="_blank" rel="noopener">http://rootkiter.com/Termite/</a>  Termite 内网渗透代理、端口转发工具</li>
+<li><a href="https://github.com/FQrabbit/SSTap-Rule" target="_blank" rel="noopener">https://github.com/FQrabbit/SSTap-Rule</a>  SSTap, 一款利用虚拟网卡在网络层实现的代理工具</li>
+<li><a href="https://github.com/idlefire/ew" target="_blank" rel="noopener">https://github.com/idlefire/ew</a>  ew 用于开启 SOCKS v5 代理服务的工具(跨平台)</li>
+<li><a href="https://github.com/ntop/n2n" target="_blank" rel="noopener">https://github.com/ntop/n2n</a>  n2n 开源的点对点穿透工具 ✨</li>
+<li><a href="https://github.com/inquisb/icmpsh" target="_blank" rel="noopener">https://github.com/inquisb/icmpsh</a>  icmpsh 一个简单的 reverse ICMP shell</li>
+<li><a href="https://github.com/inconshreveable/ngrok" target="_blank" rel="noopener">https://github.com/inconshreveable/ngrok</a>  ngrok 正/反向代理，内网穿透，端口转发 ✨</li>
+<li><a href="https://securesocketfunneling.github.io/ssf/" target="_blank" rel="noopener">https://securesocketfunneling.github.io/ssf/</a>  ssf 全平台的加密隧道 端口转发工具</li>
+<li><a href="https://github.com/haad/proxychains" target="_blank" rel="noopener">https://github.com/haad/proxychains</a>  proxychains 命令行代理神器</li>
+<li><a href="https://github.com/crabkun/switcher" target="_blank" rel="noopener">https://github.com/crabkun/switcher</a>  switcher 一个多功能的端口转发/端口复用工具</li>
+<li><a href="https://github.com/esrrhs/pingtunnel" target="_blank" rel="noopener">https://github.com/esrrhs/pingtunnel</a>  pingtunnel 是把 tcp/udp/sock5 流量伪装成 icmp 流量进行转发的工具</li>
+<li><a href="https://github.com/jpillora/chisel" target="_blank" rel="noopener">https://github.com/jpillora/chisel</a>  chisel - 一款快速稳定的隧道工具 ✨</li>
+<li><a href="https://github.com/FunnyWolf/pystinger" target="_blank" rel="noopener">https://github.com/FunnyWolf/pystinger</a>  pystinger - 一款使用webshell进行流量转发的出网工具</li>
+<li><a href="https://github.com/blackarrowsec/pivotnacci" target="_blank" rel="noopener">https://github.com/blackarrowsec/pivotnacci</a>  pivotnacci - 通过HTTP代理建立socks连接的工具</li>
+<li><a href="https://github.com/ffay/lanproxy" target="_blank" rel="noopener">https://github.com/ffay/lanproxy</a>  lanproxy是一个将局域网个人电脑、服务器代理到公网的内网穿透工具</li>
+<li><a href="https://github.com/Dliv3/Venom" target="_blank" rel="noopener">https://github.com/Dliv3/Venom</a>  Venom是一款为渗透测试人员设计的使用Go开发的多级代理工具</li>
+<li><a href="https://github.com/snail007/goproxy" target="_blank" rel="noopener">https://github.com/snail007/goproxy</a>  goproxy 一款轻量级、功能强大、高性能的多种代理工具 ✨</li>
+</ul>
+<h4 id="d-远控工具"><a href="#d-远控工具" class="headerlink" title="d. 远控工具"></a>d. 远控工具</h4><ul>
+<li><a href="https://github.com/zerosum0x0/koadic" target="_blank" rel="noopener">https://github.com/zerosum0x0/koadic</a> Koadic或 COM Command &amp; Control，是一种 Windows 后利用 rootkit，类似于 Meterpreter 和 Powershell Empire 等其他渗透测试工具</li>
+<li><a href="https://github.com/nettitude/PoshC2_Python" target="_blank" rel="noopener">https://github.com/nettitude/PoshC2_Python</a> PoshC2是一个完全用 PowerShell 编写的代理感知 C2 框架，以帮助渗透测试人员进行红队、后利用和横向移动</li>
+<li><a href="https://github.com/byt3bl33d3r/gcat" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/gcat</a> Gcat一个基于 Python 的隐秘后门，使用 Gmail 作为命令和控制服务器</li>
+<li><a href="https://github.com/trustedsec/trevorc2" target="_blank" rel="noopener">https://github.com/trustedsec/trevorc2</a> TrevorC2是一个合法的网站（可浏览），它通过隧道传输客户端/服务器通信以进行隐蔽的命令执行</li>
+<li><a href="https://github.com/Ne0nd0g/merlin" target="_blank" rel="noopener">https://github.com/Ne0nd0g/merlin</a> Merlin是一个用 golang 编写的跨平台后开发 HTTP/2 命令和控制服务器和代理 ✨</li>
+<li><a href="https://github.com/quasar/QuasarRAT" target="_blank" rel="noopener">https://github.com/quasar/QuasarRAT</a> Quasar是一个用 C# 编码的快速、轻量级的远程管理工具 ✨</li>
+<li><a href="https://github.com/cobbr/Covenant" target="_blank" rel="noopener">https://github.com/cobbr/Covenant</a> Covenant是一个 .NET 命令和控制框架，旨在突出 .NET 的攻击面，使攻击性 .NET 技术的使用更容易，并作为红队人员的协作命令和控制平台 ✨</li>
+<li><a href="https://github.com/BishopFox/sliver" target="_blank" rel="noopener">https://github.com/BishopFox/sliver</a> Sliver是一个通用的跨平台植入框架，支持 C2 over Mutual-TLS、HTTP(S) 和 DNS</li>
+<li><a href="https://github.com/Marten4n6/EvilOSX" target="_blank" rel="noopener">https://github.com/Marten4n6/EvilOSX</a> EvilOSX适用于 macOS / OS X 的邪恶 RAT（远程管理工具）✨</li>
+<li><a href="https://github.com/neoneggplant/EggShell" target="_blank" rel="noopener">https://github.com/neoneggplant/EggShell</a> EggShell是iOS/macOS/Linux远程管理工具 ✨</li>
+</ul>
+<h3 id="4-横向移动"><a href="#4-横向移动" class="headerlink" title="4. 横向移动"></a>4. 横向移动</h3><ul>
+<li><a href="https://github.com/byt3bl33d3r/CrackMapExec" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/CrackMapExec</a> CrackMapExec是用于渗透测试网络的瑞士军刀 ✨</li>
+<li><a href="https://github.com/Mr-Un1k0d3r/PowerLessShell" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/PowerLessShell</a> PowerLessShell依靠 MSBuild.exe 远程执行 PowerShell 脚本和命令，而无需生成 powershell.exe</li>
+<li><a href="https://github.com/GoFetchAD/GoFetch" target="_blank" rel="noopener">https://github.com/GoFetchAD/GoFetch</a> GoFetch是一种自动执行由 BloodHound 应用程序生成的攻击计划的工具</li>
+<li><a href="https://github.com/vysec/ANGRYPUPPY" target="_blank" rel="noopener">https://github.com/vysec/ANGRYPUPPY</a> ANGRYPUPPY CobaltStrike 中的猎犬攻击路径自动化</li>
+<li><a href="https://github.com/byt3bl33d3r/DeathStar" target="_blank" rel="noopener">https://github.com/byt3bl33d3r/DeathStar</a> DeathStar是一个 Python 脚本，它使用 Empire 的 RESTful API 使用各种技术在 Active Directory 环境中自动获取域管理员权限 ✨</li>
+<li><a href="https://github.com/fox-it/BloodHound.py" target="_blank" rel="noopener">https://github.com/fox-it/BloodHound.py</a> BloodHound.py是一个基于 Python 的 BloodHound 摄取器，基于 Impacket</li>
+<li><a href="https://github.com/SpiderLabs/Responder" target="_blank" rel="noopener">https://github.com/SpiderLabs/Responder</a> Responder是一个 LLMNR、NBT-NS 和 MDNS 中毒器，内置支持 NTLMv1/NTLMv2/LMv2、扩展安全 NTLMSSP 和基本 HTTP 身份验证的 HTTP/SMB/MSSQL/FTP/LDAP 流氓身份验证服务器 ✨</li>
+<li><a href="https://github.com/fireeye/SessionGopher" target="_blank" rel="noopener">https://github.com/fireeye/SessionGopher</a> SessionGopher是一个 PowerShell 工具，它使用 WMI 为 WinSCP、PuTTY、SuperPuTTY、FileZilla 和 Microsoft 远程桌面等远程访问工具提取保存的会话信息</li>
+<li><a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank" rel="noopener">https://github.com/PowerShellMafia/PowerSploit</a> PowerSploit是 Microsoft PowerShell 模块的集合，可用于在评估的所有阶段为渗透测试人员提供帮助 ✨</li>
+<li><a href="https://github.com/samratashok/nishang" target="_blank" rel="noopener">https://github.com/samratashok/nishang</a> Nishang是一个脚本和有效载荷的框架和集合，它支持使用 PowerShell 进行攻击性安全、渗透测试和红队 ✨</li>
+<li><a href="https://github.com/Kevin-Robertson/Inveigh" target="_blank" rel="noopener">https://github.com/Kevin-Robertson/Inveigh</a> Inveigh是 Windows PowerShell LLMNR/mDNS/NBNS 欺骗者/中间人工具</li>
+<li><a href="https://github.com/NetSPI/PowerUpSQL" target="_blank" rel="noopener">https://github.com/NetSPI/PowerUpSQL</a> PowerUpSQL一个用于攻击 SQL Server 的 PowerShell 工具包 ✨</li>
+<li><a href="https://github.com/dafthack/MailSniper" target="_blank" rel="noopener">https://github.com/dafthack/MailSniper</a> MailSniper是一种渗透测试工具，用于在 Microsoft Exchange 环境中通过电子邮件搜索特定术语（密码、内部信息、网络架构信息等）</li>
+<li><a href="https://github.com/dafthack/DomainPasswordSpray" target="_blank" rel="noopener">https://github.com/dafthack/DomainPasswordSpray</a> DomainPasswordSpray是一种用 PowerShell 编写的工具，用于对域用户执行密码喷射攻击</li>
+<li><a href="https://github.com/ChrisTruncer/WMIOps" target="_blank" rel="noopener">https://github.com/ChrisTruncer/WMIOps</a> WMIOps是一个 powershell 脚本，它使用 WMI 在 Windows 环境中的本地或远程主机上执行各种操作</li>
+<li><a href="https://github.com/gentilkiwi/mimikatz" target="_blank" rel="noopener">https://github.com/gentilkiwi/mimikatz</a> Mimikatz是一个开源实用程序，可用于查看来自 Windows lsass 的凭据信息 ✨</li>
+<li><a href="https://github.com/AlessandroZ/LaZagne" target="_blank" rel="noopener">https://github.com/AlessandroZ/LaZagne</a> LaZagne项目是一个跨平台开源应用程序，用于检索存储在本地计算机上的大量密码 ✨</li>
+<li><a href="https://github.com/huntergregal/mimipenguin" target="_blank" rel="noopener">https://github.com/huntergregal/mimipenguin</a> mimipenguin是一个转储当前 linux 桌面用户的登录密码的工具 ✨</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> PsExec是一种轻量级的 telnet 替代品，可让您在其他系统上执行进程，并与控制台应用程序完全交互，而无需手动安装客户端软件 ✨</li>
+<li><a href="https://github.com/HarmJ0y/KeeThief" target="_blank" rel="noopener">https://github.com/HarmJ0y/KeeThief</a> KeeThief允许从内存中提取 KeePass 2.X 密钥材料，以及 KeePass 触发系统的后门和枚举</li>
+<li><a href="https://github.com/eladshamir/Internal-Monologue" target="_blank" rel="noopener">https://github.com/eladshamir/Internal-Monologue</a> 内部独白攻击在不接触 LSASS 的情况下检索 NTLM 哈希</li>
+<li><a href="https://github.com/CoreSecurity/impacket" target="_blank" rel="noopener">https://github.com/CoreSecurity/impacket</a> Impacket是一组用于处理网络协议的 Python 类 ✨</li>
+<li><a href="https://github.com/DanMcInerney/icebreaker" target="_blank" rel="noopener">https://github.com/DanMcInerney/icebreaker</a> 如果您在内部网络上但在 AD 环境之外，icebreaker会获取纯文本 Active Directory 凭据</li>
+<li><a href="https://github.com/api0cradle/LOLBAS" target="_blank" rel="noopener">https://github.com/api0cradle/LOLBAS</a> 生活在陆地上的二进制文件和脚本（现在还有库）这些列表的目标是记录每个二进制文件、脚本和库，这些二进制文件、脚本和库可用于其他目的，而不是它们的设计目的</li>
+<li><a href="https://github.com/AlsidOfficial/WSUSpendu" target="_blank" rel="noopener">https://github.com/AlsidOfficial/WSUSpendu</a> WSUSpendu用于受感染的 WSUS 服务器，以将危害扩展到客户端</li>
+<li><a href="https://github.com/infobyte/evilgrade" target="_blank" rel="noopener">https://github.com/infobyte/evilgrade</a> Evilgrade是一个模块化框架，它允许用户通过注入虚假更新来利用糟糕的升级实现 ✨</li>
+<li><a href="https://github.com/NytroRST/NetRipper" target="_blank" rel="noopener">https://github.com/NytroRST/NetRipper</a> NetRipper是一个针对 Windows 系统的后期开发工具，它使用 API 挂钩来拦截来自低权限用户的网络流量和加密相关功能，能够在加密之前/解密之后捕获纯文本流量和加密流量</li>
+<li><a href="https://github.com/codewhitesec/LethalHTA" target="_blank" rel="noopener">https://github.com/codewhitesec/LethalHTA</a> 使用 DCOM 和 HTA 的LethalHTA横向运动技术</li>
+<li><a href="https://github.com/nettitude/Invoke-PowerThIEf" target="_blank" rel="noopener">https://github.com/nettitude/Invoke-PowerThIEf</a> Invoke-PowerThIEf是一个 Internet Explorer 后利用库</li>
+<li><a href="https://github.com/nccgroup/redsnarf" target="_blank" rel="noopener">https://github.com/nccgroup/redsnarf</a> RedSnarf是一个用于 Windows 环境的渗透测试/红队工具</li>
+<li><a href="https://github.com/JavelinNetworks/HoneypotBuster" target="_blank" rel="noopener">https://github.com/JavelinNetworks/HoneypotBuster</a> HoneypotBuster Microsoft PowerShell 模块专为红队设计，可用于在网络或主机上查找蜜罐和蜜币</li>
+<li><a href="https://www.poweradmin.com/paexec/" target="_blank" rel="noopener">https://www.poweradmin.com/paexec/</a> PAExec允许您在远程 Windows 计算机上启动 Windows 程序，而无需先在远程计算机上安装软件 ✨</li>
+</ul>
+<h3 id="5-数据渗漏"><a href="#5-数据渗漏" class="headerlink" title="5. 数据渗漏"></a>5. 数据渗漏</h3><ul>
+<li><a href="https://github.com/TryCatchHCF/Cloakify" target="_blank" rel="noopener">https://github.com/TryCatchHCF/Cloakify</a> CloakifyFactory和 Cloakify 工具集 - 数据渗透和渗透；规避 DLP/MLS 设备；分析师的社会工程学；击败数据白名单控制；逃避 AV 检测 ✨</li>
+<li><a href="https://github.com/sensepost/DET" target="_blank" rel="noopener">https://github.com/sensepost/DET</a> DET（按原样提供）是同时使用单个或多个通道执行数据渗漏的概念证明</li>
+<li><a href="https://github.com/Arno0x/DNSExfiltrator" target="_blank" rel="noopener">https://github.com/Arno0x/DNSExfiltrator</a> DNSExfiltrator允许通过 DNS 请求隐蔽通道传输（提取）文件</li>
+<li><a href="https://github.com/ytisf/PyExfil" target="_blank" rel="noopener">https://github.com/ytisf/PyExfil</a> PyExfil一个用于数据泄露的 Python 包 ✨</li>
+<li><a href="https://github.com/ChrisTruncer/Egress-Assess" target="_blank" rel="noopener">https://github.com/ChrisTruncer/Egress-Assess</a> Egress-Assess是一种用于测试出口数据检测能力的工具</li>
+<li><a href="https://github.com/Viralmaniar/Powershell-RAT" target="_blank" rel="noopener">https://github.com/Viralmaniar/Powershell-RAT</a> 基于Powershell RAT python 的后门，它使用 Gmail 将数据作为电子邮件附件泄露</li>
+</ul>
+<h3 id="6-痕迹清除"><a href="#6-痕迹清除" class="headerlink" title="6. 痕迹清除"></a>6. 痕迹清除</h3><ul>
+<li><a href="https://github.com/Rizer0/Log-killer" target="_blank" rel="noopener">https://github.com/Rizer0/Log-killer</a> linux/windows日志清除 ✨</li>
+<li><a href="https://github.com/hlldz/Phant0m" target="_blank" rel="noopener">https://github.com/hlldz/Phant0m</a>  Windows事件日志清除</li>
+</ul>
+<h2 id="0x04-杂项辅助"><a href="#0x04-杂项辅助" class="headerlink" title="0x04    杂项辅助"></a>0x04    杂项辅助</h2><h3 id="1-扩展插件"><a href="#1-扩展插件" class="headerlink" title="1. 扩展插件"></a>1. 扩展插件</h3><ul>
+<li><a href="https://github.com/LasCC/Hack-Tools" target="_blank" rel="noopener">https://github.com/LasCC/Hack-Tools</a>  Hack-Tools 适用于红队的浏览器扩展插件 ✨</li>
+<li><a href="https://github.com/Mr-xn/BurpSuite-collections" target="_blank" rel="noopener">https://github.com/Mr-xn/BurpSuite-collections</a>  有关burpsuite的插件(非商店),文章以及使用技巧的收集</li>
+<li><a href="https://github.com/pandasec888/taowu-cobalt-strike" target="_blank" rel="noopener">https://github.com/pandasec888/taowu-cobalt-strike</a>  梼杌 cobalt strike3.x与cobalt strike4.x的插件</li>
+<li><a href="https://github.com/pmiaowu/BurpShiroPassiveScan" target="_blank" rel="noopener">https://github.com/pmiaowu/BurpShiroPassiveScan</a>  一款基于BurpSuite的被动式shiro检测插件</li>
+<li><a href="https://github.com/FelisCatus/SwitchyOmega" target="_blank" rel="noopener">https://github.com/FelisCatus/SwitchyOmega</a>  SwitchyOmega 浏览器的代理插件 ✨</li>
+<li><a href="https://github.com/pmiaowu/BurpFastJsonScan" target="_blank" rel="noopener">https://github.com/pmiaowu/BurpFastJsonScan</a>  一款基于BurpSuite的被动式FastJson检测插件</li>
+<li><a href="https://github.com/gh0stkey/HaE" target="_blank" rel="noopener">https://github.com/gh0stkey/HaE</a>  HaE 请求高亮标记与信息提取的辅助型 BurpSuite 插件</li>
+<li><a href="https://github.com/z1un/Z1-AggressorScripts" target="_blank" rel="noopener">https://github.com/z1un/Z1-AggressorScripts</a>  Z1-AggressorScripts 适用于Cobalt Strike 3.x &amp; 4.x 的插件</li>
+<li><a href="https://github.com/bit4woo/domain_hunter_pro" target="_blank" rel="noopener">https://github.com/bit4woo/domain_hunter_pro</a>  domain_hunter_pro 一个资产管理类的Burp插件</li>
+<li><a href="https://github.com/BishopFox/GadgetProbe" target="_blank" rel="noopener">https://github.com/BishopFox/GadgetProbe</a>  GadgetProbe Burp插件 用来爆破远程类查找Java反序列化</li>
+<li><a href="https://github.com/filedescriptor/untrusted-types" target="_blank" rel="noopener">https://github.com/filedescriptor/untrusted-types</a>  Chrome插件.使用DevTools查找DOM XSS</li>
+<li><a href="https://github.com/threatexpress/random_c2_profile" target="_blank" rel="noopener">https://github.com/threatexpress/random_c2_profile</a>  Cobalt Strike随机C2配置文件生成器</li>
+<li><a href="https://github.com/kingz40o/Aggressor_dingding" target="_blank" rel="noopener">https://github.com/kingz40o/Aggressor_dingding</a>  Cobalt Strike 上线提醒</li>
+<li><a href="https://github.com/fofapro/fofa_view" target="_blank" rel="noopener">https://github.com/fofapro/fofa_view</a>  FOFA Pro view 是一款FOFA Pro 资产展示浏览器插件</li>
+</ul>
+<h3 id="2-信息收集脚本"><a href="#2-信息收集脚本" class="headerlink" title="2. 信息收集脚本"></a>2. 信息收集脚本</h3><ul>
+<li><a href="https://github.com/FuzzySecurity/PowerShell-Suite" target="_blank" rel="noopener">https://github.com/FuzzySecurity/PowerShell-Suite</a></li>
+<li><a href="https://github.com/Mr-Un1k0d3r/RedTeamPowershellScripts" target="_blank" rel="noopener">https://github.com/Mr-Un1k0d3r/RedTeamPowershellScripts</a></li>
+<li><a href="https://github.com/threatexpress/red-team-scripts" target="_blank" rel="noopener">https://github.com/threatexpress/red-team-scripts</a></li>
+<li><a href="https://github.com/SadProcessor/SomeStuff" target="_blank" rel="noopener">https://github.com/SadProcessor/SomeStuff</a></li>
+<li><a href="https://github.com/rvrsh3ll/Misc-Powershell-Scripts" target="_blank" rel="noopener">https://github.com/rvrsh3ll/Misc-Powershell-Scripts</a></li>
+<li><a href="https://github.com/enigma0x3/Misc-PowerShell-Stuff" target="_blank" rel="noopener">https://github.com/enigma0x3/Misc-PowerShell-Stuff</a></li>
+<li><a href="https://github.com/ChrisTruncer/PenTestScripts" target="_blank" rel="noopener">https://github.com/ChrisTruncer/PenTestScripts</a></li>
+<li><a href="https://github.com/bluscreenofjeff/Scripts" target="_blank" rel="noopener">https://github.com/bluscreenofjeff/Scripts</a></li>
+<li><a href="https://github.com/xorrior/RandomPS-Scripts" target="_blank" rel="noopener">https://github.com/xorrior/RandomPS-Scripts</a></li>
+<li><a href="https://github.com/xorrior/Random-CSharpTools" target="_blank" rel="noopener">https://github.com/xorrior/Random-CSharpTools</a></li>
+<li><a href="https://github.com/leechristensen/Random" target="_blank" rel="noopener">https://github.com/leechristensen/Random</a></li>
+</ul>
+<h3 id="3-Aggressor-Scripts"><a href="#3-Aggressor-Scripts" class="headerlink" title="3. Aggressor Scripts"></a>3. Aggressor Scripts</h3><ul>
+<li><a href="https://github.com/invokethreatguy/AggressorCollection" target="_blank" rel="noopener">https://github.com/invokethreatguy/AggressorCollection</a></li>
+<li><a href="https://github.com/secgroundzero/CS-Aggressor-Scripts" target="_blank" rel="noopener">https://github.com/secgroundzero/CS-Aggressor-Scripts</a></li>
+<li><a href="https://github.com/Und3rf10w/Aggressor-scripts" target="_blank" rel="noopener">https://github.com/Und3rf10w/Aggressor-scripts</a></li>
+<li><a href="https://github.com/harleyQu1nn/AggressorScripts" target="_blank" rel="noopener">https://github.com/harleyQu1nn/AggressorScripts</a> ✨</li>
+<li><a href="https://github.com/rasta-mouse/Aggressor-Script" target="_blank" rel="noopener">https://github.com/rasta-mouse/Aggressor-Script</a></li>
+<li><a href="https://github.com/RhinoSecurityLabs/Aggressor-Scripts" target="_blank" rel="noopener">https://github.com/RhinoSecurityLabs/Aggressor-Scripts</a></li>
+<li><a href="https://github.com/bluscreenofjeff/AggressorScripts" target="_blank" rel="noopener">https://github.com/bluscreenofjeff/AggressorScripts</a> ✨</li>
+<li><a href="https://github.com/001SPARTaN/aggressor_scripts" target="_blank" rel="noopener">https://github.com/001SPARTaN/aggressor_scripts</a></li>
+<li><a href="https://github.com/360-A-Team/CobaltStrike-Toolset" target="_blank" rel="noopener">https://github.com/360-A-Team/CobaltStrike-Toolset</a></li>
+<li><a href="https://github.com/FortyNorthSecurity/AggressorAssessor" target="_blank" rel="noopener">https://github.com/FortyNorthSecurity/AggressorAssessor</a></li>
+<li><a href="https://github.com/ramen0x3f/AggressorScripts" target="_blank" rel="noopener">https://github.com/ramen0x3f/AggressorScripts</a></li>
+</ul>
+<h3 id="4-日志聚合"><a href="#4-日志聚合" class="headerlink" title="4. 日志聚合"></a>4. 日志聚合</h3><ul>
+<li><a href="https://github.com/outflanknl/RedELK/" target="_blank" rel="noopener">https://github.com/outflanknl/RedELK/</a> RedELK Red Team 的 SIEM - 易于部署的 Red Team 工具，用于跟踪和警告 Blue Team 活动以及更好的长期运营可用性 ✨</li>
+<li><a href="https://github.com/vysec/CobaltSplunk" target="_blank" rel="noopener">https://github.com/vysec/CobaltSplunk</a> 用于 CobaltStrike 日志的CobaltSplunk Splunk 仪表板</li>
+<li><a href="https://github.com/ztgrace/red_team_telemetry" target="_blank" rel="noopener">https://github.com/ztgrace/red_team_telemetry</a> 红队遥测一组脚本和配置，用于启用红队基础设施的集中日志记录</li>
+<li><a href="https://github.com/SecurityRiskAdvisors/RedTeamSIEM" target="_blank" rel="noopener">https://github.com/SecurityRiskAdvisors/RedTeamSIEM</a> Elastic for Red Teaming使用 Elastic 配置 Red Team SIEM 的资源存储库</li>
+<li><a href="https://github.com/GhostManager/Ghostwriter" target="_blank" rel="noopener">https://github.com/GhostManager/Ghostwriter</a> Ghostwriter是一个用 Python 3.7 编写的 Django 项目，旨在供一组操作员使用</li>
+</ul>
+<h3 id="5-对抗模拟"><a href="#5-对抗模拟" class="headerlink" title="5. 对抗模拟"></a>5. 对抗模拟</h3><ul>
+<li><a href="https://github.com/mitre/caldera" target="_blank" rel="noopener">https://github.com/mitre/caldera</a> MITRE CALDERA - 一种自动对手仿真系统，可在 Windows 企业网络中执行妥协后的对抗行为 ✨</li>
+<li><a href="https://github.com/NextronSystems/APTSimulator" target="_blank" rel="noopener">https://github.com/NextronSystems/APTSimulator</a> APTSimulator - 一个 Windows 批处理脚本，它使用一组工具和输出文件使系统看起来好像受到了威胁 ✨</li>
+<li><a href="https://github.com/redcanaryco/atomic-red-team" target="_blank" rel="noopener">https://github.com/redcanaryco/atomic-red-team</a> Atomic Red Team - 映射到 Miter ATT&amp;CK 框架的小型且高度便携的检测测试 ✨</li>
+<li><a href="https://github.com/alphasoc/flightsim" target="_blank" rel="noopener">https://github.com/alphasoc/flightsim</a> Network Flight Simulator -flightsim 是一种轻量级实用程序，用于生成恶意网络流量并帮助安全团队评估安全控制和网络可见性</li>
+<li><a href="https://github.com/uber-common/metta" target="_blank" rel="noopener">https://github.com/uber-common/metta</a> Metta - 进行对抗性模拟的安全准备工具</li>
+<li><a href="https://github.com/endgameinc/RTA" target="_blank" rel="noopener">https://github.com/endgameinc/RTA</a> 红队自动化 (RTA) - RTA 提供了一个脚本框架，旨在允许蓝队测试他们对恶意交易的检测能力，模仿 MITRE ATT&amp;CK</li>
+</ul>
+<h3 id="6-无线网络"><a href="#6-无线网络" class="headerlink" title="6. 无线网络"></a>6. 无线网络</h3><ul>
+<li><a href="https://github.com/wifiphisher/wifiphisher" target="_blank" rel="noopener">https://github.com/wifiphisher/wifiphisher</a> Wifiphisher是一种安全工具，它执行 Wi-Fi 自动关联攻击以强制无线客户端在不知不觉中连接到攻击者控制的接入点 ✨</li>
+<li><a href="https://github.com/sensepost/mana" target="_blank" rel="noopener">https://github.com/sensepost/mana</a> 用于 wifi 流氓 AP 攻击和中间人的mana工具包</li>
+</ul>
+<h3 id="7-物理渗透"><a href="#7-物理渗透" class="headerlink" title="7. 物理渗透"></a>7. 物理渗透</h3><ul>
+<li><a href="https://github.com/samyk/magspoof" target="_blank" rel="noopener">https://github.com/samyk/magspoof</a> magspoof一种便携式设备，可以“无线”欺骗/模拟任何磁条、信用卡或酒店卡，即使在标准磁条（非 NFC/RFID）阅读器上也是如此 ✨</li>
+<li><a href="https://github.com/secgroundzero/warberry" target="_blank" rel="noopener">https://github.com/secgroundzero/warberry</a> WarBerryPi 的构建目的是在红队场景中用作硬件植入物，在这种场景中，我们希望在尽可能隐蔽的情况下在短时间内获取尽可能多的信息</li>
+<li><a href="https://github.com/mame82/P4wnP1" target="_blank" rel="noopener">https://github.com/mame82/P4wnP1</a> P4wnP1是一个高度可定制的 USB 攻击平台，基于低成本的 Raspberry Pi Zero 或 Raspberry Pi Zero W（HID 后门需要） ✨</li>
+<li><a href="https://github.com/ebursztein/malusb" target="_blank" rel="noopener">https://github.com/ebursztein/malusb</a> 用于Teensy 的malusb HID 欺骗多操作系统有效负载</li>
+<li><a href="https://github.com/samyk/poisontap" target="_blank" rel="noopener">https://github.com/samyk/poisontap</a> 毒攻通过 USB 利用锁定/密码保护的计算机，丢弃基于 WebSocket 的持久后门，暴露内部路由器，并使用 Raspberry Pi Zero 和 Node.js 虹吸 cookie ✨</li>
+<li><a href="https://github.com/whid-injector/WHID" target="_blank" rel="noopener">https://github.com/whid-injector/WHID</a> WHID WiFi HID 注射器 - 类固醇上的 USB Rubberducky / BadUSB ✨</li>
+<li><a href="https://github.com/nccgroup/phantap" target="_blank" rel="noopener">https://github.com/nccgroup/phantap</a> PhanTap是一种针对红队的“隐形”网络分流器</li>
+</ul>
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
+<li><a href="https://attack.mitre.org/software/" target="_blank" rel="noopener">https://attack.mitre.org/software/</a></li>
+<li><a href="https://github.com/infosecn1nja/Red-Teaming-Toolkit" target="_blank" rel="noopener">https://github.com/infosecn1nja/Red-Teaming-Toolkit</a></li>
+<li><a href="https://github.com/toolswatch/blackhat-arsenal-tools" target="_blank" rel="noopener">https://github.com/toolswatch/blackhat-arsenal-tools</a></li>
+<li><a href="https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki" target="_blank" rel="noopener">https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki</a></li>
+<li><a href="http://www.osint-labs.org/apt/" target="_blank" rel="noopener">http://www.osint-labs.org/apt/</a></li>
+<li><a href="https://github.com/yeyintminthuhtut/Awesome-Red-Teaming" target="_blank" rel="noopener">https://github.com/yeyintminthuhtut/Awesome-Red-Teaming</a></li>
+<li><a href="https://github.com/r0eXpeR/RedTeamAttack" target="_blank" rel="noopener">https://github.com/r0eXpeR/RedTeamAttack</a></li>
+<li><a href="https://github.com/Al1ex/Red-Team" target="_blank" rel="noopener">https://github.com/Al1ex/Red-Team</a></li>
+<li><a href="https://websec.readthedocs.io/zh/latest/tools/index.html" target="_blank" rel="noopener">https://websec.readthedocs.io/zh/latest/tools/index.html</a></li>
+<li><a href="https://github.com/Snowming04/The-Hacker-Playbook-3-Translation" target="_blank" rel="noopener">https://github.com/Snowming04/The-Hacker-Playbook-3-Translation</a></li>
+<li><a href="https://www.t00ls.net/pytools.html" target="_blank" rel="noopener">https://www.t00ls.net/pytools.html</a></li>
+<li><a href="https://github.com/alphaSeclab/awesome-rat" target="_blank" rel="noopener">https://github.com/alphaSeclab/awesome-rat</a></li>
+<li><a href="https://github.com/TideSec/BypassAntiVirus" target="_blank" rel="noopener">https://github.com/TideSec/BypassAntiVirus</a></li>
+<li><a href="https://github.com/tennc/webshell" target="_blank" rel="noopener">https://github.com/tennc/webshell</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Red-Team/" rel="tag"><i class="fa fa-tag"></i>
+
+ Red Team</a>
+          
+            <a href="/tags/Tookits/" rel="tag"><i class="fa fa-tag"></i>
+
+ Tookits</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/33890/" rel="next" title="红队视角之攻击姿势研究">
+                <i class="fa fa-chevron-left"></i> 红队视角之攻击姿势研究
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/hexo.png" alt="L0n9">
+            
+              <p class="site-author-name" itemprop="name">L0n9</p>
+              <p class="site-description motion-element" itemprop="description">問道遠兮，求索未止...</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/L0n9" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/_L0n9_" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-核心工具"><span class="nav-text">0x00 核心工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Metasploit"><span class="nav-text">Metasploit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CobaltStrike"><span class="nav-text">CobaltStrike</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Empire"><span class="nav-text">Empire</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Burpsuite"><span class="nav-text">Burpsuite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Recommend"><span class="nav-text">Recommend</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-目标侦查"><span class="nav-text">0x01    目标侦查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#侦查框架"><span class="nav-text">侦查框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-域名信息"><span class="nav-text">1. 域名信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Whois信息"><span class="nav-text">a. Whois信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-子域名发现"><span class="nav-text">b. 子域名发现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-域名侦查"><span class="nav-text">c. 域名侦查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-备案信息"><span class="nav-text">d. 备案信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-CDN验证"><span class="nav-text">e. CDN验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-IP发现"><span class="nav-text">2. IP发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-互联网信息收集"><span class="nav-text">3. 互联网信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Google-Hacking"><span class="nav-text">a. Google Hacking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-资产测绘"><span class="nav-text">b. 资产测绘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-Github"><span class="nav-text">c. Github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-邮箱"><span class="nav-text">d. 邮箱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-网盘搜索"><span class="nav-text">e. 网盘搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-云服务信息"><span class="nav-text">f. 云服务信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-服务器信息收集"><span class="nav-text">4. 服务器信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-端口扫描"><span class="nav-text">a. 端口扫描</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-网站信息收集"><span class="nav-text">5. 网站信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-指纹识别"><span class="nav-text">a. 指纹识别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-网络目录扫描"><span class="nav-text">b. 网络目录扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-WAF识别"><span class="nav-text">c. WAF识别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-敏感信息"><span class="nav-text">6. 敏感信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Git-SVN源码泄露"><span class="nav-text">a. Git/SVN源码泄露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-文档元数据"><span class="nav-text">b. 文档元数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-CI信息泄露"><span class="nav-text">c. CI信息泄露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-密码信息"><span class="nav-text">d. 密码信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-社交信息"><span class="nav-text">6. 社交信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-渗透攻击"><span class="nav-text">0x02    渗透攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-漏洞挖掘"><span class="nav-text">1. 漏洞挖掘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-web应用扫描器"><span class="nav-text">1. web应用扫描器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-系统服务扫描器"><span class="nav-text">b. 系统服务扫描器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-通用漏洞扫描器"><span class="nav-text">c. 通用漏洞扫描器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-武器化"><span class="nav-text">2. 武器化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-防御绕过"><span class="nav-text">3. 防御绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-键盘记录器"><span class="nav-text">a. 键盘记录器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-payload混淆"><span class="nav-text">b. payload混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-沙盒绕过免杀"><span class="nav-text">c. 沙盒绕过免杀</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-应用白名单绕过"><span class="nav-text">d. 应用白名单绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-Code-Caves"><span class="nav-text">e. Code Caves</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-powershell混淆"><span class="nav-text">f. powershell混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#g-NoPowerShell"><span class="nav-text">g. NoPowerShell</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-投递利用"><span class="nav-text">4. 投递利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-载荷投递"><span class="nav-text">a. 载荷投递</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络钓鱼"><span class="nav-text">网络钓鱼</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#水坑攻击"><span class="nav-text">水坑攻击</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Web漏洞利用"><span class="nav-text">b. Web漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本工具"><span class="nav-text">基本工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#XSS利用"><span class="nav-text">XSS利用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注入攻击"><span class="nav-text">注入攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#反序列化攻击"><span class="nav-text">反序列化攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模版注入"><span class="nav-text">模版注入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SSRF"><span class="nav-text">SSRF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#XXE"><span class="nav-text">XXE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件包含漏洞"><span class="nav-text">文件包含漏洞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令注入"><span class="nav-text">命令注入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CMS"><span class="nav-text">CMS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-系统-协议漏洞利用"><span class="nav-text">c. 系统/协议漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#struts"><span class="nav-text">struts</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shiro"><span class="nav-text">shiro</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#fastjson"><span class="nav-text">fastjson</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JDNI"><span class="nav-text">JDNI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JWT"><span class="nav-text">JWT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间人攻击"><span class="nav-text">中间人攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DDoS"><span class="nav-text">DDoS</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-后渗透"><span class="nav-text">0x03    后渗透</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-权限提升"><span class="nav-text">1. 权限提升</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Linux提权"><span class="nav-text">a. Linux提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Windows提权"><span class="nav-text">b. Windows提权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-权限维持"><span class="nav-text">2. 权限维持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-命令与控制"><span class="nav-text">3. 命令与控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#综合工具"><span class="nav-text">综合工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#a-webshell管理"><span class="nav-text">a. webshell管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-反弹shell"><span class="nav-text">b. 反弹shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-代理转发"><span class="nav-text">c. 代理转发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-远控工具"><span class="nav-text">d. 远控工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-横向移动"><span class="nav-text">4. 横向移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-数据渗漏"><span class="nav-text">5. 数据渗漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-痕迹清除"><span class="nav-text">6. 痕迹清除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-杂项辅助"><span class="nav-text">0x04    杂项辅助</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-扩展插件"><span class="nav-text">1. 扩展插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-信息收集脚本"><span class="nav-text">2. 信息收集脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Aggressor-Scripts"><span class="nav-text">3. Aggressor Scripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-日志聚合"><span class="nav-text">4. 日志聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-对抗模拟"><span class="nav-text">5. 对抗模拟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-无线网络"><span class="nav-text">6. 无线网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-物理渗透"><span class="nav-text">7. 物理渗透</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-参考资源"><span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9</span>
+
+  
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
