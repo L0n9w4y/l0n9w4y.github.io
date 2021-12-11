@@ -1,4 +1,4 @@
-# https://l0n9.cc/
+# https://l0n9w4y.cc/
 It is my personal website, focusing on cyber security...
 
 - Threat detection
