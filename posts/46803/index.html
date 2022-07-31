@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Nmap,NSE,">
+  <meta name="keywords" content="Tookit,Nmap,Initial Access,">
 
 
 
@@ -86,13 +86,13 @@
 
 
 
-<meta name="description" content="本文总结端口扫描中Nmap的一些进阶用法及实用技巧...">
-<meta name="keywords" content="Nmap,NSE">
+<meta name="description" content="Nmap扫描原理、脚本引擎介绍及实战指南...">
+<meta name="keywords" content="Tookit,Nmap,Initial Access">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Nmap进阶指南">
+<meta property="og:title" content="Nmap扫描指南">
 <meta property="og:url" content="https://l0n9w4y.cc/posts/46803/index.html">
 <meta property="og:site_name" content="L0n9w4y">
-<meta property="og:description" content="本文总结端口扫描中Nmap的一些进阶用法及实用技巧...">
+<meta property="og:description" content="Nmap扫描原理、脚本引擎介绍及实战指南...">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/tcp_head.png">
 <meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/1_open.png">
@@ -101,10 +101,10 @@
 <meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_closed.png">
 <meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_unfilteredpng.png">
 <meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_filtered.png">
-<meta property="og:updated_time" content="2021-10-10T05:39:53.157Z">
+<meta property="og:updated_time" content="2022-07-31T12:02:21.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nmap进阶指南">
-<meta name="twitter:description" content="本文总结端口扫描中Nmap的一些进阶用法及实用技巧...">
+<meta name="twitter:title" content="Nmap扫描指南">
+<meta name="twitter:description" content="Nmap扫描原理、脚本引擎介绍及实战指南...">
 <meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/tcp_head.png">
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Nmap进阶指南 | L0n9w4y</title>
+  <title>Nmap扫描指南 | L0n9w4y</title>
   
 
 
@@ -337,7 +337,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Nmap进阶指南</h1>
+          <h1 class="post-title" itemprop="name headline">Nmap扫描指南</h1>
         
 
         <div class="post-meta">
@@ -372,8 +372,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/渗透测试/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
+                  <a href="/categories/红队渗透/" itemprop="url" rel="index">
+                    <span itemprop="name">红队渗透</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/红队渗透/信息收集/" itemprop="url" rel="index">
+                    <span itemprop="name">信息收集</span>
                   </a>
                 </span>
 
@@ -409,7 +420,7 @@
       
 
       
-        <center>本文总结端口扫描中Nmap的一些进阶用法及实用技巧...</center>
+        <center>Nmap扫描原理、脚本引擎介绍及实战指南...</center>
 
 <a id="more"></a>
 
@@ -1391,13 +1402,17 @@
       
         <div class="post-tags">
           
+            <a href="/tags/Tookit/" rel="tag"><i class="fa fa-tag"></i>
+
+ Tookit</a>
+          
             <a href="/tags/Nmap/" rel="tag"><i class="fa fa-tag"></i>
 
  Nmap</a>
           
-            <a href="/tags/NSE/" rel="tag"><i class="fa fa-tag"></i>
+            <a href="/tags/Initial-Access/" rel="tag"><i class="fa fa-tag"></i>
 
- NSE</a>
+ Initial Access</a>
           
         </div>
       
@@ -1497,7 +1512,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1508,7 +1523,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1519,7 +1534,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1588,7 +1603,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

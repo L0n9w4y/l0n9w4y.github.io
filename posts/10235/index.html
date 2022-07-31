@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="从威胁及漏洞视角,弱口令漏洞影响广泛、利用成本低而效果奇佳,本文研究常见弱口令漏洞类型及爆破利用方式...">
+<meta name="description" content="本文总结各类弱口令漏洞类型及利用方式...">
 <meta name="keywords" content="Vulner,Brute-force,Init Access">
 <meta property="og:type" content="article">
-<meta property="og:title" content="弱口令及爆破技术浅析">
+<meta property="og:title" content="弱口令爆破探究">
 <meta property="og:url" content="https://l0n9w4y.cc/posts/10235/index.html">
 <meta property="og:site_name" content="L0n9w4y">
-<meta property="og:description" content="从威胁及漏洞视角,弱口令漏洞影响广泛、利用成本低而效果奇佳,本文研究常见弱口令漏洞类型及爆破利用方式...">
+<meta property="og:description" content="本文总结各类弱口令漏洞类型及利用方式...">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-10-10T05:42:00.794Z">
+<meta property="og:updated_time" content="2022-07-31T12:09:11.773Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="弱口令及爆破技术浅析">
-<meta name="twitter:description" content="从威胁及漏洞视角,弱口令漏洞影响广泛、利用成本低而效果奇佳,本文研究常见弱口令漏洞类型及爆破利用方式...">
+<meta name="twitter:title" content="弱口令爆破探究">
+<meta name="twitter:description" content="本文总结各类弱口令漏洞类型及利用方式...">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>弱口令及爆破技术浅析 | L0n9w4y</title>
+  <title>弱口令爆破探究 | L0n9w4y</title>
   
 
 
@@ -329,7 +329,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">弱口令及爆破技术浅析</h1>
+          <h1 class="post-title" itemprop="name headline">弱口令爆破探究</h1>
         
 
         <div class="post-meta">
@@ -401,290 +401,12 @@
       
 
       
-        <center>从威胁及漏洞视角,弱口令漏洞影响广泛、利用成本低而效果奇佳,本文研究常见弱口令漏洞类型及爆破利用方式...</center>
+        <center>本文总结各类弱口令漏洞类型及利用方式...</center>
 
 <a id="more"></a>
 
 <h2 id="0x01-攻击面"><a href="#0x01-攻击面" class="headerlink" title="0x01 攻击面"></a>0x01 攻击面</h2><p>弱口令爆破常用端口及服务总结如下：</p>
-<table>
-<thead>
-<tr>
-<th align="center">端口</th>
-<th align="center">服务</th>
-<th align="center">爆破方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">21</td>
-<td align="center">ftp/tftp/vsftpd文件传输协议</td>
-<td align="center">爆破/嗅探/溢出/后门</td>
-</tr>
-<tr>
-<td align="center">22</td>
-<td align="center">ssh远程连接</td>
-<td align="center">爆破/OpenSSH漏洞</td>
-</tr>
-<tr>
-<td align="center">23</td>
-<td align="center">Telnet远程连接</td>
-<td align="center">爆破/嗅探</td>
-</tr>
-<tr>
-<td align="center">25</td>
-<td align="center">SMTP邮件服务</td>
-<td align="center">邮件伪造</td>
-</tr>
-<tr>
-<td align="center">53</td>
-<td align="center">DNS域名解析系统</td>
-<td align="center">DNS区域传输/劫持/缓存投毒/欺骗; 利用DNS隧道技术刺透防火墙</td>
-</tr>
-<tr>
-<td align="center">67/68</td>
-<td align="center">dhcp服务</td>
-<td align="center">劫持/欺骗</td>
-</tr>
-<tr>
-<td align="center">69</td>
-<td align="center">tftp(简单文件传输协议,无认证)</td>
-<td align="center">尝试下载目标重要配置文件</td>
-</tr>
-<tr>
-<td align="center">110</td>
-<td align="center">pop3</td>
-<td align="center">爆破/嗅探</td>
-</tr>
-<tr>
-<td align="center">137/139</td>
-<td align="center">Samba服务</td>
-<td align="center">爆破/未授权访问/远程代码执行</td>
-</tr>
-<tr>
-<td align="center">143</td>
-<td align="center">Imap协议</td>
-<td align="center">爆破</td>
-</tr>
-<tr>
-<td align="center">161</td>
-<td align="center">SNMP协议</td>
-<td align="center">爆破/搜集目标内网信息</td>
-</tr>
-<tr>
-<td align="center">389</td>
-<td align="center">Ldap目录访问协议</td>
-<td align="center">注入/未授权访问/弱口令/匿名访问</td>
-</tr>
-<tr>
-<td align="center">445</td>
-<td align="center">smb</td>
-<td align="center">ms17-010/端口溢出</td>
-</tr>
-<tr>
-<td align="center">512/513/514</td>
-<td align="center">Linux Rexec服务</td>
-<td align="center">爆破/Rlogin登陆</td>
-</tr>
-<tr>
-<td align="center">873</td>
-<td align="center">Rsync服务</td>
-<td align="center">文件上传/匿名访问</td>
-</tr>
-<tr>
-<td align="center">1080</td>
-<td align="center">socket</td>
-<td align="center">爆破/内网渗透</td>
-</tr>
-<tr>
-<td align="center">1099</td>
-<td align="center">JAVA RMI</td>
-<td align="center">反序列化远程命令执行漏洞</td>
-</tr>
-<tr>
-<td align="center">1194</td>
-<td align="center">openvpn</td>
-<td align="center">获取vpn账号,进内网</td>
-</tr>
-<tr>
-<td align="center">1352</td>
-<td align="center">Lotus domino邮件服务</td>
-<td align="center">爆破/弱口令/信息泄漏</td>
-</tr>
-<tr>
-<td align="center">1433</td>
-<td align="center">mssql</td>
-<td align="center">爆破/注入攻击/提权/sa弱口令</td>
-</tr>
-<tr>
-<td align="center">1500</td>
-<td align="center">ispmanager主机控制面板</td>
-<td align="center">弱口令</td>
-</tr>
-<tr>
-<td align="center">1521</td>
-<td align="center">oracle</td>
-<td align="center">注入攻击/TNS爆破/弹shell</td>
-</tr>
-<tr>
-<td align="center">1723</td>
-<td align="center">pptp</td>
-<td align="center">爆破/获取vpn账号,进内网</td>
-</tr>
-<tr>
-<td align="center">2049</td>
-<td align="center">Nfs服务</td>
-<td align="center">配置不当</td>
-</tr>
-<tr>
-<td align="center">2082,2083</td>
-<td align="center">cpanel主机管理面板登录</td>
-<td align="center">弱口令</td>
-</tr>
-<tr>
-<td align="center">2181</td>
-<td align="center">zookeeper服务</td>
-<td align="center">未授权访问</td>
-</tr>
-<tr>
-<td align="center">2375</td>
-<td align="center">docker remote api</td>
-<td align="center">未授权访问</td>
-</tr>
-<tr>
-<td align="center">2601,2604</td>
-<td align="center">zebra路由</td>
-<td align="center">默认密码zerbra</td>
-</tr>
-<tr>
-<td align="center">3128</td>
-<td align="center">squid代理服务</td>
-<td align="center">弱口令</td>
-</tr>
-<tr>
-<td align="center">3306</td>
-<td align="center">mysql</td>
-<td align="center">爆破/注入/拒绝服务/提取</td>
-</tr>
-<tr>
-<td align="center">3389</td>
-<td align="center">Rdp远程桌面连接</td>
-<td align="center">爆破/shift后门/ms12-020</td>
-</tr>
-<tr>
-<td align="center">3690</td>
-<td align="center">svn服务</td>
-<td align="center">svn泄露/未授权访问</td>
-</tr>
-<tr>
-<td align="center">4848</td>
-<td align="center">GlassFish控制台</td>
-<td align="center">爆破/认证绕过</td>
-</tr>
-<tr>
-<td align="center">5000</td>
-<td align="center">sybase/DB2数据库</td>
-<td align="center">爆破/注入</td>
-</tr>
-<tr>
-<td align="center">5432</td>
-<td align="center">postgresql</td>
-<td align="center">爆破/注入/缓冲区溢出</td>
-</tr>
-<tr>
-<td align="center">5632</td>
-<td align="center">pcanywhere服务</td>
-<td align="center">拒绝服务/代码执行</td>
-</tr>
-<tr>
-<td align="center">5900,5901,5902</td>
-<td align="center">vnc</td>
-<td align="center">弱口令爆破</td>
-</tr>
-<tr>
-<td align="center">5984</td>
-<td align="center">CouchDB</td>
-<td align="center">未授权访问导致任意指令执行</td>
-</tr>
-<tr>
-<td align="center">6379</td>
-<td align="center">Redis数据库</td>
-<td align="center">未授权访问/爆破</td>
-</tr>
-<tr>
-<td align="center">6443</td>
-<td align="center">Kubernetes API Server</td>
-<td align="center">未授权访问</td>
-</tr>
-<tr>
-<td align="center">7001/7002</td>
-<td align="center">weblogic</td>
-<td align="center">java反序列化/控制台弱口令/控制台上传webshell/SSRF</td>
-</tr>
-<tr>
-<td align="center">80-89,443</td>
-<td align="center">http/https</td>
-<td align="center">web应用漏洞/OpenSSL心脏滴血</td>
-</tr>
-<tr>
-<td align="center">8000</td>
-<td align="center">JDWP</td>
-<td align="center">远程命令执行漏洞</td>
-</tr>
-<tr>
-<td align="center">8069</td>
-<td align="center">zabbix服务</td>
-<td align="center">远程命令执行/注入</td>
-</tr>
-<tr>
-<td align="center">8080-8089</td>
-<td align="center">Jboss/Tomcat/Jenkins/Resin/Jetty</td>
-<td align="center">控制台弱口令/反序列化/远程文件读取</td>
-</tr>
-<tr>
-<td align="center">8083/8086</td>
-<td align="center">influxDB</td>
-<td align="center">未授权访问</td>
-</tr>
-<tr>
-<td align="center">8161</td>
-<td align="center">ActiveMQ</td>
-<td align="center">弱口令/任意文件写入/反序列化</td>
-</tr>
-<tr>
-<td align="center">9000</td>
-<td align="center">fastcgi</td>
-<td align="center">远程命令执行</td>
-</tr>
-<tr>
-<td align="center">9080-9081,9090</td>
-<td align="center">Websphere控制台</td>
-<td align="center">java反序列化/弱口令</td>
-</tr>
-<tr>
-<td align="center">9200/9300</td>
-<td align="center">elasticsearch</td>
-<td align="center">未授权访问/远程代码执行</td>
-</tr>
-<tr>
-<td align="center">11211</td>
-<td align="center">memcached</td>
-<td align="center">未授权访问</td>
-</tr>
-<tr>
-<td align="center">27017/27018</td>
-<td align="center">mongodb</td>
-<td align="center">未授权访问/爆破</td>
-</tr>
-<tr>
-<td align="center">50000</td>
-<td align="center">SAP</td>
-<td align="center">远程代码执行</td>
-</tr>
-<tr>
-<td align="center">50070,50030</td>
-<td align="center">hadoop</td>
-<td align="center">默认端口未授权访问</td>
-</tr>
-</tbody></table>
+<p>端口|服务|爆破方式<br>|:—:|:—:|:—:|<br>21|ftp/tftp/vsftpd文件传输协议|爆破/嗅探/溢出/后门<br>22|ssh远程连接|爆破/OpenSSH漏洞<br>23|Telnet远程连接|爆破/嗅探<br>25|SMTP邮件服务|邮件伪造<br>53|DNS域名解析系统|DNS区域传输/劫持/缓存投毒/欺骗; 利用DNS隧道技术刺透防火墙<br>67/68|dhcp服务|劫持/欺骗<br>69|tftp(简单文件传输协议,无认证)|尝试下载目标重要配置文件<br>110|pop3|爆破/嗅探<br>137/139|Samba服务|爆破/未授权访问/远程代码执行<br>143|Imap协议|爆破<br>161|SNMP协议|爆破/搜集目标内网信息<br>389|Ldap目录访问协议|注入/未授权访问/弱口令/匿名访问<br>445|smb|ms17-010/端口溢出<br>512/513/514|Linux Rexec服务|爆破/Rlogin登陆<br>873|Rsync服务|文件上传/匿名访问<br>1080|socket|爆破/内网渗透<br>1099|JAVA RMI|反序列化远程命令执行漏洞<br>1194|openvpn|获取vpn账号,进内网<br>1352|Lotus domino邮件服务|爆破/弱口令/信息泄漏<br>1433|mssql|爆破/注入攻击/提权/sa弱口令<br>1500|ispmanager主机控制面板|弱口令<br>1521|oracle|注入攻击/TNS爆破/弹shell<br>1723|pptp|爆破/获取vpn账号,进内网<br>2049|Nfs服务|配置不当<br>2082,2083|cpanel主机管理面板登录|弱口令<br>2181|zookeeper服务|未授权访问<br>2375|docker remote api|未授权访问<br>2601,2604|zebra路由|默认密码zerbra<br>3128|squid代理服务|弱口令<br>3306|mysql|爆破/注入/拒绝服务/提取<br>3389|Rdp远程桌面连接|爆破/shift后门/ms12-020<br>3690|svn服务|svn泄露/未授权访问<br>4848|GlassFish控制台|爆破/认证绕过<br>5000|sybase/DB2数据库|爆破/注入<br>5432|postgresql|爆破/注入/缓冲区溢出<br>5632|pcanywhere服务|拒绝服务/代码执行<br>5900,5901,5902|vnc|弱口令爆破<br>5984|CouchDB|未授权访问导致任意指令执行<br>6379|Redis数据库|未授权访问/爆破<br>6443|Kubernetes API Server|未授权访问<br>7001/7002|weblogic|java反序列化/控制台弱口令/控制台上传webshell/SSRF<br>80-89,443|http/https|web应用漏洞/OpenSSL心脏滴血<br>8000|JDWP|远程命令执行漏洞<br>8069|zabbix服务|远程命令执行/注入<br>8080-8089|Jboss/Tomcat/Jenkins/Resin/Jetty|控制台弱口令/反序列化/远程文件读取<br>8083/8086|influxDB|未授权访问<br>8161|ActiveMQ|弱口令/任意文件写入/反序列化<br>9000|fastcgi|远程命令执行<br>9080-9081,9090|Websphere控制台|java反序列化/弱口令<br>9200/9300|elasticsearch|未授权访问/远程代码执行<br>11211|memcached|未授权访问<br>27017/27018|mongodb|未授权访问/爆破<br>50000|SAP|远程代码执行<br>50070,50030|hadoop|默认端口未授权访问</p>
 <p><em>Refer:</em> <a href="http://www.91ri.org/15441.html" target="_blank" rel="noopener">http://www.91ri.org/15441.html</a></p>
 <h2 id="0x02-爆破字典"><a href="#0x02-爆破字典" class="headerlink" title="0x02 爆破字典"></a>0x02 爆破字典</h2><h3 id="1-厂商初始口令"><a href="#1-厂商初始口令" class="headerlink" title="1. 厂商初始口令"></a>1. 厂商初始口令</h3><p><strong>网络安全设备</strong></p>
 <table>
@@ -1403,8 +1125,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/10024/" rel="prev" title="Linux入侵排查实战技巧">
-                Linux入侵排查实战技巧 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/10024/" rel="prev" title="Linux入侵排查基础篇">
+                Linux入侵排查基础篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1484,7 +1206,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1495,7 +1217,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1506,7 +1228,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1575,7 +1297,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
