@@ -1822,7 +1822,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #473828;
+  background: #5e3e20;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2909,10 +2909,13 @@ hr {
 .post-body p a {
   color: #0593d3;
   border-bottom: none;
+  border-bottom: 1px solid #0593d3;
 }
 .post-body p a:hover {
-  color: #0477ab;
+  color: #51c6fb;
   text-decoration: underline;
+  border-bottom: none;
+  border-bottom: 1px solid #51c6fb;
 }
 .post {
   margin-top: 60px;
