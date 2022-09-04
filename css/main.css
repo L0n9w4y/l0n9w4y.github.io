@@ -2300,7 +2300,7 @@ header.header {
   content: ') ';
 }
 .category-all-page .category-list-child {
-  padding-left: 10px;
+  padding-left: 400px;
 }
 .event-list hr {
   background: #222;
@@ -2797,7 +2797,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #b1e87a;
+  background: #cdc609;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
