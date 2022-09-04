@@ -1796,7 +1796,7 @@ header.header {
 }
 .use-motion .pagination,
 .use-motion .comments {
-  visibility: hidden;
+  opacity: 0;
 }
 .use-motion .post-header {
   visibility: hidden;
@@ -2797,7 +2797,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #54faff;
+  background: #b1e87a;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
