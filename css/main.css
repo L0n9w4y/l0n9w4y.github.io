@@ -2288,7 +2288,7 @@ header.header {
   padding: 0;
 }
 .category-all-page .category-list-item {
-  margin: 5px 10px;
+  margin: 500px 400px;
 }
 .category-all-page .category-list-count {
   color: #bbb;
@@ -2300,7 +2300,7 @@ header.header {
   content: ') ';
 }
 .category-all-page .category-list-child {
-  padding-left: 400px;
+  padding-left: 10px;
 }
 .event-list hr {
   background: #222;
@@ -2797,7 +2797,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #cdc609;
+  background: #7f5bfb;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
