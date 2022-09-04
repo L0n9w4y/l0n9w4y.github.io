@@ -2288,7 +2288,7 @@ header.header {
   padding: 0;
 }
 .category-all-page .category-list-item {
-  margin: 5px 400px;
+  margin: 5px 10px;
 }
 .category-all-page .category-list-count {
   color: #bbb;
@@ -2797,7 +2797,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #9dff30;
+  background: #f22b8f;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
