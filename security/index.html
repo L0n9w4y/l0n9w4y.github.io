@@ -1,70 +1,583 @@
-{% extends '_layout.swig' %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
-  {% block title %}{#
-  #}{% set page_title_suffix = ' | ' + config.title %}{#
 
-  #}{% if page.type === "categories" and not page.title %}{#
-    #}{{ __('title.category') + page_title_suffix }}{#
-  #}{% elif page.type === "tags" and not page.title %}{#
-    #}{{ __('title.tag') + page_title_suffix }}{#
-  #}{% else %}{#
-    #}{{ page.title + page_title_suffix }}{#
-  #}{% endif %}{#
-#}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {##################}
-    {### PAGE BLOCK ###}
-    {##################}
-    <div class="post-block page">
-      {% include '_partials/page-header.swig' %}
-      {#################}
-      {### PAGE BODY ###}
-      {#################}
-      <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if page.direction && page.direction.toLowerCase() === 'rtl' %} rtl{% endif %}">
-        {# tagcloud page support #}
-        {% if page.type === "tags" %}
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                {{ _p('counter.tag_cloud', site.tags.length) }}
-            </div>
-            <div class="tag-cloud-tags">
-              {{ tagcloud({min_font: 12, max_font: 30, amount: 300, color: true, start_color: '#ccc', end_color: '#111'}) }}
-            </div>
-          </div>
-        {% elif page.type === 'categories' %}
-          <div class="category-all-page">
-            <div class="category-all-title">
-                {{ _p('counter.categories', site.categories.length) }}
-            </div>
-            <div class="category-all">
-              {{ list_categories() }}
-            </div>
-          </div>
-        {% else %}
-          {{ page.content }}
-        {% endif %}
-      </div>
-      {#####################}
-      {### END PAGE BODY ###}
-      {#####################}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如切如磋，如琢如磨...  0x01 渗透红队1. Blog https:&#x2F;&#x2F;www.mandiant.com&#x2F;resources&#x2F;blog&#x2F; https:&#x2F;&#x2F;bluescreenofjeff.com&#x2F; https:&#x2F;&#x2F;www.hackingarticles.in&#x2F; https:&#x2F;&#x2F;adsecurity.org&#x2F; https:&#x2F;&#x2F;www.ired.team&#x2F; https:&#x2F;&#x2F;embracether">
+<meta property="og:type" content="website">
+<meta property="og:title" content="L0n9w4y">
+<meta property="og:url" content="https://l0n9w4y.cc/security/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="如切如磋，如琢如磨...  0x01 渗透红队1. Blog https:&#x2F;&#x2F;www.mandiant.com&#x2F;resources&#x2F;blog&#x2F; https:&#x2F;&#x2F;bluescreenofjeff.com&#x2F; https:&#x2F;&#x2F;www.hackingarticles.in&#x2F; https:&#x2F;&#x2F;adsecurity.org&#x2F; https:&#x2F;&#x2F;www.ired.team&#x2F; https:&#x2F;&#x2F;embracether">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-08-03T05:48:11.000Z">
+<meta property="article:modified_time" content="2022-09-03T14:51:08.512Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="入侵对抗、威胁检测、溯源响应">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/security/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/security/index.html","path":"security/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | L0n9w4y
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-    {######################}
-    {### END PAGE BLOCK ###}
-    {######################}
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%B8%97%E9%80%8F%E7%BA%A2%E9%98%9F"><span class="nav-number">1.</span> <span class="nav-text">0x01 渗透红队</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Blog"><span class="nav-number">1.1.</span> <span class="nav-text">1. Blog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Wiki"><span class="nav-number">1.2.</span> <span class="nav-text">2. Wiki</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Weapon"><span class="nav-number">1.3.</span> <span class="nav-text">3. Weapon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Framework"><span class="nav-number">1.4.</span> <span class="nav-text">4. Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Navi"><span class="nav-number">1.5.</span> <span class="nav-text">5. Navi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Magazine"><span class="nav-number">1.6.</span> <span class="nav-text">6. Magazine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B"><span class="nav-number">2.</span> <span class="nav-text">0x02 威胁检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A8%81%E8%83%81%E7%A0%94%E7%A9%B6"><span class="nav-number">2.1.</span> <span class="nav-text">1. 威胁研究</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Blog"><span class="nav-number">2.2.</span> <span class="nav-text">2. Blog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.3.</span> <span class="nav-text">3. 开源项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E4%B8%BB%E6%9C%BA%E6%A3%80%E6%B5%8B"><span class="nav-number">2.3.1.</span> <span class="nav-text">a. 主机检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B"><span class="nav-number">2.3.2.</span> <span class="nav-text">b. 流量检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-WAF-x2F-RASP"><span class="nav-number">2.3.3.</span> <span class="nav-text">c. WAF&#x2F;RASP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E6%AC%BA%E9%AA%97%E9%98%B2%E5%BE%A1"><span class="nav-number">2.3.4.</span> <span class="nav-text">d. 欺骗防御</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88"><span class="nav-number">2.4.</span> <span class="nav-text">4. 技术方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Misc"><span class="nav-number">2.5.</span> <span class="nav-text">5. Misc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6"><span class="nav-number">3.</span> <span class="nav-text">0x04 漏洞研究</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Summary"><span class="nav-number">3.1.</span> <span class="nav-text">1. Summary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Wiki-1"><span class="nav-number">3.2.</span> <span class="nav-text">2. Wiki</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Exploits"><span class="nav-number">3.3.</span> <span class="nav-text">3. Exploits</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-POCs"><span class="nav-number">3.4.</span> <span class="nav-text">4. POCs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">3.5.</span> <span class="nav-text">5. 漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E5%9F%BA%E7%A1%80%E5%B7%A5%E5%85%B7"><span class="nav-number">3.5.1.</span> <span class="nav-text">a. 基础工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-XSS%E5%88%A9%E7%94%A8"><span class="nav-number">3.5.2.</span> <span class="nav-text">b. XSS利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="nav-number">3.5.3.</span> <span class="nav-text">c. 注入攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%94%BB%E5%87%BB"><span class="nav-number">3.5.4.</span> <span class="nav-text">d. 反序列化攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5"><span class="nav-number">3.5.5.</span> <span class="nav-text">e. 模版注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-SSRF"><span class="nav-number">3.5.6.</span> <span class="nav-text">f. SSRF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#g-XXE"><span class="nav-number">3.5.7.</span> <span class="nav-text">g. XXE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#h-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">3.5.8.</span> <span class="nav-text">h. 文件包含漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#i-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5"><span class="nav-number">3.5.9.</span> <span class="nav-text">i. 命令注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#j-CMS"><span class="nav-number">3.5.10.</span> <span class="nav-text">j. CMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k-struts"><span class="nav-number">3.5.11.</span> <span class="nav-text">k. struts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#l-shiro"><span class="nav-number">3.5.12.</span> <span class="nav-text">l. shiro</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#m-fastjson"><span class="nav-number">3.5.13.</span> <span class="nav-text">m. fastjson</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n-JDNI"><span class="nav-number">3.5.14.</span> <span class="nav-text">n. JDNI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#o-JWT"><span class="nav-number">3.5.15.</span> <span class="nav-text">o. JWT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#p-%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB"><span class="nav-number">3.5.16.</span> <span class="nav-text">p. 中间人攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#q-DDoS"><span class="nav-number">3.5.17.</span> <span class="nav-text">q. DDoS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="nav-number">3.6.</span> <span class="nav-text">6. 漏洞检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Web"><span class="nav-number">3.6.1.</span> <span class="nav-text">a. Web</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Server"><span class="nav-number">3.6.2.</span> <span class="nav-text">b. Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-Asset"><span class="nav-number">3.6.3.</span> <span class="nav-text">c. Asset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-SCA"><span class="nav-number">3.6.4.</span> <span class="nav-text">d. SCA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-finger"><span class="nav-number">3.6.5.</span> <span class="nav-text">e. finger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-Misc"><span class="nav-number">3.6.6.</span> <span class="nav-text">f. Misc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E6%A0%B7%E6%9C%AC%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">0x05 样本分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Blog-1"><span class="nav-number">4.1.</span> <span class="nav-text">1. Blog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Projects"><span class="nav-number">4.2.</span> <span class="nav-text">2. Projects</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94"><span class="nav-number">5.</span> <span class="nav-text">0x06 应急响应</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-Hans"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <blockquote class="blockquote-center">如切如磋，如琢如磨...</blockquote>
+
+<h2 id="0x01-渗透红队"><a href="#0x01-渗透红队" class="headerlink" title="0x01 渗透红队"></a>0x01 渗透红队</h2><h3 id="1-Blog"><a href="#1-Blog" class="headerlink" title="1. Blog"></a>1. Blog</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.mandiant.com/resources/blog/">https://www.mandiant.com/resources/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://bluescreenofjeff.com/">https://bluescreenofjeff.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hackingarticles.in/">https://www.hackingarticles.in/</a></li>
+<li><a target="_blank" rel="noopener" href="https://adsecurity.org/">https://adsecurity.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ired.team/">https://www.ired.team/</a></li>
+<li><a target="_blank" rel="noopener" href="https://embracethered.com/blog/">https://embracethered.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://pentestlab.blog/">https://pentestlab.blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://pentestmag.com/blog/">https://pentestmag.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://securelist.com/">https://securelist.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hackingtutorials.org/">https://www.hackingtutorials.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.darknet.org.uk/">https://www.darknet.org.uk/</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.fuzzysecurity.com/index.html/">http://www.fuzzysecurity.com/index.html/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.nviso.eu/">https://blog.nviso.eu/</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.vxjump.net/index.htm/">http://www.vxjump.net/index.htm/</a></li>
+<li><a target="_blank" rel="noopener" href="https://3gstudent.github.io/">https://3gstudent.github.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://payloads.online/">https://payloads.online/</a></li>
+<li><a target="_blank" rel="noopener" href="http://avfisher.win/">http://avfisher.win/</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/blog">https://portswigger.net/blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acunetix.com/blog/">https://www.acunetix.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ired.team/">https://www.ired.team/</a></li>
+</ul>
+<h3 id="2-Wiki"><a href="#2-Wiki" class="headerlink" title="2. Wiki"></a>2. Wiki</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.apachecn.org/kali/">https://docs.apachecn.org/kali/</a></li>
+<li><a target="_blank" rel="noopener" href="https://sec.apachecn.org/#/">https://sec.apachecn.org/#/</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheet.haax.fr/resources/">https://cheatsheet.haax.fr/resources/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Micropoor/Micro8">https://github.com/Micropoor/Micro8</a></li>
+<li><a target="_blank" rel="noopener" href="http://drops.2xss.cc/?chamd5#!/">http://drops.2xss.cc/?chamd5#!/</a></li>
+<li><a target="_blank" rel="noopener" href="https://highon.coffee/blog/penetration-testing-tools-cheat-sheet/">https://highon.coffee/blog/penetration-testing-tools-cheat-sheet/</a></li>
+<li><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/web-hacking-101/content/">https://wizardforcel.gitbooks.io/web-hacking-101/content/</a></li>
+<li><a target="_blank" rel="noopener" href="https://dmcxblue.gitbook.io/red-team-notes/">https://dmcxblue.gitbook.io/red-team-notes/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.redteam101.tech/">https://www.redteam101.tech/</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheet.haax.fr/">https://cheatsheet.haax.fr/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.thehacker.recipes/">https://www.thehacker.recipes/</a></li>
+<li><a target="_blank" rel="noopener" href="https://notes.vulndev.io/notes/">https://notes.vulndev.io/notes/</a></li>
+<li><a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/">https://wbglil.gitbook.io/cobalt-strike/</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/">https://book.hacktricks.xyz/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.shentoushi.top/kali-tools/tools_zh.html">https://www.shentoushi.top/kali-tools/tools_zh.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://websec.ca/kb/sql_injection">https://websec.ca/kb/sql_injection</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.yuque.com/tidesec/redteam">https://www.yuque.com/tidesec/redteam</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/CHYbeta/Web-Security-Learning">https://github.com/CHYbeta/Web-Security-Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/neargle/my-re0-k8s-security">https://github.com/neargle/my-re0-k8s-security</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.heresecurity.wiki/about/readme">https://www.heresecurity.wiki/about/readme</a></li>
+<li><a target="_blank" rel="noopener" href="https://websec.ca/kb/sql_injection">https://websec.ca/kb/sql_injection</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security">https://developer.mozilla.org/zh-CN/docs/Web/Security</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/OWASP/CheatSheetSeries">https://github.com/OWASP/CheatSheetSeries</a></li>
+</ul>
+<h3 id="3-Weapon"><a href="#3-Weapon" class="headerlink" title="3. Weapon"></a>3. Weapon</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.cobaltstrike.com/">https://blog.cobaltstrike.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.offensive-security.com/metasploit-unleashed/">https://www.offensive-security.com/metasploit-unleashed/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zer0yu/Awesome-CobaltStrike">https://github.com/zer0yu/Awesome-CobaltStrike</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/infosecn1nja/Red-Teaming-Toolkit">https://github.com/infosecn1nja/Red-Teaming-Toolkit</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/infosecn1nja/Red-Teaming-Toolkit">https://github.com/infosecn1nja/Red-Teaming-Toolkit</a></li>
+<li><a target="_blank" rel="noopener" href="https://osint-labs.org/apt/">https://osint-labs.org/apt/</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/l0n9/sec-tools">https://gitee.com/l0n9/sec-tools</a></li>
+<li><a target="_blank" rel="noopener" href="https://attack.mitre.org/software/">https://attack.mitre.org/software/</a></li>
+</ul>
+<h3 id="4-Framework"><a href="#4-Framework" class="headerlink" title="4. Framework"></a>4. Framework</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://attack.mitre.org/">https://attack.mitre.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://capec.mitre.org/">https://capec.mitre.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre/caldera/">https://github.com/mitre/caldera/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre/cti">https://github.com/mitre/cti</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre/advmlthreatmatrix">https://github.com/mitre/advmlthreatmatrix</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/redcanaryco/atomic-red-team">https://github.com/redcanaryco/atomic-red-team</a></li>
+</ul>
+<h3 id="5-Navi"><a href="#5-Navi" class="headerlink" title="5. Navi"></a>5. Navi</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://infocon.org/">https://infocon.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://osint-labs.org/apt/">https://osint-labs.org/apt/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yeyintminthuhtut/Awesome-Red-Teaming/">https://github.com/yeyintminthuhtut/Awesome-Red-Teaming/</a></li>
+</ul>
+<h3 id="6-Magazine"><a href="#6-Magazine" class="headerlink" title="6. Magazine"></a>6. Magazine</h3><ul>
+<li><a target="_blank" rel="noopener" href="http://www.phrack.org/">http://www.phrack.org/</a></li>
+</ul>
+<h2 id="0x02-威胁检测"><a href="#0x02-威胁检测" class="headerlink" title="0x02 威胁检测"></a>0x02 威胁检测</h2><h3 id="1-威胁研究"><a href="#1-威胁研究" class="headerlink" title="1. 威胁研究"></a>1. 威胁研究</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.talosintelligence.com/">https://blog.talosintelligence.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://unit42.paloaltonetworks.com/">https://unit42.paloaltonetworks.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fireeye.com/blog/threat-research.html">https://www.fireeye.com/blog/threat-research.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://fortiguard.com/">https://fortiguard.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://securityintelligence.com/category/x-force/">https://securityintelligence.com/category/x-force/</a></li>
+<li><a target="_blank" rel="noopener" href="https://research.checkpoint.com/">https://research.checkpoint.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.trendmicro.com/">https://blog.trendmicro.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://securelist.com/">https://securelist.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/">https://www.mcafee.com/blogs/other-blogs/mcafee-labs/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.netlab.360.com/">https://blog.netlab.360.com/</a></li>
+</ul>
+<h3 id="2-Blog"><a href="#2-Blog" class="headerlink" title="2. Blog"></a>2. Blog</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.aquasec.com/">https://www.aquasec.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://falco.org/">https://falco.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://thedfirreport.com/">https://thedfirreport.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://labs.f-secure.com/blog/">https://labs.f-secure.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://newtonpaul.com/posts-archive/">https://newtonpaul.com/posts-archive/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blogs.cisco.com/tag/threat-detection">https://blogs.cisco.com/tag/threat-detection</a></li>
+<li><a target="_blank" rel="noopener" href="https://research.checkpoint.com/category/threat-research/">https://research.checkpoint.com/category/threat-research/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blogs.juniper.net/threat-research">https://blogs.juniper.net/threat-research</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.paloaltonetworks.com/blog/category/threat-research/">https://www.paloaltonetworks.com/blog/category/threat-research/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.securonix.com/blog/">https://www.securonix.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mcafee.com/blogs/tag/advanced-threat-research/">https://www.mcafee.com/blogs/tag/advanced-threat-research/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.darkreading.com/threat-intelligence">https://www.darkreading.com/threat-intelligence</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kaspersky.co.in/blog/tag/threat-intelligence/">https://www.kaspersky.co.in/blog/tag/threat-intelligence/</a></li>
+<li><a target="_blank" rel="noopener" href="https://securityintelligence.com/category/x-force/">https://securityintelligence.com/category/x-force/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.recordedfuture.com/blog/">https://www.recordedfuture.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fortinet.com/blog/threat-research">https://www.fortinet.com/blog/threat-research</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnxct.com/">https://www.cnxct.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/">https://www.cnblogs.com/LittleHann/</a></li>
+<li><a target="_blank" rel="noopener" href="https://he1m4n6a.github.io/">https://he1m4n6a.github.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/column/3174">https://cloud.tencent.com/developer/column/3174</a></li>
+<li><a target="_blank" rel="noopener" href="https://elkeid.bytedance.com/">https://elkeid.bytedance.com/</a></li>
+</ul>
+<h3 id="3-开源项目"><a href="#3-开源项目" class="headerlink" title="3. 开源项目"></a>3. 开源项目</h3><h4 id="a-主机检测"><a href="#a-主机检测" class="headerlink" title="a. 主机检测"></a>a. 主机检测</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/osquery/osquery">https://github.com/osquery/osquery</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bytedance/Elkeid">https://github.com/bytedance/Elkeid</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/splunk/security_content">https://github.com/splunk/security_content</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ehids/ecapture">https://github.com/ehids/ecapture</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wazuh/wazuh">https://github.com/wazuh/wazuh</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ossec/ossec-hids">https://github.com/ossec/ossec-hids</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mandiant/capa">https://github.com/mandiant/capa</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Velocidex/velociraptor">https://github.com/Velocidex/velociraptor</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/draios/sysdig">https://github.com/draios/sysdig</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/slackhq/go-audit">https://github.com/slackhq/go-audit</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon">https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MHaggis/sysmon-dfir">https://github.com/MHaggis/sysmon-dfir</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SwiftOnSecurity/sysmon-config">https://github.com/SwiftOnSecurity/sysmon-config</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/olafhartong/sysmon-modular">https://github.com/olafhartong/sysmon-modular</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/danielbohannon/Revoke-Obfuscation">https://github.com/danielbohannon/Revoke-Obfuscation</a></li>
+</ul>
+<h4 id="b-流量检测"><a href="#b-流量检测" class="headerlink" title="b. 流量检测"></a>b. 流量检测</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/OISF/suricata">https://github.com/OISF/suricata</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zeek/zeek">https://github.com/zeek/zeek</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/arkime/arkime">https://github.com/arkime/arkime</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/snort3/snort3">https://github.com/snort3/snort3</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ntop/ntopng">https://github.com/ntop/ntopng</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cisco/joy">https://github.com/cisco/joy</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dreadl0ck/netcap">https://github.com/dreadl0ck/netcap</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitre-attack/bzar">https://github.com/mitre-attack/bzar</a></li>
+</ul>
+<h4 id="c-WAF-x2F-RASP"><a href="#c-WAF-x2F-RASP" class="headerlink" title="c. WAF&#x2F;RASP"></a>c. WAF&#x2F;RASP</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/SpiderLabs/ModSecurity">https://github.com/SpiderLabs/ModSecurity</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/loveshell/ngx_lua_waf">https://github.com/loveshell/ngx_lua_waf</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/baidu/openrasp">https://github.com/baidu/openrasp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/jvm-sandbox">https://github.com/alibaba/jvm-sandbox</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jvm-rasp/jrasp-agent">https://github.com/jvm-rasp/jrasp-agent</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bytedance/Elkeid/tree/main/rasp">https://github.com/bytedance/Elkeid/tree/main/rasp</a></li>
+</ul>
+<h4 id="d-欺骗防御"><a href="#d-欺骗防御" class="headerlink" title="d. 欺骗防御"></a>d. 欺骗防御</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://ipot.sec-wiki.com/">https://ipot.sec-wiki.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pwnlandia/mhn">https://github.com/pwnlandia/mhn</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/telekom-security/tpotce">https://github.com/telekom-security/tpotce</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/DinoTools/dionaea">https://github.com/DinoTools/dionaea</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hacklcx/HFish">https://github.com/hacklcx/HFish</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cowrie/cowrie">https://github.com/cowrie/cowrie</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/desaster/kippo">https://github.com/desaster/kippo</a></li>
+</ul>
+<h3 id="4-技术方案"><a href="#4-技术方案" class="headerlink" title="4. 技术方案"></a>4. 技术方案</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://ebpf.io/">https://ebpf.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.cilium.io/en/latest/bpf/">https://docs.cilium.io/en/latest/bpf/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/bpf/index.html">https://www.kernel.org/doc/html/latest/bpf/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnxct.com/archives/">https://www.cnxct.com/archives/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iovisor/bpftrace">https://github.com/iovisor/bpftrace</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iovisor/bcc">https://github.com/iovisor/bcc</a></li>
+<li><a target="_blank" rel="noopener" href="https://linux-audit.com/">https://linux-audit.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/go-libaudit">https://github.com/elastic/go-libaudit</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/shirou/gopsutil/">https://github.com/shirou/gopsutil/</a></li>
+<li><a target="_blank" rel="noopener" href="https://filippo.io/linux-syscall-table/">https://filippo.io/linux-syscall-table/</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/">http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bfuzzy/auditd-attack">https://github.com/bfuzzy/auditd-attack</a></li>
+</ul>
+<h3 id="5-Misc"><a href="#5-Misc" class="headerlink" title="5. Misc"></a>5. Misc</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/0x4D31/awesome-threat-detection/tree/master/docs">https://github.com/0x4D31/awesome-threat-detection/tree/master/docs</a></li>
+<li><a target="_blank" rel="noopener" href="https://threathunterplaybook.com/introduction.html">https://threathunterplaybook.com/introduction.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/0x4D31/deception-as-detection">https://github.com/0x4D31/deception-as-detection</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rabobank-cdc/DeTTECT">https://github.com/rabobank-cdc/DeTTECT</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/OTRF/Security-Datasets">https://github.com/OTRF/Security-Datasets</a></li>
+<li><a target="_blank" rel="noopener" href="https://car.mitre.org/">https://car.mitre.org/</a></li>
+</ul>
+<h2 id="0x04-漏洞研究"><a href="#0x04-漏洞研究" class="headerlink" title="0x04 漏洞研究"></a>0x04 漏洞研究</h2><h3 id="1-Summary"><a href="#1-Summary" class="headerlink" title="1. Summary"></a>1. Summary</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://cn.0day.today/">https://cn.0day.today/</a></li>
+<li><a target="_blank" rel="noopener" href="https://packetstormsecurity.com/files/tags/exploit/">https://packetstormsecurity.com/files/tags/exploit/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.openwall.com/lists/">https://www.openwall.com/lists/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.securityfocus.com/">https://www.securityfocus.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.greyhathacker.net/">https://www.greyhathacker.net/</a></li>
+<li><a target="_blank" rel="noopener" href="https://msrc-blog.microsoft.com/">https://msrc-blog.microsoft.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://sploitus.com/">https://sploitus.com/</a></li>
+</ul>
+<h3 id="2-Wiki-1"><a href="#2-Wiki-1" class="headerlink" title="2. Wiki"></a>2. Wiki</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/phith0n/JavaThings">https://github.com/phith0n/JavaThings</a></li>
+</ul>
+<h3 id="3-Exploits"><a href="#3-Exploits" class="headerlink" title="3. Exploits"></a>3. Exploits</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/">https://www.exploit-db.com/</a></li>
+</ul>
+<h3 id="4-POCs"><a href="#4-POCs" class="headerlink" title="4. POCs"></a>4. POCs</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jweny/pocassist/tree/master/poc/scripts">https://github.com/jweny/pocassist/tree/master/poc/scripts</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chaitin/xray/tree/master/pocs">https://github.com/chaitin/xray/tree/master/pocs</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/luck-ying/Library-POC">https://github.com/luck-ying/Library-POC</a></li>
+</ul>
+<h3 id="5-漏洞利用"><a href="#5-漏洞利用" class="headerlink" title="5. 漏洞利用"></a>5. 漏洞利用</h3><h4 id="a-基础工具"><a href="#a-基础工具" class="headerlink" title="a. 基础工具"></a>a. 基础工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp">https://portswigger.net/burp</a> </li>
+<li><a target="_blank" rel="noopener" href="https://builtwith.com/">https://builtwith.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/RetireJS/retire.js/">https://github.com/RetireJS/retire.js/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/OJ/gobuster">https://github.com/OJ/gobuster</a></li>
+</ul>
+<h4 id="b-XSS利用"><a href="#b-XSS利用" class="headerlink" title="b. XSS利用"></a>b. XSS利用</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://xsshunter.com/">https://xsshunter.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Varbaek/xsser">https://github.com/Varbaek/xsser</a></li>
+</ul>
+<h4 id="c-注入攻击"><a href="#c-注入攻击" class="headerlink" title="c. 注入攻击"></a>c. 注入攻击</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://sqlmap.org/">http://sqlmap.org/</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/youngyangyang04/NoSQLAttack">https://github.com/youngyangyang04/NoSQLAttack</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/codingo/NoSQLMap">https://github.com/codingo/NoSQLMap</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL</a> Injection</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL</a> Injection</li>
+</ul>
+<h4 id="d-反序列化攻击"><a href="#d-反序列化攻击" class="headerlink" title="d. 反序列化攻击"></a>d. 反序列化攻击</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial">https://github.com/frohoff/ysoserial</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/NickstaDB/SerializationDumper">https://github.com/NickstaDB/SerializationDumper</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mbechler/marshalsec">https://github.com/mbechler/marshalsec</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JackOfMostTrades/gadgetinspector">https://github.com/JackOfMostTrades/gadgetinspector</a></li>
+</ul>
+<h4 id="e-模版注入"><a href="#e-模版注入" class="headerlink" title="e. 模版注入"></a>e. 模版注入</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/epinna/tplmap">https://github.com/epinna/tplmap</a></li>
+</ul>
+<h4 id="f-SSRF"><a href="#f-SSRF" class="headerlink" title="f. SSRF"></a>f. SSRF</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/SSRFmap">https://github.com/swisskyrepo/SSRFmap</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bcoles/ssrf_proxy">https://github.com/bcoles/ssrf_proxy</a></li>
+</ul>
+<h4 id="g-XXE"><a href="#g-XXE" class="headerlink" title="g. XXE"></a>g. XXE</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/luisfontes19/xxexploiter">https://github.com/luisfontes19/xxexploiter</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/enjoiz/XXEinjector">https://github.com/enjoiz/XXEinjector</a></li>
+</ul>
+<h4 id="h-文件包含漏洞"><a href="#h-文件包含漏洞" class="headerlink" title="h. 文件包含漏洞"></a>h. 文件包含漏洞</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/D35m0nd142/LFISuite">https://github.com/D35m0nd142/LFISuite</a></li>
+</ul>
+<h4 id="i-命令注入"><a href="#i-命令注入" class="headerlink" title="i. 命令注入"></a>i. 命令注入</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/commixproject/commix">https://github.com/commixproject/commix</a></li>
+</ul>
+<h4 id="j-CMS"><a href="#j-CMS" class="headerlink" title="j. CMS"></a>j. CMS</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Lucifer1993/TPscan">https://github.com/Lucifer1993/TPscan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/OWASP/joomscan">https://github.com/OWASP/joomscan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/immunIT/drupwn">https://github.com/immunIT/drupwn</a></li>
+</ul>
+<h4 id="k-struts"><a href="#k-struts" class="headerlink" title="k. struts"></a>k. struts</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Lucifer1993/struts-scan">https://github.com/Lucifer1993/struts-scan</a></li>
+</ul>
+<h4 id="l-shiro"><a href="#l-shiro" class="headerlink" title="l. shiro"></a>l. shiro</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sv3nbeast/ShiroScan">https://github.com/sv3nbeast/ShiroScan</a></li>
+</ul>
+<h4 id="m-fastjson"><a href="#m-fastjson" class="headerlink" title="m. fastjson"></a>m. fastjson</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wyzxxz/fastjson_rce_tool">https://github.com/wyzxxz/fastjson_rce_tool</a> fastjson命令执行利用工具</li>
+</ul>
+<h4 id="n-JDNI"><a href="#n-JDNI" class="headerlink" title="n. JDNI"></a>n. JDNI</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/veracode-research/rogue-jndi">https://github.com/veracode-research/rogue-jndi</a></li>
+</ul>
+<h4 id="o-JWT"><a href="#o-JWT" class="headerlink" title="o. JWT"></a>o. JWT</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker">https://github.com/brendan-rius/c-jwt-cracker</a></li>
+</ul>
+<h4 id="p-中间人攻击"><a href="#p-中间人攻击" class="headerlink" title="p. 中间人攻击"></a>p. 中间人攻击</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitmproxy/mitmproxy">https://github.com/mitmproxy/mitmproxy</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bettercap/bettercap">https://github.com/bettercap/bettercap</a></li>
+</ul>
+<h4 id="q-DDoS"><a href="#q-DDoS" class="headerlink" title="q. DDoS"></a>q. DDoS</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/OffensivePython/Saddam">https://github.com/OffensivePython/Saddam</a></li>
+</ul>
+<h3 id="6-漏洞检测"><a href="#6-漏洞检测" class="headerlink" title="6. 漏洞检测"></a>6. 漏洞检测</h3><h4 id="a-Web"><a href="#a-Web" class="headerlink" title="a. Web"></a>a. Web</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/chaitin/xray">https://github.com/chaitin/xray</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acunetix.com/">https://www.acunetix.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Arachni/arachni">https://github.com/Arachni/arachni</a></li>
+</ul>
+<h4 id="b-Server"><a href="#b-Server" class="headerlink" title="b. Server"></a>b. Server</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/zhzyker/vulmap">https://github.com/zhzyker/vulmap</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/w-digital-scanner/w9scan">https://github.com/w-digital-scanner/w9scan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ysrc/xunfeng">https://github.com/ysrc/xunfeng</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/WyAtu/Perun">https://github.com/WyAtu/Perun</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/knownsec/pocsuite3">https://github.com/knownsec/pocsuite3</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lz520520/railgun">https://github.com/lz520520/railgun</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/opensec-cn/kunpeng">https://github.com/opensec-cn/kunpeng</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/DSO-Lab/pocscan">https://github.com/DSO-Lab/pocscan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/k8gege/Ladon">https://github.com/k8gege/Ladon</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/shadow1ng/fscan">https://github.com/shadow1ng/fscan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Xyntax/POC-T">https://github.com/Xyntax/POC-T</a></li>
+</ul>
+<h4 id="c-Asset"><a href="#c-Asset" class="headerlink" title="c. Asset"></a>c. Asset</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/TophantTechnology/ARL">https://github.com/TophantTechnology/ARL</a></li>
+</ul>
+<h4 id="d-SCA"><a href="#d-SCA" class="headerlink" title="d. SCA"></a>d. SCA</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/github/codeql">https://github.com/github/codeql</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/archerysec/archerysec">https://github.com/archerysec/archerysec</a></li>
+<li><a target="_blank" rel="noopener" href="https://security.snyk.io/">https://security.snyk.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/murphysecurity/murphysec">https://github.com/murphysecurity/murphysec</a></li>
+</ul>
+<h4 id="e-finger"><a href="#e-finger" class="headerlink" title="e. finger"></a>e. finger</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Adminisme/ServerScan">https://github.com/Adminisme/ServerScan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zhzyker/dismap#-rulelab">https://github.com/zhzyker/dismap#-rulelab</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TideSec/TideFinger">https://github.com/TideSec/TideFinger</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lcvvvv/kscan">https://github.com/lcvvvv/kscan</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/EdgeSecurityTeam/EHole">https://github.com/EdgeSecurityTeam/EHole</a></li>
+</ul>
+<h4 id="f-Misc"><a href="#f-Misc" class="headerlink" title="f. Misc"></a>f. Misc</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/We5ter/Scanners-Box">https://github.com/We5ter/Scanners-Box</a></li>
+<li><a target="_blank" rel="noopener" href="https://chaos.projectdiscovery.io/#/">https://chaos.projectdiscovery.io/#/</a></li>
+</ul>
+<h2 id="0x05-样本分析"><a href="#0x05-样本分析" class="headerlink" title="0x05 样本分析"></a>0x05 样本分析</h2><h3 id="1-Blog-1"><a href="#1-Blog-1" class="headerlink" title="1. Blog"></a>1. Blog</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.malwarebytes.com/">https://blog.malwarebytes.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.malwaretech.com/">https://www.malwaretech.com</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.rootkitanalytics.com/">http://www.rootkitanalytics.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernelmode.info/forum/">https://www.kernelmode.info/forum/</a></li>
+<li><a target="_blank" rel="noopener" href="https://labs.bitdefender.com/">https://labs.bitdefender.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://malshare.com/">https://malshare.com/</a>)</li>
+<li><a target="_blank" rel="noopener" href="http://www.vxjump.net/index.htm">http://www.vxjump.net/index.htm</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hex-rays.com/blog/">https://www.hex-rays.com/blog/</a></li>
+<li><a target="_blank" rel="noopener" href="https://reverse.put.as/">https://reverse.put.as/</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.fuzzysecurity.com/index.html">http://www.fuzzysecurity.com/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.quarkslab.com/index.html">https://blog.quarkslab.com/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.pediy.com/kssd/index.html">https://www.pediy.com/kssd/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://beginners.re/RE4B-CN-partial/html/RE4B-CN-partial.html">https://beginners.re/RE4B-CN-partial/html/RE4B-CN-partial.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.k3170makan.com/">http://blog.k3170makan.com/</a></li>
+</ul>
+<h3 id="2-Projects"><a href="#2-Projects" class="headerlink" title="2. Projects"></a>2. Projects</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ytisf/theZoo/">https://github.com/ytisf/theZoo/</a></li>
+<li><a target="_blank" rel="noopener" href="https://cuckoosandbox.org/">https://cuckoosandbox.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Tencent/HaboMalHunter/">https://github.com/Tencent/HaboMalHunter/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility/">https://github.com/volatilityfoundation/volatility/</a></li>
+</ul>
+<h2 id="0x06-应急响应"><a href="#0x06-应急响应" class="headerlink" title="0x06 应急响应"></a>0x06 应急响应</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jaiminton.com/cheatsheet/DFIR/#">https://www.jaiminton.com/cheatsheet/DFIR/#</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/decalage2/awesome-security-hardening/">https://github.com/decalage2/awesome-security-hardening/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/meirwah/awesome-incident-response/blob/master/README_ch.md">https://github.com/meirwah/awesome-incident-response/blob/master/README_ch.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/fabacab/awesome-cybersecurity-blueteam/">https://github.com/fabacab/awesome-cybersecurity-blueteam/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alphaSeclab/awesome-forensics/">https://github.com/alphaSeclab/awesome-forensics/</a></li>
+</ul>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

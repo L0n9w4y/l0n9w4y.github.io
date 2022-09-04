@@ -1,37 +1,508 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="恶意软件分析资源">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/12996/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-11-26T13:49:08.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:39:32.769Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Malware Analysis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/12996/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/12996/","path":"posts/12996/","title":"恶意软件分析资源"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>恶意软件分析资源 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%A0%B7%E6%9C%AC%E6%9D%A5%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">0x01 样本来源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%8B%E8%BD%BD%E7%BD%91%E7%AB%99"><span class="nav-number">1.1.</span> <span class="nav-text">1. 下载网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%86%E7%B1%BB%E6%A0%B7%E6%9C%AC"><span class="nav-number">1.2.</span> <span class="nav-text">2. 分类样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%A0%B7%E6%9C%AC%E5%90%88%E9%9B%86"><span class="nav-number">1.3.</span> <span class="nav-text">3. 样本合集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">0x02 分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Linux%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.1.</span> <span class="nav-text">1. Linux平台</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.1.1.</span> <span class="nav-text">a. 静态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.1.2.</span> <span class="nav-text">b. 动态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.3.</span> <span class="nav-text">c. 逆向工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E8%84%B1%E5%A3%B3%E5%8F%8D%E6%B7%B7%E6%B7%86"><span class="nav-number">2.1.4.</span> <span class="nav-text">d. 脱壳反混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.5.</span> <span class="nav-text">e. 取证工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.6.</span> <span class="nav-text">f. 综合工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Windwos%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2. Windwos平台</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">a. 静态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">b. 动态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">c. 逆向工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E8%84%B1%E5%A3%B3%E5%8F%8D%E6%B7%B7%E6%B7%86-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">d. 脱壳反混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E5%8A%A0%E5%A3%B3%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.5.</span> <span class="nav-text">e. 加壳工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.6.</span> <span class="nav-text">f. 取证工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#g-%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.7.</span> <span class="nav-text">g. 综合工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MacOS%E5%B9%B3%E5%8F%B0"><span class="nav-number">2.3.</span> <span class="nav-text">3. MacOS平台</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">a. 静态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">b. 动态分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">c. 逆向工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E6%89%93%E5%8C%85%E5%8A%A0%E5%A3%B3"><span class="nav-number">2.3.4.</span> <span class="nav-text">d. 打包加壳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7-1"><span class="nav-number">2.3.5.</span> <span class="nav-text">e. 取证工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.6.</span> <span class="nav-text">f. 其他工具</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/12996/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="恶意软件分析资源 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          恶意软件分析资源
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-26 21:49:08" itemprop="dateCreated datePublished" datetime="2019-11-26T21:49:08+08:00">2019-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-08-27 19:39:32" itemprop="dateModified" datetime="2022-08-27T19:39:32+08:00">2022-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%A0%B7%E6%9C%AC%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">样本分析</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-样本来源"><a href="#0x01-样本来源" class="headerlink" title="0x01 样本来源"></a>0x01 样本来源</h2><h3 id="1-下载网站"><a href="#1-下载网站" class="headerlink" title="1. 下载网站"></a>1. 下载网站</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://s.threatbook.cn/">https://s.threatbook.cn/</a> 微步云沙箱</li>
+<li><a target="_blank" rel="noopener" href="https://www.virustotal.com/">https://www.virustotal.com/</a> 在线样本获取</li>
+<li><a target="_blank" rel="noopener" href="https://app.any.run/">https://app.any.run/</a> 在线样本分析</li>
+<li><a target="_blank" rel="noopener" href="https://bazaar.abuse.ch/browse/">https://bazaar.abuse.ch/browse/</a>  MalwareBazaar Database</li>
+<li><a target="_blank" rel="noopener" href="https://vx-underground.org/samples.html">https://vx-underground.org/samples.html</a> 恶意软件在线下载</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ytisf/theZoo">https://github.com/ytisf/theZoo</a>  恶意软件分析开源项目</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/malware.html">https://objective-see.com/malware.html</a> MacOS恶意软件样本</li>
+<li><a target="_blank" rel="noopener" href="http://contagiodump.blogspot.com/">http://contagiodump.blogspot.com/</a> Contagio恶意软件收集平台</li>
+<li><a target="_blank" rel="noopener" href="https://www.hybrid-analysis.com/">https://www.hybrid-analysis.com/</a>  Payload Security恶意软件分析</li>
+<li><a target="_blank" rel="noopener" href="http://vxvault.net/ViriList.php">http://vxvault.net/ViriList.php</a>  该网站为恶意软件和urls的收集</li>
+</ul>
+<h3 id="2-分类样本"><a href="#2-分类样本" class="headerlink" title="2. 分类样本"></a>2. 分类样本</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a>  Payloads合集</li>
+<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/">https://www.exploit-db.com/</a>  Exploit 和 shellcode 样本</li>
+<li><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1TWS238xacAto-fLKh1n5uTsdijWdCEsGIM0Y0Hvmc5g/pubhtml">https://docs.google.com/spreadsheets/</a> 勒索软件列表</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tennc/webshell">https://github.com/tennc/webshell</a>  Webshell资源</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/milabs/awesome-linux-rootkits">https://github.com/milabs/awesome-linux-rootkits</a> Linux rootkit合集</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/d30sa1/RootKits-List-Download">https://github.com/d30sa1/RootKits-List-Download</a>  Rootkit下载列表</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alphaSeclab/awesome-rat">https://github.com/alphaSeclab/awesome-rat</a>  远控木马合集</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/maestron/botnets">https://github.com/maestron/botnets</a> Botnet源码合集</li>
+</ul>
+<h3 id="3-样本合集"><a href="#3-样本合集" class="headerlink" title="3. 样本合集"></a>3. 样本合集</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/vxunderground/MalwareSourceCode">https://github.com/vxunderground/MalwareSourceCode</a>  不同平台不同语言恶意软件源码</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/InQuest/malware-samples">https://github.com/InQuest/malware-samples</a> 恶意软件样本与分析文章集合</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/RamadhanAmizudin/malware">https://github.com/RamadhanAmizudin/malware</a> Malwaretech恶意样本集</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mstfknn/malware-sample-library">https://github.com/mstfknn/malware-sample-library</a> 恶意软件样本库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ashishb/android-malware">https://github.com/ashishb/android-malware</a> Andorid恶意样本库</li>
+</ul>
+<h2 id="0x02-分析工具"><a href="#0x02-分析工具" class="headerlink" title="0x02 分析工具"></a>0x02 分析工具</h2><h3 id="1-Linux平台"><a href="#1-Linux平台" class="headerlink" title="1. Linux平台"></a>1. Linux平台</h3><h4 id="a-静态分析"><a href="#a-静态分析" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/file">file</a> – 显示文件的类型</li>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/strings">strings</a>– 从文件中提取字符串</li>
+<li><a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a> – 区分文件</li>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/nm">nm</a> – 提取符号表（函数导入、导出）</li>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/strace">strace</a> – 跟踪系统调用和信号</li>
+<li><a target="_blank" rel="noopener" href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符（推荐）</li>
+</ul>
+<h4 id="b-动态分析"><a href="#b-动态分析" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.wireshark.org/download.html">Wireshark</a> – 网络分析工具</li>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/8/tcpdump">tcpdump</a>  – 网络分析工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> –一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理</li>
+<li><a target="_blank" rel="noopener" href="https://www.netresec.com/?page=Blog&month=2014-02&post=HowTo-install-NetworkMiner-in-Ubuntu-Fedora-and-Arch-Linux">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/communitydownload">Burp Suite</a> – 适用于任何浏览器、系统或平台的免费网络代理</li>
+<li><a target="_blank" rel="noopener" href="https://www.inetsim.org/packages.html">INetSim</a> – 互联网服务模拟套件</li>
+</ul>
+<p>适用于 Linux 的 Procmon</p>
+<h4 id="c-逆向工具"><a href="#c-逆向工具" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/gdb">GDB</a> – GNU 调试器</li>
+<li><a target="_blank" rel="noopener" href="https://www.hex-rays.com/products/ida/support/download.shtml">IDA Free&#x2F;Pro</a> – 反汇编器和调试器</li>
+<li><a target="_blank" rel="noopener" href="https://www.hopperapp.com/">Hopper</a> – 反汇编器和调试器</li>
+<li><a target="_blank" rel="noopener" href="https://rada.re/r/">radare2</a> - 免费和开源的反汇编器和调试器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/radareorg/cutter">Cutter</a> -radare2 的 GUI</li>
+<li><a target="_blank" rel="noopener" href="https://binary.ninja/">Binary Ninja</a> – 一种新型的逆向平台</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/angr/angr">angr</a> – 跨平台二进制分析框架</li>
+</ul>
+<h4 id="d-脱壳反混淆"><a href="#d-脱壳反混淆" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/fireeye/flare-floss">FLOSS</a> – 自动从恶意软件中提取混淆的字符串</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a target="_blank" rel="noopener" href="https://blog.didierstevens.com/programs/xorsearch/">XorSearch</a> -用于在 XOR、ROL、ROT 或 SHIFT 编码的二进制文件中搜索给定字符串</li>
+</ul>
+<h4 id="e-取证工具"><a href="#e-取证工具" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a> – 硬盘取证获取工具</li>
+<li><a target="_blank" rel="noopener" href="http://www.sleuthkit.org/autopsy/download.php">Autopsy</a> - 硬盘取证分析工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/504ensicsLabs/LiME">LiME</a> – 内存获取工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility">Volatility</a> – 内存取证分析框架</li>
+<li><a target="_blank" rel="noopener" href="https://fogproject.org/">FOG</a> — 免费的开源网络计算机克隆和管理解决方案</li>
+</ul>
+<h4 id="f-综合工具"><a href="#f-综合工具" class="headerlink" title="f. 综合工具"></a>f. 综合工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/monnappa22/Limon">Limon Sandbox</a> – 免费开源的自动化 Linux 恶意软件分析沙箱</li>
+<li><a target="_blank" rel="noopener" href="https://cuckoosandbox.org/">Cuckoo Sandbox</a> – 免费开源的自动化恶意软件分析沙箱</li>
+</ul>
+<h3 id="2-Windwos平台"><a href="#2-Windwos平台" class="headerlink" title="2. Windwos平台"></a>2. Windwos平台</h3><h4 id="a-静态分析-1"><a href="#a-静态分析-1" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://mh-nexus.de/en/downloads.php?product=HxD20">HxD</a> – 十六进制查看器和编辑器</li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/">strings</a> – 从文件中提取字符串</li>
+<li><a target="_blank" rel="noopener" href="https://www.nirsoft.net/utils/hash_my_files.html">HashMyFiles</a> – 计算文件的 MD5&#x2F;SHA1&#x2F;CRC32 哈希值</li>
+<li><a target="_blank" rel="noopener" href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符</li>
+<li><a target="_blank" rel="noopener" href="https://www.aldeid.com/wiki/PEiD">PEiD</a> – 封隔器标识符</li>
+<li><a target="_blank" rel="noopener" href="https://www.winitor.com/">PeStudio</a> – 高级 PE 查看器等</li>
+<li><a target="_blank" rel="noopener" href="https://ntcore.com/?page_id=388">CFF Explorer</a> – PE 编辑器</li>
+<li><a target="_blank" rel="noopener" href="http://www.angusj.com/resourcehacker/">Resource Hacker</a> – 资源编辑器</li>
+<li><a target="_blank" rel="noopener" href="https://blog.didierstevens.com/programs/oledump-py/">oledump.py</a> – OLE 文件分析器</li>
+<li><a target="_blank" rel="noopener" href="http://www.reconstructer.org/">OfficeMalScanner</a> – Office 文件恶意软件扫描程序</li>
+<li><a target="_blank" rel="noopener" href="https://blog.didierstevens.com/2009/03/31/pdfid/">PDFiD</a> – PDF 字符串扫描仪和标识符</li>
+<li><a target="_blank" rel="noopener" href="http://sandsprite.com/blogs/index.php?uid=7&pid=57">PDFStreamDumper</a> – PDF 恶意文件扫描程序</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/smalot/pdfparser">PDFParser</a> – PDF 文件数据提取器</li>
+</ul>
+<h4 id="b-动态分析-1"><a href="#b-动态分析-1" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/">Process Explorer</a> - 高级任务管理器</li>
+<li><a target="_blank" rel="noopener" href="https://processhacker.sourceforge.io/downloads.php">Process Hacker</a> - 高级任务管理器</li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/">Process Monitor</a> – 监控系统进程事件（文件系统、注册表、网络）</li>
+<li><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/regshot/">Regshot</a> – 注册表比较程序</li>
+<li><a target="_blank" rel="noopener" href="http://www.rohitab.com/downloads">API Monitor</a> – 监视 Windows API 函数（内存转储、断点等）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hasherezade/pe-sieve">PE-Sieve</a> – 扫描恶意植入（替换&#x2F;注入 PE、shellcode、钩子、内存补丁）</li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/">TCPView</a> – 显示网络连接</li>
+<li><a target="_blank" rel="noopener" href="https://www.telerik.com/fiddler">Fiddler</a> – 适用于任何浏览器、系统或平台的免费Web调试代理</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/fireeye/flare-fakenet-ng">FakeNet-NG</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a target="_blank" rel="noopener" href="https://www.inetsim.org/downloads.html">INetSim</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a target="_blank" rel="noopener" href="https://www.fireeye.com/services/freeware/apatedns.html">ApateDNS</a> – 控制 DNS 响应</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> – 一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理（非常适合 HTTPS 检查）</li>
+<li><a target="_blank" rel="noopener" href="https://www.netresec.com/index.ashx?page=NetworkMiner">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a target="_blank" rel="noopener" href="https://www.procdot.com/">ProcDot</a> – 一种新的可视化恶意软件分析工具</li>
+<li><a target="_blank" rel="noopener" href="https://www.phrozen.io/docs/windows/projects/freeware/winja/">WinJa</a> – 一个轻量级但功能强大的工具，用于发现隐藏在您系统中的恶意软件</li>
+<li><a target="_blank" rel="noopener" href="https://www.kahusecurity.com/tools.html">CMD Watcher</a> – 监视 CMD、PowerShell 和其他进程，暂停它，提取命令行数据，然后有选择地杀死它</li>
+</ul>
+<h4 id="c-逆向工具-1"><a href="#c-逆向工具-1" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://x64dbg.com/">x64dbg</a> – 用户模式调试器</li>
+<li><a target="_blank" rel="noopener" href="http://www.ollydbg.de/version2.html">OllyDbg</a> – 用户模式调试器</li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">WinDbg</a> – 内核模式调试器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SinaKarvandi/windbg2ida">WinDBG2IDA</a> — 显示 IDA 中的 WinDBG 步骤</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/avast/retdec">RetDec</a> – 基于 LLVM 的可重定向机器代码反编译器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a> – NSA 软件逆向工程框架</li>
+</ul>
+<h4 id="d-脱壳反混淆-1"><a href="#d-脱壳反混淆-1" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/BromiumLabs/PackerAttacker">PackerAttacker</a> – 使用内存和代码挂钩来检测加壳程序的 C++ 应用程序</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/unipacker/unipacker">UniPacker</a> – 基于仿真的 Windows 二进制文件的自动和平台独立解包器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/malwaremusings/unpacker/">unpacker</a> - WinAppDbg脚本来自动执行恶意拆包</li>
+</ul>
+<h4 id="e-加壳工具"><a href="#e-加壳工具" class="headerlink" title="e. 加壳工具"></a>e. 加壳工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://upx.github.io/">UPX</a> – Windows PE Packer</li>
+<li><a target="_blank" rel="noopener" href="https://www.alternate-tools.com/pages/c_exepacker.php?lang=ENG">Alterante EXE Packer</a> – 基于 UPX打包程序</li>
+<li><a target="_blank" rel="noopener" href="https://enigmaprotector.com/">Enigma Protector</a> – 用于许可和保护Windows 可执行文件的专业系统</li>
+<li><a target="_blank" rel="noopener" href="https://www.webtoolmaster.com/exestealth.htm">ExeStealth</a> – Delphi、Visual Basic 和 C++ PE打包程序</li>
+<li><a target="_blank" rel="noopener" href="https://www.oreans.com/Themida.php">Themida</a> - 高级Windows 软件保护系统</li>
+<li><a target="_blank" rel="noopener" href="https://vmpsoft.com/">VMProtect</a> – VMProtect 通过在具有非标准架构的虚拟机上执行代码来保护代码</li>
+</ul>
+<h4 id="f-取证工具"><a href="#f-取证工具" class="headerlink" title="f. 取证工具"></a>f. 取证工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://winpmem.velocidex.com/">WinPmem</a> – 内存取证获取工具</li>
+<li><a target="_blank" rel="noopener" href="https://blog.comae.io/your-favorite-memory-toolkit-is-back-f97072d33d5c">DumpIt</a> – 内存取证获取工具</li>
+<li><a target="_blank" rel="noopener" href="https://accessdata.com/product-download/ftk-imager-version-4-2-0">FTK Imager</a> – 硬盘和内存取证获取工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/rekall">Rekall</a> – 内存取证框架</li>
+<li><a target="_blank" rel="noopener" href="https://www.fireeye.com/services/freeware/redline.html">Readline</a> - 内存取证分析工具</li>
+</ul>
+<h4 id="g-综合工具"><a href="#g-综合工具" class="headerlink" title="g. 综合工具"></a>g. 综合工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/">Sysinternals Suite</a> – Microsoft 用于分析 Windows 系统内部的工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/fireeye/flare-vm">Flare-VM</a> – 基于 Windows 的恶意软件分析安全工具</li>
+</ul>
+<h3 id="3-MacOS平台"><a href="#3-MacOS平台" class="headerlink" title="3. MacOS平台"></a>3. MacOS平台</h3><h4 id="a-静态分析-2"><a href="#a-静态分析-2" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.unix.com/man-page/osx/1/codesign/">codesign</a>  – 提取代码签名认证状态等</li>
+<li><a target="_blank" rel="noopener" href="https://www.unix.com/man-page/osx/8/spctl/">spctl</a> – 检查文件的认证是否被撤销等等</li>
+<li><a target="_blank" rel="noopener" href="https://www.unix.com/man-page/osx/1/xattr/">xattr</a> – 检查属性文件是否包含以及包含哪些属性（例如 GateKeeper 检查的隔离标志）</li>
+<li><a target="_blank" rel="noopener" href="https://www.unix.com/man-page/osx/1/otool/">otool</a> – 检查二进制文件、提取汇编指令、查看段、节等</li>
+<li><a target="_blank" rel="noopener" href="http://www.newosxbook.com/tools/jtool.html">JTool</a> – otool的升级本工具</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">What’s your Sign</a> – 检查代码签名认证状态，显示哈希值等</li>
+</ul>
+<h4 id="b-动态分析-2"><a href="#b-动态分析-2" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products/utilities.html#ProcessMonitor">ProcessMonitor</a> – 监控流程活动</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products/utilities.html#FileMonitor">FileMonitor</a> – 监控文件系统事件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dpnishant/appmon">AppMon</a> – 基于 Frida 的监控和篡改系统 API 调用的自动化框架</li>
+<li><a target="_blank" rel="noopener" href="https://fsmonitor.com/">FSMonitor</a> – 监控文件系统事件（读、写等）</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">Netiquette</a> – 监控网络连接</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">LuLu</a> – 检查网络可疑活动并显示</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">TaskExplorer</a> –虚拟探索所有正在运行的进程</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">ReiKey</a> – 动态拦截和检测键盘记录活动</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">BlockBlock</a> – 动态拦截系统上的持久操作</li>
+</ul>
+<h4 id="c-逆向工具-2"><a href="#c-逆向工具-2" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://lldb.llvm.org/">LLDB</a> – 类似 GDB 的 macOS 调试器</li>
+</ul>
+<h4 id="d-打包加壳"><a href="#d-打包加壳" class="headerlink" title="d. 打包加壳"></a>d. 打包加壳</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.pouet.net/prod.php?which=29185">iPakk</a> – MacOSX Mach-O (PPC)打包程序</li>
+<li><a target="_blank" rel="noopener" href="https://www.pouet.net/prod.php?which=51324">muncho</a> – MacOSX Mach-O（英特尔）打包程序</li>
+<li><a target="_blank" rel="noopener" href="https://www.pouet.net/prod.php?which=66926">oneKpaq</a> – MacOSX Mach-O (Intel)打包程序</li>
+</ul>
+<h4 id="e-取证工具-1"><a href="#e-取证工具-1" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://macappstore.org/dcfldd/">dcfldd</a> – 硬盘取证获取工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ydkhatri/mac_apt">mac_apt</a> – 硬盘取证分析工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrmsr/pmem/tree/master/OSXPMem">OSXPMem</a> – 内存取证获取工具</li>
+</ul>
+<h4 id="f-其他工具"><a href="#f-其他工具" class="headerlink" title="f. 其他工具"></a>f. 其他工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">KnockKnock</a> – 扫描持久性对象并将它们上传到 VirusTotal</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">KextViewr</a> – 显示所有已加载的 kext，以及它们的签名状态、完整路径、VirusTotal 检测率等</li>
+<li><a target="_blank" rel="noopener" href="https://objective-see.com/products.html">Dylib Hijack Scanner</a> – 扫描系统周围潜在的 Dylib-Hijackable 应用程序</li>
+</ul>
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://malwareanalysis.co/">https://malwareanalysis.co/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rshipp/awesome-malware-analysis">https://github.com/rshipp/awesome-malware-analysis</a></li>
+<li><a target="_blank" rel="noopener" href="https://zeltser.com/malicious-software/">https://zeltser.com/malicious-software/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Malware-Analysis/" rel="tag"># Malware Analysis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/10024/" rel="prev" title="Linux入侵排查基础篇">
+                  <i class="fa fa-chevron-left"></i> Linux入侵排查基础篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/10128/" rel="next" title="Windows应急响应指南">
+                  Windows应急响应指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

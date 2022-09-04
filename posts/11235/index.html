@@ -1,37 +1,445 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文总结HIDS自研建设的一些经验及研究心得，持续更新中...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HIDS建设经验总结">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/11235/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文总结HIDS自研建设的一些经验及研究心得，持续更新中...">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/agent_data.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/threat_detection.png">
+<meta property="article:published_time" content="2020-11-11T13:52:20.000Z">
+<meta property="article:modified_time" content="2022-07-31T12:15:25.160Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Threat Detection">
+<meta property="article:tag" content="HIDS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/agent_data.png">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/11235/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/11235/","path":"posts/11235/","title":"HIDS建设经验总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HIDS建设经验总结 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B"><span class="nav-number">1.</span> <span class="nav-text">0x01 核心能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E8%83%BD%E5%8A%9B"><span class="nav-number">1.1.</span> <span class="nav-text">1. 数据采集能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A3%80%E6%B5%8B%E5%88%86%E6%9E%90%E8%83%BD%E5%8A%9B"><span class="nav-number">1.2.</span> <span class="nav-text">2. 检测分析能力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E8%80%83%E8%99%91%E5%9B%A0%E7%B4%A0"><span class="nav-number">2.</span> <span class="nav-text">0x02  考虑因素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">1. 安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%8E%E6%8D%9F%E8%80%97"><span class="nav-number">2.2.</span> <span class="nav-text">2. 低损耗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">3. 稳定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">3. 高可用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%AF%E6%8E%A7%E6%80%A7"><span class="nav-number">2.5.</span> <span class="nav-text">4. 可控性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%83%A8%E7%BD%B2%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="nav-number">2.6.</span> <span class="nav-text">5. 部署兼容性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">2.7.</span> <span class="nav-text">6. 可扩展性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="nav-number">3.</span> <span class="nav-text">0x03 数据采集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%87%87%E9%9B%86%E7%BB%B4%E5%BA%A6"><span class="nav-number">3.1.</span> <span class="nav-text">1. 采集维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88"><span class="nav-number">3.2.</span> <span class="nav-text">2. 技术方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%A3%80%E6%B5%8B%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">0x04 检测分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.1.</span> <span class="nav-text">1. 检测模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">2. 检测方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E8%AF%AF%E7%94%A8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.1.</span> <span class="nav-text">a. 误用检测方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.2.</span> <span class="nav-text">b. 异常检测方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%89%B9%E5%BE%81%E5%BA%93"><span class="nav-number">4.3.</span> <span class="nav-text">3. 特征库</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/11235/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="HIDS建设经验总结 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HIDS建设经验总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-11 21:52:20" itemprop="dateCreated datePublished" datetime="2020-11-11T21:52:20+08:00">2020-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 20:15:25" itemprop="dateModified" datetime="2022-07-31T20:15:25+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">威胁检测</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文总结HIDS自研建设的一些经验及研究心得，持续更新中...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-核心能力"><a href="#0x01-核心能力" class="headerlink" title="0x01 核心能力"></a>0x01 核心能力</h2><h3 id="1-数据采集能力"><a href="#1-数据采集能力" class="headerlink" title="1. 数据采集能力"></a>1. 数据采集能力</h3><p>Agent端做深入的数据采集(采集深度、数据上下文丰富度)，提高对抗成本</p>
+<pre><code>1）内核态、用户态系统数据
+
+2）容器层数据：Docker、Kubernetes
+
+3）通用服务组件数据及日志：数据库、Web服务器、大数据组件、中间件、开发软件等
+</code></pre>
+<h3 id="2-检测分析能力"><a href="#2-检测分析能力" class="headerlink" title="2. 检测分析能力"></a>2. 检测分析能力</h3><p>能检测到什么程度的攻击(一般入侵 —&gt; 渗透测试 —&gt; 红队演练 —&gt; APT)</p>
+<p><strong>核心能力</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 入侵对抗：基于网络攻杀链、ATT &amp; CK模型等各个阶段的攻击战术、技术、过程检测与响应</span><br><span class="line"></span><br><span class="line">2. 数据分析：基于特征(IOCs库、TTPs库)、图计算、入侵链路可视化分析、用户和实体行为分析、威胁智能分析、模型智能编排</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-考虑因素"><a href="#0x02-考虑因素" class="headerlink" title="0x02  考虑因素"></a>0x02  考虑因素</h2><h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. 安全性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(1) Agent跟Server的配置下发通道安全，数据传输加密</span><br><span class="line"></span><br><span class="line">(2) 配置信息读取写入需要鉴权、配置变更历史需记录</span><br><span class="line"></span><br><span class="line">(3) 不预留包含任何命令执行的功能，服务端操作下发严格鉴权，保证agent低侵入性</span><br><span class="line"></span><br><span class="line">(4) agent更新时，对升级包的完整性进行检测验证，防止被攻击者替换</span><br><span class="line"></span><br><span class="line">(5) 通过system服务自启动、watch守护进程逆行监控，对异常agent下线进行监控和告警</span><br><span class="line"></span><br><span class="line">(6) Agent反调试、防逆向手段，提升攻击者对agent逆向分析难度</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-低损耗"><a href="#2-低损耗" class="headerlink" title="2. 低损耗"></a>2. 低损耗</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">节省资源，占用较少的CPU、内存；可使用cgroup等严格限制资源占用</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需保证agent长期运行稳定，确保agent本身不影响正常服务及业务</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-高可用"><a href="#3-高可用" class="headerlink" title="3. 高可用"></a>3. 高可用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) 需满足数十万服务器量级的IDC规模</span><br><span class="line"></span><br><span class="line">(2) 进程包活、心跳检测、实时获取新指令能力</span><br><span class="line"></span><br><span class="line">(3) 支持分布式部署，并行处理任务，保证数据的一致性，服务器数量规模达到百万级的集群负载能力</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-可控性"><a href="#4-可控性" class="headerlink" title="4. 可控性"></a>4. 可控性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 精确的熔断限流，服务端命令下发响应需控制在分钟级以内</span><br><span class="line"></span><br><span class="line">(2) 服务端能控制agent的启动、终止，当agent出现异常时，也许保证可控</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-部署兼容性"><a href="#5-部署兼容性" class="headerlink" title="5. 部署兼容性"></a>5. 部署兼容性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需满足广泛的部署兼容性、兼容Linux各种版本、支持容器环境等</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-可扩展性"><a href="#6-可扩展性" class="headerlink" title="6. 可扩展性"></a>6. 可扩展性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">系统功能增加、版本更新及维护较为方便，满足可扩展性</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-数据采集"><a href="#0x03-数据采集" class="headerlink" title="0x03 数据采集"></a>0x03 数据采集</h2><h3 id="1-采集维度"><a href="#1-采集维度" class="headerlink" title="1. 采集维度"></a>1. 采集维度</h3><p>依据安全需求、等保合规、威胁检测模型等梳理HIDS需要采集的数据维度、数据项…</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/agent_data.png"></p>
+<h3 id="2-技术方案"><a href="#2-技术方案" class="headerlink" title="2. 技术方案"></a>2. 技术方案</h3><p>总结业界成熟的主机入侵检测技术方案、开源项目核心模块…</p>
+<p><strong>(1) eBPF</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/networking/filter.html#networking-filter">eBPF</a> <em>Linux内核提供的一种扩展的BPF虚拟机，可用于获取内核运行信息</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/v4.16/userspace-api/seccomp_filter.html">Seccomp BPF</a> <em>使用BPF程序对任意系统调用及其参数进行过滤</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/iovisor/bpftrace">bpftrace</a> <em>eBPF的高级跟踪语言，可实现内核动态跟踪（kprobes）,用户级动态跟踪（uprobes）</em></p>
+</li>
+</ul>
+<p><strong>(2) Audit</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/linux-audit">linux-audit</a> <em>Linux安全审计系统，可用于收集记录系统、内核、用户进程发生的行为事件</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/slackhq/go-audit">go-audit</a> <em>Go实现的Linux audit类库，可替代auditd daemon</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/elastic/go-libaudit">go-libaudit</a>  <em>go-libaudit是用于与Linux Audit Framework通信的库</em></p>
+</li>
+</ul>
+<p><strong>(4) sysdig</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/draios/sysdig">sysdig</a> <em>提供深层系统可见性的工具，可对容器进行访问</em></li>
+</ul>
+<p><strong>(5) Capsule8</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/capsule8/">capsule8</a> <em>Linux系统及云环境实时威胁检测防护开源项目</em></li>
+</ul>
+<p><strong>(6) Osquery-events</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/osquery/osquery/tree/experimental/osquery/events/linux">osquery-events</a> <em>Osquery事件监控模块，可持续监控系统事件变化情况</em></li>
+</ul>
+<p><strong>(7)elastic-auditbeat</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/elastic/beats/tree/master/auditbeat">auditbeat</a> <em>用于收集Linux审计框架数据，对消息进行解析和标准化，并监测文件的完整性</em></li>
+</ul>
+<p><strong>(8) grsecurity</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://grsecurity.net/download">grsecurity</a> <em>一个用于Linux内核的修补程序，为ACL系统提供了内核模块的支持</em></li>
+</ul>
+<p><strong>(9) snoopy</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/a2o/snoopy">snoopy</a> <em>开源的轻量级lib库, 可以记录系统中所有执行过的命令和参数</em></li>
+</ul>
+<p><strong>(10) inotify-tools</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/inotify-tools/inotify-tools">inotify-tools</a> <em>Linux文件系统事件监控工具套件</em></li>
+</ul>
+<p><strong>(11) Rootkit Detection</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/nbulischeck/tyton">tyton</a> <em>Linux内核态rootkit检测工具</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.openwall.com/lkrg/">LKRG</a> <em>Linux内核运行时防护工具</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.unhide-forensics.info/?Linux">Unhide</a> <em>可用于检测隐藏进程</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://rkhunter.sourceforge.net/">rkhunter</a> <em>Linux用户态rootkit检测工具</em></p>
+</li>
+</ul>
+<h2 id="0x04-检测分析"><a href="#0x04-检测分析" class="headerlink" title="0x04 检测分析"></a>0x04 检测分析</h2><h3 id="1-检测模型"><a href="#1-检测模型" class="headerlink" title="1. 检测模型"></a>1. 检测模型</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/threat_detection.png"></p>
+<p><strong>Refer:</strong> <a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/191144.html">https://help.aliyun.com/document_detail/191144.html</a></p>
+<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><h4 id="a-误用检测方法"><a href="#a-误用检测方法" class="headerlink" title="a. 误用检测方法"></a>a. 误用检测方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1) 模式匹配法</span><br><span class="line"></span><br><span class="line">通过把收集到的信息与网络入侵和系统误用模式数据库中的已知信息进行比较，从而对违背安全策略的行为进行发现。模式匹配法可以显著地减少系统负担，有较高的检测率和准确率</span><br><span class="line"></span><br><span class="line">2) 专家系统法</span><br><span class="line"></span><br><span class="line">通过将安全专家的知识表示成IF-THEN规则，形成专家知识库，然后，运用推理算法进行检测入侵。专家系统的IF-THEN规则，就是由模式匹配规则组成，即”与或非组合模式匹配规则“，通过组合多个模式匹配规则，来获得单个模式匹配规则所无法取得的效果，主要是针对有特征的入侵行为</span><br><span class="line"></span><br><span class="line">3) 状态转移分析法</span><br><span class="line"></span><br><span class="line">该方法的基本思想是将攻击看成一个连续的、分步骤的并且各个步骤之间有一定的关联的过程。在网络中发生入侵时及时阻断入侵行为，防止可能还会进一步发生的类似攻击行为。在状态转移分析方法中，一个渗透过程可以看作是由攻击者做出的一系列的行为而导致系统从某个初始状态变为最终某个被危害的状态</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-异常检测方法"><a href="#b-异常检测方法" class="headerlink" title="b. 异常检测方法"></a>b. 异常检测方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1) 基于贝叶斯推理检测法</span><br><span class="line"></span><br><span class="line">通过在任何给定的时刻，测量变量值，推理判断系统是否发生入侵事件</span><br><span class="line"></span><br><span class="line">2) 基于特征选择检测法</span><br><span class="line"></span><br><span class="line">指从一组度量中挑选出能检测入侵的度量，用它来对入侵行为进行预测或分类</span><br><span class="line"></span><br><span class="line">3) 基于贝叶斯网络检测法</span><br><span class="line"></span><br><span class="line">用图形方式表示随机变量之间的关系。通过指定的与邻接节点相关一个小的概率集来计算随机变量的联接概率分布。按给定全部节点组合，所有根节点的先验概率和非根节点概率构成这个集。贝叶斯网络是一个有向图，弧表示父、子结点之间的依赖关系。当随机变量的值变为已知时，就允许将它吸收为证据，为其他的剩余随机变量条件值判断提供计算框架</span><br><span class="line"></span><br><span class="line">4) 基于模式预测的检测法</span><br><span class="line"></span><br><span class="line">事件序列不是随机发生的而是遵循某种可辨别的模式是基于模式预测的异常检测法的假设条件，其特点是事件序列及相互联系被考虑到了，只关心少数相关安全事件是该检测法的最大优点</span><br><span class="line"></span><br><span class="line">5) 基于统计的异常检测法</span><br><span class="line"></span><br><span class="line">根据用户对象的活动为每个用户都建立一个特征轮廓表，通过对当前特征与以前已经建立的特征进行比较，来判断当前行为的异常性。用户特征轮廓表要根据审计记录情况不断更新，其保护去多衡量指标，这些指标值要根据经验值或一段时间内的统计而得到</span><br><span class="line"></span><br><span class="line">6) 基于机器学习检测法</span><br><span class="line"></span><br><span class="line">根据离散数据临时序列学习获得网络、系统和个体的行为特征，并提出了一个实例学习法IBL，IBL是基于相似度，该方法通过新的序列相似度计算将原始数据（如离散事件流和无序的记录）转化成可度量的空间。然后，应用IBL学习技术和一种新的基于序列的分类方法，发现异常类型事件，从而检测入侵行为。其中，成员分类的概率由阈值的选取来决定</span><br><span class="line"></span><br><span class="line">7) 数据挖掘检测法</span><br><span class="line"></span><br><span class="line">数据挖掘的目的是要从海量的数据中提取出有用的数据信息。网络中会有大量的审计记录存在，审计记录大多都是以文件形式存放的。如果靠手工方法来发现记录中的异常现象是远远不够的，所以将数据挖掘技术应用于入侵检测中，可以从审计数据中提取有用的知识，然后用这些知识区检测异常入侵和已知的入侵。采用的方法有KDD算法，其优点是善于处理大量数据的能力与数据关联分析的能力，但是实时性较差</span><br><span class="line"></span><br><span class="line">8) 基于应用模式的异常检测法</span><br><span class="line"></span><br><span class="line">该方法是根据服务请求类型、服务请求长度、服务请求包大小分布计算网络服务的异常值。通过实时计算的异常值和所训练的阈值比较，从而发现异常行为</span><br><span class="line"></span><br><span class="line">9) 基于文本分类的异常检测法</span><br><span class="line"></span><br><span class="line">该方法是将系统产生的进程调用集合转换为“文档”。利用K邻聚类文本分类算法，计算文档的相似性</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-特征库"><a href="#3-特征库" class="headerlink" title="3. 特征库"></a>3. 特征库</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://osintframework.com/">https://osintframework.com/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/mitre-attack/attack-navigator">https://github.com/mitre-attack/attack-navigator</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://virustotal.github.io/yara/">https://virustotal.github.io/yara/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/CyberMonitor/APT_CyberCriminal_Campagin_Collections">APT_CyberCriminal_Campagin_Collections</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/smicallef/spiderfoot">https://github.com/smicallef/spiderfoot</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/InQuest/awesome-yara">https://github.com/InQuest/awesome-yara</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/sroberts/awesome-iocs">https://github.com/sroberts/awesome-iocs</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/KasperskyLab/klara">https://github.com/KasperskyLab/klara</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Threat-Detection/" rel="tag"># Threat Detection</a>
+              <a href="/tags/HIDS/" rel="tag"># HIDS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/20001/" rel="prev" title="钓鱼邮件姿势总结">
+                  <i class="fa fa-chevron-left"></i> 钓鱼邮件姿势总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/33899/" rel="next" title="红队武器工具库">
+                  红队武器工具库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

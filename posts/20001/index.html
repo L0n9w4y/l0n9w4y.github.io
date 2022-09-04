@@ -1,37 +1,525 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="钓鱼邮件姿势总结">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/20001/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/webmail.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/zoho.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/profile.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/send.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/phish.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/group.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_phish_test.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_template.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/4_page.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/5_campaign.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/6_dashboard.png">
+<meta property="article:published_time" content="2020-08-17T14:15:40.000Z">
+<meta property="article:modified_time" content="2022-07-31T12:14:47.713Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Initial Access">
+<meta property="article:tag" content="Phishing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/20001/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/20001/","path":"posts/20001/","title":"钓鱼邮件姿势总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>钓鱼邮件姿势总结 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">0x01 攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%81%B6%E6%84%8F%E9%93%BE%E6%8E%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1. 恶意链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%96%87%E6%A1%A3%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">2. 文档攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%9C%BA%E6%99%AF%E6%A1%88%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">0x02 场景案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E5%8E%86%E4%BC%AA%E9%80%A0%E6%8A%95%E9%80%92"><span class="nav-number">2.1.</span> <span class="nav-text">1. 简历伪造投递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%82%AE%E4%BB%B6%E5%8F%8A%E7%BD%91%E7%AB%99%E4%BC%AA%E9%80%A0"><span class="nav-number">2.2.</span> <span class="nav-text">2. 邮件及网站伪造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-SRC%E5%81%87%E6%BC%8F%E6%B4%9E"><span class="nav-number">2.3.</span> <span class="nav-text">3. SRC假漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">0x03 平台搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%8E%AF%E5%A2%83-x2F-%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">1. 环境&#x2F;工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-VPS"><span class="nav-number">3.1.1.</span> <span class="nav-text">a. VPS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%9F%9F%E5%90%8D"><span class="nav-number">3.1.2.</span> <span class="nav-text">b. 域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.1.3.</span> <span class="nav-text">c. 邮件服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0"><span class="nav-number">3.1.4.</span> <span class="nav-text">d. 钓鱼平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E7%BA%A2%E9%98%9F%E5%B9%B3%E5%8F%B0"><span class="nav-number">3.1.5.</span> <span class="nav-text">e. 红队平台</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">2. 邮件服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Ewomail"><span class="nav-number">3.2.1.</span> <span class="nav-text">a. Ewomail</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Zoho-Mail"><span class="nav-number">3.2.2.</span> <span class="nav-text">b. Zoho Mail</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0"><span class="nav-number">3.3.</span> <span class="nav-text">3. 钓鱼平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-CS-%E5%B9%B3%E5%8F%B0"><span class="nav-number">3.4.</span> <span class="nav-text">4. CS 平台</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E9%92%93%E9%B1%BC%E5%AE%9E%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">0x04 钓鱼实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E9%82%AE%E4%BB%B6%E7%94%A8%E6%88%B7-x2F-%E7%BB%84"><span class="nav-number">4.1.</span> <span class="nav-text">1. 创建邮件用户&#x2F;组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%92%93%E9%B1%BC%E9%82%AE%E4%BB%B6%E6%A8%A1%E6%9D%BF"><span class="nav-number">4.2.</span> <span class="nav-text">2. 钓鱼邮件模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BC%AA%E9%80%A0%E9%92%93%E9%B1%BC%E9%A1%B5%E9%9D%A2"><span class="nav-number">4.3.</span> <span class="nav-text">3. 伪造钓鱼页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%91%E8%B5%B7%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB"><span class="nav-number">4.4.</span> <span class="nav-text">4. 发起钓鱼攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BB%AA%E8%A1%A8%E6%9D%BF%E6%9F%A5%E7%9C%8B"><span class="nav-number">4.5.</span> <span class="nav-text">5. 仪表板查看</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/20001/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="钓鱼邮件姿势总结 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          钓鱼邮件姿势总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-08-17 22:15:40" itemprop="dateCreated datePublished" datetime="2020-08-17T22:15:40+08:00">2020-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 20:14:47" itemprop="dateModified" datetime="2022-07-31T20:14:47+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">红队渗透</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-攻击方式"><a href="#0x01-攻击方式" class="headerlink" title="0x01 攻击方式"></a>0x01 攻击方式</h2><h3 id="1-恶意链接"><a href="#1-恶意链接" class="headerlink" title="1. 恶意链接"></a>1. 恶意链接</h3><p><strong>简介</strong></p>
+<p>LNK（快捷方式或符号链接）是引用其他文件或程序的方法；快捷方式修改的利用方式，在MITRE ATT@CK中的ID是T0123，攻击者可以使用这种方式来实现持久化</p>
+<p><strong>Tips</strong></p>
+<pre><code>(1) 用超链接,把元素内容改成想要仿冒的域名
+
+(2) 申请一些和目标域名比较相似的域名
+
+(3) IDN punycode转码域名注册
+
+(4) https证书伪造: Let&#39;s Encrypt、Cloudlare等免费可信证书
+</code></pre>
+<h3 id="2-文档攻击"><a href="#2-文档攻击" class="headerlink" title="2. 文档攻击"></a>2. 文档攻击</h3><p>通过携带exe、execl、word等附件（附件中包含中恶意宏代码、远控exe）的方式</p>
+<pre><code>(1) 内嵌链接
+
+在PDF、Office文档中内嵌一个跳转链接式，通过文字信息的引导，让受害者点开页面；Office、Adobe等应用软件对打开外部链接都会弹框进行安全提醒，这种方式也比较容易引起警觉
+
+(2) Office宏
+
+宏是Office自带的一种高级脚本特性，通过VBA代码，可以在Office中去完成某项特定的任务，而不必再重复相同的动作，目的是让用户文档中的一些任务自动化；恶意宏代码在免杀和增加分析难度的手段上多种多样，除了把VBA代码混淆变形外，利用Excel的特性隐藏代码也很常见
+
+(3) CHM文档
+
+CHM是Windows帮助文件（如电子书）使用的扩展名，此文件可以被植入可执行代码，Cobalt Strike就支持CHM钓鱼文件的生成。成功的利用需要欺骗用户打开恶意的CHM文件，该文件可用于执行恶意代码。其缺点就是打开时会出现弹黑框、卡顿，容易被察觉
+
+(4) 漏洞捆绑文档
+
+利用Office、Adobe、IE等应用软件的漏洞，精心制作成诱饵文档，是APT攻击中的常客
+
+(5) 文件后缀RTLO
+
+RTLO字符全名为“RIGHT-TO-LEFT OVERRIDE”，是一个不可显示的控制类字符，其本质是unicode 字符。可以将任意语言的文字内容按倒序排列，最初是用来支持一些从右往左写的语言的文字，比如阿拉伯语，希伯来语。由于它可以重新排列字符的特性，会被攻击者利用从而达到欺骗目标，使得用户运行某些具有危害性的可执行文件
+
+(6) HTA文件
+
+HTA是HTML Application的缩写，直接将HTML保存成HTA的格式，是一个独立的应用软件，本身就是html应用程序，双击就能运行，却比普通网页权限大得多，它具有桌面程序的所有权限。Cobalt Strike也支持HTA钓鱼文件的生成
+
+(7) ⾃解压
+
+把⼀个恶意的⽂件和⼀个图⽚组合在⼀起，打包运⾏后，程序进⾏⾃解压，释放木马
+
+(8) ⾃解压+RLO
+
+把pe⽂件反转成png后缀、修改pe⽂件的ico图标，最后实施⾃解压操作
+</code></pre>
+<h2 id="0x02-场景案例"><a href="#0x02-场景案例" class="headerlink" title="0x02 场景案例"></a>0x02 场景案例</h2><h3 id="1-简历伪造投递"><a href="#1-简历伪造投递" class="headerlink" title="1. 简历伪造投递"></a>1. 简历伪造投递</h3><p><strong>Tips</strong></p>
+<pre><code>1. 模拟真实简历投递：在简历钓⻥邮件中，可伪造名字、联系方式、学校、经历等信息，针对不同岗位(技术、运营、产品经历等)伪造合适的简历，尽量写的漂亮
+
+2. 从官网招聘、领英、拉勾⽹、智联招聘、BOSS直聘、脉脉、v2ex、搜索引擎及其他专业论坛等渠道获取各平台留下简历投递的邮箱信息
+
+3. 简历拥有分发属性，针对HR等安全意识薄弱人员，成功率比较高
+</code></pre>
+<h3 id="2-邮件及网站伪造"><a href="#2-邮件及网站伪造" class="headerlink" title="2. 邮件及网站伪造"></a>2. 邮件及网站伪造</h3><p>购买⼀个相似域名，编写⼀摸⼀样的登录⻚⾯，访问后做引导，告知让其登录更新；或者伪造邮件服务器，发送全员及针对性邮件，诱导其点击查看邮件附件</p>
+<p><strong>话术总结</strong></p>
+<pre><code>1. 邮箱账号被异常登录、公司邮箱密码泄漏，账号密码过期，提醒修改更新密码
+
+2. 公司福利活动，请登录指定页面下载领取
+
+3. 最新爆发的漏洞通告及大型安全演练漏洞修复，请打漏洞补丁
+
+4. 系统更新迁移，云服务器包年包月过期，影响服务器列表见邮件附件
+
+5. 内部技术交流分享，请点击直播链接、附件PPT观看
+
+6. 转正评估、绩效自评及评估结果查看，请点击指定页面进行操作
+
+7. 构造钓鱼二维码，诱导员工扫描钓鱼二维码，跳转至指定钓鱼页面
+</code></pre>
+<h3 id="3-SRC假漏洞"><a href="#3-SRC假漏洞" class="headerlink" title="3. SRC假漏洞"></a>3. SRC假漏洞</h3><p>当⽬标企业存在类似SRC漏洞奖励计划时，可以去提交⼀个假漏洞，把恶意⽂件附在其中，并说是漏洞复现程序，诱导SRC审核人员打开</p>
+<p><strong>Tips</strong></p>
+<pre><code>1. 最好伪造提交核⼼应⽤高危及严重漏洞，保证“漏洞”的有效性及真实性
+
+2. 当SRC审核⼈员迟迟不点击的时候，可以施加压力，如指出漏洞危害高且影响范围广，若不及时修复承担责任；“指责”SRC人员漏洞审核水平及流程有待提升，审核时间较慢，对安全重视程度低等；其他家SRC流程如何规范、审核时效性如何高等等对比
+</code></pre>
+<h2 id="0x03-平台搭建"><a href="#0x03-平台搭建" class="headerlink" title="0x03 平台搭建"></a>0x03 平台搭建</h2><h3 id="1-环境-x2F-工具"><a href="#1-环境-x2F-工具" class="headerlink" title="1. 环境&#x2F;工具"></a>1. 环境&#x2F;工具</h3><h4 id="a-VPS"><a href="#a-VPS" class="headerlink" title="a. VPS"></a>a. VPS</h4><p>VPS(邮件服务器&#x2F;钓鱼平台&#x2F;&#x2F;CS Server)，推荐购买国外VPS，按时付费；(国内厂商监管严格、限制较多、whois信息易泄露、SMTP 端口限制)</p>
+<h4 id="b-域名"><a href="#b-域名" class="headerlink" title="b. 域名"></a>b. 域名</h4><p>购买与目标公司邮箱相近的域名</p>
+<h4 id="c-邮件服务器"><a href="#c-邮件服务器" class="headerlink" title="c. 邮件服务器"></a>c. 邮件服务器</h4><p><strong>方案一：开源自建邮件服务器</strong> - <a target="_blank" rel="noopener" href="https://github.com/gyxuehu/EwoMail">EwoMail</a></p>
+<p>Ewomail介绍</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 基于Linux的开源邮件服务器软件，集成了一些稳定的组件，可快速搭建，集成组件如下：</span><br><span class="line"></span><br><span class="line">	Postfix：邮件服务器</span><br><span class="line">	Dovecot：IMAP/POP3/邮件存储</span><br><span class="line">	Amavisd：反垃圾和反病毒</span><br><span class="line">	LNMP：nginx,mysql,php</span><br><span class="line">	EwoMail-Admin：WEB邮箱管理后台</span><br><span class="line">	Rainloop：webmail</span><br><span class="line"></span><br><span class="line">2. 数据可单独存储在个人服务器，防止隐私被盗取，保护数据安全</span><br></pre></td></tr></table></figure>
+
+<p>使用体验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 搭建方便，配置简单，采用自建邮件服务器方案较为推荐</span><br><span class="line"></span><br><span class="line">2. VPS一般会封禁25端口，需选择小众VPS厂商自建邮件服务器，或向客服申请25端口开放；对外发送邮件较麻烦</span><br><span class="line"></span><br><span class="line">3. 自建邮件服务器发送邮件容易被识别为垃圾邮件，即使配置SPF、DKIM也存在被当成垃圾邮件的情况；维护相对较麻烦</span><br></pre></td></tr></table></figure>
+
+<p><strong>方案二：专业电子邮件托管服务</strong> - <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/">Zoho Mail</a></p>
+<p>使用体验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 基本可以避免被识别为垃圾邮件的情况</span><br><span class="line"></span><br><span class="line">2. 配置及维护方便，可避免自建邮件服务器带来的一系列问题</span><br><span class="line"></span><br><span class="line">3. 对外发送邮件基本不存在问题，SMTP默认使用465/587端口，加密传输邮件，安全性较高</span><br><span class="line"></span><br><span class="line">4. 实际使用中，与gophish钓鱼平台联动效果较好，基本不需要投入过多时间配置</span><br></pre></td></tr></table></figure>
+
+<p><em>refer：</em> <a target="_blank" rel="noopener" href="https://www.10besty.com/best-email-hosting-providers/#two">https://www.10besty.com/best-email-hosting-providers/#two</a></p>
+<h4 id="d-钓鱼平台"><a href="#d-钓鱼平台" class="headerlink" title="d. 钓鱼平台"></a>d. 钓鱼平台</h4><p><a target="_blank" rel="noopener" href="https://github.com/gophish/gophish">Gophish</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Gophish is a powerful, open-source phishing framework that makes it easy to test your organization&#x27;s exposure to phishing</span><br></pre></td></tr></table></figure>
+
+<h4 id="e-红队平台"><a href="#e-红队平台" class="headerlink" title="e. 红队平台"></a>e. 红队平台</h4><p><a target="_blank" rel="noopener" href="https://blog.cobaltstrike.com/">Cobalt Strike</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一款优秀的红队攻击平台，主要用于执行有目标的攻击和模拟高级威胁者的后渗透行动；本文主要用此制作钓鱼诱饵、载荷投递及远控，CS的Spear Phish模块也可进行钓鱼测试</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-邮件服务器"><a href="#2-邮件服务器" class="headerlink" title="2. 邮件服务器"></a>2. 邮件服务器</h3><h4 id="a-Ewomail"><a href="#a-Ewomail" class="headerlink" title="a. Ewomail"></a>a. Ewomail</h4><p>参考<a target="_blank" rel="noopener" href="http://doc.ewomail.com/docs/ewomail/jianjie">EwoMail 邮件服务器(开源版文档)</a>进行邮件服务器的搭建</p>
+<p><strong>邮件基础</strong></p>
+<table>
+<thead>
+<tr>
+<th>简称</th>
+<th>全名</th>
+<th>任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MUA</td>
+<td>Mail User Agent</td>
+<td>供用户写信、读信、寄信的软件。寄信时，以SMTP协议将邮件提交给MTA ；收信时 ，以POP或IMAP协议访问服务器上的邮箱</td>
+</tr>
+<tr>
+<td>MTA</td>
+<td>Mail Transfer Agent</td>
+<td>负责接收、递送邮件的服务器软件。决定邮件的递送路径，进行必要的地址改写。应该由本地系统收下的邮件，委托给MDA进行最后的投递操作</td>
+</tr>
+<tr>
+<td>MDA</td>
+<td>Mail Delivery Agent</td>
+<td>负责投递本地邮件到适当的邮箱，MDA可以过滤邮件内容，或是依照用户设定的准则，将邮件分类到适当的邮箱；甚至可以将邮件转回给MTA，以寄到另一个邮箱</td>
+</tr>
+</tbody></table>
+<p><strong>注意事项</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 服务器VPS需要干净环境，要求全新干净系统，最好单独供Ewomail使用，不能安装在已有的nginx,mysql的环境中</span><br><span class="line"></span><br><span class="line">2. 新版本的杀毒软件占用的内存比较多，可参考(http://doc.ewomail.com/docs/ewomail/reduce_memory)降低内存占用</span><br><span class="line"></span><br><span class="line">3. webmail https证书配置：系统自带了本地SSL证书，但未经认证；可使用经互联网经认证的证书，如通过 Let’s Encrypt、Cloudlare等申请免费可信证书</span><br><span class="line"></span><br><span class="line">4. 开放端口：必须打开的端口8000(webmail)，8010(管理后台)，25(SMTP)，143(IMAP)；可修改</span><br><span class="line"></span><br><span class="line">5. DKIM设置：推荐设置域名密钥识别邮件标准，用来防止被判定为垃圾邮件；参考(http://doc.ewomail.com/docs/ewomail/dkim)</span><br></pre></td></tr></table></figure>
+
+<p><strong>问题总结</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 无法连接服务器：邮件无法发送、接收等</span><br><span class="line"></span><br><span class="line">a. 检查VPS服务商是否开放25端口出站方向，如未开放可通过工单、客服等联系运营商申请开放25端口出站方向；或使用465等其他端口发送邮件</span><br><span class="line"></span><br><span class="line">b. 25端口正常的情况下，如果不能链接服务器，请检查域名DNS解析，或做内部通信</span><br><span class="line"></span><br><span class="line">2. 域不允许</span><br><span class="line"></span><br><span class="line">a. 当显示域不允许的时候，先检查域名解析是否已做好，如果只在本地搭建测试，测试内部通信是否正常</span><br><span class="line">	</span><br><span class="line">b. 如以上2个步骤还不行，参考自定义访问路径文章(http://doc.ewomail.com/docs/ewomail/custom_path)，填上具体的访问地址</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置&#x2F;命令</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1. 默认安装及配置目录</span><br><span class="line"></span><br><span class="line">/ewomail</span><br><span class="line">.</span><br><span class="line">├── config.ini</span><br><span class="line">├── dkim</span><br><span class="line">├── mail</span><br><span class="line">├── mysql</span><br><span class="line">├── nginx</span><br><span class="line">├── php72</span><br><span class="line">└── www</span><br><span class="line"></span><br><span class="line">2. 管理后台、webmail的nginx配置</span><br><span class="line"></span><br><span class="line">/ewomail/nginx/conf/vhost</span><br><span class="line"></span><br><span class="line">├── ewomail-admin.conf      //管理后台</span><br><span class="line">├── phpmyadmin.conf         //数据库</span><br><span class="line">├── rainloop.conf           //webmail</span><br><span class="line">└── rainloop.conf.ssl       //webmail ssl配置</span><br><span class="line"></span><br><span class="line">3. PHP配置文件: 可修改后台管理或webmail的访问路径</span><br><span class="line"></span><br><span class="line">/ewomail/www/ewomail-admin/core/config.php</span><br><span class="line">	</span><br><span class="line">├── &#x27;url&#x27; =&gt; &#x27;ewomail后台访问路径&#x27;</span><br><span class="line">└── &#x27;webmail_url&#x27; =&gt; &#x27;webmail的访问路径&#x27;</span><br><span class="line"></span><br><span class="line">4. 卸载命令</span><br><span class="line"></span><br><span class="line">$ systemctl stop nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">$ rm -rf /ewomail</span><br><span class="line"></span><br><span class="line">5. 重启命令</span><br><span class="line"></span><br><span class="line">$ systemctl restart nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">6. 组件查找</span><br><span class="line"></span><br><span class="line">$ yum install mlocate &amp;&amp; updatedb   // 安装locate所在文件包并更新搜索数据库</span><br><span class="line">	</span><br><span class="line">$ locate amavisd   //查找邮件内容过滤器amavised相关文件/文件夹</span><br></pre></td></tr></table></figure>
+
+<p><strong>管理后台</strong></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png"></p>
+<p><strong>Webmail</strong></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/webmail.png"></p>
+<h4 id="b-Zoho-Mail"><a href="#b-Zoho-Mail" class="headerlink" title="b. Zoho Mail"></a>b. Zoho Mail</h4><p>参考官方文档 <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/help/adminconsole/email-hosting-setup.html">Email Hosting Setup in Zoho</a> 进行申请、配置；配置完成后如下：</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/zoho.png"></p>
+<p>SMTP服务配置可参考 <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/help/zoho-smtp.html">SMTP Server Configuration - Zoho Mail</a>，完成后在<code>gophish</code>中进行Sending Profiles-邮箱配置</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/profile.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/send.png"></p>
+<p><code>采用此方案，对外发送邮件基本没什么问题，也不用担心被识别为垃圾邮件</code></p>
+<h3 id="3-钓鱼平台"><a href="#3-钓鱼平台" class="headerlink" title="3. 钓鱼平台"></a>3. 钓鱼平台</h3><p><strong>安装运行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. 下载解压</span><br><span class="line"></span><br><span class="line">$ wget https://github.com/gophish/gophish/releases/download/v0.11.0/gophish-v0.11.0-linux-64bit.zip</span><br><span class="line"></span><br><span class="line">$ unzip gophish-v0.11.0-linux-64bit.zip -d gophish</span><br><span class="line"></span><br><span class="line">2. 修改配置(config.json)</span><br><span class="line"></span><br><span class="line">admin_server是后台管理页面，将127.0.0.1 改为 0.0.0.0，默认开放的端口3333。phish_server是钓鱼网站，默认开放80端口</span><br><span class="line"></span><br><span class="line">3. 启动运行</span><br><span class="line"></span><br><span class="line">$ cd gophish &amp;&amp; chmod 640 config.json &amp;&amp; chmod +x gophish</span><br><span class="line"></span><br><span class="line">$ nohup ./gophish &amp;  //后台运行，日志记录至nohup.out文件</span><br><span class="line"></span><br><span class="line">成功启动后，在nohup.out文件中的初始账户密码可用来登录控制台</span><br><span class="line"></span><br><span class="line">4. 首次登录强制修改密码，要求八位以上字符</span><br><span class="line"></span><br><span class="line">地址：https://x.x.x.x:3333/</span><br></pre></td></tr></table></figure>
+
+<p><strong>功能介绍</strong></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/phish.png"></p>
+<center>功能|<center>简述
+---|---
+Dashboard|仪表板，查看整体钓鱼情况
+Campaigns|作战配置，每次攻击前需要配置一次
+Users & Groups|用户和用户组（添加需要进行钓鱼的邮箱和相关信息）
+Email Templates|电子邮件模板
+Landing Pages|需要伪造的钓鱼页面
+Sending Profiles|钓鱼邮箱发送配置
+Account Settings|账户、UI、报告等设置
+
+<h3 id="4-CS-平台"><a href="#4-CS-平台" class="headerlink" title="4. CS 平台"></a>4. CS 平台</h3><p>搭建及使用可参考<a target="_blank" rel="noopener" href="https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf">A-Team: Cobalt Strike 4.0 手册</a>及<a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/">Cobalt Strike Book</a></p>
+<p><strong>目录简介</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  CobaltStrike4.1 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── agscript               //[拓展应用的脚本]</span><br><span class="line">├── agscript.bat</span><br><span class="line">├── c2lint                 //[检查c2配置文件语法和预览]</span><br><span class="line">├── c2lint.bat</span><br><span class="line">├── cobaltstrike           //[客户端启动程序]</span><br><span class="line">├── cobaltstrike.auth</span><br><span class="line">├── cobaltstrike.bat       //[CS Windows客户端启动程序]</span><br><span class="line">├── CobaltStrikeCN.jar     //[翻译插件]</span><br><span class="line">├── cobaltstrike.jar       //[主体程序]</span><br><span class="line">├── cobaltstrike.store</span><br><span class="line">├── data</span><br><span class="line">├── logs</span><br><span class="line">├── nohup.out              //[后台启动日志记录]-个人创建</span><br><span class="line">├── peclone</span><br><span class="line">├── peclone.bat</span><br><span class="line">├── start.sh               //[服务端后台启动脚本] -个人创建</span><br><span class="line">├── teamserver             //[Linux服务端启动程序]</span><br><span class="line">├── teamserver.bat</span><br><span class="line">└── third-party            //[vnc远程功能的dll等第三方工具]</span><br></pre></td></tr></table></figure>
+
+<p><strong>启动运行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Cobalt Strike 团队服务器建议在VPS Linux 系统上运行，可持久运行，连接便捷</span><br><span class="line"></span><br><span class="line">$ nohup sh start.sh &amp;  //后台启动，日志记录至nohup.out</span><br><span class="line"></span><br><span class="line">启动脚本start.sh：teamserver &lt;server_host&gt; &lt;password&gt; [/path/to/c2.profile] [YYYY-MM-DD]</span><br><span class="line"></span><br><span class="line">2. 客户端选用Windows：运行teamserver.bat启动，输入服务端启动时配置的server_host、password即可</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-钓鱼实战"><a href="#0x04-钓鱼实战" class="headerlink" title="0x04 钓鱼实战"></a>0x04 钓鱼实战</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据搭建的钓鱼平台、制定的钓鱼方案，选取个人及同事通用邮箱、内部邮箱进行测试；针对全体员工的钓鱼测试修改收件人邮箱账号即可，原理及方法类似；本测试选取邮箱账户密码更新钓鱼场景，其余场景过程类似</span><br></pre></td></tr></table></figure>
+<h3 id="1-创建邮件用户-x2F-组"><a href="#1-创建邮件用户-x2F-组" class="headerlink" title="1. 创建邮件用户&#x2F;组"></a>1. 创建邮件用户&#x2F;组</h3><p>可通过上传CVS文件，进行批量添加邮件账号，批量发送邮件</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/group.png"></p>
+<p>测试选取了两个外部邮件服务商邮件账号、一个内部邮件账号</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_phish_test.png"></p>
+<h3 id="2-钓鱼邮件模板"><a href="#2-钓鱼邮件模板" class="headerlink" title="2. 钓鱼邮件模板"></a>2. 钓鱼邮件模板</h3><p>需在钓鱼邮件模板中的html进行更改和添加，可统计哪些人点开了钓鱼邮件，哪些人打开了钓鱼页面</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_template.png"></p>
+<pre><code>为了后续记录邮件是否打开，可勾选上AddTrackingImage，它将会在发送的每份邮件源码上插入一个唯一特定的隐藏图片，当邮件被打开时，此隐藏图片则也会被请求，以此来检测该邮件是否被打开，AddFiles则是给邮件添加附件
+</code></pre>
+<h3 id="3-伪造钓鱼页面"><a href="#3-伪造钓鱼页面" class="headerlink" title="3. 伪造钓鱼页面"></a>3. 伪造钓鱼页面</h3><p>配置好钓鱼邮件后，可以通过LandingPages模块来新建钓鱼网站页面，支持手写 html文件，也可通过导入网站功能，针对目标网页进行克隆; 如以下抓取内部网页邮箱登录界面：</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/4_page.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 选上CaptureSubmitted Data和CapturePasswords，记录受害者输入的账号和密码，为安全性，暂不选取密码记录</span><br><span class="line"></span><br><span class="line">2. Redirect to 是受害者点击完提交按钮后，自动跳转的网站</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-发起钓鱼攻击"><a href="#4-发起钓鱼攻击" class="headerlink" title="4. 发起钓鱼攻击"></a>4. 发起钓鱼攻击</h3><p>配置Campaigns，填写Name、选择钓鱼邮件模板、选择钓鱼网站模板、填写钓鱼网站 URL、填写发件邮箱、选择受害者邮件组</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/5_campaign.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">钓鱼网站URL根据实际钓鱼邮件测试情况，填写对应的地址，点击Launch Campaign即可成功发起一次钓鱼邮件攻击测试</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-仪表板查看"><a href="#5-仪表板查看" class="headerlink" title="5. 仪表板查看"></a>5. 仪表板查看</h3><p>实际测试中，选取了三个邮件账号，一个未打开邮件、一个打开邮件并点击链接、一个打开邮件后点击链接并输入登录账号密码，最终结果如下，和测试结果相同：</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/6_dashboard.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过仪表盘可详细看到那些邮件账户打开了邮件、点击了指定链接、并输入了账户和密码信息；钓鱼链接对主机无危害、仅显示那些账号对其进行了访问</span><br></pre></td></tr></table></figure>
+<hr>
+<center>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途...</center></center></center>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Initial-Access/" rel="tag"># Initial Access</a>
+              <a href="/tags/Phishing/" rel="tag"># Phishing</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/20996/" rel="prev" title="网络威胁框架演进">
+                  <i class="fa fa-chevron-left"></i> 网络威胁框架演进
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/11235/" rel="next" title="HIDS建设经验总结">
+                  HIDS建设经验总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,37 +1,442 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文探究Cyber Kill Chain、NSA-TCTF、MITRE-ATT&amp;CK框架等网络威胁框架演进发展历程...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络威胁框架演进">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/20996/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文探究Cyber Kill Chain、NSA-TCTF、MITRE-ATT&amp;CK框架等网络威胁框架演进发展历程...">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill1.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_chain_cn.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_2.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_chain_AD.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/NTCTF.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/NTCTF_CN.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/att&ck_linux-en.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/att&ck_linux.png">
+<meta property="article:published_time" content="2020-06-11T13:38:56.000Z">
+<meta property="article:modified_time" content="2022-07-31T12:13:08.887Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Threat Framework">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill1.png">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/20996/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://l0n9w4y.cc/posts/20996/","path":"posts/20996/","title":"网络威胁框架演进"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>网络威胁框架演进 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Cyber-Kill-Chain"><span class="nav-number">1.</span> <span class="nav-text">0x01 Cyber Kill Chain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-NSA-TCTF%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">0x02 NSA-TCTF框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-ATT-amp-CK%E6%A1%86%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">0x03 ATT&amp;CK框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">0xFF 参考资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/20996/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="网络威胁框架演进 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络威胁框架演进
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-11 21:38:56" itemprop="dateCreated datePublished" datetime="2020-06-11T21:38:56+08:00">2020-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 20:13:08" itemprop="dateModified" datetime="2022-07-31T20:13:08+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">威胁检测</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文探究Cyber Kill Chain、NSA-TCTF、MITRE-ATT&CK框架等网络威胁框架演进发展历程...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-Cyber-Kill-Chain"><a href="#0x01-Cyber-Kill-Chain" class="headerlink" title="0x01 Cyber Kill Chain"></a>0x01 Cyber Kill Chain</h2><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill1.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_chain_cn.png"></p>
+<p><strong>检测防御</strong></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_2.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/cyber_kill_chain_AD.png"></p>
+<h2 id="0x02-NSA-TCTF框架"><a href="#0x02-NSA-TCTF框架" class="headerlink" title="0x02 NSA-TCTF框架"></a>0x02 NSA-TCTF框架</h2><p>NSA-TCTF框架(Technical Cyber Threat Framework，技术性网空威胁框架): NSA于2018年提出的TCTF框架，对攻击意图、作业阶段、行动特征的拆解与刻画</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/NTCTF.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/NTCTF_CN.png"></p>
+<h2 id="0x03-ATT-amp-CK框架"><a href="#0x03-ATT-amp-CK框架" class="headerlink" title="0x03 ATT&amp;CK框架"></a>0x03 ATT&amp;CK框架</h2><p>MITRE-ATT&amp;CK框架 (Common Knowledge base of Adversary Tactics and Techniques，对手战术技术公共知识库): 从现实网络威胁中提炼出攻击行动的具体信息，构造了丰富的攻击者战术技术知识库</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/att&ck_linux-en.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/att&ck_linux.png"></p>
+<table>
+<thead>
+<tr>
+<th>攻击阶段</th>
+<th>对应英文</th>
+<th>描述</th>
+<th>检测项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. 初始访问</td>
+<td>Initial Access</td>
+<td>通过各种漏洞、攻击入口进入网络</td>
+<td>暴力破解、异常登录、web攻击、服务漏洞、未授权访问、配置缺陷，钓鱼、供应链攻击、可信账户登录</td>
+</tr>
+<tr>
+<td>2. 投递执行</td>
+<td>Execution</td>
+<td>恶意代码、软件投递并执行</td>
+<td>主动非法外连、恶意软件落盘、可疑文件传输、异常脚本及指令执行，用户恶意链接、文档执行</td>
+</tr>
+<tr>
+<td>3. 持久化控制</td>
+<td>Persistence</td>
+<td>持久化，保持立足点</td>
+<td>可疑定时任务、异常启动项，webshell、rootkit、反弹shell、可疑账户创建、各类持久化后门</td>
+</tr>
+<tr>
+<td>4. 权限提升</td>
+<td>Privilege Escalation</td>
+<td>获取更高级别权限</td>
+<td>内核、系统、服务组件提权，漏洞利用程序，进程注入，LD_PRELOAD劫持，容器提权及逃逸</td>
+</tr>
+<tr>
+<td>5.  防御规避</td>
+<td>Defense Evasion</td>
+<td>杀软、检测设备绕过，避免被发现</td>
+<td>文件编码、混淆，文件、进程隐藏，安全设备禁用修改，系统文件、命令替换，预加载文件篡改，agent异常离线，日志及历史命令清除，有效账户利用，进程注入</td>
+</tr>
+<tr>
+<td>6. 凭证访问</td>
+<td>Credential Access</td>
+<td>窃取账户和密码</td>
+<td>输入记录，密码喷洒攻击，中间人攻击，修改身份验证过程，网络嗅探，系统凭证转储，登录凭证抓取</td>
+</tr>
+<tr>
+<td>7. 环境发现</td>
+<td>Discovery</td>
+<td>所处系统及内部网络环境发现，便于进一步横向渗透</td>
+<td>内网信息收集，账号发现、文件目录发现、网络服务扫描、共享服务发现、网络嗅探、权限发现、服务组件及安全软件发现、虚拟化&#x2F;沙盒环境发现</td>
+</tr>
+<tr>
+<td>8. 横向移动</td>
+<td>Lateral Movement</td>
+<td>当前环境穿越，多个目标访问</td>
+<td>内网扫描、端口转发、远程服务利用、远程服务会话劫持、蠕虫病毒、横向工具转移、软件部署工具</td>
+</tr>
+<tr>
+<td>9. 数据采集</td>
+<td>Collection</td>
+<td>目标数据收集</td>
+<td>存档数据、剪贴板、数据库、网络共享等数据收集，数据分段暂存及传输，输入捕捉，中间人攻击</td>
+</tr>
+<tr>
+<td>10. 命令与控制</td>
+<td>Command and Control</td>
+<td>与目标系统持续通信与控制</td>
+<td>远控木马、异常连接、数据编码及混淆、加密通道、协议隧道、多跳代理、域前置、DGA域名</td>
+</tr>
+<tr>
+<td>11. 数据窃取</td>
+<td>Exfiltration</td>
+<td>目标数据窃取</td>
+<td>敏感文件访问及泄漏、数据库导出，通过C2通道、网络及物理介制窃取数据，代码存储库窃取、云存储迁移，可信账号劫持及利用</td>
+</tr>
+<tr>
+<td>12. 影响破坏</td>
+<td>Impact</td>
+<td>操纵、中断或破坏系统和数据</td>
+<td>数据销毁、加密、损坏，账户访问权限删除，拒绝服务，磁盘擦除，服务停止等</td>
+</tr>
+</tbody></table>
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/Gaining_the_Advantage_Cyber_Kill_Chain.pdf">Gaining_the_Advantage_Cyber_Kill_Chain</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform.pdf">Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/LM-White-Paper-Defendable-Architectures.pdf">LM-White-Paper-Defendable-Architectures</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/LM-White-Paper-Threat-Driven-Approach.pdf">LM-White-Paper-Threat-Driven-Approach</a></li>
+<li><a target="_blank" rel="noopener" href="https://media.defense.gov/2019/Jul/16/2002158108/-1/-1/0/CTR_NSA-CSS-TECHNICAL-CYBER-THREAT-FRAMEWORK_V2.PDF">CTR_NSA-CSS-TECHNICAL-CYBER-THREAT-FRAMEWORK_V2</a></li>
+<li><a target="_blank" rel="noopener" href="https://attack.mitre.org/matrices/enterprise/linux/">https://attack.mitre.org/matrices/enterprise/linux/</a></li>
+<li><a target="_blank" rel="noopener" href="https://attack.mitre.org/tactics/enterprise/">https://attack.mitre.org/tactics/enterprise/</a></li>
+<li><a target="_blank" rel="noopener" href="https://attack.mitre.org/mitigations/enterprise/">https://attack.mitre.org/mitigations/enterprise/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/Gaining_the_Advantage_Cyber_Kill_Chain.pdf">Gaining_the_Advantage_Cyber_Kill_Chain.pdf</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Threat-Framework/" rel="tag"># Threat Framework</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/98821/" rel="prev" title="Linux加固手册">
+                  <i class="fa fa-chevron-left"></i> Linux加固手册
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/20001/" rel="next" title="钓鱼邮件姿势总结">
+                  钓鱼邮件姿势总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
