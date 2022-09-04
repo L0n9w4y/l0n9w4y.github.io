@@ -2479,7 +2479,7 @@ hr {
   text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
 }
 .posts-expand.index .post-header {
-  text-align: left;
+  text-align: center;
 }
 @media (max-width: 767px) {
   .posts-expand.index .post-header {
@@ -2611,7 +2611,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #4505ff;
+  background: #6a39e2;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);

@@ -640,6 +640,274 @@
       </tags>
   </entry>
   <entry>
+    <title>内网存活主机发现姿势</title>
+    <url>/posts/10803/</url>
+    <content><![CDATA[<center>本文总结各类内网存活主机发现姿势...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-基于ARP发现内网存活主机"><a href="#0x01-基于ARP发现内网存活主机" class="headerlink" title="0x01 基于ARP发现内网存活主机"></a>0x01 基于ARP发现内网存活主机</h2><p><strong>ARP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sn -PR 192.168.1.1/24</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描"><a href="#2-msf扫描" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre><code>msf &gt; use auxiliary/scanner/discovery/arp_sweep
+
+msf auxiliary(arp_sweep) &gt; set RHOSTS 192.168.1.0/24
+
+msf auxiliary(arp_sweep) &gt; set THREADS 16
+
+msf auxiliary(arp_sweep) &gt; run
+</code></pre>
+<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum -y install arp-scan  //安装</span><br><span class="line"></span><br><span class="line">$ arp-scan --interface=eth0 --localnet  //发现本地网络上所有主机</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-powershell"><a href="#4-powershell" class="headerlink" title="4. powershell"></a>4. powershell</h3><pre><code>c:&gt;powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0/24&quot;
+</code></pre>
+<h3 id="5-netdiscover"><a href="#5-netdiscover" class="headerlink" title="5. netdiscover"></a>5. netdiscover</h3><pre><code>$ netdiscover -r 192.168.1.0/24 -i wlan0
+</code></pre>
+<h2 id="0x02-基于ICMP发现内网存活主机"><a href="#0x02-基于ICMP发现内网存活主机" class="headerlink" title="0x02 基于ICMP发现内网存活主机"></a>0x02 基于ICMP发现内网存活主机</h2><p><strong>ICMP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP/IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-1"><a href="#1-nmap扫描-1" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre><code>$ nmap -sP -PI -T4 192.168.0.1/24
+</code></pre>
+<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) Windows扫描</span><br><span class="line">for /l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr /i &quot;ttl=&quot;</span><br><span class="line"></span><br><span class="line">2）Linux扫描</span><br><span class="line">for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#x27;&#123;print $4&#125;&#x27;; done</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-fping"><a href="#3-fping" class="headerlink" title="3. fping"></a>3. fping</h3><p><strong>常用参数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：只显示存活主机；</span><br><span class="line"></span><br><span class="line">-u：只显示不存活主机；</span><br><span class="line"></span><br><span class="line">-l：循环ping</span><br><span class="line"></span><br><span class="line">-g：指定扫描范围</span><br><span class="line"></span><br><span class="line">-f：扫描IP列表文件</span><br></pre></td></tr></table></figure>
+
+<p><strong>扫描实战</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ fping -af iplist  //从文件中扫描存活主机</span><br><span class="line"></span><br><span class="line">$ fping -g IP1 IP2 //IP1地址开始范围，IP2地址结束范围</span><br></pre></td></tr></table></figure>
+
+<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module ./Invoke‐TSPingSweep.ps1</span><br><span class="line">; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv</span><br><span class="line">eHost ‐ScanPort ‐Port 445,135&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="tcping"><a href="#tcping" class="headerlink" title="tcping"></a>tcping</h3><pre><code>tcping.exe ‐n 1 192.168.1.0 80
+</code></pre>
+<h2 id="0x03-基于UDP发现内网存活主机"><a href="#0x03-基于UDP发现内网存活主机" class="headerlink" title="0x03 基于UDP发现内网存活主机"></a>0x03 基于UDP发现内网存活主机</h2><p><strong>UDP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_probe</span><br><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_sweep</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ unicornscan -mU 192.168.1.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-基于snmp发现内网存活主机"><a href="#0x04-基于snmp发现内网存活主机" class="headerlink" title="0x04 基于snmp发现内网存活主机"></a>0x04 基于snmp发现内网存活主机</h2><p><strong>SNMP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SNMP是一种简单网络管理协议，它属于TCP/IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script snmp-brute 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/snmp/snmp_enum</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-基于netbios发现内网存活主机"><a href="#0x05-基于netbios发现内网存活主机" class="headerlink" title="0x05 基于netbios发现内网存活主机"></a>0x05 基于netbios发现内网存活主机</h2><p><strong>netbios协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script nbstat.nse -p137 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/netbios/nbname</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nbtscan -r 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">$ nbtscan -v -s: 192.168.1.0/24</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>红队渗透</category>
+      </categories>
+      <tags>
+        <tag>Discovery</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>恶意软件分析资源</title>
+    <url>/posts/12996/</url>
+    <content><![CDATA[<center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-样本来源"><a href="#0x01-样本来源" class="headerlink" title="0x01 样本来源"></a>0x01 样本来源</h2><h3 id="1-下载网站"><a href="#1-下载网站" class="headerlink" title="1. 下载网站"></a>1. 下载网站</h3><ul>
+<li><a href="https://s.threatbook.cn/">https://s.threatbook.cn/</a> 微步云沙箱</li>
+<li><a href="https://www.virustotal.com/">https://www.virustotal.com/</a> 在线样本获取</li>
+<li><a href="https://app.any.run/">https://app.any.run/</a> 在线样本分析</li>
+<li><a href="https://bazaar.abuse.ch/browse/">https://bazaar.abuse.ch/browse/</a>  MalwareBazaar Database</li>
+<li><a href="https://vx-underground.org/samples.html">https://vx-underground.org/samples.html</a> 恶意软件在线下载</li>
+<li><a href="https://github.com/ytisf/theZoo">https://github.com/ytisf/theZoo</a>  恶意软件分析开源项目</li>
+<li><a href="https://objective-see.com/malware.html">https://objective-see.com/malware.html</a> MacOS恶意软件样本</li>
+<li><a href="http://contagiodump.blogspot.com/">http://contagiodump.blogspot.com/</a> Contagio恶意软件收集平台</li>
+<li><a href="https://www.hybrid-analysis.com/">https://www.hybrid-analysis.com/</a>  Payload Security恶意软件分析</li>
+<li><a href="http://vxvault.net/ViriList.php">http://vxvault.net/ViriList.php</a>  该网站为恶意软件和urls的收集</li>
+</ul>
+<h3 id="2-分类样本"><a href="#2-分类样本" class="headerlink" title="2. 分类样本"></a>2. 分类样本</h3><ul>
+<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a>  Payloads合集</li>
+<li><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a>  Exploit 和 shellcode 样本</li>
+<li><a href="https://docs.google.com/spreadsheets/d/1TWS238xacAto-fLKh1n5uTsdijWdCEsGIM0Y0Hvmc5g/pubhtml">https://docs.google.com/spreadsheets/</a> 勒索软件列表</li>
+<li><a href="https://github.com/tennc/webshell">https://github.com/tennc/webshell</a>  Webshell资源</li>
+<li><a href="https://github.com/milabs/awesome-linux-rootkits">https://github.com/milabs/awesome-linux-rootkits</a> Linux rootkit合集</li>
+<li><a href="https://github.com/d30sa1/RootKits-List-Download">https://github.com/d30sa1/RootKits-List-Download</a>  Rootkit下载列表</li>
+<li><a href="https://github.com/alphaSeclab/awesome-rat">https://github.com/alphaSeclab/awesome-rat</a>  远控木马合集</li>
+<li><a href="https://github.com/maestron/botnets">https://github.com/maestron/botnets</a> Botnet源码合集</li>
+</ul>
+<h3 id="3-样本合集"><a href="#3-样本合集" class="headerlink" title="3. 样本合集"></a>3. 样本合集</h3><ul>
+<li><a href="https://github.com/vxunderground/MalwareSourceCode">https://github.com/vxunderground/MalwareSourceCode</a>  不同平台不同语言恶意软件源码</li>
+<li><a href="https://github.com/InQuest/malware-samples">https://github.com/InQuest/malware-samples</a> 恶意软件样本与分析文章集合</li>
+<li><a href="https://github.com/RamadhanAmizudin/malware">https://github.com/RamadhanAmizudin/malware</a> Malwaretech恶意样本集</li>
+<li><a href="https://github.com/mstfknn/malware-sample-library">https://github.com/mstfknn/malware-sample-library</a> 恶意软件样本库</li>
+<li><a href="https://github.com/ashishb/android-malware">https://github.com/ashishb/android-malware</a> Andorid恶意样本库</li>
+</ul>
+<h2 id="0x02-分析工具"><a href="#0x02-分析工具" class="headerlink" title="0x02 分析工具"></a>0x02 分析工具</h2><h3 id="1-Linux平台"><a href="#1-Linux平台" class="headerlink" title="1. Linux平台"></a>1. Linux平台</h3><h4 id="a-静态分析"><a href="#a-静态分析" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://linux.die.net/man/1/file">file</a> – 显示文件的类型</li>
+<li><a href="https://linux.die.net/man/1/strings">strings</a>– 从文件中提取字符串</li>
+<li><a href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a> – 区分文件</li>
+<li><a href="https://linux.die.net/man/1/nm">nm</a> – 提取符号表（函数导入、导出）</li>
+<li><a href="https://linux.die.net/man/1/strace">strace</a> – 跟踪系统调用和信号</li>
+<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符（推荐）</li>
+</ul>
+<h4 id="b-动态分析"><a href="#b-动态分析" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://www.wireshark.org/download.html">Wireshark</a> – 网络分析工具</li>
+<li><a href="https://linux.die.net/man/8/tcpdump">tcpdump</a>  – 网络分析工具</li>
+<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> –一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理</li>
+<li><a href="https://www.netresec.com/?page=Blog&month=2014-02&post=HowTo-install-NetworkMiner-in-Ubuntu-Fedora-and-Arch-Linux">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a href="https://portswigger.net/burp/communitydownload">Burp Suite</a> – 适用于任何浏览器、系统或平台的免费网络代理</li>
+<li><a href="https://www.inetsim.org/packages.html">INetSim</a> – 互联网服务模拟套件</li>
+</ul>
+<p>适用于 Linux 的 Procmon</p>
+<h4 id="c-逆向工具"><a href="#c-逆向工具" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://linux.die.net/man/1/gdb">GDB</a> – GNU 调试器</li>
+<li><a href="https://www.hex-rays.com/products/ida/support/download.shtml">IDA Free&#x2F;Pro</a> – 反汇编器和调试器</li>
+<li><a href="https://www.hopperapp.com/">Hopper</a> – 反汇编器和调试器</li>
+<li><a href="https://rada.re/r/">radare2</a> - 免费和开源的反汇编器和调试器</li>
+<li><a href="https://github.com/radareorg/cutter">Cutter</a> -radare2 的 GUI</li>
+<li><a href="https://binary.ninja/">Binary Ninja</a> – 一种新型的逆向平台</li>
+<li><a href="https://github.com/angr/angr">angr</a> – 跨平台二进制分析框架</li>
+</ul>
+<h4 id="d-脱壳反混淆"><a href="#d-脱壳反混淆" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a href="https://github.com/fireeye/flare-floss">FLOSS</a> – 自动从恶意软件中提取混淆的字符串</li>
+<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a href="https://blog.didierstevens.com/programs/xorsearch/">XorSearch</a> -用于在 XOR、ROL、ROT 或 SHIFT 编码的二进制文件中搜索给定字符串</li>
+</ul>
+<h4 id="e-取证工具"><a href="#e-取证工具" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a> – 硬盘取证获取工具</li>
+<li><a href="http://www.sleuthkit.org/autopsy/download.php">Autopsy</a> - 硬盘取证分析工具</li>
+<li><a href="https://github.com/504ensicsLabs/LiME">LiME</a> – 内存获取工具</li>
+<li><a href="https://github.com/volatilityfoundation/volatility">Volatility</a> – 内存取证分析框架</li>
+<li><a href="https://fogproject.org/">FOG</a> — 免费的开源网络计算机克隆和管理解决方案</li>
+</ul>
+<h4 id="f-综合工具"><a href="#f-综合工具" class="headerlink" title="f. 综合工具"></a>f. 综合工具</h4><ul>
+<li><a href="https://github.com/monnappa22/Limon">Limon Sandbox</a> – 免费开源的自动化 Linux 恶意软件分析沙箱</li>
+<li><a href="https://cuckoosandbox.org/">Cuckoo Sandbox</a> – 免费开源的自动化恶意软件分析沙箱</li>
+</ul>
+<h3 id="2-Windwos平台"><a href="#2-Windwos平台" class="headerlink" title="2. Windwos平台"></a>2. Windwos平台</h3><h4 id="a-静态分析-1"><a href="#a-静态分析-1" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://mh-nexus.de/en/downloads.php?product=HxD20">HxD</a> – 十六进制查看器和编辑器</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">strings</a> – 从文件中提取字符串</li>
+<li><a href="https://www.nirsoft.net/utils/hash_my_files.html">HashMyFiles</a> – 计算文件的 MD5&#x2F;SHA1&#x2F;CRC32 哈希值</li>
+<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符</li>
+<li><a href="https://www.aldeid.com/wiki/PEiD">PEiD</a> – 封隔器标识符</li>
+<li><a href="https://www.winitor.com/">PeStudio</a> – 高级 PE 查看器等</li>
+<li><a href="https://ntcore.com/?page_id=388">CFF Explorer</a> – PE 编辑器</li>
+<li><a href="http://www.angusj.com/resourcehacker/">Resource Hacker</a> – 资源编辑器</li>
+<li><a href="https://blog.didierstevens.com/programs/oledump-py/">oledump.py</a> – OLE 文件分析器</li>
+<li><a href="http://www.reconstructer.org/">OfficeMalScanner</a> – Office 文件恶意软件扫描程序</li>
+<li><a href="https://blog.didierstevens.com/2009/03/31/pdfid/">PDFiD</a> – PDF 字符串扫描仪和标识符</li>
+<li><a href="http://sandsprite.com/blogs/index.php?uid=7&pid=57">PDFStreamDumper</a> – PDF 恶意文件扫描程序</li>
+<li><a href="https://github.com/smalot/pdfparser">PDFParser</a> – PDF 文件数据提取器</li>
+</ul>
+<h4 id="b-动态分析-1"><a href="#b-动态分析-1" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Explorer</a> - 高级任务管理器</li>
+<li><a href="https://processhacker.sourceforge.io/downloads.php">Process Hacker</a> - 高级任务管理器</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Monitor</a> – 监控系统进程事件（文件系统、注册表、网络）</li>
+<li><a href="https://sourceforge.net/projects/regshot/">Regshot</a> – 注册表比较程序</li>
+<li><a href="http://www.rohitab.com/downloads">API Monitor</a> – 监视 Windows API 函数（内存转储、断点等）</li>
+<li><a href="https://github.com/hasherezade/pe-sieve">PE-Sieve</a> – 扫描恶意植入（替换&#x2F;注入 PE、shellcode、钩子、内存补丁）</li>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">TCPView</a> – 显示网络连接</li>
+<li><a href="https://www.telerik.com/fiddler">Fiddler</a> – 适用于任何浏览器、系统或平台的免费Web调试代理</li>
+<li><a href="https://github.com/fireeye/flare-fakenet-ng">FakeNet-NG</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a href="https://www.inetsim.org/downloads.html">INetSim</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
+<li><a href="https://www.fireeye.com/services/freeware/apatedns.html">ApateDNS</a> – 控制 DNS 响应</li>
+<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> – 一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理（非常适合 HTTPS 检查）</li>
+<li><a href="https://www.netresec.com/index.ashx?page=NetworkMiner">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
+<li><a href="https://www.procdot.com/">ProcDot</a> – 一种新的可视化恶意软件分析工具</li>
+<li><a href="https://www.phrozen.io/docs/windows/projects/freeware/winja/">WinJa</a> – 一个轻量级但功能强大的工具，用于发现隐藏在您系统中的恶意软件</li>
+<li><a href="https://www.kahusecurity.com/tools.html">CMD Watcher</a> – 监视 CMD、PowerShell 和其他进程，暂停它，提取命令行数据，然后有选择地杀死它</li>
+</ul>
+<h4 id="c-逆向工具-1"><a href="#c-逆向工具-1" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://x64dbg.com/">x64dbg</a> – 用户模式调试器</li>
+<li><a href="http://www.ollydbg.de/version2.html">OllyDbg</a> – 用户模式调试器</li>
+<li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">WinDbg</a> – 内核模式调试器</li>
+<li><a href="https://github.com/SinaKarvandi/windbg2ida">WinDBG2IDA</a> — 显示 IDA 中的 WinDBG 步骤</li>
+<li><a href="https://github.com/avast/retdec">RetDec</a> – 基于 LLVM 的可重定向机器代码反编译器</li>
+<li><a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a> – NSA 软件逆向工程框架</li>
+</ul>
+<h4 id="d-脱壳反混淆-1"><a href="#d-脱壳反混淆-1" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
+<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
+<li><a href="https://github.com/BromiumLabs/PackerAttacker">PackerAttacker</a> – 使用内存和代码挂钩来检测加壳程序的 C++ 应用程序</li>
+<li><a href="https://github.com/unipacker/unipacker">UniPacker</a> – 基于仿真的 Windows 二进制文件的自动和平台独立解包器</li>
+<li><a href="https://github.com/malwaremusings/unpacker/">unpacker</a> - WinAppDbg脚本来自动执行恶意拆包</li>
+</ul>
+<h4 id="e-加壳工具"><a href="#e-加壳工具" class="headerlink" title="e. 加壳工具"></a>e. 加壳工具</h4><ul>
+<li><a href="https://upx.github.io/">UPX</a> – Windows PE Packer</li>
+<li><a href="https://www.alternate-tools.com/pages/c_exepacker.php?lang=ENG">Alterante EXE Packer</a> – 基于 UPX打包程序</li>
+<li><a href="https://enigmaprotector.com/">Enigma Protector</a> – 用于许可和保护Windows 可执行文件的专业系统</li>
+<li><a href="https://www.webtoolmaster.com/exestealth.htm">ExeStealth</a> – Delphi、Visual Basic 和 C++ PE打包程序</li>
+<li><a href="https://www.oreans.com/Themida.php">Themida</a> - 高级Windows 软件保护系统</li>
+<li><a href="https://vmpsoft.com/">VMProtect</a> – VMProtect 通过在具有非标准架构的虚拟机上执行代码来保护代码</li>
+</ul>
+<h4 id="f-取证工具"><a href="#f-取证工具" class="headerlink" title="f. 取证工具"></a>f. 取证工具</h4><ul>
+<li><a href="https://winpmem.velocidex.com/">WinPmem</a> – 内存取证获取工具</li>
+<li><a href="https://blog.comae.io/your-favorite-memory-toolkit-is-back-f97072d33d5c">DumpIt</a> – 内存取证获取工具</li>
+<li><a href="https://accessdata.com/product-download/ftk-imager-version-4-2-0">FTK Imager</a> – 硬盘和内存取证获取工具</li>
+<li><a href="https://github.com/google/rekall">Rekall</a> – 内存取证框架</li>
+<li><a href="https://www.fireeye.com/services/freeware/redline.html">Readline</a> - 内存取证分析工具</li>
+</ul>
+<h4 id="g-综合工具"><a href="#g-综合工具" class="headerlink" title="g. 综合工具"></a>g. 综合工具</h4><ul>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Sysinternals Suite</a> – Microsoft 用于分析 Windows 系统内部的工具</li>
+<li><a href="https://github.com/fireeye/flare-vm">Flare-VM</a> – 基于 Windows 的恶意软件分析安全工具</li>
+</ul>
+<h3 id="3-MacOS平台"><a href="#3-MacOS平台" class="headerlink" title="3. MacOS平台"></a>3. MacOS平台</h3><h4 id="a-静态分析-2"><a href="#a-静态分析-2" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
+<li><a href="https://www.unix.com/man-page/osx/1/codesign/">codesign</a>  – 提取代码签名认证状态等</li>
+<li><a href="https://www.unix.com/man-page/osx/8/spctl/">spctl</a> – 检查文件的认证是否被撤销等等</li>
+<li><a href="https://www.unix.com/man-page/osx/1/xattr/">xattr</a> – 检查属性文件是否包含以及包含哪些属性（例如 GateKeeper 检查的隔离标志）</li>
+<li><a href="https://www.unix.com/man-page/osx/1/otool/">otool</a> – 检查二进制文件、提取汇编指令、查看段、节等</li>
+<li><a href="http://www.newosxbook.com/tools/jtool.html">JTool</a> – otool的升级本工具</li>
+<li><a href="https://objective-see.com/products.html">What’s your Sign</a> – 检查代码签名认证状态，显示哈希值等</li>
+</ul>
+<h4 id="b-动态分析-2"><a href="#b-动态分析-2" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
+<li><a href="https://objective-see.com/products/utilities.html#ProcessMonitor">ProcessMonitor</a> – 监控流程活动</li>
+<li><a href="https://objective-see.com/products/utilities.html#FileMonitor">FileMonitor</a> – 监控文件系统事件</li>
+<li><a href="https://github.com/dpnishant/appmon">AppMon</a> – 基于 Frida 的监控和篡改系统 API 调用的自动化框架</li>
+<li><a href="https://fsmonitor.com/">FSMonitor</a> – 监控文件系统事件（读、写等）</li>
+<li><a href="https://objective-see.com/products.html">Netiquette</a> – 监控网络连接</li>
+<li><a href="https://objective-see.com/products.html">LuLu</a> – 检查网络可疑活动并显示</li>
+<li><a href="https://objective-see.com/products.html">TaskExplorer</a> –虚拟探索所有正在运行的进程</li>
+<li><a href="https://objective-see.com/products.html">ReiKey</a> – 动态拦截和检测键盘记录活动</li>
+<li><a href="https://objective-see.com/products.html">BlockBlock</a> – 动态拦截系统上的持久操作</li>
+</ul>
+<h4 id="c-逆向工具-2"><a href="#c-逆向工具-2" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
+<li><a href="https://lldb.llvm.org/">LLDB</a> – 类似 GDB 的 macOS 调试器</li>
+</ul>
+<h4 id="d-打包加壳"><a href="#d-打包加壳" class="headerlink" title="d. 打包加壳"></a>d. 打包加壳</h4><ul>
+<li><a href="https://www.pouet.net/prod.php?which=29185">iPakk</a> – MacOSX Mach-O (PPC)打包程序</li>
+<li><a href="https://www.pouet.net/prod.php?which=51324">muncho</a> – MacOSX Mach-O（英特尔）打包程序</li>
+<li><a href="https://www.pouet.net/prod.php?which=66926">oneKpaq</a> – MacOSX Mach-O (Intel)打包程序</li>
+</ul>
+<h4 id="e-取证工具-1"><a href="#e-取证工具-1" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
+<li><a href="http://macappstore.org/dcfldd/">dcfldd</a> – 硬盘取证获取工具</li>
+<li><a href="https://github.com/ydkhatri/mac_apt">mac_apt</a> – 硬盘取证分析工具</li>
+<li><a href="https://github.com/wrmsr/pmem/tree/master/OSXPMem">OSXPMem</a> – 内存取证获取工具</li>
+</ul>
+<h4 id="f-其他工具"><a href="#f-其他工具" class="headerlink" title="f. 其他工具"></a>f. 其他工具</h4><ul>
+<li><a href="https://objective-see.com/products.html">KnockKnock</a> – 扫描持久性对象并将它们上传到 VirusTotal</li>
+<li><a href="https://objective-see.com/products.html">KextViewr</a> – 显示所有已加载的 kext，以及它们的签名状态、完整路径、VirusTotal 检测率等</li>
+<li><a href="https://objective-see.com/products.html">Dylib Hijack Scanner</a> – 扫描系统周围潜在的 Dylib-Hijackable 应用程序</li>
+</ul>
+<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
+<li><a href="https://malwareanalysis.co/">https://malwareanalysis.co/</a></li>
+<li><a href="https://github.com/rshipp/awesome-malware-analysis">https://github.com/rshipp/awesome-malware-analysis</a></li>
+<li><a href="https://zeltser.com/malicious-software/">https://zeltser.com/malicious-software/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>样本分析</category>
+      </categories>
+      <tags>
+        <tag>Malware Analysis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>弱口令爆破姿势</title>
     <url>/posts/10235/</url>
     <content><![CDATA[<center>本文总结各类弱口令漏洞类型及利用方式...</center>
@@ -1605,274 +1873,6 @@
       </tags>
   </entry>
   <entry>
-    <title>内网存活主机发现姿势</title>
-    <url>/posts/10803/</url>
-    <content><![CDATA[<center>本文总结各类内网存活主机发现姿势...</center>
-
-<span id="more"></span>
-<hr>
-<h2 id="0x01-基于ARP发现内网存活主机"><a href="#0x01-基于ARP发现内网存活主机" class="headerlink" title="0x01 基于ARP发现内网存活主机"></a>0x01 基于ARP发现内网存活主机</h2><p><strong>ARP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sn -PR 192.168.1.1/24</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描"><a href="#2-msf扫描" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre><code>msf &gt; use auxiliary/scanner/discovery/arp_sweep
-
-msf auxiliary(arp_sweep) &gt; set RHOSTS 192.168.1.0/24
-
-msf auxiliary(arp_sweep) &gt; set THREADS 16
-
-msf auxiliary(arp_sweep) &gt; run
-</code></pre>
-<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum -y install arp-scan  //安装</span><br><span class="line"></span><br><span class="line">$ arp-scan --interface=eth0 --localnet  //发现本地网络上所有主机</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-powershell"><a href="#4-powershell" class="headerlink" title="4. powershell"></a>4. powershell</h3><pre><code>c:&gt;powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0/24&quot;
-</code></pre>
-<h3 id="5-netdiscover"><a href="#5-netdiscover" class="headerlink" title="5. netdiscover"></a>5. netdiscover</h3><pre><code>$ netdiscover -r 192.168.1.0/24 -i wlan0
-</code></pre>
-<h2 id="0x02-基于ICMP发现内网存活主机"><a href="#0x02-基于ICMP发现内网存活主机" class="headerlink" title="0x02 基于ICMP发现内网存活主机"></a>0x02 基于ICMP发现内网存活主机</h2><p><strong>ICMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP/IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-1"><a href="#1-nmap扫描-1" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre><code>$ nmap -sP -PI -T4 192.168.0.1/24
-</code></pre>
-<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) Windows扫描</span><br><span class="line">for /l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr /i &quot;ttl=&quot;</span><br><span class="line"></span><br><span class="line">2）Linux扫描</span><br><span class="line">for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#x27;&#123;print $4&#125;&#x27;; done</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-fping"><a href="#3-fping" class="headerlink" title="3. fping"></a>3. fping</h3><p><strong>常用参数</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：只显示存活主机；</span><br><span class="line"></span><br><span class="line">-u：只显示不存活主机；</span><br><span class="line"></span><br><span class="line">-l：循环ping</span><br><span class="line"></span><br><span class="line">-g：指定扫描范围</span><br><span class="line"></span><br><span class="line">-f：扫描IP列表文件</span><br></pre></td></tr></table></figure>
-
-<p><strong>扫描实战</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ fping -af iplist  //从文件中扫描存活主机</span><br><span class="line"></span><br><span class="line">$ fping -g IP1 IP2 //IP1地址开始范围，IP2地址结束范围</span><br></pre></td></tr></table></figure>
-
-<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module ./Invoke‐TSPingSweep.ps1</span><br><span class="line">; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv</span><br><span class="line">eHost ‐ScanPort ‐Port 445,135&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="tcping"><a href="#tcping" class="headerlink" title="tcping"></a>tcping</h3><pre><code>tcping.exe ‐n 1 192.168.1.0 80
-</code></pre>
-<h2 id="0x03-基于UDP发现内网存活主机"><a href="#0x03-基于UDP发现内网存活主机" class="headerlink" title="0x03 基于UDP发现内网存活主机"></a>0x03 基于UDP发现内网存活主机</h2><p><strong>UDP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_probe</span><br><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_sweep</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ unicornscan -mU 192.168.1.1</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-基于snmp发现内网存活主机"><a href="#0x04-基于snmp发现内网存活主机" class="headerlink" title="0x04 基于snmp发现内网存活主机"></a>0x04 基于snmp发现内网存活主机</h2><p><strong>SNMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SNMP是一种简单网络管理协议，它属于TCP/IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script snmp-brute 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/snmp/snmp_enum</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-基于netbios发现内网存活主机"><a href="#0x05-基于netbios发现内网存活主机" class="headerlink" title="0x05 基于netbios发现内网存活主机"></a>0x05 基于netbios发现内网存活主机</h2><p><strong>netbios协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script nbstat.nse -p137 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/netbios/nbname</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nbtscan -r 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">$ nbtscan -v -s: 192.168.1.0/24</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>红队渗透</category>
-      </categories>
-      <tags>
-        <tag>Discovery</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>恶意软件分析资源</title>
-    <url>/posts/12996/</url>
-    <content><![CDATA[<center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
-
-<span id="more"></span>
-
-<h2 id="0x01-样本来源"><a href="#0x01-样本来源" class="headerlink" title="0x01 样本来源"></a>0x01 样本来源</h2><h3 id="1-下载网站"><a href="#1-下载网站" class="headerlink" title="1. 下载网站"></a>1. 下载网站</h3><ul>
-<li><a href="https://s.threatbook.cn/">https://s.threatbook.cn/</a> 微步云沙箱</li>
-<li><a href="https://www.virustotal.com/">https://www.virustotal.com/</a> 在线样本获取</li>
-<li><a href="https://app.any.run/">https://app.any.run/</a> 在线样本分析</li>
-<li><a href="https://bazaar.abuse.ch/browse/">https://bazaar.abuse.ch/browse/</a>  MalwareBazaar Database</li>
-<li><a href="https://vx-underground.org/samples.html">https://vx-underground.org/samples.html</a> 恶意软件在线下载</li>
-<li><a href="https://github.com/ytisf/theZoo">https://github.com/ytisf/theZoo</a>  恶意软件分析开源项目</li>
-<li><a href="https://objective-see.com/malware.html">https://objective-see.com/malware.html</a> MacOS恶意软件样本</li>
-<li><a href="http://contagiodump.blogspot.com/">http://contagiodump.blogspot.com/</a> Contagio恶意软件收集平台</li>
-<li><a href="https://www.hybrid-analysis.com/">https://www.hybrid-analysis.com/</a>  Payload Security恶意软件分析</li>
-<li><a href="http://vxvault.net/ViriList.php">http://vxvault.net/ViriList.php</a>  该网站为恶意软件和urls的收集</li>
-</ul>
-<h3 id="2-分类样本"><a href="#2-分类样本" class="headerlink" title="2. 分类样本"></a>2. 分类样本</h3><ul>
-<li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a>  Payloads合集</li>
-<li><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a>  Exploit 和 shellcode 样本</li>
-<li><a href="https://docs.google.com/spreadsheets/d/1TWS238xacAto-fLKh1n5uTsdijWdCEsGIM0Y0Hvmc5g/pubhtml">https://docs.google.com/spreadsheets/</a> 勒索软件列表</li>
-<li><a href="https://github.com/tennc/webshell">https://github.com/tennc/webshell</a>  Webshell资源</li>
-<li><a href="https://github.com/milabs/awesome-linux-rootkits">https://github.com/milabs/awesome-linux-rootkits</a> Linux rootkit合集</li>
-<li><a href="https://github.com/d30sa1/RootKits-List-Download">https://github.com/d30sa1/RootKits-List-Download</a>  Rootkit下载列表</li>
-<li><a href="https://github.com/alphaSeclab/awesome-rat">https://github.com/alphaSeclab/awesome-rat</a>  远控木马合集</li>
-<li><a href="https://github.com/maestron/botnets">https://github.com/maestron/botnets</a> Botnet源码合集</li>
-</ul>
-<h3 id="3-样本合集"><a href="#3-样本合集" class="headerlink" title="3. 样本合集"></a>3. 样本合集</h3><ul>
-<li><a href="https://github.com/vxunderground/MalwareSourceCode">https://github.com/vxunderground/MalwareSourceCode</a>  不同平台不同语言恶意软件源码</li>
-<li><a href="https://github.com/InQuest/malware-samples">https://github.com/InQuest/malware-samples</a> 恶意软件样本与分析文章集合</li>
-<li><a href="https://github.com/RamadhanAmizudin/malware">https://github.com/RamadhanAmizudin/malware</a> Malwaretech恶意样本集</li>
-<li><a href="https://github.com/mstfknn/malware-sample-library">https://github.com/mstfknn/malware-sample-library</a> 恶意软件样本库</li>
-<li><a href="https://github.com/ashishb/android-malware">https://github.com/ashishb/android-malware</a> Andorid恶意样本库</li>
-</ul>
-<h2 id="0x02-分析工具"><a href="#0x02-分析工具" class="headerlink" title="0x02 分析工具"></a>0x02 分析工具</h2><h3 id="1-Linux平台"><a href="#1-Linux平台" class="headerlink" title="1. Linux平台"></a>1. Linux平台</h3><h4 id="a-静态分析"><a href="#a-静态分析" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://linux.die.net/man/1/file">file</a> – 显示文件的类型</li>
-<li><a href="https://linux.die.net/man/1/strings">strings</a>– 从文件中提取字符串</li>
-<li><a href="http://man7.org/linux/man-pages/man1/diff.1.html">diff</a> – 区分文件</li>
-<li><a href="https://linux.die.net/man/1/nm">nm</a> – 提取符号表（函数导入、导出）</li>
-<li><a href="https://linux.die.net/man/1/strace">strace</a> – 跟踪系统调用和信号</li>
-<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符（推荐）</li>
-</ul>
-<h4 id="b-动态分析"><a href="#b-动态分析" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://www.wireshark.org/download.html">Wireshark</a> – 网络分析工具</li>
-<li><a href="https://linux.die.net/man/8/tcpdump">tcpdump</a>  – 网络分析工具</li>
-<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> –一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理</li>
-<li><a href="https://www.netresec.com/?page=Blog&month=2014-02&post=HowTo-install-NetworkMiner-in-Ubuntu-Fedora-and-Arch-Linux">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
-<li><a href="https://portswigger.net/burp/communitydownload">Burp Suite</a> – 适用于任何浏览器、系统或平台的免费网络代理</li>
-<li><a href="https://www.inetsim.org/packages.html">INetSim</a> – 互联网服务模拟套件</li>
-</ul>
-<p>适用于 Linux 的 Procmon</p>
-<h4 id="c-逆向工具"><a href="#c-逆向工具" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://linux.die.net/man/1/gdb">GDB</a> – GNU 调试器</li>
-<li><a href="https://www.hex-rays.com/products/ida/support/download.shtml">IDA Free&#x2F;Pro</a> – 反汇编器和调试器</li>
-<li><a href="https://www.hopperapp.com/">Hopper</a> – 反汇编器和调试器</li>
-<li><a href="https://rada.re/r/">radare2</a> - 免费和开源的反汇编器和调试器</li>
-<li><a href="https://github.com/radareorg/cutter">Cutter</a> -radare2 的 GUI</li>
-<li><a href="https://binary.ninja/">Binary Ninja</a> – 一种新型的逆向平台</li>
-<li><a href="https://github.com/angr/angr">angr</a> – 跨平台二进制分析框架</li>
-</ul>
-<h4 id="d-脱壳反混淆"><a href="#d-脱壳反混淆" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
-<li><a href="https://github.com/fireeye/flare-floss">FLOSS</a> – 自动从恶意软件中提取混淆的字符串</li>
-<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
-<li><a href="https://blog.didierstevens.com/programs/xorsearch/">XorSearch</a> -用于在 XOR、ROL、ROT 或 SHIFT 编码的二进制文件中搜索给定字符串</li>
-</ul>
-<h4 id="e-取证工具"><a href="#e-取证工具" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
-<li><a href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a> – 硬盘取证获取工具</li>
-<li><a href="http://www.sleuthkit.org/autopsy/download.php">Autopsy</a> - 硬盘取证分析工具</li>
-<li><a href="https://github.com/504ensicsLabs/LiME">LiME</a> – 内存获取工具</li>
-<li><a href="https://github.com/volatilityfoundation/volatility">Volatility</a> – 内存取证分析框架</li>
-<li><a href="https://fogproject.org/">FOG</a> — 免费的开源网络计算机克隆和管理解决方案</li>
-</ul>
-<h4 id="f-综合工具"><a href="#f-综合工具" class="headerlink" title="f. 综合工具"></a>f. 综合工具</h4><ul>
-<li><a href="https://github.com/monnappa22/Limon">Limon Sandbox</a> – 免费开源的自动化 Linux 恶意软件分析沙箱</li>
-<li><a href="https://cuckoosandbox.org/">Cuckoo Sandbox</a> – 免费开源的自动化恶意软件分析沙箱</li>
-</ul>
-<h3 id="2-Windwos平台"><a href="#2-Windwos平台" class="headerlink" title="2. Windwos平台"></a>2. Windwos平台</h3><h4 id="a-静态分析-1"><a href="#a-静态分析-1" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://mh-nexus.de/en/downloads.php?product=HxD20">HxD</a> – 十六进制查看器和编辑器</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">strings</a> – 从文件中提取字符串</li>
-<li><a href="https://www.nirsoft.net/utils/hash_my_files.html">HashMyFiles</a> – 计算文件的 MD5&#x2F;SHA1&#x2F;CRC32 哈希值</li>
-<li><a href="http://ntinfo.biz/index.html">DiE</a> – 封隔器标识符</li>
-<li><a href="https://www.aldeid.com/wiki/PEiD">PEiD</a> – 封隔器标识符</li>
-<li><a href="https://www.winitor.com/">PeStudio</a> – 高级 PE 查看器等</li>
-<li><a href="https://ntcore.com/?page_id=388">CFF Explorer</a> – PE 编辑器</li>
-<li><a href="http://www.angusj.com/resourcehacker/">Resource Hacker</a> – 资源编辑器</li>
-<li><a href="https://blog.didierstevens.com/programs/oledump-py/">oledump.py</a> – OLE 文件分析器</li>
-<li><a href="http://www.reconstructer.org/">OfficeMalScanner</a> – Office 文件恶意软件扫描程序</li>
-<li><a href="https://blog.didierstevens.com/2009/03/31/pdfid/">PDFiD</a> – PDF 字符串扫描仪和标识符</li>
-<li><a href="http://sandsprite.com/blogs/index.php?uid=7&pid=57">PDFStreamDumper</a> – PDF 恶意文件扫描程序</li>
-<li><a href="https://github.com/smalot/pdfparser">PDFParser</a> – PDF 文件数据提取器</li>
-</ul>
-<h4 id="b-动态分析-1"><a href="#b-动态分析-1" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Explorer</a> - 高级任务管理器</li>
-<li><a href="https://processhacker.sourceforge.io/downloads.php">Process Hacker</a> - 高级任务管理器</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Process Monitor</a> – 监控系统进程事件（文件系统、注册表、网络）</li>
-<li><a href="https://sourceforge.net/projects/regshot/">Regshot</a> – 注册表比较程序</li>
-<li><a href="http://www.rohitab.com/downloads">API Monitor</a> – 监视 Windows API 函数（内存转储、断点等）</li>
-<li><a href="https://github.com/hasherezade/pe-sieve">PE-Sieve</a> – 扫描恶意植入（替换&#x2F;注入 PE、shellcode、钩子、内存补丁）</li>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">TCPView</a> – 显示网络连接</li>
-<li><a href="https://www.telerik.com/fiddler">Fiddler</a> – 适用于任何浏览器、系统或平台的免费Web调试代理</li>
-<li><a href="https://github.com/fireeye/flare-fakenet-ng">FakeNet-NG</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
-<li><a href="https://www.inetsim.org/downloads.html">INetSim</a> – 模拟服务&#x2F;开放端口以进行恶意软件行为分析</li>
-<li><a href="https://www.fireeye.com/services/freeware/apatedns.html">ApateDNS</a> – 控制 DNS 响应</li>
-<li><a href="https://github.com/mitmproxy/mitmproxy">MiTMProxy</a> – 一个交互式 SSL&#x2F;TLS 拦截 HTTP 代理（非常适合 HTTPS 检查）</li>
-<li><a href="https://www.netresec.com/index.ashx?page=NetworkMiner">NetworkMiner</a> – 嗅探器和 PCAP 解析器</li>
-<li><a href="https://www.procdot.com/">ProcDot</a> – 一种新的可视化恶意软件分析工具</li>
-<li><a href="https://www.phrozen.io/docs/windows/projects/freeware/winja/">WinJa</a> – 一个轻量级但功能强大的工具，用于发现隐藏在您系统中的恶意软件</li>
-<li><a href="https://www.kahusecurity.com/tools.html">CMD Watcher</a> – 监视 CMD、PowerShell 和其他进程，暂停它，提取命令行数据，然后有选择地杀死它</li>
-</ul>
-<h4 id="c-逆向工具-1"><a href="#c-逆向工具-1" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://x64dbg.com/">x64dbg</a> – 用户模式调试器</li>
-<li><a href="http://www.ollydbg.de/version2.html">OllyDbg</a> – 用户模式调试器</li>
-<li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">WinDbg</a> – 内核模式调试器</li>
-<li><a href="https://github.com/SinaKarvandi/windbg2ida">WinDBG2IDA</a> — 显示 IDA 中的 WinDBG 步骤</li>
-<li><a href="https://github.com/avast/retdec">RetDec</a> – 基于 LLVM 的可重定向机器代码反编译器</li>
-<li><a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a> – NSA 软件逆向工程框架</li>
-</ul>
-<h4 id="d-脱壳反混淆-1"><a href="#d-脱壳反混淆-1" class="headerlink" title="d. 脱壳反混淆"></a>d. 脱壳反混淆</h4><ul>
-<li><a href="https://github.com/hiddenillusion/NoMoreXOR">NoMoreXor</a> – 通过使用频率分析帮助猜测文件 256 字节 XOR 密钥的工具</li>
-<li><a href="https://github.com/BromiumLabs/PackerAttacker">PackerAttacker</a> – 使用内存和代码挂钩来检测加壳程序的 C++ 应用程序</li>
-<li><a href="https://github.com/unipacker/unipacker">UniPacker</a> – 基于仿真的 Windows 二进制文件的自动和平台独立解包器</li>
-<li><a href="https://github.com/malwaremusings/unpacker/">unpacker</a> - WinAppDbg脚本来自动执行恶意拆包</li>
-</ul>
-<h4 id="e-加壳工具"><a href="#e-加壳工具" class="headerlink" title="e. 加壳工具"></a>e. 加壳工具</h4><ul>
-<li><a href="https://upx.github.io/">UPX</a> – Windows PE Packer</li>
-<li><a href="https://www.alternate-tools.com/pages/c_exepacker.php?lang=ENG">Alterante EXE Packer</a> – 基于 UPX打包程序</li>
-<li><a href="https://enigmaprotector.com/">Enigma Protector</a> – 用于许可和保护Windows 可执行文件的专业系统</li>
-<li><a href="https://www.webtoolmaster.com/exestealth.htm">ExeStealth</a> – Delphi、Visual Basic 和 C++ PE打包程序</li>
-<li><a href="https://www.oreans.com/Themida.php">Themida</a> - 高级Windows 软件保护系统</li>
-<li><a href="https://vmpsoft.com/">VMProtect</a> – VMProtect 通过在具有非标准架构的虚拟机上执行代码来保护代码</li>
-</ul>
-<h4 id="f-取证工具"><a href="#f-取证工具" class="headerlink" title="f. 取证工具"></a>f. 取证工具</h4><ul>
-<li><a href="https://winpmem.velocidex.com/">WinPmem</a> – 内存取证获取工具</li>
-<li><a href="https://blog.comae.io/your-favorite-memory-toolkit-is-back-f97072d33d5c">DumpIt</a> – 内存取证获取工具</li>
-<li><a href="https://accessdata.com/product-download/ftk-imager-version-4-2-0">FTK Imager</a> – 硬盘和内存取证获取工具</li>
-<li><a href="https://github.com/google/rekall">Rekall</a> – 内存取证框架</li>
-<li><a href="https://www.fireeye.com/services/freeware/redline.html">Readline</a> - 内存取证分析工具</li>
-</ul>
-<h4 id="g-综合工具"><a href="#g-综合工具" class="headerlink" title="g. 综合工具"></a>g. 综合工具</h4><ul>
-<li><a href="https://docs.microsoft.com/en-us/sysinternals/">Sysinternals Suite</a> – Microsoft 用于分析 Windows 系统内部的工具</li>
-<li><a href="https://github.com/fireeye/flare-vm">Flare-VM</a> – 基于 Windows 的恶意软件分析安全工具</li>
-</ul>
-<h3 id="3-MacOS平台"><a href="#3-MacOS平台" class="headerlink" title="3. MacOS平台"></a>3. MacOS平台</h3><h4 id="a-静态分析-2"><a href="#a-静态分析-2" class="headerlink" title="a. 静态分析"></a>a. 静态分析</h4><ul>
-<li><a href="https://www.unix.com/man-page/osx/1/codesign/">codesign</a>  – 提取代码签名认证状态等</li>
-<li><a href="https://www.unix.com/man-page/osx/8/spctl/">spctl</a> – 检查文件的认证是否被撤销等等</li>
-<li><a href="https://www.unix.com/man-page/osx/1/xattr/">xattr</a> – 检查属性文件是否包含以及包含哪些属性（例如 GateKeeper 检查的隔离标志）</li>
-<li><a href="https://www.unix.com/man-page/osx/1/otool/">otool</a> – 检查二进制文件、提取汇编指令、查看段、节等</li>
-<li><a href="http://www.newosxbook.com/tools/jtool.html">JTool</a> – otool的升级本工具</li>
-<li><a href="https://objective-see.com/products.html">What’s your Sign</a> – 检查代码签名认证状态，显示哈希值等</li>
-</ul>
-<h4 id="b-动态分析-2"><a href="#b-动态分析-2" class="headerlink" title="b. 动态分析"></a>b. 动态分析</h4><ul>
-<li><a href="https://objective-see.com/products/utilities.html#ProcessMonitor">ProcessMonitor</a> – 监控流程活动</li>
-<li><a href="https://objective-see.com/products/utilities.html#FileMonitor">FileMonitor</a> – 监控文件系统事件</li>
-<li><a href="https://github.com/dpnishant/appmon">AppMon</a> – 基于 Frida 的监控和篡改系统 API 调用的自动化框架</li>
-<li><a href="https://fsmonitor.com/">FSMonitor</a> – 监控文件系统事件（读、写等）</li>
-<li><a href="https://objective-see.com/products.html">Netiquette</a> – 监控网络连接</li>
-<li><a href="https://objective-see.com/products.html">LuLu</a> – 检查网络可疑活动并显示</li>
-<li><a href="https://objective-see.com/products.html">TaskExplorer</a> –虚拟探索所有正在运行的进程</li>
-<li><a href="https://objective-see.com/products.html">ReiKey</a> – 动态拦截和检测键盘记录活动</li>
-<li><a href="https://objective-see.com/products.html">BlockBlock</a> – 动态拦截系统上的持久操作</li>
-</ul>
-<h4 id="c-逆向工具-2"><a href="#c-逆向工具-2" class="headerlink" title="c. 逆向工具"></a>c. 逆向工具</h4><ul>
-<li><a href="https://lldb.llvm.org/">LLDB</a> – 类似 GDB 的 macOS 调试器</li>
-</ul>
-<h4 id="d-打包加壳"><a href="#d-打包加壳" class="headerlink" title="d. 打包加壳"></a>d. 打包加壳</h4><ul>
-<li><a href="https://www.pouet.net/prod.php?which=29185">iPakk</a> – MacOSX Mach-O (PPC)打包程序</li>
-<li><a href="https://www.pouet.net/prod.php?which=51324">muncho</a> – MacOSX Mach-O（英特尔）打包程序</li>
-<li><a href="https://www.pouet.net/prod.php?which=66926">oneKpaq</a> – MacOSX Mach-O (Intel)打包程序</li>
-</ul>
-<h4 id="e-取证工具-1"><a href="#e-取证工具-1" class="headerlink" title="e. 取证工具"></a>e. 取证工具</h4><ul>
-<li><a href="http://macappstore.org/dcfldd/">dcfldd</a> – 硬盘取证获取工具</li>
-<li><a href="https://github.com/ydkhatri/mac_apt">mac_apt</a> – 硬盘取证分析工具</li>
-<li><a href="https://github.com/wrmsr/pmem/tree/master/OSXPMem">OSXPMem</a> – 内存取证获取工具</li>
-</ul>
-<h4 id="f-其他工具"><a href="#f-其他工具" class="headerlink" title="f. 其他工具"></a>f. 其他工具</h4><ul>
-<li><a href="https://objective-see.com/products.html">KnockKnock</a> – 扫描持久性对象并将它们上传到 VirusTotal</li>
-<li><a href="https://objective-see.com/products.html">KextViewr</a> – 显示所有已加载的 kext，以及它们的签名状态、完整路径、VirusTotal 检测率等</li>
-<li><a href="https://objective-see.com/products.html">Dylib Hijack Scanner</a> – 扫描系统周围潜在的 Dylib-Hijackable 应用程序</li>
-</ul>
-<h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
-<li><a href="https://malwareanalysis.co/">https://malwareanalysis.co/</a></li>
-<li><a href="https://github.com/rshipp/awesome-malware-analysis">https://github.com/rshipp/awesome-malware-analysis</a></li>
-<li><a href="https://zeltser.com/malicious-software/">https://zeltser.com/malicious-software/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>样本分析</category>
-      </categories>
-      <tags>
-        <tag>Malware Analysis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>文件上传漏洞详解</title>
     <url>/posts/50059/</url>
     <content><![CDATA[<center>本文记录文件上传漏洞原理、产生原因、绕过姿势及防御方法</center>
@@ -2501,236 +2501,6 @@ msf auxiliary(arp_sweep) &gt; run
       <tags>
         <tag>Linux</tag>
         <tag>Incident Response</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows应急响应指南</title>
-    <url>/posts/10128/</url>
-    <content><![CDATA[<center>本文总结Windows系统应急响应的基本思路与技巧...</center>
-
-<span id="more"></span>
-
-<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><p>命令行输入<code>msinfo32</code>命令，打开系统信息窗口，可查看本地计算机硬件资源、组件和软件环境信息</p>
-<p>软件环境中包含系统驱动程序、正在运行任务、加载的模块、服务、启动程序等信息</p>
-<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><p>系统被入侵后，需排查攻击者是否新建账户、激活系统默认账户、建立隐藏账户(账户名称最后加$)等</p>
-<p><strong>排查方法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 命令行查看</span><br><span class="line"></span><br><span class="line">&gt; net user  //收集用户账户信息，无法查看隐藏账户</span><br><span class="line"></span><br><span class="line">&gt; net user username  //查看某个账户详细信息</span><br><span class="line"></span><br><span class="line">(2) 图形界面查看</span><br><span class="line"></span><br><span class="line">a. CMD输入compmgmt.msc(计算机管理) -&gt; 本地用户和组 -&gt; 用户  //可查看隐藏账户</span><br><span class="line"></span><br><span class="line">b. 命令行输入lusermgr.msc，查看用户信息</span><br><span class="line"></span><br><span class="line">(3) wmic 命令</span><br><span class="line"></span><br><span class="line">&gt; wmic useraccount get name,SID  //可查看隐藏账户</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><p>病毒后门等常用启动项来实现持久化驻留，检查服务器是否有异常的启动项</p>
-<p><strong>排查方法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 任务管理器查看</span><br><span class="line"></span><br><span class="line">命令行中输入taskmgr命令，任务管理器 -&gt; 启动</span><br><span class="line"></span><br><span class="line">(2) 通过注册表查看</span><br><span class="line"></span><br><span class="line">单击【开始】&gt;【运行】，输入regedit，打开注册表，查看开机启动项是否正常，关注以下注册表项</span><br><span class="line"></span><br><span class="line">  a. HKEY_CURRENT_USER\software\micorsoft\windows\currentversion\run </span><br><span class="line"></span><br><span class="line">  b. HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run </span><br><span class="line"></span><br><span class="line">  c. HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Runonce</span><br><span class="line"></span><br><span class="line">检查右侧是否有启动异常的项目</span><br><span class="line"></span><br><span class="line">(3) 通过组策略查看</span><br><span class="line"></span><br><span class="line">命令行运行gpedit.msc，计算机配置 -&gt; Windows设置 —&gt; 脚本(启动/关机)</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-计划任务"><a href="#4-计划任务" class="headerlink" title="4. 计划任务"></a>4. 计划任务</h3><p><strong>检查方法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 计算机管理</span><br><span class="line"></span><br><span class="line">CMD输入compmgmt.msc【计算机管理】 &gt; 【系统工具】&gt; 【任务计划程序】&gt; 【任务计划程序库】</span><br><span class="line"></span><br><span class="line">(2) schtasks命令</span><br><span class="line"></span><br><span class="line">命令行输入【schtasks】命令，获取任务计划信息；在较旧的系统用【at】命令</span><br><span class="line"></span><br><span class="line">(3) Powershell</span><br><span class="line"></span><br><span class="line">&gt; Get-ScheduledTask  //查看当前系统所有任务计划信息</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-服务自启功"><a href="#5-服务自启功" class="headerlink" title="5. 服务自启功"></a>5. 服务自启功</h3><p><strong>检查方法：</strong> 单击【开始】&gt;【运行】，输入services.msc，查看服务状态和启动类型，检查是否有异常服务</p>
-<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-排查思路"><a href="#1-排查思路" class="headerlink" title="1. 排查思路"></a>1. 排查思路</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; netstat -ano | findstr &quot;ESTABLISHED&quot; //查看目前的网络连接，定位可疑的ESTABLISHED</span><br><span class="line"></span><br><span class="line">&gt; tasklist | findstr “PID”  //根据netstat定位出的pid，再通过tasklist命令排查进程</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-技巧总结"><a href="#2-技巧总结" class="headerlink" title="2. 技巧总结"></a>2. 技巧总结</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) tasklist命令</span><br><span class="line"></span><br><span class="line">  a. 查看端口对应的PID： netstat -ano | findstr “port”</span><br><span class="line"></span><br><span class="line">  ​b. 查看进程对应的PID：tasklist | findstr “PID”</span><br><span class="line"></span><br><span class="line">  c. 显示进程与服务对应关系：tasklist /svc</span><br><span class="line"></span><br><span class="line">  d. 查看加载DLL的进程：tasklist /m | more</span><br><span class="line"></span><br><span class="line">  e. 查看特定DLL的调用情况：tasklist /m DLL名称</span><br><span class="line"></span><br><span class="line">(2) wmic命令</span><br><span class="line"></span><br><span class="line">  a. wmic process list full /format:csv  //以csv格式显示进程所有信息</span><br><span class="line"></span><br><span class="line">  b. wmic process get name,parentprocessid,processid,commandline  /format:csv  //以csv格式显示进程特定列</span><br><span class="line"></span><br><span class="line">  c. wmic process where process=[pid] get parentprocessid  //以pid的值为条件获取其父进程pid</span><br><span class="line"></span><br><span class="line">  d. wmic process where processid=[pid] delete  //删除指定pid的进程</span><br><span class="line"></span><br><span class="line">  e. wmic process where name=&quot;trojan.exe&quot; call terminate  //删除指定进程名的进程</span><br><span class="line"></span><br><span class="line">(3) PowerShell</span><br><span class="line"></span><br><span class="line">PowerShell可查看存在守护进程的进程，查询时调用Wmi对象</span><br><span class="line"></span><br><span class="line">&gt; Get-WmiObject Win32_Process | select Name,ProcessId,ParentProcessId,Path,CommandLine  //查看进程名、进程id，父进程id、进程路径、进程命令行等信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="0x03-文件排查"><a href="#0x03-文件排查" class="headerlink" title="0x03 文件排查"></a>0x03 文件排查</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 各个盘下temp目录</span><br><span class="line"></span><br><span class="line">恶意程序运行时投放出的文件(释放子体)多存放于路径相对固定的临时目录</span><br><span class="line"></span><br><span class="line">(2) 用户Recent文件</span><br><span class="line"></span><br><span class="line">Recent文件主要存储最近运行文件的快捷方式，可分析最近运行的文件来排查可疑文件</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%UserProfile%\Recent】，分析Recent文件</span><br><span class="line"></span><br><span class="line">(3) 预读取文件夹</span><br><span class="line"></span><br><span class="line">Prefetch为预读取文件夹，用于存放系统已访问过的文件预读取信息，扩展名为pf</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%SystemRoot%\Prefetch\】，排查Prefetch文件夹</span><br><span class="line"></span><br><span class="line">(4) Amcache.hve文件</span><br><span class="line"></span><br><span class="line">可查询应用程序的执行路径、上次执行的时间以及SHA1值</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%SystemRoot%\appcompat\Programs\】，排查Amcache.hve文件夹</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><p>入侵事件发生后，需优先确认时间发生的时间点，排查时间点前后的文件变动情况</p>
-<p><strong>排查技巧</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) forfiles命令</span><br><span class="line"></span><br><span class="line">FORFILES [/P pathname] [/M searchmask] [/S]</span><br><span class="line">         [/C command] [/D [+ | -] &#123;yyyy/MM/dd | dd&#125;]</span><br><span class="line"></span><br><span class="line">描述:</span><br><span class="line">    选择一个文件(或一组文件)并在那个文件上</span><br><span class="line">    执行一个命令。这有助于批处理作业。</span><br><span class="line"></span><br><span class="line">参数列表:</span><br><span class="line">    /P    pathname      表示开始搜索的路径。默认文件夹是当前工作的</span><br><span class="line">                        目录 (.)。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /M    searchmask    根据搜索掩码搜索文件。默认搜索掩码是 &#x27;*&#x27;。</span><br><span class="line"></span><br><span class="line">    /S                  指导 forfiles 递归到子目录。像 &quot;DIR /S&quot;。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /C    command       表示为每个文件执行的命令。命令字符串应该</span><br><span class="line">                        用双引号括起来。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        默认命令是 &quot;cmd /c echo @file&quot;。下列变量</span><br><span class="line">                        可以用在命令字符串中:</span><br><span class="line"></span><br><span class="line">                        @file    - 返回文件名。</span><br><span class="line">                        @fname   - 返回不带扩展名的文件名。</span><br><span class="line"></span><br><span class="line">                        @ext     - 只返回文件的扩展名。</span><br><span class="line"></span><br><span class="line">                        @path    - 返回文件的完整路径。</span><br><span class="line">                        @relpath - 返回文件的相对路径。</span><br><span class="line"></span><br><span class="line">                        @isdir   - 如果文件类型是目录，返回 &quot;TRUE&quot;；</span><br><span class="line">                                   如果是文件，返回 &quot;FALSE&quot;。</span><br><span class="line">                        @fsize   - 以字节为单位返回文件大小。</span><br><span class="line"></span><br><span class="line">                        @fdate   - 返回文件上一次修改的日期。</span><br><span class="line"></span><br><span class="line">                        @ftime   - 返回文件上一次修改的时间。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        要在命令行包括特殊字符，字符请以 0xHH</span><br><span class="line">                        形式使用十六进制代码(例如，0x09 为 tab)。</span><br><span class="line"></span><br><span class="line">                        内部 CMD.exe 命令前面应以 &quot;cmd /c&quot; 开始。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /D    date          选择文件，其上一次修改日期大于或等于 (+)，</span><br><span class="line">                        或者小于或等于 (-) 用 &quot;yyyy/MM/dd&quot; 格式指定的日期;</span><br><span class="line"></span><br><span class="line">                        或选择文件，其上一次修改日期大于或等于 (+)</span><br><span class="line">                        当前日期加 &quot;dd&quot; 天，或者小于或等于 (-) 当前</span><br><span class="line"></span><br><span class="line">                        日期减 &quot;dd&quot; 天。有效的 &quot;dd&quot; 天数可以是</span><br><span class="line">                        0 - 32768 范围内的任何数字。如果没有指定，</span><br><span class="line"></span><br><span class="line">                        &quot;+&quot; 被当作默认符号。</span><br><span class="line"></span><br><span class="line">    /?                  显示此帮助消息。</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-日志分析"><a href="#0x04-日志分析" class="headerlink" title="0x04 日志分析"></a>0x04 日志分析</h2><h3 id="1-日志简介"><a href="#1-日志简介" class="headerlink" title="1. 日志简介"></a>1. 日志简介</h3><p>Windows主要有以下三类日志文件：应用程序日志、系统日志和安全日志</p>
-<p><strong>系统日志</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\System.evtx</span><br></pre></td></tr></table></figure>
-
-<p><strong>安全日志</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">记录系统的安全审计事件，包含各种类型的登录日志、对象访问日志、进程追踪日志、特权使用、帐号管理、策略变更、系统事件。默认设置下，安全性日志是关闭的，管理员可以使用组策略来启动安全性日志，或者在注册表中设置审核策略</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\Security.evtx</span><br></pre></td></tr></table></figure>
-
-<p><strong>应用日志</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误。如果某个应用程序出现崩溃情况，可以从程序事件日志中找到相应的记录</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\Application.evtx</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-日志事件ID"><a href="#2-日志事件ID" class="headerlink" title="2. 日志事件ID"></a>2. 日志事件ID</h3><p>对于Windows事件日志分析，不同的EVENT ID代表了不同的意义，摘录一些常见的安全事件的说明</p>
-<table>
-<thead>
-<tr>
-<th>事件ID</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>4624</td>
-<td>登录成功</td>
-</tr>
-<tr>
-<td>4625</td>
-<td>登录失败</td>
-</tr>
-<tr>
-<td>4634</td>
-<td>注销成功</td>
-</tr>
-<tr>
-<td>4647</td>
-<td>用户启动的注销</td>
-</tr>
-<tr>
-<td>4672</td>
-<td>使用超级用户（如管理员）进行登录</td>
-</tr>
-<tr>
-<td>4720</td>
-<td>创建用户</td>
-</tr>
-</tbody></table>
-<p>每个成功登录的事件都会标记一个登录类型，不同登录类型代表不同的方式：</p>
-<table>
-<thead>
-<tr>
-<th>登录类型</th>
-<th>描述</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2</td>
-<td>交互式登录（Interactive）</td>
-<td>用户在本地进行登录</td>
-</tr>
-<tr>
-<td>3</td>
-<td>网络（Network）</td>
-<td>最常见的情况就是连接到共享文件夹或共享打印机时</td>
-</tr>
-<tr>
-<td>4</td>
-<td>批处理（Batch）</td>
-<td>通常表明某计划任务启动</td>
-</tr>
-<tr>
-<td>5</td>
-<td>服务（Service）</td>
-<td>每种服务都被配置在某个特定的用户账号下运行</td>
-</tr>
-<tr>
-<td>7</td>
-<td>解锁（Unlock）</td>
-<td>屏保解锁</td>
-</tr>
-<tr>
-<td>8</td>
-<td>网络明文（NetworkCleartext）</td>
-<td>登录的密码在网络上是通过明文传输的，如FTP</td>
-</tr>
-<tr>
-<td>9</td>
-<td>新凭证（NewCredentials）</td>
-<td>使用带&#x2F;Netonly参数的RUNAS命令运行一个程序</td>
-</tr>
-<tr>
-<td>10</td>
-<td>远程交互，（RemoteInteractive）</td>
-<td>通过终端服务、远程桌面或远程协助访问计算机</td>
-</tr>
-<tr>
-<td>11</td>
-<td>缓存交互（CachedInteractive）</td>
-<td>以一个域用户登录而又没有域控制器可用</td>
-</tr>
-</tbody></table>
-<h3 id="3-日志分析技巧"><a href="#3-日志分析技巧" class="headerlink" title="3. 日志分析技巧"></a>3. 日志分析技巧</h3><p><strong>事件查看器</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 利用eventlog事件来查看系统账号登录情况</span><br><span class="line"></span><br><span class="line">  a. 在“开始”菜单上，依次指向“所有程序”、“管理工具”，然后单击“事件查看器”；</span><br><span class="line"></span><br><span class="line">  b. 在事件查看器中，单击“安全”，查看安全日志；</span><br><span class="line"></span><br><span class="line">  c. 在安全日志右侧操作中，点击“筛选当前日志”，输入事件ID进行筛选。</span><br><span class="line"></span><br><span class="line">  4624 -- 登录成功</span><br><span class="line">  4625 -- 登录失败</span><br><span class="line">  4634 -- 注销成功 4647 -- 用户启动的注销</span><br><span class="line">  4672 -- 使用超级用户（如管理员）进行登录</span><br><span class="line"></span><br><span class="line">(2) 利用eventlog事件来查看计算机开关机的记录</span><br><span class="line"></span><br><span class="line">  a. 在“开始”菜单上，依次指向“所有程序”、“管理工具”，然后单击“事件查看器”；</span><br><span class="line"></span><br><span class="line">  b. 在事件查看器中，单击“系统”，查看系统日志；</span><br><span class="line"></span><br><span class="line">  c. 在系统日志右侧操作中，点击“筛选当前日志”，输入事件ID进行筛选</span><br><span class="line"></span><br><span class="line">  6006 -- 服务已启动，开机</span><br><span class="line">  6005 -- 服务已停止，关机</span><br><span class="line">  6009 -- 按ctrl、alt、delete键(非正常)关机</span><br></pre></td></tr></table></figure>
-
-<p><strong>Log Parser</strong></p>
-<p>Log Parser是微软公司出品的日志分析工具，功能强大，使用简单，可以分析基于文本的日志文件、XML 文件、CSV（逗号分隔符）文件，以及操作系统的事件日志、注册表、文件系统、Active Directory</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 基本查询语法</span><br><span class="line"></span><br><span class="line">  Logparser.exe –i:EVT –o:DATAGRID &quot;SELECT * FROM c:\xx.evtx&quot;</span><br><span class="line"></span><br><span class="line">(2) 查询登录成功的事件</span><br><span class="line"></span><br><span class="line">  a. 登录成功的所有事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">  b. 指定登录时间范围的事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where TimeGenerated&gt;&#x27;2018-06-19 23:32:11&#x27; and TimeGenerated&lt;&#x27;2018-06-20 23:34:00&#x27; and EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">  c. 提取登录成功的用户名和IP</span><br><span class="line">  LogParser.exe -i:EVT  –o:DATAGRID  &quot;SELECT EXTRACT_TOKEN(Message,13,&#x27; &#x27;) as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,&#x27;|&#x27;) as Username,EXTRACT_TOKEN(Message,38,&#x27; &#x27;) as Loginip FROM c:\Security.evtx where EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">(3) 查询登录失败的事件</span><br><span class="line"></span><br><span class="line">  a. 登录失败的所有事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4625&quot;</span><br><span class="line"></span><br><span class="line">  b. 提取登录失败用户名进行聚合统计</span><br><span class="line">  LogParser.exe  -i:EVT &quot;SELECT  EXTRACT_TOKEN(Message,13,&#x27; &#x27;)  as EventType,EXTRACT_TOKEN(Message,19,&#x27; &#x27;) as user,count(EXTRACT_TOKEN(Message,19,&#x27; &#x27;)) as Times,EXTRACT_TOKEN(Message,39,&#x27; &#x27;) as Loginip FROM c:\Security.evtx where EventID=4625 GROUP BY Message&quot;</span><br><span class="line"></span><br><span class="line">(4) 系统历史开关机记录</span><br><span class="line"></span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="0x05-工具集合"><a href="#0x05-工具集合" class="headerlink" title="0x05 工具集合"></a>0x05 工具集合</h2><h3 id="1-工具箱"><a href="#1-工具箱" class="headerlink" title="1. 工具箱"></a>1. 工具箱</h3><p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a> : <em>微软发布的一套强大的免费工具程序集，共包括将近70个windows工具</em></p>
-<ul>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb664922.aspx">AccessChk</a> <em>了解特定用户或用户组对文件、目录、注册表项和Windows服务等资源具有哪种访问权限</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897332.aspx">AccessEnum</a> <em>显示用户可以用何种访问权限访问您系统中的目录、文件和注册表项，使用此工具可查找权限漏洞</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb963907.aspx">AdExplorer</a> <em>Active Directory Explorer 是一个高级的 Active Directory (AD) 查看器和编辑器</em></p>
-</li>
-<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb963902">AutoRuns</a> <em>windows启动程序管理工具，可显示系统启动或登录时会自动启动的项目和配置，包括扩展和加载各种Windows进程</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896655.aspx">Handle</a> <em>可显示哪些进程打开了哪些文件，以及更多其他信息</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896656.aspx">ListDLLs</a> <em>列出所有当前加载的 DLL，包括加载位置及其版本号，2.0版将打印已加载模块的完整路径名</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896769.aspx">LogonSessions</a> <em>列出系统中的活动登录会话</em></p>
-</li>
-<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896653">Process Explorer</a> <em>进程查看器，查看进程的详细信息包括CPU，GPU，IO，线程，句柄，内存</em></p>
-</li>
-<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896645">Process Monitor</a> <em>一个高级的windows监视器，实时显示文件系统，注册表，网络活动，进程或线程活动</em></p>
-</li>
-<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896649">PsTools</a> <em>PsTools 套件，可列出本地或远程计算机上运行的进程、远程运行进程、重新启动计算机、转储事件日志，以及执行其他任务</em></p>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PsExec——执行远程过程</span><br><span class="line"></span><br><span class="line">PsFile——远程显示打开的文件</span><br><span class="line"></span><br><span class="line">PsGetSid——显示计算机的SID或一个用户</span><br><span class="line"></span><br><span class="line">PsInfo——系统信息列表</span><br><span class="line"></span><br><span class="line">PsKill——杀死进程的名字或进程ID</span><br><span class="line"></span><br><span class="line">PsList——列表详细信息流程</span><br><span class="line"></span><br><span class="line">PsLoggedOn——看谁的本地登录,通过资源共享</span><br><span class="line"></span><br><span class="line">PsLogList -倾倒事件日志记录</span><br><span class="line"></span><br><span class="line">PsPasswd——更改帐户密码</span><br><span class="line"></span><br><span class="line">psp -测试网络性能</span><br><span class="line"></span><br><span class="line">PsService——视图和控制服务</span><br><span class="line"></span><br><span class="line">PsShutdown——关闭,选择重新启动计算机</span><br><span class="line"></span><br><span class="line">PsSuspend——挂起和恢复过程</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897448.aspx">RegDelNull</a> <em>扫描并删除包含嵌入空字符的注册表项，标准注册表编辑工具不能删除这种注册表项</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897445.aspx">RootkitRevealer</a> <em>扫描系统以找出基于Rootkit的恶意软件</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897442.aspx">ShareEnum</a> <em>扫描网络上的文件共享并查看其安全设置，以关闭安全漏洞</em></p>
-</li>
-<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897439.aspx">Strings</a> <em>在二进制映像中搜索 ANSI 和 UNICODE 字符串</em></p>
-</li>
-<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb897437">TcpView</a> <em>显示TCP和UDP端点的详细清单，包括进程名、远程地址和TCP连接的状态</em></p>
-</li>
-</ul>
-<h3 id="2-监控分析"><a href="#2-监控分析" class="headerlink" title="2. 监控分析"></a>2. 监控分析</h3><ul>
-<li><a href="https://www.huorong.cn/">火绒剑</a>  <em>火绒推出的一款专业的内核级监控分析工具</em></li>
-</ul>
-<h3 id="3-日志分析"><a href="#3-日志分析" class="headerlink" title="3. 日志分析"></a>3. 日志分析</h3><ul>
-<li><p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=24659">Log Parser</a> <em>微软推出的日志分析工具，可分析多种文件类型的系统事件日志、注册表、文件系统、Active Directory</em></p>
-</li>
-<li><p><a href="https://event-log-explorer.en.softonic.com/">Event Log Explorer</a> <em>Windows日志分析工具，可用于查看，监视和分析跟事件记录</em></p>
-</li>
-</ul>
-<h3 id="4-病毒查杀"><a href="#4-病毒查杀" class="headerlink" title="4. 病毒查杀"></a>4. 病毒查杀</h3><ul>
-<li><p>卡巴斯基：<a href="http://devbuilds.kaspersky-labs.com/devbuilds/KVRT/latest/full/KVRT.exe">http://devbuilds.kaspersky-labs.com/devbuilds/KVRT/latest/full/KVRT.exe</a></p>
-</li>
-<li><p>火绒安全软件：<a href="https://www.huorong.cn/">https://www.huorong.cn</a></p>
-</li>
-<li><p>360杀毒：<a href="http://sd.360.cn/download_center.html">http://sd.360.cn/download_center.html</a></p>
-</li>
-<li><p>ESET NOD32 Antivirus: <a href="https://www.eset.com/us/home/antivirus/download/">https://www.eset.com/us/home/antivirus/download/</a></p>
-</li>
-</ul>
-<h3 id="5-Webshell查杀"><a href="#5-Webshell查杀" class="headerlink" title="5. Webshell查杀"></a>5. Webshell查杀</h3><ul>
-<li><p>百度WEBDIR+：<a href="https://scanner.baidu.com/">https://scanner.baidu.com/</a></p>
-</li>
-<li><p>河马查杀：<a href="https://www.shellpub.com/">https://www.shellpub.com/</a></p>
-</li>
-<li><p>Web Shell Detector：<a href="http://www.shelldetector.com/">http://www.shelldetector.com/</a></p>
-</li>
-<li><p>D盾_Web查杀：<a href="http://www.d99net.net/down/WebShellKill_V2.0.9.zip">http://www.d99net.net/down/WebShellKill_V2.0.9.zip</a></p>
-</li>
-</ul>
-<h3 id="6-勒索软件解密"><a href="#6-勒索软件解密" class="headerlink" title="6. 勒索软件解密"></a>6. 勒索软件解密</h3><ul>
-<li><p>勒索病毒解密工具收集汇总：<a href="https://github.com/jiansiting/Decryption-Tools">https://github.com/jiansiting/Decryption-Tools</a></p>
-</li>
-<li><p>[腾讯哈勃]勒索软件专杀工具：<a href="https://habo.qq.com/tool/index">https://habo.qq.com/tool/index</a></p>
-</li>
-<li><p>[金山毒霸]勒索病毒免疫工具：<a href="http://www.duba.net/dbt/wannacry.html">http://www.duba.net/dbt/wannacry.html</a></p>
-</li>
-<li><p>[瑞星]解密工具下载：<a href="http://it.rising.com.cn/fanglesuo/index.html">http://it.rising.com.cn/fanglesuo/index.html</a></p>
-</li>
-<li><p>[卡巴斯基]免费勒索解密器：<a href="https://noransom.kaspersky.com/">https://noransom.kaspersky.com/</a></p>
-</li>
-<li><p>[Avast]免费勒索软件解密工具：<a href="https://www.avast.com/zh-cn/ransomware-decryption-tools">https://www.avast.com/zh-cn/ransomware-decryption-tools</a></p>
-</li>
-<li><p>[Emsisoft]免费勒索软件解密工具：<a href="https://www.emsisoft.com/ransomware-decryption-tools/free-download">https://www.emsisoft.com/ransomware-decryption-tools/free-download</a></p>
-</li>
-<li><p>[nomoreransom]勒索软件解密工具集：<a href="https://www.nomoreransom.org/zh/index.html">https://www.nomoreransom.org/zh/index.html</a></p>
-</li>
-<li><p>[MalwareHunterTeam]勒索软件解密工具集：<a href="https://id-ransomware.malwarehunterteam.com/">https://id-ransomware.malwarehunterteam.com/</a></p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>应急响应</category>
-      </categories>
-      <tags>
-        <tag>Incident Response</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -3705,6 +3475,236 @@ msf auxiliary(arp_sweep) &gt; run
         <tag>Tookit</tag>
         <tag>Nmap</tag>
         <tag>Initial Access</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows应急响应指南</title>
+    <url>/posts/10128/</url>
+    <content><![CDATA[<center>本文总结Windows系统应急响应的基本思路与技巧...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><p>命令行输入<code>msinfo32</code>命令，打开系统信息窗口，可查看本地计算机硬件资源、组件和软件环境信息</p>
+<p>软件环境中包含系统驱动程序、正在运行任务、加载的模块、服务、启动程序等信息</p>
+<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><p>系统被入侵后，需排查攻击者是否新建账户、激活系统默认账户、建立隐藏账户(账户名称最后加$)等</p>
+<p><strong>排查方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 命令行查看</span><br><span class="line"></span><br><span class="line">&gt; net user  //收集用户账户信息，无法查看隐藏账户</span><br><span class="line"></span><br><span class="line">&gt; net user username  //查看某个账户详细信息</span><br><span class="line"></span><br><span class="line">(2) 图形界面查看</span><br><span class="line"></span><br><span class="line">a. CMD输入compmgmt.msc(计算机管理) -&gt; 本地用户和组 -&gt; 用户  //可查看隐藏账户</span><br><span class="line"></span><br><span class="line">b. 命令行输入lusermgr.msc，查看用户信息</span><br><span class="line"></span><br><span class="line">(3) wmic 命令</span><br><span class="line"></span><br><span class="line">&gt; wmic useraccount get name,SID  //可查看隐藏账户</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><p>病毒后门等常用启动项来实现持久化驻留，检查服务器是否有异常的启动项</p>
+<p><strong>排查方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 任务管理器查看</span><br><span class="line"></span><br><span class="line">命令行中输入taskmgr命令，任务管理器 -&gt; 启动</span><br><span class="line"></span><br><span class="line">(2) 通过注册表查看</span><br><span class="line"></span><br><span class="line">单击【开始】&gt;【运行】，输入regedit，打开注册表，查看开机启动项是否正常，关注以下注册表项</span><br><span class="line"></span><br><span class="line">  a. HKEY_CURRENT_USER\software\micorsoft\windows\currentversion\run </span><br><span class="line"></span><br><span class="line">  b. HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run </span><br><span class="line"></span><br><span class="line">  c. HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Runonce</span><br><span class="line"></span><br><span class="line">检查右侧是否有启动异常的项目</span><br><span class="line"></span><br><span class="line">(3) 通过组策略查看</span><br><span class="line"></span><br><span class="line">命令行运行gpedit.msc，计算机配置 -&gt; Windows设置 —&gt; 脚本(启动/关机)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-计划任务"><a href="#4-计划任务" class="headerlink" title="4. 计划任务"></a>4. 计划任务</h3><p><strong>检查方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 计算机管理</span><br><span class="line"></span><br><span class="line">CMD输入compmgmt.msc【计算机管理】 &gt; 【系统工具】&gt; 【任务计划程序】&gt; 【任务计划程序库】</span><br><span class="line"></span><br><span class="line">(2) schtasks命令</span><br><span class="line"></span><br><span class="line">命令行输入【schtasks】命令，获取任务计划信息；在较旧的系统用【at】命令</span><br><span class="line"></span><br><span class="line">(3) Powershell</span><br><span class="line"></span><br><span class="line">&gt; Get-ScheduledTask  //查看当前系统所有任务计划信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-服务自启功"><a href="#5-服务自启功" class="headerlink" title="5. 服务自启功"></a>5. 服务自启功</h3><p><strong>检查方法：</strong> 单击【开始】&gt;【运行】，输入services.msc，查看服务状态和启动类型，检查是否有异常服务</p>
+<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-排查思路"><a href="#1-排查思路" class="headerlink" title="1. 排查思路"></a>1. 排查思路</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; netstat -ano | findstr &quot;ESTABLISHED&quot; //查看目前的网络连接，定位可疑的ESTABLISHED</span><br><span class="line"></span><br><span class="line">&gt; tasklist | findstr “PID”  //根据netstat定位出的pid，再通过tasklist命令排查进程</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-技巧总结"><a href="#2-技巧总结" class="headerlink" title="2. 技巧总结"></a>2. 技巧总结</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) tasklist命令</span><br><span class="line"></span><br><span class="line">  a. 查看端口对应的PID： netstat -ano | findstr “port”</span><br><span class="line"></span><br><span class="line">  ​b. 查看进程对应的PID：tasklist | findstr “PID”</span><br><span class="line"></span><br><span class="line">  c. 显示进程与服务对应关系：tasklist /svc</span><br><span class="line"></span><br><span class="line">  d. 查看加载DLL的进程：tasklist /m | more</span><br><span class="line"></span><br><span class="line">  e. 查看特定DLL的调用情况：tasklist /m DLL名称</span><br><span class="line"></span><br><span class="line">(2) wmic命令</span><br><span class="line"></span><br><span class="line">  a. wmic process list full /format:csv  //以csv格式显示进程所有信息</span><br><span class="line"></span><br><span class="line">  b. wmic process get name,parentprocessid,processid,commandline  /format:csv  //以csv格式显示进程特定列</span><br><span class="line"></span><br><span class="line">  c. wmic process where process=[pid] get parentprocessid  //以pid的值为条件获取其父进程pid</span><br><span class="line"></span><br><span class="line">  d. wmic process where processid=[pid] delete  //删除指定pid的进程</span><br><span class="line"></span><br><span class="line">  e. wmic process where name=&quot;trojan.exe&quot; call terminate  //删除指定进程名的进程</span><br><span class="line"></span><br><span class="line">(3) PowerShell</span><br><span class="line"></span><br><span class="line">PowerShell可查看存在守护进程的进程，查询时调用Wmi对象</span><br><span class="line"></span><br><span class="line">&gt; Get-WmiObject Win32_Process | select Name,ProcessId,ParentProcessId,Path,CommandLine  //查看进程名、进程id，父进程id、进程路径、进程命令行等信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-文件排查"><a href="#0x03-文件排查" class="headerlink" title="0x03 文件排查"></a>0x03 文件排查</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 各个盘下temp目录</span><br><span class="line"></span><br><span class="line">恶意程序运行时投放出的文件(释放子体)多存放于路径相对固定的临时目录</span><br><span class="line"></span><br><span class="line">(2) 用户Recent文件</span><br><span class="line"></span><br><span class="line">Recent文件主要存储最近运行文件的快捷方式，可分析最近运行的文件来排查可疑文件</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%UserProfile%\Recent】，分析Recent文件</span><br><span class="line"></span><br><span class="line">(3) 预读取文件夹</span><br><span class="line"></span><br><span class="line">Prefetch为预读取文件夹，用于存放系统已访问过的文件预读取信息，扩展名为pf</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%SystemRoot%\Prefetch\】，排查Prefetch文件夹</span><br><span class="line"></span><br><span class="line">(4) Amcache.hve文件</span><br><span class="line"></span><br><span class="line">可查询应用程序的执行路径、上次执行的时间以及SHA1值</span><br><span class="line"></span><br><span class="line">【开始】&gt;【运行】，输入【%SystemRoot%\appcompat\Programs\】，排查Amcache.hve文件夹</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><p>入侵事件发生后，需优先确认时间发生的时间点，排查时间点前后的文件变动情况</p>
+<p><strong>排查技巧</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) forfiles命令</span><br><span class="line"></span><br><span class="line">FORFILES [/P pathname] [/M searchmask] [/S]</span><br><span class="line">         [/C command] [/D [+ | -] &#123;yyyy/MM/dd | dd&#125;]</span><br><span class="line"></span><br><span class="line">描述:</span><br><span class="line">    选择一个文件(或一组文件)并在那个文件上</span><br><span class="line">    执行一个命令。这有助于批处理作业。</span><br><span class="line"></span><br><span class="line">参数列表:</span><br><span class="line">    /P    pathname      表示开始搜索的路径。默认文件夹是当前工作的</span><br><span class="line">                        目录 (.)。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /M    searchmask    根据搜索掩码搜索文件。默认搜索掩码是 &#x27;*&#x27;。</span><br><span class="line"></span><br><span class="line">    /S                  指导 forfiles 递归到子目录。像 &quot;DIR /S&quot;。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /C    command       表示为每个文件执行的命令。命令字符串应该</span><br><span class="line">                        用双引号括起来。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        默认命令是 &quot;cmd /c echo @file&quot;。下列变量</span><br><span class="line">                        可以用在命令字符串中:</span><br><span class="line"></span><br><span class="line">                        @file    - 返回文件名。</span><br><span class="line">                        @fname   - 返回不带扩展名的文件名。</span><br><span class="line"></span><br><span class="line">                        @ext     - 只返回文件的扩展名。</span><br><span class="line"></span><br><span class="line">                        @path    - 返回文件的完整路径。</span><br><span class="line">                        @relpath - 返回文件的相对路径。</span><br><span class="line"></span><br><span class="line">                        @isdir   - 如果文件类型是目录，返回 &quot;TRUE&quot;；</span><br><span class="line">                                   如果是文件，返回 &quot;FALSE&quot;。</span><br><span class="line">                        @fsize   - 以字节为单位返回文件大小。</span><br><span class="line"></span><br><span class="line">                        @fdate   - 返回文件上一次修改的日期。</span><br><span class="line"></span><br><span class="line">                        @ftime   - 返回文件上一次修改的时间。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        要在命令行包括特殊字符，字符请以 0xHH</span><br><span class="line">                        形式使用十六进制代码(例如，0x09 为 tab)。</span><br><span class="line"></span><br><span class="line">                        内部 CMD.exe 命令前面应以 &quot;cmd /c&quot; 开始。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /D    date          选择文件，其上一次修改日期大于或等于 (+)，</span><br><span class="line">                        或者小于或等于 (-) 用 &quot;yyyy/MM/dd&quot; 格式指定的日期;</span><br><span class="line"></span><br><span class="line">                        或选择文件，其上一次修改日期大于或等于 (+)</span><br><span class="line">                        当前日期加 &quot;dd&quot; 天，或者小于或等于 (-) 当前</span><br><span class="line"></span><br><span class="line">                        日期减 &quot;dd&quot; 天。有效的 &quot;dd&quot; 天数可以是</span><br><span class="line">                        0 - 32768 范围内的任何数字。如果没有指定，</span><br><span class="line"></span><br><span class="line">                        &quot;+&quot; 被当作默认符号。</span><br><span class="line"></span><br><span class="line">    /?                  显示此帮助消息。</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-日志分析"><a href="#0x04-日志分析" class="headerlink" title="0x04 日志分析"></a>0x04 日志分析</h2><h3 id="1-日志简介"><a href="#1-日志简介" class="headerlink" title="1. 日志简介"></a>1. 日志简介</h3><p>Windows主要有以下三类日志文件：应用程序日志、系统日志和安全日志</p>
+<p><strong>系统日志</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\System.evtx</span><br></pre></td></tr></table></figure>
+
+<p><strong>安全日志</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">记录系统的安全审计事件，包含各种类型的登录日志、对象访问日志、进程追踪日志、特权使用、帐号管理、策略变更、系统事件。默认设置下，安全性日志是关闭的，管理员可以使用组策略来启动安全性日志，或者在注册表中设置审核策略</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\Security.evtx</span><br></pre></td></tr></table></figure>
+
+<p><strong>应用日志</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误。如果某个应用程序出现崩溃情况，可以从程序事件日志中找到相应的记录</span><br><span class="line"></span><br><span class="line">默认位置：%SystemRoot%\System32\Winevt\Logs\Application.evtx</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-日志事件ID"><a href="#2-日志事件ID" class="headerlink" title="2. 日志事件ID"></a>2. 日志事件ID</h3><p>对于Windows事件日志分析，不同的EVENT ID代表了不同的意义，摘录一些常见的安全事件的说明</p>
+<table>
+<thead>
+<tr>
+<th>事件ID</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4624</td>
+<td>登录成功</td>
+</tr>
+<tr>
+<td>4625</td>
+<td>登录失败</td>
+</tr>
+<tr>
+<td>4634</td>
+<td>注销成功</td>
+</tr>
+<tr>
+<td>4647</td>
+<td>用户启动的注销</td>
+</tr>
+<tr>
+<td>4672</td>
+<td>使用超级用户（如管理员）进行登录</td>
+</tr>
+<tr>
+<td>4720</td>
+<td>创建用户</td>
+</tr>
+</tbody></table>
+<p>每个成功登录的事件都会标记一个登录类型，不同登录类型代表不同的方式：</p>
+<table>
+<thead>
+<tr>
+<th>登录类型</th>
+<th>描述</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>交互式登录（Interactive）</td>
+<td>用户在本地进行登录</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络（Network）</td>
+<td>最常见的情况就是连接到共享文件夹或共享打印机时</td>
+</tr>
+<tr>
+<td>4</td>
+<td>批处理（Batch）</td>
+<td>通常表明某计划任务启动</td>
+</tr>
+<tr>
+<td>5</td>
+<td>服务（Service）</td>
+<td>每种服务都被配置在某个特定的用户账号下运行</td>
+</tr>
+<tr>
+<td>7</td>
+<td>解锁（Unlock）</td>
+<td>屏保解锁</td>
+</tr>
+<tr>
+<td>8</td>
+<td>网络明文（NetworkCleartext）</td>
+<td>登录的密码在网络上是通过明文传输的，如FTP</td>
+</tr>
+<tr>
+<td>9</td>
+<td>新凭证（NewCredentials）</td>
+<td>使用带&#x2F;Netonly参数的RUNAS命令运行一个程序</td>
+</tr>
+<tr>
+<td>10</td>
+<td>远程交互，（RemoteInteractive）</td>
+<td>通过终端服务、远程桌面或远程协助访问计算机</td>
+</tr>
+<tr>
+<td>11</td>
+<td>缓存交互（CachedInteractive）</td>
+<td>以一个域用户登录而又没有域控制器可用</td>
+</tr>
+</tbody></table>
+<h3 id="3-日志分析技巧"><a href="#3-日志分析技巧" class="headerlink" title="3. 日志分析技巧"></a>3. 日志分析技巧</h3><p><strong>事件查看器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 利用eventlog事件来查看系统账号登录情况</span><br><span class="line"></span><br><span class="line">  a. 在“开始”菜单上，依次指向“所有程序”、“管理工具”，然后单击“事件查看器”；</span><br><span class="line"></span><br><span class="line">  b. 在事件查看器中，单击“安全”，查看安全日志；</span><br><span class="line"></span><br><span class="line">  c. 在安全日志右侧操作中，点击“筛选当前日志”，输入事件ID进行筛选。</span><br><span class="line"></span><br><span class="line">  4624 -- 登录成功</span><br><span class="line">  4625 -- 登录失败</span><br><span class="line">  4634 -- 注销成功 4647 -- 用户启动的注销</span><br><span class="line">  4672 -- 使用超级用户（如管理员）进行登录</span><br><span class="line"></span><br><span class="line">(2) 利用eventlog事件来查看计算机开关机的记录</span><br><span class="line"></span><br><span class="line">  a. 在“开始”菜单上，依次指向“所有程序”、“管理工具”，然后单击“事件查看器”；</span><br><span class="line"></span><br><span class="line">  b. 在事件查看器中，单击“系统”，查看系统日志；</span><br><span class="line"></span><br><span class="line">  c. 在系统日志右侧操作中，点击“筛选当前日志”，输入事件ID进行筛选</span><br><span class="line"></span><br><span class="line">  6006 -- 服务已启动，开机</span><br><span class="line">  6005 -- 服务已停止，关机</span><br><span class="line">  6009 -- 按ctrl、alt、delete键(非正常)关机</span><br></pre></td></tr></table></figure>
+
+<p><strong>Log Parser</strong></p>
+<p>Log Parser是微软公司出品的日志分析工具，功能强大，使用简单，可以分析基于文本的日志文件、XML 文件、CSV（逗号分隔符）文件，以及操作系统的事件日志、注册表、文件系统、Active Directory</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 基本查询语法</span><br><span class="line"></span><br><span class="line">  Logparser.exe –i:EVT –o:DATAGRID &quot;SELECT * FROM c:\xx.evtx&quot;</span><br><span class="line"></span><br><span class="line">(2) 查询登录成功的事件</span><br><span class="line"></span><br><span class="line">  a. 登录成功的所有事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">  b. 指定登录时间范围的事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where TimeGenerated&gt;&#x27;2018-06-19 23:32:11&#x27; and TimeGenerated&lt;&#x27;2018-06-20 23:34:00&#x27; and EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">  c. 提取登录成功的用户名和IP</span><br><span class="line">  LogParser.exe -i:EVT  –o:DATAGRID  &quot;SELECT EXTRACT_TOKEN(Message,13,&#x27; &#x27;) as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,&#x27;|&#x27;) as Username,EXTRACT_TOKEN(Message,38,&#x27; &#x27;) as Loginip FROM c:\Security.evtx where EventID=4624&quot;</span><br><span class="line"></span><br><span class="line">(3) 查询登录失败的事件</span><br><span class="line"></span><br><span class="line">  a. 登录失败的所有事件</span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4625&quot;</span><br><span class="line"></span><br><span class="line">  b. 提取登录失败用户名进行聚合统计</span><br><span class="line">  LogParser.exe  -i:EVT &quot;SELECT  EXTRACT_TOKEN(Message,13,&#x27; &#x27;)  as EventType,EXTRACT_TOKEN(Message,19,&#x27; &#x27;) as user,count(EXTRACT_TOKEN(Message,19,&#x27; &#x27;)) as Times,EXTRACT_TOKEN(Message,39,&#x27; &#x27;) as Loginip FROM c:\Security.evtx where EventID=4625 GROUP BY Message&quot;</span><br><span class="line"></span><br><span class="line">(4) 系统历史开关机记录</span><br><span class="line"></span><br><span class="line">  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="0x05-工具集合"><a href="#0x05-工具集合" class="headerlink" title="0x05 工具集合"></a>0x05 工具集合</h2><h3 id="1-工具箱"><a href="#1-工具箱" class="headerlink" title="1. 工具箱"></a>1. 工具箱</h3><p><a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a> : <em>微软发布的一套强大的免费工具程序集，共包括将近70个windows工具</em></p>
+<ul>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb664922.aspx">AccessChk</a> <em>了解特定用户或用户组对文件、目录、注册表项和Windows服务等资源具有哪种访问权限</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897332.aspx">AccessEnum</a> <em>显示用户可以用何种访问权限访问您系统中的目录、文件和注册表项，使用此工具可查找权限漏洞</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb963907.aspx">AdExplorer</a> <em>Active Directory Explorer 是一个高级的 Active Directory (AD) 查看器和编辑器</em></p>
+</li>
+<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb963902">AutoRuns</a> <em>windows启动程序管理工具，可显示系统启动或登录时会自动启动的项目和配置，包括扩展和加载各种Windows进程</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896655.aspx">Handle</a> <em>可显示哪些进程打开了哪些文件，以及更多其他信息</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896656.aspx">ListDLLs</a> <em>列出所有当前加载的 DLL，包括加载位置及其版本号，2.0版将打印已加载模块的完整路径名</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb896769.aspx">LogonSessions</a> <em>列出系统中的活动登录会话</em></p>
+</li>
+<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896653">Process Explorer</a> <em>进程查看器，查看进程的详细信息包括CPU，GPU，IO，线程，句柄，内存</em></p>
+</li>
+<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896645">Process Monitor</a> <em>一个高级的windows监视器，实时显示文件系统，注册表，网络活动，进程或线程活动</em></p>
+</li>
+<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb896649">PsTools</a> <em>PsTools 套件，可列出本地或远程计算机上运行的进程、远程运行进程、重新启动计算机、转储事件日志，以及执行其他任务</em></p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PsExec——执行远程过程</span><br><span class="line"></span><br><span class="line">PsFile——远程显示打开的文件</span><br><span class="line"></span><br><span class="line">PsGetSid——显示计算机的SID或一个用户</span><br><span class="line"></span><br><span class="line">PsInfo——系统信息列表</span><br><span class="line"></span><br><span class="line">PsKill——杀死进程的名字或进程ID</span><br><span class="line"></span><br><span class="line">PsList——列表详细信息流程</span><br><span class="line"></span><br><span class="line">PsLoggedOn——看谁的本地登录,通过资源共享</span><br><span class="line"></span><br><span class="line">PsLogList -倾倒事件日志记录</span><br><span class="line"></span><br><span class="line">PsPasswd——更改帐户密码</span><br><span class="line"></span><br><span class="line">psp -测试网络性能</span><br><span class="line"></span><br><span class="line">PsService——视图和控制服务</span><br><span class="line"></span><br><span class="line">PsShutdown——关闭,选择重新启动计算机</span><br><span class="line"></span><br><span class="line">PsSuspend——挂起和恢复过程</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897448.aspx">RegDelNull</a> <em>扫描并删除包含嵌入空字符的注册表项，标准注册表编辑工具不能删除这种注册表项</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897445.aspx">RootkitRevealer</a> <em>扫描系统以找出基于Rootkit的恶意软件</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897442.aspx">ShareEnum</a> <em>扫描网络上的文件共享并查看其安全设置，以关闭安全漏洞</em></p>
+</li>
+<li><p><a href="http://technet.microsoft.com/zh-cn/sysinternals/bb897439.aspx">Strings</a> <em>在二进制映像中搜索 ANSI 和 UNICODE 字符串</em></p>
+</li>
+<li><p><a href="https://technet.microsoft.com/en-us/sysinternals/bb897437">TcpView</a> <em>显示TCP和UDP端点的详细清单，包括进程名、远程地址和TCP连接的状态</em></p>
+</li>
+</ul>
+<h3 id="2-监控分析"><a href="#2-监控分析" class="headerlink" title="2. 监控分析"></a>2. 监控分析</h3><ul>
+<li><a href="https://www.huorong.cn/">火绒剑</a>  <em>火绒推出的一款专业的内核级监控分析工具</em></li>
+</ul>
+<h3 id="3-日志分析"><a href="#3-日志分析" class="headerlink" title="3. 日志分析"></a>3. 日志分析</h3><ul>
+<li><p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=24659">Log Parser</a> <em>微软推出的日志分析工具，可分析多种文件类型的系统事件日志、注册表、文件系统、Active Directory</em></p>
+</li>
+<li><p><a href="https://event-log-explorer.en.softonic.com/">Event Log Explorer</a> <em>Windows日志分析工具，可用于查看，监视和分析跟事件记录</em></p>
+</li>
+</ul>
+<h3 id="4-病毒查杀"><a href="#4-病毒查杀" class="headerlink" title="4. 病毒查杀"></a>4. 病毒查杀</h3><ul>
+<li><p>卡巴斯基：<a href="http://devbuilds.kaspersky-labs.com/devbuilds/KVRT/latest/full/KVRT.exe">http://devbuilds.kaspersky-labs.com/devbuilds/KVRT/latest/full/KVRT.exe</a></p>
+</li>
+<li><p>火绒安全软件：<a href="https://www.huorong.cn/">https://www.huorong.cn</a></p>
+</li>
+<li><p>360杀毒：<a href="http://sd.360.cn/download_center.html">http://sd.360.cn/download_center.html</a></p>
+</li>
+<li><p>ESET NOD32 Antivirus: <a href="https://www.eset.com/us/home/antivirus/download/">https://www.eset.com/us/home/antivirus/download/</a></p>
+</li>
+</ul>
+<h3 id="5-Webshell查杀"><a href="#5-Webshell查杀" class="headerlink" title="5. Webshell查杀"></a>5. Webshell查杀</h3><ul>
+<li><p>百度WEBDIR+：<a href="https://scanner.baidu.com/">https://scanner.baidu.com/</a></p>
+</li>
+<li><p>河马查杀：<a href="https://www.shellpub.com/">https://www.shellpub.com/</a></p>
+</li>
+<li><p>Web Shell Detector：<a href="http://www.shelldetector.com/">http://www.shelldetector.com/</a></p>
+</li>
+<li><p>D盾_Web查杀：<a href="http://www.d99net.net/down/WebShellKill_V2.0.9.zip">http://www.d99net.net/down/WebShellKill_V2.0.9.zip</a></p>
+</li>
+</ul>
+<h3 id="6-勒索软件解密"><a href="#6-勒索软件解密" class="headerlink" title="6. 勒索软件解密"></a>6. 勒索软件解密</h3><ul>
+<li><p>勒索病毒解密工具收集汇总：<a href="https://github.com/jiansiting/Decryption-Tools">https://github.com/jiansiting/Decryption-Tools</a></p>
+</li>
+<li><p>[腾讯哈勃]勒索软件专杀工具：<a href="https://habo.qq.com/tool/index">https://habo.qq.com/tool/index</a></p>
+</li>
+<li><p>[金山毒霸]勒索病毒免疫工具：<a href="http://www.duba.net/dbt/wannacry.html">http://www.duba.net/dbt/wannacry.html</a></p>
+</li>
+<li><p>[瑞星]解密工具下载：<a href="http://it.rising.com.cn/fanglesuo/index.html">http://it.rising.com.cn/fanglesuo/index.html</a></p>
+</li>
+<li><p>[卡巴斯基]免费勒索解密器：<a href="https://noransom.kaspersky.com/">https://noransom.kaspersky.com/</a></p>
+</li>
+<li><p>[Avast]免费勒索软件解密工具：<a href="https://www.avast.com/zh-cn/ransomware-decryption-tools">https://www.avast.com/zh-cn/ransomware-decryption-tools</a></p>
+</li>
+<li><p>[Emsisoft]免费勒索软件解密工具：<a href="https://www.emsisoft.com/ransomware-decryption-tools/free-download">https://www.emsisoft.com/ransomware-decryption-tools/free-download</a></p>
+</li>
+<li><p>[nomoreransom]勒索软件解密工具集：<a href="https://www.nomoreransom.org/zh/index.html">https://www.nomoreransom.org/zh/index.html</a></p>
+</li>
+<li><p>[MalwareHunterTeam]勒索软件解密工具集：<a href="https://id-ransomware.malwarehunterteam.com/">https://id-ransomware.malwarehunterteam.com/</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>应急响应</category>
+      </categories>
+      <tags>
+        <tag>Incident Response</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
