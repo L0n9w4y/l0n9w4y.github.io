@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="L0n9w4y">
 <meta property="og:description" content="各类未授权访问漏洞原理、利用方式总结...">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-09-03T07:56:44.811Z">
+<meta property="og:updated_time" content="2022-09-04T01:45:40.303Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="未授权漏洞总结">
 <meta name="twitter:description" content="各类未授权访问漏洞原理、利用方式总结...">
@@ -433,7 +433,7 @@
 <h4 id="9-Hadoop-Yarn-REST-API未授权漏洞"><a href="#9-Hadoop-Yarn-REST-API未授权漏洞" class="headerlink" title="9. Hadoop Yarn REST API未授权漏洞"></a>9. Hadoop Yarn REST API未授权漏洞</h4><p>默认端口：8088(WebUI)、50070、50075<br>漏洞验证</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1) 未授权访问，可看到Hadoop YARN ResourceManager WebUI页面</span><br><span class="line">http://ip:8088/</span><br><span class="line">http://ip:8088/cluster</span><br><span class="line"></span><br><span class="line">2) 验证指令: 返回application-id可能存在漏洞</span><br><span class="line">curl -v -X POST &apos;http://ip:8088/ws/v1/cluster/apps/new-application&apos;</span><br></pre></td></tr></table></figure>
 
-<h4 id="10-JBoss-未授权访问"><a href="#10-JBoss-未授权访问" class="headerlink" title="10. JBoss 未授权访问"></a>10. JBoss 未授权访问</h4><p><strong>漏洞介绍</strong><br>JBOSS 企业应用平台EAP是 J2EE 应用的中间件平台。默认情况下访问<a href="http://ip:8080/jmx-console" target="_blank" rel="noopener">http://ip:8080/jmx-console</a> 就可以浏览 Jboss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马<br><strong>漏洞检测</strong><br>访问 <a href="http://ip:port/" target="_blank" rel="noopener">http://ip:port/</a> 看是否能进入 jmx-console 和 web-console 页面</p>
+<h4 id="10-JBoss-未授权访问"><a href="#10-JBoss-未授权访问" class="headerlink" title="10. JBoss 未授权访问"></a>10. JBoss 未授权访问</h4><p><strong>漏洞介绍</strong><br>JBOSS 企业应用平台EAP是 J2EE 应用的中间件平台。默认情况下访问<code>http://ip:8080/jmx-console</code> 就可以浏览 Jboss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马<br><strong>漏洞检测</strong><br>访问 <code>http://ip:port/</code> 看是否能进入 jmx-console 和 web-console 页面</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://ip:8080/jmx-console/</span><br><span class="line">http://ip:8080/jbossws/</span><br></pre></td></tr></table></figure>
 
 <h4 id="11-Jenkins-未授权访问"><a href="#11-Jenkins-未授权访问" class="headerlink" title="11. Jenkins 未授权访问"></a>11. Jenkins 未授权访问</h4><p><strong>漏洞简介</strong><br>默认情况下Jenkins面板中用户可以选择执行脚本界面来操作一些系统层命令，攻击者可通过未授权访问漏洞或者暴力破解用户密码等进行脚本执行界面从而获取服务器权限<br><strong>漏洞检测</strong><br>通过url输入以下地址，若能访问，证明存在未授权访问漏洞</p>
@@ -470,7 +470,7 @@
 <h4 id="22-Solr-未授权访问"><a href="#22-Solr-未授权访问" class="headerlink" title="22. Solr 未授权访问"></a>22. Solr 未授权访问</h4><p><strong>漏洞简介</strong><br>Solr是一个高性能，采用Java开发，基于Lucene的全文搜索服务器。solr的管理界面通常包含如下信息：solr的配置信息（包括路径，用户名，系统版本信息），数据库的配置信息（地址，用户名，密码），数据库搜索数据等。<br>solr未授权访问的危害很大，轻则可查询所有数据库信息，重则可读取系统任意文件，甚至getshell<br><strong>漏洞检测</strong><br>敏感目录扫描时加上 /solr/admin</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://xx.xx.com/solr/admin</span><br><span class="line">https://xx.xx.com/solr/admin</span><br></pre></td></tr></table></figure>
 
-<h4 id="23-SpringBoot-Actuator-未授权访问"><a href="#23-SpringBoot-Actuator-未授权访问" class="headerlink" title="23. SpringBoot Actuator 未授权访问"></a>23. SpringBoot Actuator 未授权访问</h4><p><strong>漏洞简介</strong><br>Actuator 是 springboot 提供的用来对应用系统进行自省和监控的功能模块，借助于 Actuator 开发者可以很方便地对应用系统某些监控指标进行查看、统计等。<br>在 Actuator 启用的情况下，如果没有做好相关权限控制，非法用户可通过访问默认的执行器端点（endpoints）来获取应用系统中的监控信息，从而导致信息泄露甚至接管服务器<br><strong>漏洞检测</strong><br>访问敏感路径: <a href="http://ip/path" target="_blank" rel="noopener">http://ip/path</a></p>
+<h4 id="23-SpringBoot-Actuator-未授权访问"><a href="#23-SpringBoot-Actuator-未授权访问" class="headerlink" title="23. SpringBoot Actuator 未授权访问"></a>23. SpringBoot Actuator 未授权访问</h4><p><strong>漏洞简介</strong><br>Actuator 是 springboot 提供的用来对应用系统进行自省和监控的功能模块，借助于 Actuator 开发者可以很方便地对应用系统某些监控指标进行查看、统计等。<br>在 Actuator 启用的情况下，如果没有做好相关权限控制，非法用户可通过访问默认的执行器端点（endpoints）来获取应用系统中的监控信息，从而导致信息泄露甚至接管服务器<br><strong>漏洞检测</strong><br>访问敏感路径: <code>http://ip/path</code></p>
 <table>
 <thead>
 <tr>
@@ -551,7 +551,7 @@
 <h4 id="25-VNC-未授权访问"><a href="#25-VNC-未授权访问" class="headerlink" title="25. VNC 未授权访问"></a>25. VNC 未授权访问</h4><p><strong>漏洞简介</strong><br>VNC 是虚拟网络控制台Virtual Network Console的英文缩写，是一款优秀的远程控制工具软件。VNC 默认端口号为 5900、5901。VNC 未授权访问漏洞如被利用可能造成恶意用户直接控制受控主机<br><strong>漏洞检测</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) msf检测</span><br><span class="line"></span><br><span class="line">auxiliary/scanner/vnc/vnx_none_auth</span><br><span class="line"></span><br><span class="line">2）vncviewer命令连接主机</span><br><span class="line"></span><br><span class="line">vncviewer ip</span><br></pre></td></tr></table></figure>
 
-<h4 id="26-Weblogic-未授权访问"><a href="#26-Weblogic-未授权访问" class="headerlink" title="26. Weblogic 未授权访问"></a>26. Weblogic 未授权访问</h4><p><strong>漏洞简介</strong><br>Weblogic是Oracle公司推出的J2EE应用服务器，CVE-2020-14882允许未授权的用户绕过管理控制台的权限验证访问后台，CVE-2020-14883允许后台任意用户通过HTTP协议执行任意命令。使用这两个漏洞组成的利用链，可通过一个GET请求在远程Weblogic服务器上以未授权的任意用户身份执行命令<br><strong>漏洞检测</strong><br>访问 <a href="http://ip:7001/console" target="_blank" rel="noopener">http://ip:7001/console</a> 即可查看到后台登录页面<br>weblogic权限绕过（CVE-2020-14882）</p>
+<h4 id="26-Weblogic-未授权访问"><a href="#26-Weblogic-未授权访问" class="headerlink" title="26. Weblogic 未授权访问"></a>26. Weblogic 未授权访问</h4><p><strong>漏洞简介</strong><br>Weblogic是Oracle公司推出的J2EE应用服务器，CVE-2020-14882允许未授权的用户绕过管理控制台的权限验证访问后台，CVE-2020-14883允许后台任意用户通过HTTP协议执行任意命令。使用这两个漏洞组成的利用链，可通过一个GET请求在远程Weblogic服务器上以未授权的任意用户身份执行命令<br><strong>漏洞检测</strong><br>访问 <code>http://ip:7001/console</code> 即可查看到后台登录页面<br>weblogic权限绕过（CVE-2020-14882）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">构造特殊请求的URL，即可未授权访问到管理后台页面</span><br><span class="line"></span><br><span class="line">http://ip:7001/console/css/%252e%252e%252fconsole.portal</span><br></pre></td></tr></table></figure>
 
 <h4 id="27-ZooKeeper-未授权访问"><a href="#27-ZooKeeper-未授权访问" class="headerlink" title="27. ZooKeeper 未授权访问"></a>27. ZooKeeper 未授权访问</h4><p><strong>漏洞简介</strong><br>ZooKeeper 默认开启在 2181 端口在未进行任何访问控制的情况下攻击者可通过执行 envi 命令获得系统大量的敏感信息包括系统名称Java 环境，任意用户在网络可达的情况下进行为未授权访问并读取数据甚至 kill 服务<br><strong>漏洞检测</strong></p>
