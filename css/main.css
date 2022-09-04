@@ -1143,7 +1143,7 @@ header.header {
 }
 @media (min-width: 1200px) {
   .header-inner {
-    width: 900px;
+    width: 800px;
   }
 }
 @media (min-width: 1600px) {
@@ -1584,7 +1584,7 @@ header.header {
 }
 @media (min-width: 1200px) {
   .footer-inner {
-    width: 900px;
+    width: 800px;
   }
 }
 @media (min-width: 1600px) {
@@ -2284,6 +2284,7 @@ header.header {
 }
 .category-all-page .category-list {
   list-style: none;
+  text-align: center;
   margin: 0;
   padding: 0;
 }
@@ -2726,7 +2727,7 @@ hr {
 }
 @media (min-width: 1200px) {
   .main-inner {
-    width: 900px;
+    width: 800px;
   }
 }
 @media (min-width: 1600px) {
@@ -2797,7 +2798,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #f22b8f;
+  background: #ff4279;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
