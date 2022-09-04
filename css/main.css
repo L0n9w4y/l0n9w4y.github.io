@@ -2507,7 +2507,7 @@ hr {
   margin-bottom: 20px;
 }
 .posts-expand .post-tags {
-  text-align: left;
+  text-align: center;
 }
 .posts-expand .post-tags a {
   background: var(--content-bg-color);
@@ -2522,7 +2522,7 @@ hr {
 }
 .post-button {
   margin-top: 20px;
-  text-align: left;
+  text-align: center;
 }
 .post-button .btn {
   background: none;
@@ -2611,7 +2611,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #fff;
+  background: #1bc26a;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
