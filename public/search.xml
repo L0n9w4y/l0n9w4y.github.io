@@ -274,80 +274,6 @@
       </tags>
   </entry>
   <entry>
-    <title>内网存活主机发现姿势</title>
-    <url>/posts/10803/</url>
-    <content><![CDATA[<center>本文总结各类内网存活主机发现姿势...</center>
-
-<span id="more"></span>
-<hr>
-<h2 id="0x01-基于ARP发现内网存活主机"><a href="#0x01-基于ARP发现内网存活主机" class="headerlink" title="0x01 基于ARP发现内网存活主机"></a>0x01 基于ARP发现内网存活主机</h2><p><strong>ARP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sn -PR 192.168.1.1/24</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描"><a href="#2-msf扫描" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre><code>msf &gt; use auxiliary/scanner/discovery/arp_sweep
-
-msf auxiliary(arp_sweep) &gt; set RHOSTS 192.168.1.0/24
-
-msf auxiliary(arp_sweep) &gt; set THREADS 16
-
-msf auxiliary(arp_sweep) &gt; run
-</code></pre>
-<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum -y install arp-scan  //安装</span><br><span class="line"></span><br><span class="line">$ arp-scan --interface=eth0 --localnet  //发现本地网络上所有主机</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-powershell"><a href="#4-powershell" class="headerlink" title="4. powershell"></a>4. powershell</h3><pre><code>c:&gt;powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0/24&quot;
-</code></pre>
-<h3 id="5-netdiscover"><a href="#5-netdiscover" class="headerlink" title="5. netdiscover"></a>5. netdiscover</h3><pre><code>$ netdiscover -r 192.168.1.0/24 -i wlan0
-</code></pre>
-<h2 id="0x02-基于ICMP发现内网存活主机"><a href="#0x02-基于ICMP发现内网存活主机" class="headerlink" title="0x02 基于ICMP发现内网存活主机"></a>0x02 基于ICMP发现内网存活主机</h2><p><strong>ICMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP/IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-1"><a href="#1-nmap扫描-1" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre><code>$ nmap -sP -PI -T4 192.168.0.1/24
-</code></pre>
-<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) Windows扫描</span><br><span class="line">for /l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr /i &quot;ttl=&quot;</span><br><span class="line"></span><br><span class="line">2）Linux扫描</span><br><span class="line">for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#x27;&#123;print $4&#125;&#x27;; done</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-fping"><a href="#3-fping" class="headerlink" title="3. fping"></a>3. fping</h3><p><strong>常用参数</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：只显示存活主机；</span><br><span class="line"></span><br><span class="line">-u：只显示不存活主机；</span><br><span class="line"></span><br><span class="line">-l：循环ping</span><br><span class="line"></span><br><span class="line">-g：指定扫描范围</span><br><span class="line"></span><br><span class="line">-f：扫描IP列表文件</span><br></pre></td></tr></table></figure>
-
-<p><strong>扫描实战</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ fping -af iplist  //从文件中扫描存活主机</span><br><span class="line"></span><br><span class="line">$ fping -g IP1 IP2 //IP1地址开始范围，IP2地址结束范围</span><br></pre></td></tr></table></figure>
-
-<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module ./Invoke‐TSPingSweep.ps1</span><br><span class="line">; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv</span><br><span class="line">eHost ‐ScanPort ‐Port 445,135&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="tcping"><a href="#tcping" class="headerlink" title="tcping"></a>tcping</h3><pre><code>tcping.exe ‐n 1 192.168.1.0 80
-</code></pre>
-<h2 id="0x03-基于UDP发现内网存活主机"><a href="#0x03-基于UDP发现内网存活主机" class="headerlink" title="0x03 基于UDP发现内网存活主机"></a>0x03 基于UDP发现内网存活主机</h2><p><strong>UDP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_probe</span><br><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_sweep</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ unicornscan -mU 192.168.1.1</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-基于snmp发现内网存活主机"><a href="#0x04-基于snmp发现内网存活主机" class="headerlink" title="0x04 基于snmp发现内网存活主机"></a>0x04 基于snmp发现内网存活主机</h2><p><strong>SNMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SNMP是一种简单网络管理协议，它属于TCP/IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script snmp-brute 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/snmp/snmp_enum</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-基于netbios发现内网存活主机"><a href="#0x05-基于netbios发现内网存活主机" class="headerlink" title="0x05 基于netbios发现内网存活主机"></a>0x05 基于netbios发现内网存活主机</h2><p><strong>netbios协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script nbstat.nse -p137 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/netbios/nbname</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nbtscan -r 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">$ nbtscan -v -s: 192.168.1.0/24</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>红队渗透</category>
-      </categories>
-      <tags>
-        <tag>Discovery</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux提权姿势总结</title>
     <url>/posts/29809/</url>
     <content><![CDATA[<center>本文总结Linux环境下权限提升思路及方法...</center>
@@ -659,6 +585,132 @@ msf auxiliary(arp_sweep) &gt; run
       <tags>
         <tag>Metsploit</tag>
         <tag>Tookit</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sqlmap备忘单</title>
+    <url>/posts/30803/</url>
+    <content><![CDATA[<center>Sqlmap常用参数及用法备忘单...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Usage: python sqlmap.py [options]</span><br><span class="line"></span><br><span class="line">Options（选项）:</span><br><span class="line"></span><br><span class="line">-h,         ## 展示帮助文档参数</span><br><span class="line"></span><br><span class="line">-hh         ## 展示详细帮助文档参数</span><br><span class="line"></span><br><span class="line">--version   ## 显示程序的版本号</span><br><span class="line"></span><br><span class="line">-v          ## 详细级别：0-6（默认为1）</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Target（目标）:</span><br><span class="line"></span><br><span class="line">-d      ## 指定具体数据库</span><br><span class="line"></span><br><span class="line">-u URL  ## 目标URL (e.g. &quot;http://www.example.com/test.php?id=1&quot;)</span><br><span class="line"></span><br><span class="line">-l      ## 解析目标(s)从Burp或WebScarab代理日志文件</span><br><span class="line"></span><br><span class="line">-x      ## 从远程站点地图文件(.xml)解析目标</span><br><span class="line"></span><br><span class="line">-m      ## 扫描文本文件中给出的多个目标</span><br><span class="line"></span><br><span class="line">-r      ## 从本地文件加载HTTP请求 ，多用于post注入</span><br><span class="line"></span><br><span class="line">-g      ## 处理Google的结果作为目标URL</span><br><span class="line"></span><br><span class="line">-c      ## 从INI配置文件中加载选项</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Request（请求）: 这些选项可以用来指定如何连接到目标URL</span><br><span class="line"></span><br><span class="line">--method=METHOD  ## 强制使用给定的HTTP方法（e.g. POST）</span><br><span class="line"></span><br><span class="line">--data=DATA ## 通过POST发送的数据字符串</span><br><span class="line"></span><br><span class="line">--param-del=PARA..  ## 用于拆分参数值的字符</span><br><span class="line"></span><br><span class="line">--cookie=COOKIE ## Cookie头的值</span><br><span class="line"></span><br><span class="line">--cookie-del=COO.. ## 用于分割Cookie值的字符</span><br><span class="line"></span><br><span class="line">--load-cookies=L.. ## 包含Netscape/wget格式的cookie的文件</span><br><span class="line"></span><br><span class="line">--drop-set-cookie ## 从响应中忽略Set-Cookie头</span><br><span class="line"></span><br><span class="line">--user-agent=AGENT ## 指定 HTTP User - Agent头</span><br><span class="line"></span><br><span class="line">--random-agent ##  使用随机选定的HTTP User - Agent头</span><br><span class="line"></span><br><span class="line">--host=HOST ## HTTP主机头值</span><br><span class="line"></span><br><span class="line">--referer=REFERER ##  指定 HTTP Referer头</span><br><span class="line"></span><br><span class="line">-H HEADER, --hea.. ## 额外header (e.g. &quot;X-Forwarded-For: 127.0.0.1&quot;)</span><br><span class="line"></span><br><span class="line">--headers=HEADERS ## 额外header (e.g. &quot;Accept-Language: fr\\nETag: 123&quot;)</span><br><span class="line"></span><br><span class="line">--auth-type=AUTH.. ## 认证类型(Basic, Digest, NTLM or PKI)</span><br><span class="line"></span><br><span class="line">--auth-cred=AUTH.. ##  HTTP认证凭证(name:password)</span><br><span class="line"></span><br><span class="line">--auth-file=AUTH.. ## HTTP认证 PEM认证/私钥文件</span><br><span class="line"></span><br><span class="line">--ignore-401 ## 忽略HTTP错误401</span><br><span class="line"></span><br><span class="line">--proxy=PROXY ## 使用代理连接到目标网址</span><br><span class="line"></span><br><span class="line">--proxy-cred=PRO.. ## 代理认证证书(name:password)</span><br><span class="line"></span><br><span class="line">--proxy-file=PRO.. ## 从文件中加载代理列表</span><br><span class="line"></span><br><span class="line">--ignore-proxy ## 忽略系统默认代理设置</span><br><span class="line"></span><br><span class="line">--tor ## 使用Tor匿名网络</span><br><span class="line"></span><br><span class="line">--tor-port=TORPORT ##  设置Tor代理端口而不是默认值</span><br><span class="line"></span><br><span class="line">--tor-type=TORTYPE ## 设置Tor代理类型</span><br><span class="line"></span><br><span class="line">--check-tor ## 检查Tor是否正确使用</span><br><span class="line"></span><br><span class="line">--delay=DELAY ## 每个HTTP请求之间的延迟（秒）</span><br><span class="line"></span><br><span class="line">--timeout=TIMEOUT ## 秒超时连接前等待（默认30）</span><br><span class="line"></span><br><span class="line">--retries=RETRIES ##  连接超时时重试（默认值3）</span><br><span class="line"></span><br><span class="line">--randomize=RPARAM ## 随机更改给定参数的值(s)</span><br><span class="line"></span><br><span class="line">--safe-url=SAFEURL ## 在测试期间频繁访问的URL地址</span><br><span class="line"></span><br><span class="line">--safe-post=SAFE.. ## POST数据发送到安全URL</span><br><span class="line"></span><br><span class="line">--safe-req=SAFER.. ## 从文件加载安全HTTP请求</span><br><span class="line"></span><br><span class="line">--safe-freq=SAFE.. ## 在两次访问给定安全网址之间测试请求</span><br><span class="line"></span><br><span class="line">--skip-urlencode ## 跳过有效载荷数据的URL编码</span><br><span class="line"></span><br><span class="line">--csrf-token=CSR.. ## 参数用于保存anti-CSRF令牌</span><br><span class="line"></span><br><span class="line">--csrf-url=CSRFURL ## 提取anti-CSRF URL地址访问令牌</span><br><span class="line"></span><br><span class="line">--force-ssl ## 强制使用SSL /HTTPS</span><br><span class="line"></span><br><span class="line">--hpp ## 使用HTTP参数pollution的方法</span><br><span class="line"></span><br><span class="line">--eval=EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2=hashlib.md5(id).hexdigest()&quot;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Optimization（优化）: 这些选项可用于优化sqlmap的性能</span><br><span class="line"></span><br><span class="line">-o ## 开启所有优化开关</span><br><span class="line"></span><br><span class="line">--predict-output ## 预测常见的查询输出</span><br><span class="line"></span><br><span class="line">--keep-alive ## 使用持久的HTTP（S）连接</span><br><span class="line"></span><br><span class="line">--null-connection ## 从没有实际的HTTP响应体中检索页面长度</span><br><span class="line"></span><br><span class="line">--threads=THREADS ## 最大的HTTP（S）请求并发量（默认为1）</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本</span><br><span class="line"></span><br><span class="line">-p ## 可测试的参数（S）</span><br><span class="line"></span><br><span class="line">--skip=SKIP ## 跳过对给定参数的测试</span><br><span class="line"></span><br><span class="line">--skip-static ## 跳过测试不显示为动态的参数</span><br><span class="line"></span><br><span class="line">--param-exclude=.. ## 使用正则表达式排除参数进行测试（e.g. &quot;ses&quot;）</span><br><span class="line"></span><br><span class="line">--dbms=DBMS ## 强制后端的DBMS为此值</span><br><span class="line"></span><br><span class="line">--dbms-cred=DBMS.. ## DBMS认证凭证(user:password)</span><br><span class="line"></span><br><span class="line">--os=OS ## 强制后端的DBMS操作系统为这个值</span><br><span class="line"></span><br><span class="line">--invalid-bignum ## 使用大数字使值无效</span><br><span class="line"></span><br><span class="line">--invalid-logical ## 使用逻辑操作使值无效</span><br><span class="line"></span><br><span class="line">--invalid-string ## 使用随机字符串使值无效</span><br><span class="line"></span><br><span class="line">--no-cast ## 关闭有效载荷铸造机制</span><br><span class="line"></span><br><span class="line">--no-escape ## 关闭字符串转义机制</span><br><span class="line"></span><br><span class="line">--prefix=PREFIX ## 注入payload字符串前缀</span><br><span class="line"></span><br><span class="line">--suffix=SUFFIX ## 注入payload字符串后缀</span><br><span class="line"></span><br><span class="line">--tamper=TAMPER ## 使用给定的脚本（S）篡改注入数据</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容</span><br><span class="line"></span><br><span class="line">--level=LEVEL ## 执行测试的等级（1-5，默认为1）</span><br><span class="line"></span><br><span class="line">--risk=RISK ## 执行测试的风险（0-3，默认为1）</span><br><span class="line"></span><br><span class="line">--string=STRING ## 查询时有效时在页面匹配字符串</span><br><span class="line"></span><br><span class="line">--not-string=NOT.. ## 当查询求值为无效时匹配的字符串</span><br><span class="line"></span><br><span class="line">--regexp=REGEXP ## 查询时有效时在页面匹配正则表达式</span><br><span class="line"></span><br><span class="line">--code=CODE ## 当查询求值为True时匹配的HTTP代码</span><br><span class="line"></span><br><span class="line">--text-only ## 仅基于在文本内容比较网页</span><br><span class="line"></span><br><span class="line">--titles ##  仅根据他们的标题进行比较</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Techniques（技巧）: 用于调整具体的SQL注入测试。</span><br><span class="line"></span><br><span class="line">--technique=TECH ## SQL 注入技术测试（默认BEUST）</span><br><span class="line"></span><br><span class="line">--time-sec=TIMESEC ##  DBMS响应的延迟时间（默认为5秒）</span><br><span class="line"></span><br><span class="line">--union-cols=UCOLS ##  定列范围用于测试UNION查询注入</span><br><span class="line"></span><br><span class="line">--union-char=UCHAR ##  用于暴力猜解列数的字符</span><br><span class="line"></span><br><span class="line">--union-from=UFROM ##  要在UNION查询SQL注入的FROM部分使用的表</span><br><span class="line"></span><br><span class="line">--dns-domain=DNS.. ##  域名用于DNS漏出攻击</span><br><span class="line"></span><br><span class="line">--second-order=S.. ## 生成页面的URL搜索为second-order响应</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Fingerprint（指纹）</span><br><span class="line"></span><br><span class="line">-f  ## 执行检查广泛的DBMS版本指纹</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句</span><br><span class="line"></span><br><span class="line">-a, ## 检索一切</span><br><span class="line"></span><br><span class="line">-b, ## 检索数据库管理系统的标识</span><br><span class="line"></span><br><span class="line">--current-user ## 检索数据库管理系统的标识</span><br><span class="line"></span><br><span class="line">--current-db ## 检索数据库管理系统当前数据库</span><br><span class="line"></span><br><span class="line">-hostname ## 检索数据库服务器的主机名</span><br><span class="line"></span><br><span class="line">--is-dba ## 检测DBMS当前用户是否DBA</span><br><span class="line"></span><br><span class="line">--users ## 枚举数据库管理系统用户</span><br><span class="line"></span><br><span class="line">--passwords ## 枚举数据库管理系统用户密码哈希</span><br><span class="line"></span><br><span class="line">--privileges ## 枚举数据库管理系统用户的权限</span><br><span class="line"></span><br><span class="line">--roles ## 枚举数据库管理系统用户的角色</span><br><span class="line"></span><br><span class="line">--dbs ## 枚举数据库管理系统数据库</span><br><span class="line"></span><br><span class="line">--tables ## 枚举的DBMS数据库中的表</span><br><span class="line"></span><br><span class="line">--columns ## 枚举DBMS数据库表列</span><br><span class="line"></span><br><span class="line">--schema ## 枚举数据库架构</span><br><span class="line"></span><br><span class="line">--count ## 检索表的条目数</span><br><span class="line"></span><br><span class="line">--dump ## 转储数据库管理系统的数据库中的表项</span><br><span class="line"></span><br><span class="line">--dump-all ## 转储数据库管理系统的数据库中的表项</span><br><span class="line"></span><br><span class="line">--search ## 搜索列（S），表（S）和/或数据库名称（S）</span><br><span class="line"></span><br><span class="line">--comments ## 检索数据库的comments(注释、评论)</span><br><span class="line"></span><br><span class="line">-D DB ## 要进行枚举的数据库名</span><br><span class="line"></span><br><span class="line">-T TBL ## 要进行枚举的数据库表</span><br><span class="line"></span><br><span class="line">-C COL ## 要进行枚举的数据库列</span><br><span class="line"></span><br><span class="line">-X EXCLUDECOL ## 不进行枚举的数据库列</span><br><span class="line"></span><br><span class="line">-U USER ## 用来进行枚举的数据库用户</span><br><span class="line"></span><br><span class="line">--exclude-sysdbs ## 枚举表时排除系统数据库</span><br><span class="line"></span><br><span class="line">--pivot-column=P.. ## 主列名称</span><br><span class="line"></span><br><span class="line">--where=DUMPWHERE ## 使用WHERE条件进行表转储</span><br><span class="line"></span><br><span class="line">--start=LIMITSTART ## 第一个查询输出进入检索</span><br><span class="line"></span><br><span class="line">--stop=LIMITSTOP ## 最后查询的输出进入检索</span><br><span class="line"></span><br><span class="line">--first=FIRSTCHAR ## 第一个查询输出字的字符检索</span><br><span class="line"></span><br><span class="line">--last=LASTCHAR ## 最后查询的输出字字符检索</span><br><span class="line"></span><br><span class="line">--sql-query=QUERY ## 要执行的SQL语句</span><br><span class="line"></span><br><span class="line">--sql-shell ## 提示交互式SQL的shell</span><br><span class="line"></span><br><span class="line">--sql-file=SQLFILE ## 从给定文件执行SQL语句</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Brute force（蛮力）: 可以被用来运行蛮力检查</span><br><span class="line"></span><br><span class="line">--common-tables ## 检查存在共同表</span><br><span class="line"></span><br><span class="line">--common-columns ## 检查存在共同列</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0B-访问操作"><a href="#0x0B-访问操作" class="headerlink" title="0x0B 访问操作"></a>0x0B 访问操作</h2><p><strong>访问文件系统</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">File system access（访问文件系统）:</span><br><span class="line"> 可以被用来访问后端数据库管理系统的底层文件系统</span><br><span class="line"></span><br><span class="line">--file-read=RFILE ## 从后端的数据库管理系统文件系统读取文件</span><br><span class="line"></span><br><span class="line">--file-write=WFILE ## 编辑后端的数据库管理系统文件系统上的本地文件</span><br><span class="line"></span><br><span class="line">--file-dest=DFILE ## 后端的数据库管理系统写入文件的绝对路径</span><br></pre></td></tr></table></figure>
+
+<p><strong>操作系统访问</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统</span><br><span class="line"></span><br><span class="line">--os-cmd=OSCMD ## 执行操作系统命令</span><br><span class="line"></span><br><span class="line">--os-shell ## 交互式的操作系统的shell</span><br><span class="line"></span><br><span class="line">--os-pwn ## 获取一个OOB shell，meterpreter或VNC</span><br><span class="line"></span><br><span class="line">--os-smbrelay ## 一键获取一个OOB shell，meterpreter或VNC</span><br><span class="line"></span><br><span class="line">--os-bof ## 存储过程缓冲区溢出利用</span><br><span class="line"></span><br><span class="line">--priv-esc Database process user privilege escalation</span><br><span class="line">## 数据库进程用户权限提升</span><br><span class="line"></span><br><span class="line">--msf-path=MSFPATH ## 本地的安装路径</span><br><span class="line"></span><br><span class="line">--tmp-path=TMPPATH ## 远程临时文件目录的绝对路径</span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows注册表访问</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。</span><br><span class="line"></span><br><span class="line">--reg-read ## 读一个Windows注册表项值</span><br><span class="line"></span><br><span class="line">--reg-add ## 写一个Windows注册表项值数据</span><br><span class="line"></span><br><span class="line">--reg-del ## 删除Windows注册表键值</span><br><span class="line"></span><br><span class="line">--reg-key=REGKEY ## Windows注册表键</span><br><span class="line"></span><br><span class="line">--reg-value=REGVAL ##  Windows注册表项值</span><br><span class="line"></span><br><span class="line">--reg-data=REGDATA ## Windows注册表键值数据</span><br><span class="line"></span><br><span class="line">--reg-type=REGTYPE ## Windows注册表项值类型</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">General : 可以用来设置一些一般的工作参数</span><br><span class="line"></span><br><span class="line">-s SESSIONFILE ## 保存和恢复检索会话文件的所有数据</span><br><span class="line"></span><br><span class="line">-t TRAFFICFILE ## 记录所有HTTP流量到一个文本文件中</span><br><span class="line"></span><br><span class="line">--batch ## 从不询问用户输入，使用所有默认配置</span><br><span class="line"></span><br><span class="line">--binary-fields=.. ## 具有二进制值的结果字段</span><br><span class="line"></span><br><span class="line">--charset=CHARSET ## 强制用于数据检索的字符编码</span><br><span class="line"></span><br><span class="line">--crawl=CRAWLDEPTH ## 从目标网址开始抓取网站</span><br><span class="line"></span><br><span class="line">--crawl-exclude=.. ## 正则表达式排除网页抓取</span><br><span class="line"></span><br><span class="line">--csv-del=CSVDEL ## 分隔CSV输出中使用的字符</span><br><span class="line"></span><br><span class="line">--dump-format=DU.. ## 转储数据的格式 (CSV (default), HTML or SQLITE)</span><br><span class="line"></span><br><span class="line">--eta ## 显示每个输出的预计到达时间</span><br><span class="line"></span><br><span class="line">--flush-session ## 刷新当前目标的会话文件</span><br><span class="line"></span><br><span class="line">--forms ## 在目标网址上解析和测试表单</span><br><span class="line"></span><br><span class="line">--fresh-queries ## 忽略在会话文件中存储的查询结果</span><br><span class="line"></span><br><span class="line">--hex ## 使用DBMS hex函数进行数据检索</span><br><span class="line"></span><br><span class="line">--output-dir=OUT.. ## 自定义输出目录路径</span><br><span class="line"></span><br><span class="line">--parse-errors ## 解析和显示响应中的DBMS错误消息</span><br><span class="line"></span><br><span class="line">--save=SAVECONFIG ## 保存选项到INI配置文件</span><br><span class="line"></span><br><span class="line">--scope=SCOPE ## 使用正则表达式从提供的代理日志中过滤目标</span><br><span class="line"></span><br><span class="line">--test-filter=TE.. ## 根据有效负载和/或标题(e.g. ROW)选择测试</span><br><span class="line"></span><br><span class="line">--test-skip=TEST.. ## 根据有效负载和/或标题跳过测试（e.g. BENCHMARK）</span><br><span class="line"></span><br><span class="line">--update  ## 更新SqlMap</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Miscellaneous（杂项）:</span><br><span class="line"></span><br><span class="line">-z ## 使用简短的助记符 (如 &quot;flu,bat,ban,tec=EU&quot;)</span><br><span class="line"></span><br><span class="line">--alert=ALERT ## 在找到SQL注入时运行主机操作系统命令</span><br><span class="line"></span><br><span class="line">--answers=ANSWERS ## 设置问题答案</span><br><span class="line"></span><br><span class="line">--beep ## 发现SQL 注入时提醒</span><br><span class="line"></span><br><span class="line">--cleanup ## 具体的UDF和表清理DBMS</span><br><span class="line"></span><br><span class="line">--dependencies ## 检查是否缺少（非内核）sqlmap依赖关系</span><br><span class="line"></span><br><span class="line">--disable-coloring ## 禁用控制台输出颜色</span><br><span class="line"></span><br><span class="line">--gpage=GOOGLEPAGE ## 使用Google dork结果指定页码</span><br><span class="line"></span><br><span class="line">--identify-waf ## 对WAF/IPS/IDS保护进行全面测试</span><br><span class="line"></span><br><span class="line">--skip-waf ## 跳过启发式检测WAF/IPS/IDS保护</span><br><span class="line"></span><br><span class="line">--mobile ## 通过HTTP User-Agent标头模仿智能手机</span><br><span class="line"></span><br><span class="line">--offline ## 在离线模式下工作（仅使用会话数据）</span><br><span class="line"></span><br><span class="line">--page-rank  ## Google dork结果显示网页排名（PR）</span><br><span class="line"></span><br><span class="line">--purge-output ## 安全地从输出目录中删除所有内容</span><br><span class="line"></span><br><span class="line">--smart ## 只有在正启发式时才进行彻底测试</span><br><span class="line"></span><br><span class="line">--sqlmap-shell ## 提示交互式 sqlmap shell</span><br><span class="line"></span><br><span class="line">--wizard ## 给初级用户的简单向导界面</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage">https://github.com/sqlmapproject/sqlmap/wiki/Usage</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>红队渗透</category>
+      </categories>
+      <tags>
+        <tag>Tookit</tag>
+        <tag>Sqlmap</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内网存活主机发现姿势</title>
+    <url>/posts/10803/</url>
+    <content><![CDATA[<center>本文总结各类内网存活主机发现姿势...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-基于ARP发现内网存活主机"><a href="#0x01-基于ARP发现内网存活主机" class="headerlink" title="0x01 基于ARP发现内网存活主机"></a>0x01 基于ARP发现内网存活主机</h2><p><strong>ARP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sn -PR 192.168.1.1/24</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描"><a href="#2-msf扫描" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre><code>msf &gt; use auxiliary/scanner/discovery/arp_sweep
+
+msf auxiliary(arp_sweep) &gt; set RHOSTS 192.168.1.0/24
+
+msf auxiliary(arp_sweep) &gt; set THREADS 16
+
+msf auxiliary(arp_sweep) &gt; run
+</code></pre>
+<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum -y install arp-scan  //安装</span><br><span class="line"></span><br><span class="line">$ arp-scan --interface=eth0 --localnet  //发现本地网络上所有主机</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-powershell"><a href="#4-powershell" class="headerlink" title="4. powershell"></a>4. powershell</h3><pre><code>c:&gt;powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0/24&quot;
+</code></pre>
+<h3 id="5-netdiscover"><a href="#5-netdiscover" class="headerlink" title="5. netdiscover"></a>5. netdiscover</h3><pre><code>$ netdiscover -r 192.168.1.0/24 -i wlan0
+</code></pre>
+<h2 id="0x02-基于ICMP发现内网存活主机"><a href="#0x02-基于ICMP发现内网存活主机" class="headerlink" title="0x02 基于ICMP发现内网存活主机"></a>0x02 基于ICMP发现内网存活主机</h2><p><strong>ICMP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP/IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-1"><a href="#1-nmap扫描-1" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre><code>$ nmap -sP -PI -T4 192.168.0.1/24
+</code></pre>
+<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) Windows扫描</span><br><span class="line">for /l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr /i &quot;ttl=&quot;</span><br><span class="line"></span><br><span class="line">2）Linux扫描</span><br><span class="line">for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#x27;&#123;print $4&#125;&#x27;; done</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-fping"><a href="#3-fping" class="headerlink" title="3. fping"></a>3. fping</h3><p><strong>常用参数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：只显示存活主机；</span><br><span class="line"></span><br><span class="line">-u：只显示不存活主机；</span><br><span class="line"></span><br><span class="line">-l：循环ping</span><br><span class="line"></span><br><span class="line">-g：指定扫描范围</span><br><span class="line"></span><br><span class="line">-f：扫描IP列表文件</span><br></pre></td></tr></table></figure>
+
+<p><strong>扫描实战</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ fping -af iplist  //从文件中扫描存活主机</span><br><span class="line"></span><br><span class="line">$ fping -g IP1 IP2 //IP1地址开始范围，IP2地址结束范围</span><br></pre></td></tr></table></figure>
+
+<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module ./Invoke‐TSPingSweep.ps1</span><br><span class="line">; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv</span><br><span class="line">eHost ‐ScanPort ‐Port 445,135&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="tcping"><a href="#tcping" class="headerlink" title="tcping"></a>tcping</h3><pre><code>tcping.exe ‐n 1 192.168.1.0 80
+</code></pre>
+<h2 id="0x03-基于UDP发现内网存活主机"><a href="#0x03-基于UDP发现内网存活主机" class="headerlink" title="0x03 基于UDP发现内网存活主机"></a>0x03 基于UDP发现内网存活主机</h2><p><strong>UDP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_probe</span><br><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_sweep</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ unicornscan -mU 192.168.1.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-基于snmp发现内网存活主机"><a href="#0x04-基于snmp发现内网存活主机" class="headerlink" title="0x04 基于snmp发现内网存活主机"></a>0x04 基于snmp发现内网存活主机</h2><p><strong>SNMP协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SNMP是一种简单网络管理协议，它属于TCP/IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script snmp-brute 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/snmp/snmp_enum</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-基于netbios发现内网存活主机"><a href="#0x05-基于netbios发现内网存活主机" class="headerlink" title="0x05 基于netbios发现内网存活主机"></a>0x05 基于netbios发现内网存活主机</h2><p><strong>netbios协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nmap -sU --script nbstat.nse -p137 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/netbios/nbname</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nbtscan -r 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">$ nbtscan -v -s: 192.168.1.0/24</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>红队渗透</category>
+      </categories>
+      <tags>
+        <tag>Discovery</tag>
       </tags>
   </entry>
   <entry>
@@ -1627,58 +1679,6 @@ msf auxiliary(arp_sweep) &gt; run
       </tags>
   </entry>
   <entry>
-    <title>Sqlmap备忘单</title>
-    <url>/posts/30803/</url>
-    <content><![CDATA[<center>Sqlmap常用参数及用法备忘单...</center>
-
-<span id="more"></span>
-<hr>
-<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Usage: python sqlmap.py [options]</span><br><span class="line"></span><br><span class="line">Options（选项）:</span><br><span class="line"></span><br><span class="line">-h,         ## 展示帮助文档参数</span><br><span class="line"></span><br><span class="line">-hh         ## 展示详细帮助文档参数</span><br><span class="line"></span><br><span class="line">--version   ## 显示程序的版本号</span><br><span class="line"></span><br><span class="line">-v          ## 详细级别：0-6（默认为1）</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Target（目标）:</span><br><span class="line"></span><br><span class="line">-d      ## 指定具体数据库</span><br><span class="line"></span><br><span class="line">-u URL  ## 目标URL (e.g. &quot;http://www.example.com/test.php?id=1&quot;)</span><br><span class="line"></span><br><span class="line">-l      ## 解析目标(s)从Burp或WebScarab代理日志文件</span><br><span class="line"></span><br><span class="line">-x      ## 从远程站点地图文件(.xml)解析目标</span><br><span class="line"></span><br><span class="line">-m      ## 扫描文本文件中给出的多个目标</span><br><span class="line"></span><br><span class="line">-r      ## 从本地文件加载HTTP请求 ，多用于post注入</span><br><span class="line"></span><br><span class="line">-g      ## 处理Google的结果作为目标URL</span><br><span class="line"></span><br><span class="line">-c      ## 从INI配置文件中加载选项</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Request（请求）: 这些选项可以用来指定如何连接到目标URL</span><br><span class="line"></span><br><span class="line">--method=METHOD  ## 强制使用给定的HTTP方法（e.g. POST）</span><br><span class="line"></span><br><span class="line">--data=DATA ## 通过POST发送的数据字符串</span><br><span class="line"></span><br><span class="line">--param-del=PARA..  ## 用于拆分参数值的字符</span><br><span class="line"></span><br><span class="line">--cookie=COOKIE ## Cookie头的值</span><br><span class="line"></span><br><span class="line">--cookie-del=COO.. ## 用于分割Cookie值的字符</span><br><span class="line"></span><br><span class="line">--load-cookies=L.. ## 包含Netscape/wget格式的cookie的文件</span><br><span class="line"></span><br><span class="line">--drop-set-cookie ## 从响应中忽略Set-Cookie头</span><br><span class="line"></span><br><span class="line">--user-agent=AGENT ## 指定 HTTP User - Agent头</span><br><span class="line"></span><br><span class="line">--random-agent ##  使用随机选定的HTTP User - Agent头</span><br><span class="line"></span><br><span class="line">--host=HOST ## HTTP主机头值</span><br><span class="line"></span><br><span class="line">--referer=REFERER ##  指定 HTTP Referer头</span><br><span class="line"></span><br><span class="line">-H HEADER, --hea.. ## 额外header (e.g. &quot;X-Forwarded-For: 127.0.0.1&quot;)</span><br><span class="line"></span><br><span class="line">--headers=HEADERS ## 额外header (e.g. &quot;Accept-Language: fr\\nETag: 123&quot;)</span><br><span class="line"></span><br><span class="line">--auth-type=AUTH.. ## 认证类型(Basic, Digest, NTLM or PKI)</span><br><span class="line"></span><br><span class="line">--auth-cred=AUTH.. ##  HTTP认证凭证(name:password)</span><br><span class="line"></span><br><span class="line">--auth-file=AUTH.. ## HTTP认证 PEM认证/私钥文件</span><br><span class="line"></span><br><span class="line">--ignore-401 ## 忽略HTTP错误401</span><br><span class="line"></span><br><span class="line">--proxy=PROXY ## 使用代理连接到目标网址</span><br><span class="line"></span><br><span class="line">--proxy-cred=PRO.. ## 代理认证证书(name:password)</span><br><span class="line"></span><br><span class="line">--proxy-file=PRO.. ## 从文件中加载代理列表</span><br><span class="line"></span><br><span class="line">--ignore-proxy ## 忽略系统默认代理设置</span><br><span class="line"></span><br><span class="line">--tor ## 使用Tor匿名网络</span><br><span class="line"></span><br><span class="line">--tor-port=TORPORT ##  设置Tor代理端口而不是默认值</span><br><span class="line"></span><br><span class="line">--tor-type=TORTYPE ## 设置Tor代理类型</span><br><span class="line"></span><br><span class="line">--check-tor ## 检查Tor是否正确使用</span><br><span class="line"></span><br><span class="line">--delay=DELAY ## 每个HTTP请求之间的延迟（秒）</span><br><span class="line"></span><br><span class="line">--timeout=TIMEOUT ## 秒超时连接前等待（默认30）</span><br><span class="line"></span><br><span class="line">--retries=RETRIES ##  连接超时时重试（默认值3）</span><br><span class="line"></span><br><span class="line">--randomize=RPARAM ## 随机更改给定参数的值(s)</span><br><span class="line"></span><br><span class="line">--safe-url=SAFEURL ## 在测试期间频繁访问的URL地址</span><br><span class="line"></span><br><span class="line">--safe-post=SAFE.. ## POST数据发送到安全URL</span><br><span class="line"></span><br><span class="line">--safe-req=SAFER.. ## 从文件加载安全HTTP请求</span><br><span class="line"></span><br><span class="line">--safe-freq=SAFE.. ## 在两次访问给定安全网址之间测试请求</span><br><span class="line"></span><br><span class="line">--skip-urlencode ## 跳过有效载荷数据的URL编码</span><br><span class="line"></span><br><span class="line">--csrf-token=CSR.. ## 参数用于保存anti-CSRF令牌</span><br><span class="line"></span><br><span class="line">--csrf-url=CSRFURL ## 提取anti-CSRF URL地址访问令牌</span><br><span class="line"></span><br><span class="line">--force-ssl ## 强制使用SSL /HTTPS</span><br><span class="line"></span><br><span class="line">--hpp ## 使用HTTP参数pollution的方法</span><br><span class="line"></span><br><span class="line">--eval=EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2=hashlib.md5(id).hexdigest()&quot;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Optimization（优化）: 这些选项可用于优化sqlmap的性能</span><br><span class="line"></span><br><span class="line">-o ## 开启所有优化开关</span><br><span class="line"></span><br><span class="line">--predict-output ## 预测常见的查询输出</span><br><span class="line"></span><br><span class="line">--keep-alive ## 使用持久的HTTP（S）连接</span><br><span class="line"></span><br><span class="line">--null-connection ## 从没有实际的HTTP响应体中检索页面长度</span><br><span class="line"></span><br><span class="line">--threads=THREADS ## 最大的HTTP（S）请求并发量（默认为1）</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本</span><br><span class="line"></span><br><span class="line">-p ## 可测试的参数（S）</span><br><span class="line"></span><br><span class="line">--skip=SKIP ## 跳过对给定参数的测试</span><br><span class="line"></span><br><span class="line">--skip-static ## 跳过测试不显示为动态的参数</span><br><span class="line"></span><br><span class="line">--param-exclude=.. ## 使用正则表达式排除参数进行测试（e.g. &quot;ses&quot;）</span><br><span class="line"></span><br><span class="line">--dbms=DBMS ## 强制后端的DBMS为此值</span><br><span class="line"></span><br><span class="line">--dbms-cred=DBMS.. ## DBMS认证凭证(user:password)</span><br><span class="line"></span><br><span class="line">--os=OS ## 强制后端的DBMS操作系统为这个值</span><br><span class="line"></span><br><span class="line">--invalid-bignum ## 使用大数字使值无效</span><br><span class="line"></span><br><span class="line">--invalid-logical ## 使用逻辑操作使值无效</span><br><span class="line"></span><br><span class="line">--invalid-string ## 使用随机字符串使值无效</span><br><span class="line"></span><br><span class="line">--no-cast ## 关闭有效载荷铸造机制</span><br><span class="line"></span><br><span class="line">--no-escape ## 关闭字符串转义机制</span><br><span class="line"></span><br><span class="line">--prefix=PREFIX ## 注入payload字符串前缀</span><br><span class="line"></span><br><span class="line">--suffix=SUFFIX ## 注入payload字符串后缀</span><br><span class="line"></span><br><span class="line">--tamper=TAMPER ## 使用给定的脚本（S）篡改注入数据</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容</span><br><span class="line"></span><br><span class="line">--level=LEVEL ## 执行测试的等级（1-5，默认为1）</span><br><span class="line"></span><br><span class="line">--risk=RISK ## 执行测试的风险（0-3，默认为1）</span><br><span class="line"></span><br><span class="line">--string=STRING ## 查询时有效时在页面匹配字符串</span><br><span class="line"></span><br><span class="line">--not-string=NOT.. ## 当查询求值为无效时匹配的字符串</span><br><span class="line"></span><br><span class="line">--regexp=REGEXP ## 查询时有效时在页面匹配正则表达式</span><br><span class="line"></span><br><span class="line">--code=CODE ## 当查询求值为True时匹配的HTTP代码</span><br><span class="line"></span><br><span class="line">--text-only ## 仅基于在文本内容比较网页</span><br><span class="line"></span><br><span class="line">--titles ##  仅根据他们的标题进行比较</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Techniques（技巧）: 用于调整具体的SQL注入测试。</span><br><span class="line"></span><br><span class="line">--technique=TECH ## SQL 注入技术测试（默认BEUST）</span><br><span class="line"></span><br><span class="line">--time-sec=TIMESEC ##  DBMS响应的延迟时间（默认为5秒）</span><br><span class="line"></span><br><span class="line">--union-cols=UCOLS ##  定列范围用于测试UNION查询注入</span><br><span class="line"></span><br><span class="line">--union-char=UCHAR ##  用于暴力猜解列数的字符</span><br><span class="line"></span><br><span class="line">--union-from=UFROM ##  要在UNION查询SQL注入的FROM部分使用的表</span><br><span class="line"></span><br><span class="line">--dns-domain=DNS.. ##  域名用于DNS漏出攻击</span><br><span class="line"></span><br><span class="line">--second-order=S.. ## 生成页面的URL搜索为second-order响应</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Fingerprint（指纹）</span><br><span class="line"></span><br><span class="line">-f  ## 执行检查广泛的DBMS版本指纹</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句</span><br><span class="line"></span><br><span class="line">-a, ## 检索一切</span><br><span class="line"></span><br><span class="line">-b, ## 检索数据库管理系统的标识</span><br><span class="line"></span><br><span class="line">--current-user ## 检索数据库管理系统的标识</span><br><span class="line"></span><br><span class="line">--current-db ## 检索数据库管理系统当前数据库</span><br><span class="line"></span><br><span class="line">-hostname ## 检索数据库服务器的主机名</span><br><span class="line"></span><br><span class="line">--is-dba ## 检测DBMS当前用户是否DBA</span><br><span class="line"></span><br><span class="line">--users ## 枚举数据库管理系统用户</span><br><span class="line"></span><br><span class="line">--passwords ## 枚举数据库管理系统用户密码哈希</span><br><span class="line"></span><br><span class="line">--privileges ## 枚举数据库管理系统用户的权限</span><br><span class="line"></span><br><span class="line">--roles ## 枚举数据库管理系统用户的角色</span><br><span class="line"></span><br><span class="line">--dbs ## 枚举数据库管理系统数据库</span><br><span class="line"></span><br><span class="line">--tables ## 枚举的DBMS数据库中的表</span><br><span class="line"></span><br><span class="line">--columns ## 枚举DBMS数据库表列</span><br><span class="line"></span><br><span class="line">--schema ## 枚举数据库架构</span><br><span class="line"></span><br><span class="line">--count ## 检索表的条目数</span><br><span class="line"></span><br><span class="line">--dump ## 转储数据库管理系统的数据库中的表项</span><br><span class="line"></span><br><span class="line">--dump-all ## 转储数据库管理系统的数据库中的表项</span><br><span class="line"></span><br><span class="line">--search ## 搜索列（S），表（S）和/或数据库名称（S）</span><br><span class="line"></span><br><span class="line">--comments ## 检索数据库的comments(注释、评论)</span><br><span class="line"></span><br><span class="line">-D DB ## 要进行枚举的数据库名</span><br><span class="line"></span><br><span class="line">-T TBL ## 要进行枚举的数据库表</span><br><span class="line"></span><br><span class="line">-C COL ## 要进行枚举的数据库列</span><br><span class="line"></span><br><span class="line">-X EXCLUDECOL ## 不进行枚举的数据库列</span><br><span class="line"></span><br><span class="line">-U USER ## 用来进行枚举的数据库用户</span><br><span class="line"></span><br><span class="line">--exclude-sysdbs ## 枚举表时排除系统数据库</span><br><span class="line"></span><br><span class="line">--pivot-column=P.. ## 主列名称</span><br><span class="line"></span><br><span class="line">--where=DUMPWHERE ## 使用WHERE条件进行表转储</span><br><span class="line"></span><br><span class="line">--start=LIMITSTART ## 第一个查询输出进入检索</span><br><span class="line"></span><br><span class="line">--stop=LIMITSTOP ## 最后查询的输出进入检索</span><br><span class="line"></span><br><span class="line">--first=FIRSTCHAR ## 第一个查询输出字的字符检索</span><br><span class="line"></span><br><span class="line">--last=LASTCHAR ## 最后查询的输出字字符检索</span><br><span class="line"></span><br><span class="line">--sql-query=QUERY ## 要执行的SQL语句</span><br><span class="line"></span><br><span class="line">--sql-shell ## 提示交互式SQL的shell</span><br><span class="line"></span><br><span class="line">--sql-file=SQLFILE ## 从给定文件执行SQL语句</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Brute force（蛮力）: 可以被用来运行蛮力检查</span><br><span class="line"></span><br><span class="line">--common-tables ## 检查存在共同表</span><br><span class="line"></span><br><span class="line">--common-columns ## 检查存在共同列</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x0B-访问操作"><a href="#0x0B-访问操作" class="headerlink" title="0x0B 访问操作"></a>0x0B 访问操作</h2><p><strong>访问文件系统</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">File system access（访问文件系统）:</span><br><span class="line"> 可以被用来访问后端数据库管理系统的底层文件系统</span><br><span class="line"></span><br><span class="line">--file-read=RFILE ## 从后端的数据库管理系统文件系统读取文件</span><br><span class="line"></span><br><span class="line">--file-write=WFILE ## 编辑后端的数据库管理系统文件系统上的本地文件</span><br><span class="line"></span><br><span class="line">--file-dest=DFILE ## 后端的数据库管理系统写入文件的绝对路径</span><br></pre></td></tr></table></figure>
-
-<p><strong>操作系统访问</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统</span><br><span class="line"></span><br><span class="line">--os-cmd=OSCMD ## 执行操作系统命令</span><br><span class="line"></span><br><span class="line">--os-shell ## 交互式的操作系统的shell</span><br><span class="line"></span><br><span class="line">--os-pwn ## 获取一个OOB shell，meterpreter或VNC</span><br><span class="line"></span><br><span class="line">--os-smbrelay ## 一键获取一个OOB shell，meterpreter或VNC</span><br><span class="line"></span><br><span class="line">--os-bof ## 存储过程缓冲区溢出利用</span><br><span class="line"></span><br><span class="line">--priv-esc Database process user privilege escalation</span><br><span class="line">## 数据库进程用户权限提升</span><br><span class="line"></span><br><span class="line">--msf-path=MSFPATH ## 本地的安装路径</span><br><span class="line"></span><br><span class="line">--tmp-path=TMPPATH ## 远程临时文件目录的绝对路径</span><br></pre></td></tr></table></figure>
-
-<p><strong>Windows注册表访问</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。</span><br><span class="line"></span><br><span class="line">--reg-read ## 读一个Windows注册表项值</span><br><span class="line"></span><br><span class="line">--reg-add ## 写一个Windows注册表项值数据</span><br><span class="line"></span><br><span class="line">--reg-del ## 删除Windows注册表键值</span><br><span class="line"></span><br><span class="line">--reg-key=REGKEY ## Windows注册表键</span><br><span class="line"></span><br><span class="line">--reg-value=REGVAL ##  Windows注册表项值</span><br><span class="line"></span><br><span class="line">--reg-data=REGDATA ## Windows注册表键值数据</span><br><span class="line"></span><br><span class="line">--reg-type=REGTYPE ## Windows注册表项值类型</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">General : 可以用来设置一些一般的工作参数</span><br><span class="line"></span><br><span class="line">-s SESSIONFILE ## 保存和恢复检索会话文件的所有数据</span><br><span class="line"></span><br><span class="line">-t TRAFFICFILE ## 记录所有HTTP流量到一个文本文件中</span><br><span class="line"></span><br><span class="line">--batch ## 从不询问用户输入，使用所有默认配置</span><br><span class="line"></span><br><span class="line">--binary-fields=.. ## 具有二进制值的结果字段</span><br><span class="line"></span><br><span class="line">--charset=CHARSET ## 强制用于数据检索的字符编码</span><br><span class="line"></span><br><span class="line">--crawl=CRAWLDEPTH ## 从目标网址开始抓取网站</span><br><span class="line"></span><br><span class="line">--crawl-exclude=.. ## 正则表达式排除网页抓取</span><br><span class="line"></span><br><span class="line">--csv-del=CSVDEL ## 分隔CSV输出中使用的字符</span><br><span class="line"></span><br><span class="line">--dump-format=DU.. ## 转储数据的格式 (CSV (default), HTML or SQLITE)</span><br><span class="line"></span><br><span class="line">--eta ## 显示每个输出的预计到达时间</span><br><span class="line"></span><br><span class="line">--flush-session ## 刷新当前目标的会话文件</span><br><span class="line"></span><br><span class="line">--forms ## 在目标网址上解析和测试表单</span><br><span class="line"></span><br><span class="line">--fresh-queries ## 忽略在会话文件中存储的查询结果</span><br><span class="line"></span><br><span class="line">--hex ## 使用DBMS hex函数进行数据检索</span><br><span class="line"></span><br><span class="line">--output-dir=OUT.. ## 自定义输出目录路径</span><br><span class="line"></span><br><span class="line">--parse-errors ## 解析和显示响应中的DBMS错误消息</span><br><span class="line"></span><br><span class="line">--save=SAVECONFIG ## 保存选项到INI配置文件</span><br><span class="line"></span><br><span class="line">--scope=SCOPE ## 使用正则表达式从提供的代理日志中过滤目标</span><br><span class="line"></span><br><span class="line">--test-filter=TE.. ## 根据有效负载和/或标题(e.g. ROW)选择测试</span><br><span class="line"></span><br><span class="line">--test-skip=TEST.. ## 根据有效负载和/或标题跳过测试（e.g. BENCHMARK）</span><br><span class="line"></span><br><span class="line">--update  ## 更新SqlMap</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Miscellaneous（杂项）:</span><br><span class="line"></span><br><span class="line">-z ## 使用简短的助记符 (如 &quot;flu,bat,ban,tec=EU&quot;)</span><br><span class="line"></span><br><span class="line">--alert=ALERT ## 在找到SQL注入时运行主机操作系统命令</span><br><span class="line"></span><br><span class="line">--answers=ANSWERS ## 设置问题答案</span><br><span class="line"></span><br><span class="line">--beep ## 发现SQL 注入时提醒</span><br><span class="line"></span><br><span class="line">--cleanup ## 具体的UDF和表清理DBMS</span><br><span class="line"></span><br><span class="line">--dependencies ## 检查是否缺少（非内核）sqlmap依赖关系</span><br><span class="line"></span><br><span class="line">--disable-coloring ## 禁用控制台输出颜色</span><br><span class="line"></span><br><span class="line">--gpage=GOOGLEPAGE ## 使用Google dork结果指定页码</span><br><span class="line"></span><br><span class="line">--identify-waf ## 对WAF/IPS/IDS保护进行全面测试</span><br><span class="line"></span><br><span class="line">--skip-waf ## 跳过启发式检测WAF/IPS/IDS保护</span><br><span class="line"></span><br><span class="line">--mobile ## 通过HTTP User-Agent标头模仿智能手机</span><br><span class="line"></span><br><span class="line">--offline ## 在离线模式下工作（仅使用会话数据）</span><br><span class="line"></span><br><span class="line">--page-rank  ## Google dork结果显示网页排名（PR）</span><br><span class="line"></span><br><span class="line">--purge-output ## 安全地从输出目录中删除所有内容</span><br><span class="line"></span><br><span class="line">--smart ## 只有在正启发式时才进行彻底测试</span><br><span class="line"></span><br><span class="line">--sqlmap-shell ## 提示交互式 sqlmap shell</span><br><span class="line"></span><br><span class="line">--wizard ## 给初级用户的简单向导界面</span><br></pre></td></tr></table></figure>
-
-<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
-<li><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage">https://github.com/sqlmapproject/sqlmap/wiki/Usage</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>红队渗透</category>
-      </categories>
-      <tags>
-        <tag>Tookit</tag>
-        <tag>Sqlmap</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>恶意软件分析资源</title>
     <url>/posts/12996/</url>
     <content><![CDATA[<center>本文汇总恶意软件分析中样本来源、分析工具、技术网站等资源...</center>
@@ -2291,6 +2291,216 @@ msf auxiliary(arp_sweep) &gt; run
       </categories>
       <tags>
         <tag>Threat Framework</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux入侵排查基础篇</title>
+    <url>/posts/10024/</url>
+    <content><![CDATA[<center>本文总结Linux服务器入侵排查的基本思路与方法...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lscpu             #查看CPU信息</span><br><span class="line"></span><br><span class="line">$ uname -a          #操作系统信息</span><br><span class="line"></span><br><span class="line">$ cat /proc/version #系统版本信息</span><br><span class="line"></span><br><span class="line">$ cat /etc/redhat-release  #查看系统发行版</span><br><span class="line"></span><br><span class="line">$ lsmod             #查看模块信息</span><br><span class="line"></span><br><span class="line">$ lsblk             #列出块设备信息</span><br><span class="line"></span><br><span class="line">$ ifconfig eth0 | grep -w inet  #显示网卡IP信息</span><br><span class="line"></span><br><span class="line">$ curl cip.cc     #查看主机公网IP信息</span><br><span class="line"></span><br><span class="line">$ hostname        #查看系统主机名称</span><br><span class="line"></span><br><span class="line">$ cat /etc/resolv.conf   #DNS配置查看</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 查看系统用户信息</span><br><span class="line"></span><br><span class="line">$ cat /etc/passwd</span><br><span class="line"></span><br><span class="line">用户名:密码加密:用户ID:用户组ID:注释:用户主目录:默认登录shell</span><br><span class="line"></span><br><span class="line">最后一列：/bin/bash表示用户状态可登录; /sbin/nologin表示账户状态不可登录</span><br><span class="line"></span><br><span class="line">(2) 查询超级权限账户: UID为0</span><br><span class="line"></span><br><span class="line">$ awk -F: &#x27;&#123;if($3==0)print $1&#125;&#x27; /etc/passwd</span><br><span class="line"></span><br><span class="line">(3) 查看可登录账户</span><br><span class="line"></span><br><span class="line">$ grep &#x27;/bin/bash&#x27; /etc/passwd</span><br><span class="line"></span><br><span class="line">(4) 查看空口令账户</span><br><span class="line"></span><br><span class="line">$ awk -F: &#x27;length($2)==0 &#123;print $1&#125;&#x27; /etc/shadow</span><br><span class="line"></span><br><span class="line">(5) 登录信息查看</span><br><span class="line"></span><br><span class="line">$ lastlog | more  #查看用户最后登录信息</span><br><span class="line"></span><br><span class="line">$ lastb | more    #显示用户错误的登录信息</span><br><span class="line"></span><br><span class="line">$ last | more     #查看用户最近登录信息</span><br><span class="line"></span><br><span class="line">$ uptime  #查看登陆多久、多少用户，负载</span><br><span class="line"></span><br><span class="line">$ who   #查看当前登录用户（tty本地登陆  pts远程登录）</span><br><span class="line"></span><br><span class="line">$ w     #查看系统信息，想知道某一时刻用户的行为</span><br><span class="line"></span><br><span class="line">  /var/log/wtmp: 存储登录成功的信息</span><br><span class="line"></span><br><span class="line">  /var/log/btmp: 存储登录失败的信息</span><br><span class="line"></span><br><span class="line">  /var/log/utmp: 存储当前正在登录的信息</span><br><span class="line"></span><br><span class="line">(6) 查看除root账号外其他帐号是否存在sudo权限</span><br><span class="line"></span><br><span class="line">$ more /etc/sudoers | grep -v &quot;^#\|^$&quot; | grep &quot;ALL=(ALL)&quot;</span><br><span class="line"></span><br><span class="line">(7) 禁用或删除多余及可疑的帐号</span><br><span class="line"></span><br><span class="line">$ usermod -L user    #禁用帐号，帐号无法登录，/etc/shadow第二栏为!开头</span><br><span class="line"></span><br><span class="line">$ userdel user       #删除user用户</span><br><span class="line"></span><br><span class="line">$ userdel -r user    #将删除user用户，并且将/home目录下的user目录一并删除</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cat /etc/init.d/rc.local</span><br><span class="line"></span><br><span class="line">$ cat /etc/rc.local</span><br><span class="line"></span><br><span class="line">$ ls -alt /etc/init.d/ | head</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-定时任务"><a href="#4-定时任务" class="headerlink" title="4. 定时任务"></a>4. 定时任务</h3><p><code>crontab -u &lt;-l, -r, -e&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-u 指定一个用户</span><br><span class="line">-l 列出某个用户的任务计划</span><br><span class="line">-r 删除某个用户的任务</span><br><span class="line">-e 编辑某个用户的任务</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ crontab -u root -l  # 列出root用户的任务计划</span><br><span class="line"></span><br><span class="line">$ ls /etc/cron*       # 查看/etc目录下任务计划相关文件</span><br></pre></td></tr></table></figure>
+
+<p><strong>重点关注目录</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/var/spool/cron/*</span><br><span class="line">/etc/crontab</span><br><span class="line">/etc/cron.d/*</span><br><span class="line">/etc/cron.daily/*</span><br><span class="line">/etc/cron.hourly/*</span><br><span class="line">/etc/cron.monthly/*</span><br><span class="line">/etc/cron.weekly/</span><br><span class="line">/etc/anacrontab</span><br><span class="line">/var/spool/anacron/*</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-进程查看"><a href="#1-进程查看" class="headerlink" title="1. 进程查看"></a>1. 进程查看</h3><p><strong>netstat&#x2F;ss</strong></p>
+<p><code>分析可疑端口、可疑IP、可疑PID及程序进程</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo netstat -ltpe | more   # 查看监听中的网络连接并显示进程ID、进程所有者用户名</span><br><span class="line"></span><br><span class="line">$ sudo netstat -antp | grep &quot;ESTABLISHED&#x27;&#x27;  # 查看正在通信中的连接信息</span><br><span class="line"></span><br><span class="line">$ sudo netstat -antpe  # -n 和 -e 选项连用，显示进程所有者的用户ID 号</span><br><span class="line"></span><br><span class="line">$ netstat -ts  # 打印出tcp协议下的收发包数量等统计数据</span><br><span class="line"></span><br><span class="line">$ watch -d -n0 &quot;netstat -atnp | grep &quot;ESTA&quot;  # 监视active状态的连接</span><br><span class="line"></span><br><span class="line">$ ss -plat  # 检查哪些进程在监听端口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>ps</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ps -elf | grep pid  # 以长格式显示系统中的进程信息</span><br><span class="line"></span><br><span class="line">$ ps -aux --sort -pcpu | less   # 根据cpu使用率进行排序</span><br><span class="line"></span><br><span class="line">$ ps -aux --sort -pmem | less   # 根据内存使用来升序排序</span><br><span class="line"></span><br><span class="line">$ ps -axjf  # 以树形结构显示进程</span><br></pre></td></tr></table></figure>
+
+<p><strong>top</strong></p>
+<p><code>动态查看进程状态, 可分析CPU占用较高的进程, 排查挖矿木马</code></p>
+<p>实用选项</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-c:  显示完整命令</span><br><span class="line"></span><br><span class="line">-d： 设置信息更新时间, 以秒为单位</span><br><span class="line"></span><br><span class="line">-u&lt;用户名&gt;：指定用户名</span><br><span class="line"></span><br><span class="line">-p&lt;进程号&gt;：显示指定进程信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>交互命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">b： 高亮显示当前运行进程</span><br><span class="line"></span><br><span class="line">c： 切换显示命令名称和完整命令行</span><br><span class="line"></span><br><span class="line">M： 根据驻留内存大小进行排序</span><br><span class="line"></span><br><span class="line">P： 根据CPU使用百分比大小进行排序</span><br><span class="line"></span><br><span class="line">T： 根据时间/累计时间进行排序</span><br><span class="line"></span><br><span class="line">i： 忽略闲置和僵死进程，这是一个开关式命令</span><br><span class="line"></span><br><span class="line">s： 改变两次刷新之间的延迟时间（单位为s）</span><br><span class="line"></span><br><span class="line">l： 切换显示平均负载和启动时间信息</span><br><span class="line"></span><br><span class="line">m： 切换显示内存信息</span><br><span class="line"></span><br><span class="line">t： 切换显示进程和CPU状态信息</span><br><span class="line"></span><br><span class="line">w： 将当前设置写入~/.toprc文件中</span><br></pre></td></tr></table></figure>
+
+<p><strong>pstree</strong></p>
+<p><code>以树状图的方式展现进程之间的派生关系</code></p>
+<p>实用选项</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：显示每个程序的完整指令，包含路径，参数或是常驻服务的标示</span><br><span class="line"></span><br><span class="line">-h：列出树状图时，特别标明现在执行的程序</span><br><span class="line"></span><br><span class="line">-l：采用长列格式显示树状图</span><br><span class="line"></span><br><span class="line">-p：显示程序识别码</span><br><span class="line"></span><br><span class="line">-u：显示用户名称</span><br></pre></td></tr></table></figure>
+
+<p><strong>lsof</strong></p>
+<p><code>查看进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lsof -p pid   # 查看指定进程ID已打开的内容</span><br><span class="line"></span><br><span class="line">$ lsof -i       # 显示所有连接</span><br><span class="line"></span><br><span class="line">$ lsof -i:port  # 查看与指定端口相关的网络信息</span><br><span class="line"></span><br><span class="line">$ lsof -i@ip    # 查看与指定IP相关的网络信息</span><br><span class="line"></span><br><span class="line">$ lsof -i -sTCP:LISTEN   # 找出正等待连接的端口</span><br><span class="line"></span><br><span class="line">$ lsof -i | grep -i ESTABLISHED  # 找出已经建立的连接</span><br><span class="line"></span><br><span class="line">$ lsof -u user     # 使用-u显示指定用户打开哪些文件</span><br><span class="line"></span><br><span class="line">$ lsof -u ^root    # 查看除指定用户以外的其它所有用户所做的事情</span><br><span class="line"></span><br><span class="line">$ lsof -c command  # 查看指定的命令正在使用的文件和网络连接</span><br><span class="line"></span><br><span class="line">$ lsof | grep deleted       # 查看被删除的文件信息</span><br><span class="line"></span><br><span class="line">$ kill -9 `lsof -t -u user` # 杀死指定用户运行的所有进程</span><br><span class="line"></span><br><span class="line">$ lsof -u user -i @ip       # 显示用户user连接到指定IP所做的一切</span><br><span class="line"></span><br><span class="line">$ lsof +L1   # 显示所有打开的链接数小于1的文件，多表示某个攻击者正尝试通过删除文件入口来隐藏文件内容</span><br></pre></td></tr></table></figure>
+
+<p><strong>&#x2F;proc 文件系统</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Linux 内核提供了一种通过 proc 文件系统，在运行时访问内核内部数据结构、改变内核设置的机制，它以文件系统的方式为访问系统内核数据的操作提供接口，用户和应用程序可以通过 proc 得到系统的信息</span><br></pre></td></tr></table></figure>
+
+<p>进程相关项</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/proc/N         pid为N的进程信息</span><br><span class="line"></span><br><span class="line">/proc/N/cmdline 进程启动命令</span><br><span class="line"></span><br><span class="line">/proc/N/cwd     链接到进程当前工作目录</span><br><span class="line"></span><br><span class="line">/proc/N/environ 进程环境变量列表</span><br><span class="line"></span><br><span class="line">/proc/N/exe     链接到进程的执行命令文件</span><br><span class="line"></span><br><span class="line">/proc/N/fd      包含进程相关的所有的文件描述符</span><br><span class="line"></span><br><span class="line">/proc/N/maps    与进程相关的内存映射信息</span><br><span class="line"></span><br><span class="line">/proc/N/mem     指代进程持有的内存，不可读</span><br><span class="line"></span><br><span class="line">/proc/N/root    链接到进程的根目录</span><br><span class="line"></span><br><span class="line">/proc/N/stat    进程的状态</span><br><span class="line"></span><br><span class="line">/proc/N/statm   进程使用的内存的状态</span><br><span class="line"></span><br><span class="line">/proc/N/status  进程状态信息，比stat/statm更具可读性</span><br><span class="line"></span><br><span class="line">/proc/self      链接到当前正在运行的进程</span><br></pre></td></tr></table></figure>
+
+<p><strong>隐藏进程显示</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">step 1: ps -ef | awk &#x27;&#123;print&#125;&#x27; | sort -n | uniq &gt;1</span><br><span class="line"></span><br><span class="line">step 2: ls /proc | sort -n | uniq &gt;2</span><br><span class="line"></span><br><span class="line">step 3: diff 1 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-进程删除"><a href="#2-进程删除" class="headerlink" title="2. 进程删除"></a>2. 进程删除</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ kill -9 pid     #强制终止进程</span><br><span class="line"></span><br><span class="line">$ killall name    #依据进程名称杀死进程</span><br><span class="line"></span><br><span class="line">$ killall -u user #杀死指定用户的进程</span><br><span class="line"></span><br><span class="line">$ pkill name   #杀死指定进程名的进程</span><br><span class="line"></span><br><span class="line">$ ps -elf | grep &#x27;root&#x27; | grep &#x27;&#123;*&#125;&#x27; | grep -v grep | xargs kill -STOP  # 针对因存在守护进程无法删除的情况，可先把进程挂起，查杀守护进程后，再将进程删除</span><br><span class="line"></span><br><span class="line">$ lsattr file / chattr -i file / rm -rf file  #针对设置了不可更改权限的文件，先移除i属性，再进行删除</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-调试分析"><a href="#3-调试分析" class="headerlink" title="3. 调试分析"></a>3. 调试分析</h3><p><strong>strace</strong></p>
+<p><code>跟踪进程执行时的系统调用和所接收的信号,可跟踪用户进程与 Linux内核之间的交互</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">系统调用system call是程序从内核请求服务的一种编程方式，系统调用进入内核，使用trap机制从用户空间切换到内核空间，通过使用glibc系统库完成系统调用</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ strace -p `pidof AliYunDun`  # 依据pid跟踪进程正在进行的系统调用</span><br><span class="line"></span><br><span class="line">$ strace -o trace.log ls testdir/   #将输出记录到文件中</span><br><span class="line"></span><br><span class="line">$ strace -v ls testdir  #在每个系统调用中提供附加信息\</span><br><span class="line"></span><br><span class="line">$ strace -f ls testdir  #对当前正在跟踪的进程创建的任何子进程进行跟踪</span><br><span class="line"></span><br><span class="line">$ strace -e open ls testdir   #使用-e标志跟上系统调用的名称</span><br><span class="line"></span><br><span class="line">$ strace -e write,getdents ls testdir  #查看多个系统调用</span><br><span class="line"></span><br><span class="line">$ strace -t ls testdir/    #查看所有的系统调用的时间戳</span><br><span class="line"></span><br><span class="line">$ strace -r ls testdir/    #显示执行每个系统调用所花费的时间</span><br></pre></td></tr></table></figure>
+
+<p><strong>ltrace</strong></p>
+<p><code>库调用跟踪器,用来跟踪进程调用库函数的情况</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">用法：ltrace [option ...] [command [arg ...]]</span><br><span class="line"></span><br><span class="line">-d  打印调试信息</span><br><span class="line"></span><br><span class="line">-f  跟踪子进程</span><br><span class="line"></span><br><span class="line">-i  打印指令指针，当库调用时</span><br><span class="line"></span><br><span class="line">-p PID  附着在值为PID的进程号上进行ltrace</span><br><span class="line"></span><br><span class="line">-S 显示系统调用</span><br><span class="line"></span><br><span class="line">-T 输出每个调用过程的时间开销</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>pstack</strong></p>
+<p><code>显示每个进程的栈跟踪</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ pstack pid  #pstack 命令必须由相应进程的属主或 root 运行,唯一选项是要检查的进程的 PID</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="0x03-服务排查"><a href="#0x03-服务排查" class="headerlink" title="0x03 服务排查"></a>0x03 服务排查</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ chkconfig  --list  #查看系统运行的服务</span><br><span class="line"></span><br><span class="line">  # 0-6表示等级</span><br><span class="line"></span><br><span class="line">  1 单用户模式</span><br><span class="line"></span><br><span class="line">  2 无网络连接的多用户命令模式</span><br><span class="line"></span><br><span class="line">  3 有网络连接的多用户命令模式</span><br><span class="line"></span><br><span class="line">  4 表示不可用</span><br><span class="line"></span><br><span class="line">  5 带图形界面的多用户模式</span><br><span class="line"></span><br><span class="line">  6 重新启动</span><br><span class="line"></span><br><span class="line">$ service --status-all | grep running ｜ more      #显示正在运行的服务</span><br><span class="line"></span><br><span class="line">$ systemctl list-unit-files | grep enabled | more  #列出 systemd 下正在运行服务</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-文件痕迹"><a href="#0x04-文件痕迹" class="headerlink" title="0x04 文件痕迹"></a>0x04 文件痕迹</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 临时目录/tmp、/var/tmp、/dev/shm下的文件，目录权限是1777，容易被上传木马文件</span><br><span class="line"></span><br><span class="line">(2) 命令目录/usr/bin、/usr/sbin等下的二进制文件容易被替换，替换后可下载busybox使用被替换命令</span><br><span class="line"></span><br><span class="line">$ ls -alt /usr/bin | head   #按照最新修改时间显示，排查可疑文件</span><br><span class="line"></span><br><span class="line">(3) ~/.ssh、/etc/ssh 经常作为一些后门配置的路径，需重点排查</span><br><span class="line"></span><br><span class="line">$ cat ~/.ssh/authorized_keys  #检查公钥是存在否异常注入</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">列出攻击日志内变动的文件,排查恶意软件</span><br><span class="line"></span><br><span class="line">$ ls --full-time ./  | sed -n &#x27;/2019-01-01/p&#x27;   #查找当前文件夹下的某个日期产生的文件</span><br><span class="line"></span><br><span class="line">$ find / -ctime 0 -name &quot;.sh&quot;  #查找一天内新增的sh文件</span><br><span class="line"></span><br><span class="line">  -type b/c/d/f/l/p: 查找快设备、字符设备、目录、普通文件、符号链接、管道</span><br><span class="line">  -mtime -n +n     # 按文件更改时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line">  -atime -n +n     # 按文件访问时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line">  -ctime -n +n     # 按文件创建时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line"></span><br><span class="line">$ find /tmp -type f -amin -10 -print  #打印出10分钟内访问的所有文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-文件大小搜索"><a href="#3-文件大小搜索" class="headerlink" title="3. 文件大小搜索"></a>3. 文件大小搜索</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find / -size -1223124c -size +1223122c -exec ls -id &#123;&#125; \;   #搜索1223123大小的文件，盖茨木马</span><br><span class="line"></span><br><span class="line">$ find /usr/bin -type f -size 2k    # 查找大小等于2KB的文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-特殊文件"><a href="#4-特殊文件" class="headerlink" title="4. 特殊文件"></a>4. 特殊文件</h3><p><strong>webshell匹配</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find /var/www/ -name &quot;*.php&quot; |xargs egrep &#x27;assert|phpspy|c99sh|milw0rm|eval|\(gunerpress|\(base64_decoolcode|spider_bc|shell_exec|passthru|\(\$\_\POST\[|eval \(str_rot13|\.chr\(|\$\&#123;\&quot;\_P|eval\(\$\_R|file_put_contents\(\.\*\$\_|base64_decode&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>特殊权限文件查找</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find /tmp -perm 777   # 打印出权限为777的文件, -perm选项指明find应该只匹配具有特定权限值的文件</span><br><span class="line"></span><br><span class="line">$ find / -type f -user root -print  # 打印出用户root拥有的所有文件, 选项-user USER找出由某个特定用户所拥有的文件</span><br></pre></td></tr></table></figure>
+
+<p><strong>隐藏文件查找</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ls -art /var/www/html | grep &quot;^\.&quot;   # 查找web目录下以&quot;.&quot;开头的具有隐藏属性的文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-SUID程序"><a href="#5-SUID程序" class="headerlink" title="5. SUID程序"></a>5. SUID程序</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find / -type f -perm -04000 -ls -uid 0 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-二进制文件分析"><a href="#6-二进制文件分析" class="headerlink" title="6. 二进制文件分析"></a>6. 二进制文件分析</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) file: 确定文件类型</span><br><span class="line"></span><br><span class="line">(2) ldd: 打印共享对象依赖关系, 即查询可执行程序所依赖的库和所在路径</span><br><span class="line"></span><br><span class="line">(3) strings: 打印二进制文件中的可打印字符的字符串</span><br><span class="line"></span><br><span class="line">(4) readelf: 显示有关ELF文件的信息</span><br><span class="line"></span><br><span class="line">(5) hexdump: 以 ASCII、十进制、十六进制或八进制显示文件内容</span><br><span class="line"></span><br><span class="line">(6) objdump: 从对象文件中显示信息，读取二进制或可执行文件，并将汇编语言指令转储到屏幕上</span><br><span class="line"></span><br><span class="line">(7) nm: 列出对象文件中的符号，从二进制文件中识别变量和函数</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><a href="http://www.skyfree.org/linux/references/ELF_Format.pdf">http://www.skyfree.org/linux/references/ELF_Format.pdf</a></p>
+</li>
+<li><p><a href="https://github.com/radareorg/radare2">https://github.com/radareorg/radare2</a></p>
+</li>
+</ul>
+<h2 id="0x05-日志分析"><a href="#0x05-日志分析" class="headerlink" title="0x05 日志分析"></a>0x05 日志分析</h2><h3 id="1-日志介绍"><a href="#1-日志介绍" class="headerlink" title="1. 日志介绍"></a>1. 日志介绍</h3><p>日志默认存放位置：<code>/var/log/</code></p>
+<p>查看日志配置情况：<code>less /etc/rsyslog.conf</code></p>
+<table>
+<thead>
+<tr>
+<th>日志文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;var&#x2F;log&#x2F;cron</td>
+<td>系统定时任务相关的日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;secure</td>
+<td>记录用户登录验证和授权的信息，涉及账号和密码的程序都会记录</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;auth.log</td>
+<td>记录系统授权信息，如用户登录和权限机制等</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;btmp</td>
+<td>记录错误登录日志，这个文件是二进制文件，不能直接vi查看，而要使用lastb命令查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;lastlog</td>
+<td>记录系统中所有用户最后一次登录时间的日志，使用lastlog命令查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;wtmp</td>
+<td>永久记录所有用户的登录、注销信息，同时记录系统的启动、重启、关机事件，使用last命令来查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;utmp</td>
+<td>记录当前已经登录的用户信息，用w,who,users等命令来查询</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;dmesg</td>
+<td>记录系统在开机时内核自检的信息</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;messages</td>
+<td>记录系统启动后的信息和错误日志</td>
+</tr>
+</tbody></table>
+<h3 id="2-登录分析"><a href="#2-登录分析" class="headerlink" title="2. 登录分析"></a>2. 登录分析</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 登录成功IP统计</span><br><span class="line"></span><br><span class="line">$ grep -i Accepted /var/log/secure | awk &#x27;&#123;print $11&#125;&#x27; | sort | uniq -c | sort -nr | more</span><br><span class="line"></span><br><span class="line">(2) 查看登录成功的日期、用户名、IP</span><br><span class="line"></span><br><span class="line">$ grep &quot;Accepted&quot; /var/log/secure | awk &#x27;&#123;print $1,$2,$3,$9,$11&#125;&#x27;</span><br><span class="line"></span><br><span class="line">(3) 定位有多少IP在爆破主机的root帐号</span><br><span class="line"></span><br><span class="line">$ grep &quot;Failed password for root&quot; /var/log/secure | awk &#x27;&#123;print $11&#125;&#x27; | sort | uniq -c | sort -nr | more</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Web日志分析"><a href="#3-Web日志分析" class="headerlink" title="3. Web日志分析"></a>3. Web日志分析</h3><p><strong>Apache 日志</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) apache日志文件位置</span><br><span class="line">/var/log/httpd/access.log     # Red Hat/CentOS Apache访问日志位置</span><br><span class="line">/var/log/apache2/access.log   # Debian/Ubuntu Apache访问日志文件位置</span><br><span class="line"></span><br><span class="line">(2) 日志位置定位</span><br><span class="line"></span><br><span class="line">$ grep -i CustomLog /etc/httpd/conf/httpd.conf</span><br><span class="line"></span><br><span class="line">$ locate access.log access_log | grep httpd</span><br><span class="line"></span><br><span class="line">$ locate access.log access_log | grep apache</span><br></pre></td></tr></table></figure>
+
+<p><strong>Nginx 日志</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">日志定位</span><br><span class="line"></span><br><span class="line">$ yum install mlocate &amp;&amp; updatedb  #安装locate所在文件包并更新搜索数据库</span><br><span class="line"></span><br><span class="line">$ locate access.log | grep nginx   #定位nginx访问日志</span><br><span class="line"></span><br><span class="line">$ locate error.log | grep nginx    #定位nginx错误日志</span><br><span class="line"></span><br><span class="line">$ grep &#x27;access.log&#x27; `locate nginx.conf` #根据配置文件定位日志</span><br></pre></td></tr></table></figure>
+
+<p><strong>日志分析技巧</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 列出当天访问次数最多的10个IP</span><br><span class="line"></span><br><span class="line">$ awk -F &#x27;-&#x27; &#x27;&#123;print $1&#125;&#x27; log_file | uniq -c | sort -rn | head -10</span><br><span class="line"></span><br><span class="line">(2) 查看当天有多少个IP访问</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;print $1&#125;&#x27; log_file | sort -u | wc -l</span><br><span class="line"></span><br><span class="line">(3) 查看每一个IP访问了多少个页面：</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;++S[$1]&#125; END &#123;for (a in S) print a,S[a]&#125;&#x27; log_file</span><br><span class="line"></span><br><span class="line">(4) 将每个IP访问的页面数进行从小到大排序：</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;++S[$1]&#125; END &#123;for (a in S) print S[a],a&#125;&#x27; log_file | sort -n</span><br><span class="line"></span><br><span class="line">(5) 查看某一个IP访问了哪些页面：</span><br><span class="line"></span><br><span class="line">$ grep ^1.1.1.1 log_file| awk &#x27;&#123;print $1,$7&#125;&#x27;</span><br><span class="line"></span><br><span class="line">(6) 去掉搜索引擎统计当天的页面</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;print $12,$1&#125;&#x27; log_file | grep ^\&quot;Mozilla | awk &#x27;&#123;print $2&#125;&#x27; |sort | uniq | wc -l</span><br><span class="line"></span><br><span class="line">(7) 查看2018年11月11日11时这一个小时内有多少IP访问</span><br><span class="line"></span><br><span class="line">awk &#x27;&#123;print $4,$1&#125;&#x27; log_file | grep 11/Nov/2018:11 | awk &#x27;&#123;print $2&#125;&#x27;| sort -u | wc -l</span><br><span class="line"></span><br><span class="line">(8) IP 统计</span><br><span class="line"></span><br><span class="line">$ grep &#x27;11/Nov/2018&#x27; /tmp/myid.access.log | awk &#x27;&#123;print $1&#125;&#x27; | awk -F&#x27;.&#x27; &#x27;&#123;print $1&quot;.&quot;$2&quot;.&quot;$3&quot;.&quot;$4&#125;&#x27; | sort | uniq -c | sort -r -n | head -n 10</span><br><span class="line"></span><br><span class="line">(9) 网段统计</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/www/access.2018-11-11.log | awk &#x27;&#123;print $1&#125;&#x27; | awk -F&#x27;.&#x27; &#x27;&#123;print $1&quot;.&quot;$2&quot;.&quot;$3&quot;.0&quot;&#125;&#x27; | sort | uniq -c | sort -r -n | head -n 20</span><br><span class="line"></span><br><span class="line">(10) 统计浏览器</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/example.com/access.2018-11-11.log | grep -v -E &#x27;MSIE|Firefox|Chrome|Opera|Safari|Gecko|Maxthon&#x27; | sort | uniq -c | sort -r -n | head -n 100 | more</span><br><span class="line"></span><br><span class="line">(11) URL访问量统计</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/access.2018-11-11.log | awk &#x27;&#123;print $7&#125;&#x27; | egrep &#x27;\?|&amp;&#x27; | sort | uniq -c | sort -rn | more</span><br><span class="line"></span><br><span class="line">(12) 删除一个月前日志</span><br><span class="line"></span><br><span class="line">$ rm -f /www/logs/access.log.$(date -d &#x27;-1 month&#x27; +&#x27;%Y-%m&#x27;)*</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-工具总结"><a href="#0x06-工具总结" class="headerlink" title="0x06 工具总结"></a>0x06 工具总结</h2><h3 id="1-Busybox"><a href="#1-Busybox" class="headerlink" title="1. Busybox"></a>1. Busybox</h3><p><a href="https://busybox.net/"><strong>Busybox</strong></a> <em>静态编译，可检测劫持了动态链接库的隐藏病毒</em></p>
+<p>安装运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget https://busybox.net/downloads/binaries/1.30.0-i686/busybox</span><br><span class="line"></span><br><span class="line">$ chmod +x busybox</span><br><span class="line"></span><br><span class="line">$ ./busybox commond</span><br></pre></td></tr></table></figure>
+<h3 id="2-Rootkit查杀"><a href="#2-Rootkit查杀" class="headerlink" title="2. Rootkit查杀"></a>2. Rootkit查杀</h3><p><a href="http://www.chkrootkit.org/"><strong>chkrootkit</strong></a> <em>Linux下rootkit检测工具</em></p>
+<p>下载运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget ftp://ftp.pangeia.com.br/pub/seg/pac/chkrootkit.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxf chkrootkit.tar.gz</span><br><span class="line"></span><br><span class="line">$ cd chkrootkit-*</span><br><span class="line"></span><br><span class="line">$ make sense</span><br><span class="line"></span><br><span class="line">$ cd ..</span><br><span class="line"></span><br><span class="line">$ cp -r chkrootkit- /usr/local/chkrootkit</span><br><span class="line"></span><br><span class="line">$ rm -r chkrootkit-</span><br><span class="line"></span><br><span class="line">$ /usr/local/chkrootkit/chkrootkit</span><br></pre></td></tr></table></figure>
+
+<p><a href="ttp://rkhunter.sourceforge.net"><strong>rkhunter</strong></a> <em>一款用于检测Liunx系统是否感染rootkit的工具</em></p>
+<p>下载运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget https://jaist.dl.sourceforge.net/project/rkhunter/rkhunter/1.4.6/rkhunter-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf rkhunter-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">$ cd rkhunter-1.4.4</span><br><span class="line"></span><br><span class="line">$ ./install.sh --install</span><br></pre></td></tr></table></figure>
+
+<p>rootkit检测</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rkhunter –checkall #执行rootkit预定库，来检测本地系统文件</span><br><span class="line"></span><br><span class="line">$ rkhunter --checkall --skip-keypress  #--skip-keyperss参数来自动持续检测，一直到结束</span><br></pre></td></tr></table></figure>
+<h3 id="3-病毒查杀"><a href="#3-病毒查杀" class="headerlink" title="3. 病毒查杀"></a>3. 病毒查杀</h3><p><a href="http://www.clamav.net/download.html"><strong>ClamAV</strong></a> <em>Linux平台上的开源反病毒引擎，病毒库较丰富，更新频率高</em></p>
+<p>下载运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum install epel-release -y</span><br><span class="line"></span><br><span class="line">$ yum -y install clamav</span><br><span class="line"></span><br><span class="line">$ freshclam   # 更新病毒库</span><br><span class="line"></span><br><span class="line">$ clamscan -r /opt   # 扫描目录</span><br></pre></td></tr></table></figure>
+
+<p>病毒库更新</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd /var/lib/clamav</span><br><span class="line">$ wget http://database.clamav.net/main.cvd</span><br><span class="line">$ wget http://database.clamav.net/daily.cvd</span><br><span class="line">$ wget http://database.clamav.net/bytecode.cvd</span><br><span class="line"> </span><br><span class="line">$ chown clamav:clamav  *</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-威胁取证"><a href="#4-威胁取证" class="headerlink" title="4.  威胁取证"></a>4.  威胁取证</h3><ul>
+<li><p>virustotal: <a href="https://www.virustotal.com/gui/home">https://www.virustotal.com/gui/home</a></p>
+</li>
+<li><p>threatbook: <a href="https://x.threatbook.cn/">https://x.threatbook.cn/</a></p>
+</li>
+<li><p>redqueen: <a href="https://redqueen.tj-un.com/IntelHome.html">https://redqueen.tj-un.com/IntelHome.html</a></p>
+</li>
+</ul>
+<h3 id="5-webshell查杀"><a href="#5-webshell查杀" class="headerlink" title="5. webshell查杀"></a>5. webshell查杀</h3><ul>
+<li><p><a href="https://www.rfxn.com/projects/linux-malware-detect/">linux-malware-detect</a> <em>a malware scanner for Linux released</em></p>
+</li>
+<li><p><a href="http://shelldetector.com/">Web Shell Detector</a> <em>find and identify php&#x2F;cgi(perl)&#x2F;asp&#x2F;aspx shells</em></p>
+</li>
+<li><p><a href="https://scanner.baidu.com/#">WEBDIR+</a> <em>百度OpenRASP团队推出的一款WebShell检测引擎</em></p>
+</li>
+<li><p><a href="http://webshell.cdxy.me/">http://webshell.cdxy.me/</a> <em>Deep Learning model for PHP webshell detection</em></p>
+</li>
+<li><p><a href="https://www.shellpub.com/">https://www.shellpub.com/</a> <em>河马，专注webshell查杀研究</em></p>
+</li>
+<li><p><a href="http://edr.sangfor.com.cn/backdoor_detection.html">http://edr.sangfor.com.cn/backdoor_detection.html</a> <em>深信服Webshell检测工具</em></p>
+</li>
+</ul>
+<h3 id="6-审计检查"><a href="#6-审计检查" class="headerlink" title="6. 审计检查"></a>6. 审计检查</h3><p><a href="https://github.com/CISOfy/lynis"><strong>Lynis</strong></a>：<em>用于UNIX系统的安全审计工具</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lynis show commands  # 查看 Lynis 中所有可用的命令</span><br><span class="line"></span><br><span class="line">$ lynis audit system  # 审计系统的安全状况，返回一份详细的报告</span><br><span class="line">  Lynis 使用颜色编码使报告更容易解读</span><br><span class="line">  绿色：一切正常</span><br><span class="line">  黄色：跳过、未找到，可能有个建议</span><br><span class="line">  红色：你可能需要仔细看看这个</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-工具合集"><a href="#7-工具合集" class="headerlink" title="7. 工具合集"></a>7. 工具合集</h3><p><a href="https://www.rfxn.com/">R-FX NETWORKS</a> | <a href="https://github.com/meirwah/awesome-incident-response/blob/master/README_ch.md">Awesome-incident-response</a> | <a href="https://github.com/rshipp/awesome-malware-analysis">Awesome-malware-analysis</a></p>
+]]></content>
+      <categories>
+        <category>应急响应</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Incident Response</tag>
       </tags>
   </entry>
   <entry>
@@ -3495,216 +3705,6 @@ msf auxiliary(arp_sweep) &gt; run
       <tags>
         <tag>Incident Response</tag>
         <tag>Windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux入侵排查基础篇</title>
-    <url>/posts/10024/</url>
-    <content><![CDATA[<center>本文总结Linux服务器入侵排查的基本思路与方法...</center>
-
-<span id="more"></span>
-
-<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lscpu             #查看CPU信息</span><br><span class="line"></span><br><span class="line">$ uname -a          #操作系统信息</span><br><span class="line"></span><br><span class="line">$ cat /proc/version #系统版本信息</span><br><span class="line"></span><br><span class="line">$ cat /etc/redhat-release  #查看系统发行版</span><br><span class="line"></span><br><span class="line">$ lsmod             #查看模块信息</span><br><span class="line"></span><br><span class="line">$ lsblk             #列出块设备信息</span><br><span class="line"></span><br><span class="line">$ ifconfig eth0 | grep -w inet  #显示网卡IP信息</span><br><span class="line"></span><br><span class="line">$ curl cip.cc     #查看主机公网IP信息</span><br><span class="line"></span><br><span class="line">$ hostname        #查看系统主机名称</span><br><span class="line"></span><br><span class="line">$ cat /etc/resolv.conf   #DNS配置查看</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 查看系统用户信息</span><br><span class="line"></span><br><span class="line">$ cat /etc/passwd</span><br><span class="line"></span><br><span class="line">用户名:密码加密:用户ID:用户组ID:注释:用户主目录:默认登录shell</span><br><span class="line"></span><br><span class="line">最后一列：/bin/bash表示用户状态可登录; /sbin/nologin表示账户状态不可登录</span><br><span class="line"></span><br><span class="line">(2) 查询超级权限账户: UID为0</span><br><span class="line"></span><br><span class="line">$ awk -F: &#x27;&#123;if($3==0)print $1&#125;&#x27; /etc/passwd</span><br><span class="line"></span><br><span class="line">(3) 查看可登录账户</span><br><span class="line"></span><br><span class="line">$ grep &#x27;/bin/bash&#x27; /etc/passwd</span><br><span class="line"></span><br><span class="line">(4) 查看空口令账户</span><br><span class="line"></span><br><span class="line">$ awk -F: &#x27;length($2)==0 &#123;print $1&#125;&#x27; /etc/shadow</span><br><span class="line"></span><br><span class="line">(5) 登录信息查看</span><br><span class="line"></span><br><span class="line">$ lastlog | more  #查看用户最后登录信息</span><br><span class="line"></span><br><span class="line">$ lastb | more    #显示用户错误的登录信息</span><br><span class="line"></span><br><span class="line">$ last | more     #查看用户最近登录信息</span><br><span class="line"></span><br><span class="line">$ uptime  #查看登陆多久、多少用户，负载</span><br><span class="line"></span><br><span class="line">$ who   #查看当前登录用户（tty本地登陆  pts远程登录）</span><br><span class="line"></span><br><span class="line">$ w     #查看系统信息，想知道某一时刻用户的行为</span><br><span class="line"></span><br><span class="line">  /var/log/wtmp: 存储登录成功的信息</span><br><span class="line"></span><br><span class="line">  /var/log/btmp: 存储登录失败的信息</span><br><span class="line"></span><br><span class="line">  /var/log/utmp: 存储当前正在登录的信息</span><br><span class="line"></span><br><span class="line">(6) 查看除root账号外其他帐号是否存在sudo权限</span><br><span class="line"></span><br><span class="line">$ more /etc/sudoers | grep -v &quot;^#\|^$&quot; | grep &quot;ALL=(ALL)&quot;</span><br><span class="line"></span><br><span class="line">(7) 禁用或删除多余及可疑的帐号</span><br><span class="line"></span><br><span class="line">$ usermod -L user    #禁用帐号，帐号无法登录，/etc/shadow第二栏为!开头</span><br><span class="line"></span><br><span class="line">$ userdel user       #删除user用户</span><br><span class="line"></span><br><span class="line">$ userdel -r user    #将删除user用户，并且将/home目录下的user目录一并删除</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cat /etc/init.d/rc.local</span><br><span class="line"></span><br><span class="line">$ cat /etc/rc.local</span><br><span class="line"></span><br><span class="line">$ ls -alt /etc/init.d/ | head</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-定时任务"><a href="#4-定时任务" class="headerlink" title="4. 定时任务"></a>4. 定时任务</h3><p><code>crontab -u &lt;-l, -r, -e&gt;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-u 指定一个用户</span><br><span class="line">-l 列出某个用户的任务计划</span><br><span class="line">-r 删除某个用户的任务</span><br><span class="line">-e 编辑某个用户的任务</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ crontab -u root -l  # 列出root用户的任务计划</span><br><span class="line"></span><br><span class="line">$ ls /etc/cron*       # 查看/etc目录下任务计划相关文件</span><br></pre></td></tr></table></figure>
-
-<p><strong>重点关注目录</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/var/spool/cron/*</span><br><span class="line">/etc/crontab</span><br><span class="line">/etc/cron.d/*</span><br><span class="line">/etc/cron.daily/*</span><br><span class="line">/etc/cron.hourly/*</span><br><span class="line">/etc/cron.monthly/*</span><br><span class="line">/etc/cron.weekly/</span><br><span class="line">/etc/anacrontab</span><br><span class="line">/var/spool/anacron/*</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-进程查看"><a href="#1-进程查看" class="headerlink" title="1. 进程查看"></a>1. 进程查看</h3><p><strong>netstat&#x2F;ss</strong></p>
-<p><code>分析可疑端口、可疑IP、可疑PID及程序进程</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo netstat -ltpe | more   # 查看监听中的网络连接并显示进程ID、进程所有者用户名</span><br><span class="line"></span><br><span class="line">$ sudo netstat -antp | grep &quot;ESTABLISHED&#x27;&#x27;  # 查看正在通信中的连接信息</span><br><span class="line"></span><br><span class="line">$ sudo netstat -antpe  # -n 和 -e 选项连用，显示进程所有者的用户ID 号</span><br><span class="line"></span><br><span class="line">$ netstat -ts  # 打印出tcp协议下的收发包数量等统计数据</span><br><span class="line"></span><br><span class="line">$ watch -d -n0 &quot;netstat -atnp | grep &quot;ESTA&quot;  # 监视active状态的连接</span><br><span class="line"></span><br><span class="line">$ ss -plat  # 检查哪些进程在监听端口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>ps</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ps -elf | grep pid  # 以长格式显示系统中的进程信息</span><br><span class="line"></span><br><span class="line">$ ps -aux --sort -pcpu | less   # 根据cpu使用率进行排序</span><br><span class="line"></span><br><span class="line">$ ps -aux --sort -pmem | less   # 根据内存使用来升序排序</span><br><span class="line"></span><br><span class="line">$ ps -axjf  # 以树形结构显示进程</span><br></pre></td></tr></table></figure>
-
-<p><strong>top</strong></p>
-<p><code>动态查看进程状态, 可分析CPU占用较高的进程, 排查挖矿木马</code></p>
-<p>实用选项</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-c:  显示完整命令</span><br><span class="line"></span><br><span class="line">-d： 设置信息更新时间, 以秒为单位</span><br><span class="line"></span><br><span class="line">-u&lt;用户名&gt;：指定用户名</span><br><span class="line"></span><br><span class="line">-p&lt;进程号&gt;：显示指定进程信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>交互命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">b： 高亮显示当前运行进程</span><br><span class="line"></span><br><span class="line">c： 切换显示命令名称和完整命令行</span><br><span class="line"></span><br><span class="line">M： 根据驻留内存大小进行排序</span><br><span class="line"></span><br><span class="line">P： 根据CPU使用百分比大小进行排序</span><br><span class="line"></span><br><span class="line">T： 根据时间/累计时间进行排序</span><br><span class="line"></span><br><span class="line">i： 忽略闲置和僵死进程，这是一个开关式命令</span><br><span class="line"></span><br><span class="line">s： 改变两次刷新之间的延迟时间（单位为s）</span><br><span class="line"></span><br><span class="line">l： 切换显示平均负载和启动时间信息</span><br><span class="line"></span><br><span class="line">m： 切换显示内存信息</span><br><span class="line"></span><br><span class="line">t： 切换显示进程和CPU状态信息</span><br><span class="line"></span><br><span class="line">w： 将当前设置写入~/.toprc文件中</span><br></pre></td></tr></table></figure>
-
-<p><strong>pstree</strong></p>
-<p><code>以树状图的方式展现进程之间的派生关系</code></p>
-<p>实用选项</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-a：显示每个程序的完整指令，包含路径，参数或是常驻服务的标示</span><br><span class="line"></span><br><span class="line">-h：列出树状图时，特别标明现在执行的程序</span><br><span class="line"></span><br><span class="line">-l：采用长列格式显示树状图</span><br><span class="line"></span><br><span class="line">-p：显示程序识别码</span><br><span class="line"></span><br><span class="line">-u：显示用户名称</span><br></pre></td></tr></table></figure>
-
-<p><strong>lsof</strong></p>
-<p><code>查看进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lsof -p pid   # 查看指定进程ID已打开的内容</span><br><span class="line"></span><br><span class="line">$ lsof -i       # 显示所有连接</span><br><span class="line"></span><br><span class="line">$ lsof -i:port  # 查看与指定端口相关的网络信息</span><br><span class="line"></span><br><span class="line">$ lsof -i@ip    # 查看与指定IP相关的网络信息</span><br><span class="line"></span><br><span class="line">$ lsof -i -sTCP:LISTEN   # 找出正等待连接的端口</span><br><span class="line"></span><br><span class="line">$ lsof -i | grep -i ESTABLISHED  # 找出已经建立的连接</span><br><span class="line"></span><br><span class="line">$ lsof -u user     # 使用-u显示指定用户打开哪些文件</span><br><span class="line"></span><br><span class="line">$ lsof -u ^root    # 查看除指定用户以外的其它所有用户所做的事情</span><br><span class="line"></span><br><span class="line">$ lsof -c command  # 查看指定的命令正在使用的文件和网络连接</span><br><span class="line"></span><br><span class="line">$ lsof | grep deleted       # 查看被删除的文件信息</span><br><span class="line"></span><br><span class="line">$ kill -9 `lsof -t -u user` # 杀死指定用户运行的所有进程</span><br><span class="line"></span><br><span class="line">$ lsof -u user -i @ip       # 显示用户user连接到指定IP所做的一切</span><br><span class="line"></span><br><span class="line">$ lsof +L1   # 显示所有打开的链接数小于1的文件，多表示某个攻击者正尝试通过删除文件入口来隐藏文件内容</span><br></pre></td></tr></table></figure>
-
-<p><strong>&#x2F;proc 文件系统</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Linux 内核提供了一种通过 proc 文件系统，在运行时访问内核内部数据结构、改变内核设置的机制，它以文件系统的方式为访问系统内核数据的操作提供接口，用户和应用程序可以通过 proc 得到系统的信息</span><br></pre></td></tr></table></figure>
-
-<p>进程相关项</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/proc/N         pid为N的进程信息</span><br><span class="line"></span><br><span class="line">/proc/N/cmdline 进程启动命令</span><br><span class="line"></span><br><span class="line">/proc/N/cwd     链接到进程当前工作目录</span><br><span class="line"></span><br><span class="line">/proc/N/environ 进程环境变量列表</span><br><span class="line"></span><br><span class="line">/proc/N/exe     链接到进程的执行命令文件</span><br><span class="line"></span><br><span class="line">/proc/N/fd      包含进程相关的所有的文件描述符</span><br><span class="line"></span><br><span class="line">/proc/N/maps    与进程相关的内存映射信息</span><br><span class="line"></span><br><span class="line">/proc/N/mem     指代进程持有的内存，不可读</span><br><span class="line"></span><br><span class="line">/proc/N/root    链接到进程的根目录</span><br><span class="line"></span><br><span class="line">/proc/N/stat    进程的状态</span><br><span class="line"></span><br><span class="line">/proc/N/statm   进程使用的内存的状态</span><br><span class="line"></span><br><span class="line">/proc/N/status  进程状态信息，比stat/statm更具可读性</span><br><span class="line"></span><br><span class="line">/proc/self      链接到当前正在运行的进程</span><br></pre></td></tr></table></figure>
-
-<p><strong>隐藏进程显示</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">step 1: ps -ef | awk &#x27;&#123;print&#125;&#x27; | sort -n | uniq &gt;1</span><br><span class="line"></span><br><span class="line">step 2: ls /proc | sort -n | uniq &gt;2</span><br><span class="line"></span><br><span class="line">step 3: diff 1 2</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-进程删除"><a href="#2-进程删除" class="headerlink" title="2. 进程删除"></a>2. 进程删除</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ kill -9 pid     #强制终止进程</span><br><span class="line"></span><br><span class="line">$ killall name    #依据进程名称杀死进程</span><br><span class="line"></span><br><span class="line">$ killall -u user #杀死指定用户的进程</span><br><span class="line"></span><br><span class="line">$ pkill name   #杀死指定进程名的进程</span><br><span class="line"></span><br><span class="line">$ ps -elf | grep &#x27;root&#x27; | grep &#x27;&#123;*&#125;&#x27; | grep -v grep | xargs kill -STOP  # 针对因存在守护进程无法删除的情况，可先把进程挂起，查杀守护进程后，再将进程删除</span><br><span class="line"></span><br><span class="line">$ lsattr file / chattr -i file / rm -rf file  #针对设置了不可更改权限的文件，先移除i属性，再进行删除</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-调试分析"><a href="#3-调试分析" class="headerlink" title="3. 调试分析"></a>3. 调试分析</h3><p><strong>strace</strong></p>
-<p><code>跟踪进程执行时的系统调用和所接收的信号,可跟踪用户进程与 Linux内核之间的交互</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">系统调用system call是程序从内核请求服务的一种编程方式，系统调用进入内核，使用trap机制从用户空间切换到内核空间，通过使用glibc系统库完成系统调用</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ strace -p `pidof AliYunDun`  # 依据pid跟踪进程正在进行的系统调用</span><br><span class="line"></span><br><span class="line">$ strace -o trace.log ls testdir/   #将输出记录到文件中</span><br><span class="line"></span><br><span class="line">$ strace -v ls testdir  #在每个系统调用中提供附加信息\</span><br><span class="line"></span><br><span class="line">$ strace -f ls testdir  #对当前正在跟踪的进程创建的任何子进程进行跟踪</span><br><span class="line"></span><br><span class="line">$ strace -e open ls testdir   #使用-e标志跟上系统调用的名称</span><br><span class="line"></span><br><span class="line">$ strace -e write,getdents ls testdir  #查看多个系统调用</span><br><span class="line"></span><br><span class="line">$ strace -t ls testdir/    #查看所有的系统调用的时间戳</span><br><span class="line"></span><br><span class="line">$ strace -r ls testdir/    #显示执行每个系统调用所花费的时间</span><br></pre></td></tr></table></figure>
-
-<p><strong>ltrace</strong></p>
-<p><code>库调用跟踪器,用来跟踪进程调用库函数的情况</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">用法：ltrace [option ...] [command [arg ...]]</span><br><span class="line"></span><br><span class="line">-d  打印调试信息</span><br><span class="line"></span><br><span class="line">-f  跟踪子进程</span><br><span class="line"></span><br><span class="line">-i  打印指令指针，当库调用时</span><br><span class="line"></span><br><span class="line">-p PID  附着在值为PID的进程号上进行ltrace</span><br><span class="line"></span><br><span class="line">-S 显示系统调用</span><br><span class="line"></span><br><span class="line">-T 输出每个调用过程的时间开销</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>pstack</strong></p>
-<p><code>显示每个进程的栈跟踪</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ pstack pid  #pstack 命令必须由相应进程的属主或 root 运行,唯一选项是要检查的进程的 PID</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="0x03-服务排查"><a href="#0x03-服务排查" class="headerlink" title="0x03 服务排查"></a>0x03 服务排查</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ chkconfig  --list  #查看系统运行的服务</span><br><span class="line"></span><br><span class="line">  # 0-6表示等级</span><br><span class="line"></span><br><span class="line">  1 单用户模式</span><br><span class="line"></span><br><span class="line">  2 无网络连接的多用户命令模式</span><br><span class="line"></span><br><span class="line">  3 有网络连接的多用户命令模式</span><br><span class="line"></span><br><span class="line">  4 表示不可用</span><br><span class="line"></span><br><span class="line">  5 带图形界面的多用户模式</span><br><span class="line"></span><br><span class="line">  6 重新启动</span><br><span class="line"></span><br><span class="line">$ service --status-all | grep running ｜ more      #显示正在运行的服务</span><br><span class="line"></span><br><span class="line">$ systemctl list-unit-files | grep enabled | more  #列出 systemd 下正在运行服务</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-文件痕迹"><a href="#0x04-文件痕迹" class="headerlink" title="0x04 文件痕迹"></a>0x04 文件痕迹</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 临时目录/tmp、/var/tmp、/dev/shm下的文件，目录权限是1777，容易被上传木马文件</span><br><span class="line"></span><br><span class="line">(2) 命令目录/usr/bin、/usr/sbin等下的二进制文件容易被替换，替换后可下载busybox使用被替换命令</span><br><span class="line"></span><br><span class="line">$ ls -alt /usr/bin | head   #按照最新修改时间显示，排查可疑文件</span><br><span class="line"></span><br><span class="line">(3) ~/.ssh、/etc/ssh 经常作为一些后门配置的路径，需重点排查</span><br><span class="line"></span><br><span class="line">$ cat ~/.ssh/authorized_keys  #检查公钥是存在否异常注入</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">列出攻击日志内变动的文件,排查恶意软件</span><br><span class="line"></span><br><span class="line">$ ls --full-time ./  | sed -n &#x27;/2019-01-01/p&#x27;   #查找当前文件夹下的某个日期产生的文件</span><br><span class="line"></span><br><span class="line">$ find / -ctime 0 -name &quot;.sh&quot;  #查找一天内新增的sh文件</span><br><span class="line"></span><br><span class="line">  -type b/c/d/f/l/p: 查找快设备、字符设备、目录、普通文件、符号链接、管道</span><br><span class="line">  -mtime -n +n     # 按文件更改时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line">  -atime -n +n     # 按文件访问时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line">  -ctime -n +n     # 按文件创建时间来查找文件，-n 指 n 天以内，+n 指 n 天前</span><br><span class="line"></span><br><span class="line">$ find /tmp -type f -amin -10 -print  #打印出10分钟内访问的所有文件</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-文件大小搜索"><a href="#3-文件大小搜索" class="headerlink" title="3. 文件大小搜索"></a>3. 文件大小搜索</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find / -size -1223124c -size +1223122c -exec ls -id &#123;&#125; \;   #搜索1223123大小的文件，盖茨木马</span><br><span class="line"></span><br><span class="line">$ find /usr/bin -type f -size 2k    # 查找大小等于2KB的文件</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-特殊文件"><a href="#4-特殊文件" class="headerlink" title="4. 特殊文件"></a>4. 特殊文件</h3><p><strong>webshell匹配</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find /var/www/ -name &quot;*.php&quot; |xargs egrep &#x27;assert|phpspy|c99sh|milw0rm|eval|\(gunerpress|\(base64_decoolcode|spider_bc|shell_exec|passthru|\(\$\_\POST\[|eval \(str_rot13|\.chr\(|\$\&#123;\&quot;\_P|eval\(\$\_R|file_put_contents\(\.\*\$\_|base64_decode&#x27;</span><br></pre></td></tr></table></figure>
-
-<p><strong>特殊权限文件查找</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find /tmp -perm 777   # 打印出权限为777的文件, -perm选项指明find应该只匹配具有特定权限值的文件</span><br><span class="line"></span><br><span class="line">$ find / -type f -user root -print  # 打印出用户root拥有的所有文件, 选项-user USER找出由某个特定用户所拥有的文件</span><br></pre></td></tr></table></figure>
-
-<p><strong>隐藏文件查找</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ls -art /var/www/html | grep &quot;^\.&quot;   # 查找web目录下以&quot;.&quot;开头的具有隐藏属性的文件</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-SUID程序"><a href="#5-SUID程序" class="headerlink" title="5. SUID程序"></a>5. SUID程序</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ find / -type f -perm -04000 -ls -uid 0 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
-
-<h3 id="6-二进制文件分析"><a href="#6-二进制文件分析" class="headerlink" title="6. 二进制文件分析"></a>6. 二进制文件分析</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) file: 确定文件类型</span><br><span class="line"></span><br><span class="line">(2) ldd: 打印共享对象依赖关系, 即查询可执行程序所依赖的库和所在路径</span><br><span class="line"></span><br><span class="line">(3) strings: 打印二进制文件中的可打印字符的字符串</span><br><span class="line"></span><br><span class="line">(4) readelf: 显示有关ELF文件的信息</span><br><span class="line"></span><br><span class="line">(5) hexdump: 以 ASCII、十进制、十六进制或八进制显示文件内容</span><br><span class="line"></span><br><span class="line">(6) objdump: 从对象文件中显示信息，读取二进制或可执行文件，并将汇编语言指令转储到屏幕上</span><br><span class="line"></span><br><span class="line">(7) nm: 列出对象文件中的符号，从二进制文件中识别变量和函数</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><a href="http://www.skyfree.org/linux/references/ELF_Format.pdf">http://www.skyfree.org/linux/references/ELF_Format.pdf</a></p>
-</li>
-<li><p><a href="https://github.com/radareorg/radare2">https://github.com/radareorg/radare2</a></p>
-</li>
-</ul>
-<h2 id="0x05-日志分析"><a href="#0x05-日志分析" class="headerlink" title="0x05 日志分析"></a>0x05 日志分析</h2><h3 id="1-日志介绍"><a href="#1-日志介绍" class="headerlink" title="1. 日志介绍"></a>1. 日志介绍</h3><p>日志默认存放位置：<code>/var/log/</code></p>
-<p>查看日志配置情况：<code>less /etc/rsyslog.conf</code></p>
-<table>
-<thead>
-<tr>
-<th>日志文件</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x2F;var&#x2F;log&#x2F;cron</td>
-<td>系统定时任务相关的日志</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;secure</td>
-<td>记录用户登录验证和授权的信息，涉及账号和密码的程序都会记录</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;auth.log</td>
-<td>记录系统授权信息，如用户登录和权限机制等</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;btmp</td>
-<td>记录错误登录日志，这个文件是二进制文件，不能直接vi查看，而要使用lastb命令查看</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;lastlog</td>
-<td>记录系统中所有用户最后一次登录时间的日志，使用lastlog命令查看</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;wtmp</td>
-<td>永久记录所有用户的登录、注销信息，同时记录系统的启动、重启、关机事件，使用last命令来查看</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;utmp</td>
-<td>记录当前已经登录的用户信息，用w,who,users等命令来查询</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;dmesg</td>
-<td>记录系统在开机时内核自检的信息</td>
-</tr>
-<tr>
-<td>&#x2F;var&#x2F;log&#x2F;messages</td>
-<td>记录系统启动后的信息和错误日志</td>
-</tr>
-</tbody></table>
-<h3 id="2-登录分析"><a href="#2-登录分析" class="headerlink" title="2. 登录分析"></a>2. 登录分析</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 登录成功IP统计</span><br><span class="line"></span><br><span class="line">$ grep -i Accepted /var/log/secure | awk &#x27;&#123;print $11&#125;&#x27; | sort | uniq -c | sort -nr | more</span><br><span class="line"></span><br><span class="line">(2) 查看登录成功的日期、用户名、IP</span><br><span class="line"></span><br><span class="line">$ grep &quot;Accepted&quot; /var/log/secure | awk &#x27;&#123;print $1,$2,$3,$9,$11&#125;&#x27;</span><br><span class="line"></span><br><span class="line">(3) 定位有多少IP在爆破主机的root帐号</span><br><span class="line"></span><br><span class="line">$ grep &quot;Failed password for root&quot; /var/log/secure | awk &#x27;&#123;print $11&#125;&#x27; | sort | uniq -c | sort -nr | more</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-Web日志分析"><a href="#3-Web日志分析" class="headerlink" title="3. Web日志分析"></a>3. Web日志分析</h3><p><strong>Apache 日志</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) apache日志文件位置</span><br><span class="line">/var/log/httpd/access.log     # Red Hat/CentOS Apache访问日志位置</span><br><span class="line">/var/log/apache2/access.log   # Debian/Ubuntu Apache访问日志文件位置</span><br><span class="line"></span><br><span class="line">(2) 日志位置定位</span><br><span class="line"></span><br><span class="line">$ grep -i CustomLog /etc/httpd/conf/httpd.conf</span><br><span class="line"></span><br><span class="line">$ locate access.log access_log | grep httpd</span><br><span class="line"></span><br><span class="line">$ locate access.log access_log | grep apache</span><br></pre></td></tr></table></figure>
-
-<p><strong>Nginx 日志</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">日志定位</span><br><span class="line"></span><br><span class="line">$ yum install mlocate &amp;&amp; updatedb  #安装locate所在文件包并更新搜索数据库</span><br><span class="line"></span><br><span class="line">$ locate access.log | grep nginx   #定位nginx访问日志</span><br><span class="line"></span><br><span class="line">$ locate error.log | grep nginx    #定位nginx错误日志</span><br><span class="line"></span><br><span class="line">$ grep &#x27;access.log&#x27; `locate nginx.conf` #根据配置文件定位日志</span><br></pre></td></tr></table></figure>
-
-<p><strong>日志分析技巧</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(1) 列出当天访问次数最多的10个IP</span><br><span class="line"></span><br><span class="line">$ awk -F &#x27;-&#x27; &#x27;&#123;print $1&#125;&#x27; log_file | uniq -c | sort -rn | head -10</span><br><span class="line"></span><br><span class="line">(2) 查看当天有多少个IP访问</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;print $1&#125;&#x27; log_file | sort -u | wc -l</span><br><span class="line"></span><br><span class="line">(3) 查看每一个IP访问了多少个页面：</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;++S[$1]&#125; END &#123;for (a in S) print a,S[a]&#125;&#x27; log_file</span><br><span class="line"></span><br><span class="line">(4) 将每个IP访问的页面数进行从小到大排序：</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;++S[$1]&#125; END &#123;for (a in S) print S[a],a&#125;&#x27; log_file | sort -n</span><br><span class="line"></span><br><span class="line">(5) 查看某一个IP访问了哪些页面：</span><br><span class="line"></span><br><span class="line">$ grep ^1.1.1.1 log_file| awk &#x27;&#123;print $1,$7&#125;&#x27;</span><br><span class="line"></span><br><span class="line">(6) 去掉搜索引擎统计当天的页面</span><br><span class="line"></span><br><span class="line">$ awk &#x27;&#123;print $12,$1&#125;&#x27; log_file | grep ^\&quot;Mozilla | awk &#x27;&#123;print $2&#125;&#x27; |sort | uniq | wc -l</span><br><span class="line"></span><br><span class="line">(7) 查看2018年11月11日11时这一个小时内有多少IP访问</span><br><span class="line"></span><br><span class="line">awk &#x27;&#123;print $4,$1&#125;&#x27; log_file | grep 11/Nov/2018:11 | awk &#x27;&#123;print $2&#125;&#x27;| sort -u | wc -l</span><br><span class="line"></span><br><span class="line">(8) IP 统计</span><br><span class="line"></span><br><span class="line">$ grep &#x27;11/Nov/2018&#x27; /tmp/myid.access.log | awk &#x27;&#123;print $1&#125;&#x27; | awk -F&#x27;.&#x27; &#x27;&#123;print $1&quot;.&quot;$2&quot;.&quot;$3&quot;.&quot;$4&#125;&#x27; | sort | uniq -c | sort -r -n | head -n 10</span><br><span class="line"></span><br><span class="line">(9) 网段统计</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/www/access.2018-11-11.log | awk &#x27;&#123;print $1&#125;&#x27; | awk -F&#x27;.&#x27; &#x27;&#123;print $1&quot;.&quot;$2&quot;.&quot;$3&quot;.0&quot;&#125;&#x27; | sort | uniq -c | sort -r -n | head -n 20</span><br><span class="line"></span><br><span class="line">(10) 统计浏览器</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/example.com/access.2018-11-11.log | grep -v -E &#x27;MSIE|Firefox|Chrome|Opera|Safari|Gecko|Maxthon&#x27; | sort | uniq -c | sort -r -n | head -n 100 | more</span><br><span class="line"></span><br><span class="line">(11) URL访问量统计</span><br><span class="line"></span><br><span class="line">$ cat /www/logs/access.2018-11-11.log | awk &#x27;&#123;print $7&#125;&#x27; | egrep &#x27;\?|&amp;&#x27; | sort | uniq -c | sort -rn | more</span><br><span class="line"></span><br><span class="line">(12) 删除一个月前日志</span><br><span class="line"></span><br><span class="line">$ rm -f /www/logs/access.log.$(date -d &#x27;-1 month&#x27; +&#x27;%Y-%m&#x27;)*</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x06-工具总结"><a href="#0x06-工具总结" class="headerlink" title="0x06 工具总结"></a>0x06 工具总结</h2><h3 id="1-Busybox"><a href="#1-Busybox" class="headerlink" title="1. Busybox"></a>1. Busybox</h3><p><a href="https://busybox.net/"><strong>Busybox</strong></a> <em>静态编译，可检测劫持了动态链接库的隐藏病毒</em></p>
-<p>安装运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget https://busybox.net/downloads/binaries/1.30.0-i686/busybox</span><br><span class="line"></span><br><span class="line">$ chmod +x busybox</span><br><span class="line"></span><br><span class="line">$ ./busybox commond</span><br></pre></td></tr></table></figure>
-<h3 id="2-Rootkit查杀"><a href="#2-Rootkit查杀" class="headerlink" title="2. Rootkit查杀"></a>2. Rootkit查杀</h3><p><a href="http://www.chkrootkit.org/"><strong>chkrootkit</strong></a> <em>Linux下rootkit检测工具</em></p>
-<p>下载运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget ftp://ftp.pangeia.com.br/pub/seg/pac/chkrootkit.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxf chkrootkit.tar.gz</span><br><span class="line"></span><br><span class="line">$ cd chkrootkit-*</span><br><span class="line"></span><br><span class="line">$ make sense</span><br><span class="line"></span><br><span class="line">$ cd ..</span><br><span class="line"></span><br><span class="line">$ cp -r chkrootkit- /usr/local/chkrootkit</span><br><span class="line"></span><br><span class="line">$ rm -r chkrootkit-</span><br><span class="line"></span><br><span class="line">$ /usr/local/chkrootkit/chkrootkit</span><br></pre></td></tr></table></figure>
-
-<p><a href="ttp://rkhunter.sourceforge.net"><strong>rkhunter</strong></a> <em>一款用于检测Liunx系统是否感染rootkit的工具</em></p>
-<p>下载运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ wget https://jaist.dl.sourceforge.net/project/rkhunter/rkhunter/1.4.6/rkhunter-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf rkhunter-1.4.6.tar.gz</span><br><span class="line"></span><br><span class="line">$ cd rkhunter-1.4.4</span><br><span class="line"></span><br><span class="line">$ ./install.sh --install</span><br></pre></td></tr></table></figure>
-
-<p>rootkit检测</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rkhunter –checkall #执行rootkit预定库，来检测本地系统文件</span><br><span class="line"></span><br><span class="line">$ rkhunter --checkall --skip-keypress  #--skip-keyperss参数来自动持续检测，一直到结束</span><br></pre></td></tr></table></figure>
-<h3 id="3-病毒查杀"><a href="#3-病毒查杀" class="headerlink" title="3. 病毒查杀"></a>3. 病毒查杀</h3><p><a href="http://www.clamav.net/download.html"><strong>ClamAV</strong></a> <em>Linux平台上的开源反病毒引擎，病毒库较丰富，更新频率高</em></p>
-<p>下载运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ yum install epel-release -y</span><br><span class="line"></span><br><span class="line">$ yum -y install clamav</span><br><span class="line"></span><br><span class="line">$ freshclam   # 更新病毒库</span><br><span class="line"></span><br><span class="line">$ clamscan -r /opt   # 扫描目录</span><br></pre></td></tr></table></figure>
-
-<p>病毒库更新</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd /var/lib/clamav</span><br><span class="line">$ wget http://database.clamav.net/main.cvd</span><br><span class="line">$ wget http://database.clamav.net/daily.cvd</span><br><span class="line">$ wget http://database.clamav.net/bytecode.cvd</span><br><span class="line"> </span><br><span class="line">$ chown clamav:clamav  *</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-威胁取证"><a href="#4-威胁取证" class="headerlink" title="4.  威胁取证"></a>4.  威胁取证</h3><ul>
-<li><p>virustotal: <a href="https://www.virustotal.com/gui/home">https://www.virustotal.com/gui/home</a></p>
-</li>
-<li><p>threatbook: <a href="https://x.threatbook.cn/">https://x.threatbook.cn/</a></p>
-</li>
-<li><p>redqueen: <a href="https://redqueen.tj-un.com/IntelHome.html">https://redqueen.tj-un.com/IntelHome.html</a></p>
-</li>
-</ul>
-<h3 id="5-webshell查杀"><a href="#5-webshell查杀" class="headerlink" title="5. webshell查杀"></a>5. webshell查杀</h3><ul>
-<li><p><a href="https://www.rfxn.com/projects/linux-malware-detect/">linux-malware-detect</a> <em>a malware scanner for Linux released</em></p>
-</li>
-<li><p><a href="http://shelldetector.com/">Web Shell Detector</a> <em>find and identify php&#x2F;cgi(perl)&#x2F;asp&#x2F;aspx shells</em></p>
-</li>
-<li><p><a href="https://scanner.baidu.com/#">WEBDIR+</a> <em>百度OpenRASP团队推出的一款WebShell检测引擎</em></p>
-</li>
-<li><p><a href="http://webshell.cdxy.me/">http://webshell.cdxy.me/</a> <em>Deep Learning model for PHP webshell detection</em></p>
-</li>
-<li><p><a href="https://www.shellpub.com/">https://www.shellpub.com/</a> <em>河马，专注webshell查杀研究</em></p>
-</li>
-<li><p><a href="http://edr.sangfor.com.cn/backdoor_detection.html">http://edr.sangfor.com.cn/backdoor_detection.html</a> <em>深信服Webshell检测工具</em></p>
-</li>
-</ul>
-<h3 id="6-审计检查"><a href="#6-审计检查" class="headerlink" title="6. 审计检查"></a>6. 审计检查</h3><p><a href="https://github.com/CISOfy/lynis"><strong>Lynis</strong></a>：<em>用于UNIX系统的安全审计工具</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ lynis show commands  # 查看 Lynis 中所有可用的命令</span><br><span class="line"></span><br><span class="line">$ lynis audit system  # 审计系统的安全状况，返回一份详细的报告</span><br><span class="line">  Lynis 使用颜色编码使报告更容易解读</span><br><span class="line">  绿色：一切正常</span><br><span class="line">  黄色：跳过、未找到，可能有个建议</span><br><span class="line">  红色：你可能需要仔细看看这个</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-工具合集"><a href="#7-工具合集" class="headerlink" title="7. 工具合集"></a>7. 工具合集</h3><p><a href="https://www.rfxn.com/">R-FX NETWORKS</a> | <a href="https://github.com/meirwah/awesome-incident-response/blob/master/README_ch.md">Awesome-incident-response</a> | <a href="https://github.com/rshipp/awesome-malware-analysis">Awesome-malware-analysis</a></p>
-]]></content>
-      <categories>
-        <category>应急响应</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Incident Response</tag>
       </tags>
   </entry>
   <entry>
