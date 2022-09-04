@@ -1803,12 +1803,12 @@ header.header {
 }
 @media (min-width: 992px) {
   .post-body {
-    text-align: center;
+    text-align: justify;
   }
 }
 @media (max-width: 991px) {
   .post-body {
-    text-align: center;
+    text-align: justify;
   }
 }
 .post-body h1 .header-anchor,
@@ -2634,7 +2634,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #dde87f;
+  background: #db0dd9;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
