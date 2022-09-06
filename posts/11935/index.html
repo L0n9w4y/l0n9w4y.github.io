@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Osquery Linux数据采集项及检测场景列表...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Osquery Linux Tables">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/11935/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="Osquery Linux数据采集项及检测场景列表...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-16T14:35:46.000Z">
+<meta property="article:modified_time" content="2022-09-06T14:41:06.430Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Intrusion Detection">
+<meta property="article:tag" content="HIDS">
+<meta property="article:tag" content="Osquery">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/11935/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/11935/","path":"posts/11935/","title":"Osquery Linux Tables"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Osquery Linux Tables | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Linux%E6%95%B0%E6%8D%AE%E9%A1%B9"><span class="nav-text">0x01 Linux数据项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apparmor-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">apparmor_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apparmor-profiles"><span class="nav-text">apparmor_profiles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apt-sources"><span class="nav-text">apt_sources</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arp-cache"><span class="nav-text">arp_cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atom-packages"><span class="nav-text">atom_packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#authorized-keys"><span class="nav-text">authorized_keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#block-devices"><span class="nav-text">block_devices</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bpf-process-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">bpf_process_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bpf-socket-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">bpf_socket_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu-time"><span class="nav-text">cpu_time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cpuid"><span class="nav-text">cpuid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crontab"><span class="nav-text">crontab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deb-packages"><span class="nav-text">deb_packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#device-file"><span class="nav-text">device_file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#device-hash"><span class="nav-text">device_hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#device-partitions"><span class="nav-text">device_partitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dns-resolvers"><span class="nav-text">dns_resolvers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-envs"><span class="nav-text">docker_container_envs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-fs-changes"><span class="nav-text">docker_container_fs_changes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-mounts"><span class="nav-text">docker_container_mounts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-networks"><span class="nav-text">docker_container_networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-ports"><span class="nav-text">docker_container_ports</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-container-processes"><span class="nav-text">docker_container_processes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-containers"><span class="nav-text">docker_containers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-image-history"><span class="nav-text">docker_image_history</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-images"><span class="nav-text">docker_images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-info"><span class="nav-text">docker_info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-networks"><span class="nav-text">docker_networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-version"><span class="nav-text">docker_version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-volumes"><span class="nav-text">docker_volumes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elf-dynamic"><span class="nav-text">elf_dynamic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elf-info"><span class="nav-text">elf_info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elf-sections"><span class="nav-text">elf_sections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elf-segments"><span class="nav-text">elf_segments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elf-symbols"><span class="nav-text">elf_symbols</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#etc-hosts"><span class="nav-text">etc_hosts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extended-attributes"><span class="nav-text">extended_attributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-text">file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#file-events"><span class="nav-text">file_events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#groups"><span class="nav-text">groups</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hardware-events%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">hardware_events（事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash"><span class="nav-text">hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iptables"><span class="nav-text">iptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kernel-info"><span class="nav-text">kernel_info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kernel-modules"><span class="nav-text">kernel_modules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#known-hosts"><span class="nav-text">known_hosts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#last"><span class="nav-text">last</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#listening-ports"><span class="nav-text">listening_ports</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#logged-in-users"><span class="nav-text">logged_in_users</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-certificates"><span class="nav-text">lxd_certificates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-cluster"><span class="nav-text">lxd_cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-cluster-members"><span class="nav-text">lxd_cluster_members</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-images"><span class="nav-text">lxd_images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-instance-config"><span class="nav-text">lxd_instance_config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-instance-devices"><span class="nav-text">lxd_instance_devices</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-instances"><span class="nav-text">lxd_instances</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-networks"><span class="nav-text">lxd_networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lxd-storage-pools"><span class="nav-text">lxd_storage_pools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#magic"><span class="nav-text">magic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-array-mapped-addresses"><span class="nav-text">memory_array_mapped_addresses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-arrays"><span class="nav-text">memory_arrays</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-device-mapped-addresses"><span class="nav-text">memory_device_mapped_addresses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-info"><span class="nav-text">memory_info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-map"><span class="nav-text">memory_map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mounts"><span class="nav-text">mounts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm-packages"><span class="nav-text">npm_packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#os-version"><span class="nav-text">os_version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-envs"><span class="nav-text">process_envs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">process_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-file-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">process_file_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-memory-map"><span class="nav-text">process_memory_map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-namespaces"><span class="nav-text">process_namespaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-open-files"><span class="nav-text">process_open_files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-open-pipes"><span class="nav-text">process_open_pipes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-open-sockets"><span class="nav-text">process_open_sockets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#processes"><span class="nav-text">processes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-packages"><span class="nav-text">python_packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#routes"><span class="nav-text">routes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-package-files"><span class="nav-text">rpm_package_files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-packages"><span class="nav-text">rpm_packages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#seccomp-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">seccomp_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selinux-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">selinux_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selinux-settings"><span class="nav-text">selinux_settings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shadow"><span class="nav-text">shadow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-memory"><span class="nav-text">shared_memory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell-history"><span class="nav-text">shell_history</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#socket-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">socket_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-configs"><span class="nav-text">ssh_configs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#startup-items"><span class="nav-text">startup_items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudoers"><span class="nav-text">sudoers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#suid-bin"><span class="nav-text">suid_bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#system-controls"><span class="nav-text">system_controls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#system-info"><span class="nav-text">system_info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uptime"><span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-events-%EF%BC%88%E4%BA%8B%E4%BB%B6%E8%A1%A8%EF%BC%89"><span class="nav-text">user_events （事件表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-groups"><span class="nav-text">user_groups</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-ssh-keys"><span class="nav-text">user_ssh_keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#users"><span class="nav-text">users</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yara-events"><span class="nav-text">yara_events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cloud-instance-metadata"><span class="nav-text">cloud_instance_metadata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-sources"><span class="nav-text">yum_sources</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/11935/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Osquery Linux Tables | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Osquery Linux Tables
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-16 22:35:46" itemprop="dateCreated datePublished" datetime="2020-09-16T22:35:46+08:00">2020-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">威胁检测</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>Osquery Linux数据采集项及检测场景列表...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-Linux数据项"><a href="#0x01-Linux数据项" class="headerlink" title="0x01 Linux数据项"></a>0x01 Linux数据项</h2><h3 id="apparmor-events-（事件表）"><a href="#apparmor-events-（事件表）" class="headerlink" title="apparmor_events （事件表）"></a>apparmor_events （事件表）</h3><p>跟踪 AppArmor 事件</p>
+<h3 id="apparmor-profiles"><a href="#apparmor-profiles" class="headerlink" title="apparmor_profiles"></a>apparmor_profiles</h3><p>跟踪活动的 AppArmor 配置文件</p>
+<h3 id="apt-sources"><a href="#apt-sources" class="headerlink" title="apt_sources"></a>apt_sources</h3><p>APT 存储库或软件频道的当前列表</p>
+<h3 id="arp-cache"><a href="#arp-cache" class="headerlink" title="arp_cache"></a>arp_cache</h3><p>地址解析缓存，静态和动态（来自 ARP、NDP）</p>
+<h3 id="atom-packages"><a href="#atom-packages" class="headerlink" title="atom_packages"></a>atom_packages</h3><p>列出目录中的所有原子包或系统中全局安装的所有原子包</p>
+<h3 id="authorized-keys"><a href="#authorized-keys" class="headerlink" title="authorized_keys"></a>authorized_keys</h3><p>以行分隔的 authorized_keys 表</p>
+<h3 id="block-devices"><a href="#block-devices" class="headerlink" title="block_devices"></a>block_devices</h3><p>块（缓冲访问）设备文件节点：磁盘、ramdisk 和 DMG 容器</p>
+<h3 id="bpf-process-events-（事件表）"><a href="#bpf-process-events-（事件表）" class="headerlink" title="bpf_process_events （事件表）"></a>bpf_process_events （事件表）</h3><p>跟踪时间&#x2F;动作流程执行</p>
+<h3 id="bpf-socket-events-（事件表）"><a href="#bpf-socket-events-（事件表）" class="headerlink" title="bpf_socket_events （事件表）"></a>bpf_socket_events （事件表）</h3><p>跟踪网络套接字打开和关闭</p>
+<h3 id="cpu-time"><a href="#cpu-time" class="headerlink" title="cpu_time"></a>cpu_time</h3><p>显示来自 &#x2F;proc&#x2F;stat 文件的有关 cpu 内核在系统不同部分花费的时间的信息</p>
+<h3 id="cpuid"><a href="#cpuid" class="headerlink" title="cpuid"></a>cpuid</h3><p>cpuid ASM 调用中的有用 CPU 功能</p>
+<h3 id="crontab"><a href="#crontab" class="headerlink" title="crontab"></a>crontab</h3><p>来自系统和用户 crontab 的行解析值</p>
+<h3 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h3><p>执行一个 http 请求并返回有关它的统计信息</p>
+<h3 id="deb-packages"><a href="#deb-packages" class="headerlink" title="deb_packages"></a>deb_packages</h3><p>已安装的 DEB 包数据库</p>
+<h3 id="device-file"><a href="#device-file" class="headerlink" title="device_file"></a>device_file</h3><p>类似于文件表，但使用 TSK 并允许块地址访问</p>
+<h3 id="device-hash"><a href="#device-hash" class="headerlink" title="device_hash"></a>device_hash</h3><p>类似于哈希表，但使用 TSK 并允许块地址访问</p>
+<h3 id="device-partitions"><a href="#device-partitions" class="headerlink" title="device_partitions"></a>device_partitions</h3><p>使用 TSK 枚举有关磁盘设备上的分区的详细信息</p>
+<h3 id="dns-resolvers"><a href="#dns-resolvers" class="headerlink" title="dns_resolvers"></a>dns_resolvers</h3><p>此主机使用的解析器</p>
+<h3 id="docker-container-envs"><a href="#docker-container-envs" class="headerlink" title="docker_container_envs"></a>docker_container_envs</h3><p>Docker 容器环境变量</p>
+<h3 id="docker-container-fs-changes"><a href="#docker-container-fs-changes" class="headerlink" title="docker_container_fs_changes"></a>docker_container_fs_changes</h3><p>更改容器文件系统上的文件或目录</p>
+<h3 id="docker-container-mounts"><a href="#docker-container-mounts" class="headerlink" title="docker_container_mounts"></a>docker_container_mounts</h3><p>Docker 容器挂载</p>
+<h3 id="docker-container-networks"><a href="#docker-container-networks" class="headerlink" title="docker_container_networks"></a>docker_container_networks</h3><p>Docker 容器网络</p>
+<h3 id="docker-container-ports"><a href="#docker-container-ports" class="headerlink" title="docker_container_ports"></a>docker_container_ports</h3><p>Docker 容器端口</p>
+<h3 id="docker-container-processes"><a href="#docker-container-processes" class="headerlink" title="docker_container_processes"></a>docker_container_processes</h3><p>Docker 容器进程</p>
+<h3 id="docker-containers"><a href="#docker-containers" class="headerlink" title="docker_containers"></a>docker_containers</h3><p>Docker 容器信息</p>
+<h3 id="docker-image-history"><a href="#docker-image-history" class="headerlink" title="docker_image_history"></a>docker_image_history</h3><p>Docker 镜像历史信息</p>
+<h3 id="docker-images"><a href="#docker-images" class="headerlink" title="docker_images"></a>docker_images</h3><p>Docker 镜像信息</p>
+<h3 id="docker-info"><a href="#docker-info" class="headerlink" title="docker_info"></a>docker_info</h3><p>Docker 系统信息</p>
+<h3 id="docker-networks"><a href="#docker-networks" class="headerlink" title="docker_networks"></a>docker_networks</h3><p>Docker 网络信息</p>
+<h3 id="docker-version"><a href="#docker-version" class="headerlink" title="docker_version"></a>docker_version</h3><p>Docker 版本信息</p>
+<h3 id="docker-volumes"><a href="#docker-volumes" class="headerlink" title="docker_volumes"></a>docker_volumes</h3><p>Docker 卷信息</p>
+<h3 id="elf-dynamic"><a href="#elf-dynamic" class="headerlink" title="elf_dynamic"></a>elf_dynamic</h3><p>ELF 动态部分信息</p>
+<h3 id="elf-info"><a href="#elf-info" class="headerlink" title="elf_info"></a>elf_info</h3><p>ELF 文件信息</p>
+<h3 id="elf-sections"><a href="#elf-sections" class="headerlink" title="elf_sections"></a>elf_sections</h3><p>ELF 部分信息</p>
+<h3 id="elf-segments"><a href="#elf-segments" class="headerlink" title="elf_segments"></a>elf_segments</h3><p>ELF 段信息</p>
+<h3 id="elf-symbols"><a href="#elf-symbols" class="headerlink" title="elf_symbols"></a>elf_symbols</h3><p>ELF 符号列表</p>
+<h3 id="etc-hosts"><a href="#etc-hosts" class="headerlink" title="etc_hosts"></a>etc_hosts</h3><p>行解析的 &#x2F;etc&#x2F;hosts</p>
+<h3 id="extended-attributes"><a href="#extended-attributes" class="headerlink" title="extended_attributes"></a>extended_attributes</h3><p>返回文件的扩展属性（类似于 Windows ADS）</p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><p>交互式文件系统属性和元数据</p>
+<h3 id="file-events"><a href="#file-events" class="headerlink" title="file_events"></a>file_events</h3><p>跟踪配置数据中指定的文件的时间&#x2F;操作更改</p>
+<h3 id="groups"><a href="#groups" class="headerlink" title="groups"></a>groups</h3><p>本地系统组</p>
+<h3 id="hardware-events（事件表）"><a href="#hardware-events（事件表）" class="headerlink" title="hardware_events（事件表）"></a>hardware_events（事件表）</h3><p>来自 UDEV 或 IOKit 的硬件 (PCI&#x2F;USB&#x2F;HID) 事件</p>
+<h3 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h3><p>文件系统哈希数据</p>
+<h3 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h3><p>Linux IP 包过滤和 NAT 工具信息</p>
+<h3 id="kernel-info"><a href="#kernel-info" class="headerlink" title="kernel_info"></a>kernel_info</h3><p>基本的活动内核信息</p>
+<h3 id="kernel-modules"><a href="#kernel-modules" class="headerlink" title="kernel_modules"></a>kernel_modules</h3><p>已加载并位于加载搜索路径中的Linux 内核模块</p>
+<h3 id="known-hosts"><a href="#known-hosts" class="headerlink" title="known_hosts"></a>known_hosts</h3><p>以行分隔的 known_hosts 表</p>
+<h3 id="last"><a href="#last" class="headerlink" title="last"></a>last</h3><p>系统登录和注销记录</p>
+<h3 id="listening-ports"><a href="#listening-ports" class="headerlink" title="listening_ports"></a>listening_ports</h3><p>具有监听（绑定）网络套接字&#x2F;端口的进程</p>
+<h3 id="logged-in-users"><a href="#logged-in-users" class="headerlink" title="logged_in_users"></a>logged_in_users</h3><p>在系统上具有活动 shell 的用户</p>
+<h3 id="lxd-certificates"><a href="#lxd-certificates" class="headerlink" title="lxd_certificates"></a>lxd_certificates</h3><p>LXD 证书信息</p>
+<h3 id="lxd-cluster"><a href="#lxd-cluster" class="headerlink" title="lxd_cluster"></a>lxd_cluster</h3><p>LXD 集群信息</p>
+<h3 id="lxd-cluster-members"><a href="#lxd-cluster-members" class="headerlink" title="lxd_cluster_members"></a>lxd_cluster_members</h3><p>LXD 集群成员信息</p>
+<h3 id="lxd-images"><a href="#lxd-images" class="headerlink" title="lxd_images"></a>lxd_images</h3><p>LXD 镜像信息</p>
+<h3 id="lxd-instance-config"><a href="#lxd-instance-config" class="headerlink" title="lxd_instance_config"></a>lxd_instance_config</h3><p>LXD 实例配置信息</p>
+<h3 id="lxd-instance-devices"><a href="#lxd-instance-devices" class="headerlink" title="lxd_instance_devices"></a>lxd_instance_devices</h3><p>LXD 实例设备信息</p>
+<h3 id="lxd-instances"><a href="#lxd-instances" class="headerlink" title="lxd_instances"></a>lxd_instances</h3><p>LXD 实例信息</p>
+<h3 id="lxd-networks"><a href="#lxd-networks" class="headerlink" title="lxd_networks"></a>lxd_networks</h3><p>LXD 网络信息</p>
+<h3 id="lxd-storage-pools"><a href="#lxd-storage-pools" class="headerlink" title="lxd_storage_pools"></a>lxd_storage_pools</h3><p>LXD 存储池信息</p>
+<h3 id="magic"><a href="#magic" class="headerlink" title="magic"></a>magic</h3><p>幻数识别库表</p>
+<h3 id="memory-array-mapped-addresses"><a href="#memory-array-mapped-addresses" class="headerlink" title="memory_array_mapped_addresses"></a>memory_array_mapped_addresses</h3><p>与物理内存数组的地址映射相关的数据</p>
+<h3 id="memory-arrays"><a href="#memory-arrays" class="headerlink" title="memory_arrays"></a>memory_arrays</h3><p>与操作以形成存储器地址的存储器设备的集合相关联的数据</p>
+<h3 id="memory-device-mapped-addresses"><a href="#memory-device-mapped-addresses" class="headerlink" title="memory_device_mapped_addresses"></a>memory_device_mapped_addresses</h3><p>与物理内存设备的地址映射相关的数据</p>
+<h3 id="memory-info"><a href="#memory-info" class="headerlink" title="memory_info"></a>memory_info</h3><p>以字节为单位的内存信息</p>
+<h3 id="memory-map"><a href="#memory-map" class="headerlink" title="memory_map"></a>memory_map</h3><p>操作系统内存区域映射</p>
+<h3 id="mounts"><a href="#mounts" class="headerlink" title="mounts"></a>mounts</h3><p>系统安装的设备和文件系统（不是特定于进程的）</p>
+<h3 id="npm-packages"><a href="#npm-packages" class="headerlink" title="npm_packages"></a>npm_packages</h3><p>列出目录中或全局安装在系统中的所有 npm 包</p>
+<h3 id="os-version"><a href="#os-version" class="headerlink" title="os_version"></a>os_version</h3><p>包含操作系统名称和版本的单行</p>
+<h3 id="process-envs"><a href="#process-envs" class="headerlink" title="process_envs"></a>process_envs</h3><p>每个进程的环境变量的键&#x2F;值表</p>
+<h3 id="process-events-（事件表）"><a href="#process-events-（事件表）" class="headerlink" title="process_events （事件表）"></a>process_events （事件表）</h3><p>跟踪时间&#x2F;动作流程执行</p>
+<h3 id="process-file-events-（事件表）"><a href="#process-file-events-（事件表）" class="headerlink" title="process_file_events （事件表）"></a>process_file_events （事件表）</h3><p>使用审计服务的文件完整性监视器实现</p>
+<h3 id="process-memory-map"><a href="#process-memory-map" class="headerlink" title="process_memory_map"></a>process_memory_map</h3><p>进程内存映射文件和伪设备&#x2F;区域</p>
+<h3 id="process-namespaces"><a href="#process-namespaces" class="headerlink" title="process_namespaces"></a>process_namespaces</h3><p>在主机系统上运行的进程的 Linux 命名空间</p>
+<h3 id="process-open-files"><a href="#process-open-files" class="headerlink" title="process_open_files"></a>process_open_files</h3><p>每个进程的文件描述符</p>
+<h3 id="process-open-pipes"><a href="#process-open-pipes" class="headerlink" title="process_open_pipes"></a>process_open_pipes</h3><p>每个进程的管道和伙伴进程</p>
+<h3 id="process-open-sockets"><a href="#process-open-sockets" class="headerlink" title="process_open_sockets"></a>process_open_sockets</h3><p>在系统上打开网络套接字的进程</p>
+<h3 id="processes"><a href="#processes" class="headerlink" title="processes"></a>processes</h3><p>主机上所有运行的进程信息</p>
+<h3 id="python-packages"><a href="#python-packages" class="headerlink" title="python_packages"></a>python_packages</h3><p>安装在系统中的 Python 包</p>
+<h3 id="routes"><a href="#routes" class="headerlink" title="routes"></a>routes</h3><p>主机系统的活动路由表</p>
+<h3 id="rpm-package-files"><a href="#rpm-package-files" class="headerlink" title="rpm_package_files"></a>rpm_package_files</h3><p>当前安装在主机系统上的 RPM 软件包</p>
+<h3 id="rpm-packages"><a href="#rpm-packages" class="headerlink" title="rpm_packages"></a>rpm_packages</h3><p>当前安装在主机系统上的 RPM 软件包</p>
+<h3 id="seccomp-events-（事件表）"><a href="#seccomp-events-（事件表）" class="headerlink" title="seccomp_events （事件表）"></a>seccomp_events （事件表）</h3><p>跟踪 seccomp 事件的虚拟表</p>
+<h3 id="selinux-events-（事件表）"><a href="#selinux-events-（事件表）" class="headerlink" title="selinux_events （事件表）"></a>selinux_events （事件表）</h3><p>跟踪 SELinux 事件</p>
+<h3 id="selinux-settings"><a href="#selinux-settings" class="headerlink" title="selinux_settings"></a>selinux_settings</h3><p>跟踪活动的 SELinux 设置</p>
+<h3 id="shadow"><a href="#shadow" class="headerlink" title="shadow"></a>shadow</h3><p>本地系统用户加密密码和相关信息。请注意，您通常需要超级用户权限才能访问 <code>/etc/shadow</code></p>
+<h3 id="shared-memory"><a href="#shared-memory" class="headerlink" title="shared_memory"></a>shared_memory</h3><p>操作系统共享内存区域</p>
+<h3 id="shell-history"><a href="#shell-history" class="headerlink" title="shell_history"></a>shell_history</h3><p>每个用户 .*_history 数据的行分隔（命令）表</p>
+<h3 id="socket-events-（事件表）"><a href="#socket-events-（事件表）" class="headerlink" title="socket_events （事件表）"></a>socket_events （事件表）</h3><p>跟踪网络套接字打开和关闭</p>
+<h3 id="ssh-configs"><a href="#ssh-configs" class="headerlink" title="ssh_configs"></a>ssh_configs</h3><p>已解析的 ssh_configs 表</p>
+<h3 id="startup-items"><a href="#startup-items" class="headerlink" title="startup_items"></a>startup_items</h3><p>应用程序和二进制文件设置为用户&#x2F;登录启动项</p>
+<h3 id="sudoers"><a href="#sudoers" class="headerlink" title="sudoers"></a>sudoers</h3><p>通过 sudo 以其他用户身份运行命令的规则</p>
+<h3 id="suid-bin"><a href="#suid-bin" class="headerlink" title="suid_bin"></a>suid_bin</h3><p>suid 二进制文件在公共位置</p>
+<h3 id="system-controls"><a href="#system-controls" class="headerlink" title="system_controls"></a>system_controls</h3><p>sysctl 名称、值和设置信息</p>
+<h3 id="system-info"><a href="#system-info" class="headerlink" title="system_info"></a>system_info</h3><p>用于识别的系统信息</p>
+<h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><p>自上次启动以来经过的跟踪时间。一些系统将此作为日历时间，一些作为运行时间</p>
+<h3 id="user-events-（事件表）"><a href="#user-events-（事件表）" class="headerlink" title="user_events （事件表）"></a>user_events （事件表）</h3><p>从审计框架跟踪用户事件</p>
+<h3 id="user-groups"><a href="#user-groups" class="headerlink" title="user_groups"></a>user_groups</h3><p>本地系统用户组关系</p>
+<h3 id="user-ssh-keys"><a href="#user-ssh-keys" class="headerlink" title="user_ssh_keys"></a>user_ssh_keys</h3><p>返回用户 ~&#x2F;.ssh 目录中的私钥以及它们是否被加密</p>
+<h3 id="users"><a href="#users" class="headerlink" title="users"></a>users</h3><p>本地用户帐户</p>
+<h3 id="yara-events"><a href="#yara-events" class="headerlink" title="yara_events"></a>yara_events</h3><p>跟踪文件或 PID 的 YARA 匹配</p>
+<h3 id="cloud-instance-metadata"><a href="#cloud-instance-metadata" class="headerlink" title="cloud_instance_metadata"></a>cloud_instance_metadata</h3><p>Cloud 实例元数据</p>
+<h3 id="yum-sources"><a href="#yum-sources" class="headerlink" title="yum_sources"></a>yum_sources</h3><p>Yum 存储库或软件频道的当前列表</p>
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://osquery.io/schema/5.1.0/">https://osquery.io/schema/5.1.0/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Intrusion-Detection/" rel="tag" <i class="fa fa-tag"></i> Intrusion Detection</a>
+              <a href="/tags/HIDS/" rel="tag" <i class="fa fa-tag"></i> HIDS</a>
+              <a href="/tags/Osquery/" rel="tag" <i class="fa fa-tag"></i> Osquery</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/11235/" rel="prev" title="HIDS建设经验总结">
+                  <i class="fa fa-chevron-left"></i> HIDS建设经验总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/20001/" rel="next" title="钓鱼邮件姿势总结">
+                  钓鱼邮件姿势总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
