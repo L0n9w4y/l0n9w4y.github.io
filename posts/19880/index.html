@@ -30,14 +30,13 @@
 <meta property="og:site_name" content="L0n9w4y">
 <meta property="og:description" content="本文研究反弹shell原理、类型、检测思路及方法...">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/532548/201912/532548-20191215220831022-201658057.png">
 <meta property="og:image" content="https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/8877384161/p245418.png">
 <meta property="article:published_time" content="2022-02-16T13:26:35.000Z">
-<meta property="article:modified_time" content="2022-09-06T13:34:00.552Z">
+<meta property="article:modified_time" content="2022-09-06T14:24:45.687Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="Intrusion Detection">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/532548/201912/532548-20191215220831022-201658057.png">
+<meta name="twitter:image" content="https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/8877384161/p245418.png">
 
 
 <link rel="canonical" href="https://l0n9w4y.cc/posts/19880/">
@@ -258,7 +257,6 @@
 <h2 id="0x01-基础原理"><a href="#0x01-基础原理" class="headerlink" title="0x01 基础原理"></a>0x01 基础原理</h2><h3 id="1-描述"><a href="#1-描述" class="headerlink" title="1. 描述"></a>1. 描述</h3><p>Shell攻击者指定服务端，并将需要受害服务器执行的命令（标准输入、标准输出、标准错误等）重定向到该服务端。受害服务器主动连接攻击者的服务端程序，攻击者的服务端通过监听来自受害服务器的请求，对目标服务器下发指令并获取执行结果。</p>
 <h3 id="2-本质"><a href="#2-本质" class="headerlink" title="2. 本质"></a>2. 本质</h3><p>本质：控制端监听在某TCP&#x2F;UDP端口，被控端发起请求到该端口，并将其命令行的输入输出转到控制端</p>
 <p>网络通信+命令执行+重定向方式：命令执行和网络通信借助重定向，构建出一条流动的数据通道，攻击者利用这条通道下发指令控制受害服务器</p>
-<p><img src="https://img2018.cnblogs.com/blog/532548/201912/532548-20191215220831022-201658057.png"></p>
 <ul>
 <li><p>网络通信可以使用TCP、UDP、ICMP等协议，TCP协议再细分又可以包含HTTP、HTTPS协议等，UDP包含DNS等。</p>
 </li>
