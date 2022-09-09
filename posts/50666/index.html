@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文记录Linux入侵痕迹清除思路、方法...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux入侵痕迹清除姿势">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/50666/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文记录Linux入侵痕迹清除思路、方法...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-02T14:36:49.000Z">
+<meta property="article:modified_time" content="2022-09-09T13:17:22.803Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Defense Evasion">
+<meta property="article:tag" content="Indicator Removal">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/50666/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/50666/","path":"posts/50666/","title":"Linux入侵痕迹清除姿势"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux入侵痕迹清除姿势 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%B8%85%E9%99%A4%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="nav-text">0x01 清除系统日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%B3%BB%E7%BB%9F%E5%85%B3%E9%94%AE%E6%97%A5%E5%BF%97"><span class="nav-text">1. 系统关键日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B8%85%E7%A9%BA%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-text">2. 清空日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%A0%E9%99%A4-x2F-%E6%9B%BF%E6%8D%A2%E6%97%A5%E5%BF%97"><span class="nav-text">3. 删除&#x2F;替换日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%B8%85%E9%99%A4%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4"><span class="nav-text">0x02 清除历史命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4%E5%B7%A5%E5%85%B7"><span class="nav-text">0x03 文件删除工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-shred%E5%91%BD%E4%BB%A4"><span class="nav-text">1. shred命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-wipe%E5%91%BD%E4%BB%A4"><span class="nav-text">2. wipe命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Secure-Delete"><span class="nav-text">3. Secure-Delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-dd%E5%91%BD%E4%BB%A4"><span class="nav-text">4. dd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%9A%90%E8%97%8F%E8%BF%9C%E7%A8%8BSSH%E7%99%BB%E5%BD%95%E8%AE%B0%E5%BD%95"><span class="nav-text">5. 隐藏远程SSH登录记录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/50666/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux入侵痕迹清除姿势 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux入侵痕迹清除姿势
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-02 22:36:49" itemprop="dateCreated datePublished" datetime="2021-07-02T22:36:49+08:00">2021-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">红队渗透</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文记录Linux入侵痕迹清除思路、方法...</center>
+
+<span id="more"></span>
+<hr>
+<h2 id="0x01-清除系统日志"><a href="#0x01-清除系统日志" class="headerlink" title="0x01 清除系统日志"></a>0x01 清除系统日志</h2><h3 id="1-系统关键日志"><a href="#1-系统关键日志" class="headerlink" title="1. 系统关键日志"></a>1. 系统关键日志</h3><table>
+<thead>
+<tr>
+<th>日志文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;var&#x2F;log&#x2F;cron</td>
+<td>系统定时任务相关日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;secure</td>
+<td>记录与安全相关的日志信息</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;auth.log</td>
+<td>记录系统授权信息，如用户登录和权限机制等</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;btmp</td>
+<td>记录所有登录失败信息，使用lastb命令查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;lastlog</td>
+<td>记录系统中所有用户最后一次登录时间的日志，使用lastlog命令查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;wtmp</td>
+<td>记录所有用户的登录、注销信息，使用last命令查看</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;utmp</td>
+<td>记录当前已经登录的用户信息，用w,who,users等命令来查询</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;dmesg</td>
+<td>开机时内核自检的信息</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;messages</td>
+<td>系统相关日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;kern.log</td>
+<td>内核日志</td>
+</tr>
+</tbody></table>
+<h3 id="2-清空日志文件"><a href="#2-清空日志文件" class="headerlink" title="2. 清空日志文件"></a>2. 清空日志文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1）通过重定向到空来清空日志</span><br><span class="line"></span><br><span class="line">    &gt; /var/log/access.log    # 清除web访问日志</span><br><span class="line"></span><br><span class="line">2）将输出:或true内置命令重定向到文件</span><br><span class="line"></span><br><span class="line">    ：&gt; /var/log/secure      # 清除安全日志记录</span><br><span class="line">    OR</span><br><span class="line">    true &gt; /var/log/secure</span><br><span class="line"></span><br><span class="line">3）cat/cp/dd命令结合/dev/null清空文件</span><br><span class="line"></span><br><span class="line">    /dev/null设备文件是一个特殊文件，可以注销（删除）发送给它的任何输入</span><br><span class="line"></span><br><span class="line">    cat /dev/null &gt; /var/log/cron</span><br><span class="line"></span><br><span class="line">    cp /dev/null  /var/log/cron</span><br><span class="line"></span><br><span class="line">    dd if=dev/null of=/var/log/cron  # if表示输入文件,of引用输出文件</span><br><span class="line"></span><br><span class="line">4) 使用echo命令清空文件</span><br><span class="line"></span><br><span class="line">    使用带有空字符串的echo命令，并将其重定向到文件，空字符串与null不同，字符串是一个对象，因为它可能是空的，而null意味着不存在对象</span><br><span class="line"></span><br><span class="line">    echo &quot;&quot; &gt; access.log </span><br><span class="line">    或</span><br><span class="line">    echo &gt; access.log</span><br><span class="line">    或</span><br><span class="line">    echo -n &quot;&quot; &gt; access.log   # 使用-n告知echo的标志不输出导致上一个命令中生成的空行的尾部换行符</span><br><span class="line"></span><br><span class="line">5）使用truncate命令清空文件</span><br><span class="line"></span><br><span class="line">    截断命令有助于收缩或文件的大小扩大到规定的尺寸，可以使用-s指定文件大小的选项。要清空文件内容，可使用大小为0（零）</span><br><span class="line"></span><br><span class="line">    truncate -s 0 access.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-删除-x2F-替换日志"><a href="#3-删除-x2F-替换日志" class="headerlink" title="3. 删除&#x2F;替换日志"></a>3. 删除&#x2F;替换日志</h3><p>全部清空日志，动静太大，可选择性删除&#x2F;替换部分关键日志，隐藏痕迹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed  -i &#x27;/攻击ip/d&#x27;  /var/log/secure    # 删除登录日志攻击ip所在的行</span><br><span class="line"></span><br><span class="line">sed -i &#x27;s/192.168.1.1/127.0.0.1/g&#x27; /var/log/access.log  # 全局替换访问IP地址</span><br><span class="line"></span><br><span class="line">cat /var/log/nginx/access.log | grep -v shell.php &gt; tmp.log  # 删除入侵相关信息</span><br><span class="line"></span><br><span class="line">cat tmp.log &gt; /var/log/nginx/access.log/  # 把修改过的日志覆盖到原日志文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-清除历史命令"><a href="#0x02-清除历史命令" class="headerlink" title="0x02 清除历史命令"></a>0x02 清除历史命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1) 清除/部分删除历史命令</span><br><span class="line"></span><br><span class="line">    history -c &amp;&amp; exit</span><br><span class="line"></span><br><span class="line">    vim ~/.bash_history</span><br><span class="line"></span><br><span class="line">2）不记录历史命令</span><br><span class="line"></span><br><span class="line">    unset HISTORY HISTFILE HISTSAVE HISTZONE HISTORY HISTLOG; export HISTFILE=/dev/null; export HISTSIZE=0; export HISTFILESIZE=0</span><br><span class="line"></span><br><span class="line">    修改配置文件/etc/profile，不再保存命令记录：HISTSIZE=0</span><br><span class="line"></span><br><span class="line">3）vim特性利用</span><br><span class="line"></span><br><span class="line">    :set history=0   # 设置vim不记录命令，vim会将命令历史记录，保存在viminfo文件中</span><br><span class="line"></span><br><span class="line">    vsp ~/.bash_history  # 用vim的分屏功能打开命令记录文件.bash_history，编辑文件删除历史操作命令</span><br><span class="line"></span><br><span class="line">    :set history=0   # vim中执行不想让其他人看到的命令</span><br><span class="line">    :!command</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-文件删除工具"><a href="#0x03-文件删除工具" class="headerlink" title="0x03 文件删除工具"></a>0x03 文件删除工具</h2><h3 id="1-shred命令"><a href="#1-shred命令" class="headerlink" title="1. shred命令"></a>1. shred命令</h3><p>shred 会覆盖文件来隐藏它的内容，也可以选择删除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ shred -zvu -n  5 passwords.list</span><br><span class="line"></span><br><span class="line">-z - 用零覆盖以隐藏碎片</span><br><span class="line">-v - 显示操作进度</span><br><span class="line">-u - 在覆盖后截断并删除文件</span><br><span class="line">-n - 指定覆盖文件内容的次数（默认值为3）</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-wipe命令"><a href="#2-wipe命令" class="headerlink" title="2. wipe命令"></a>2. wipe命令</h3><p>wipe 命令可以安全地擦除磁盘中的文件，从而无法恢复删除的文件或目录内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install wipe   [Debian 及其衍生版]</span><br><span class="line">$ sudo yum install wipe       [基于 RedHat 的系统]</span><br><span class="line"></span><br><span class="line">$ wipe -rfi private/*   # 销毁 private 目录下的所有文件</span><br><span class="line"></span><br><span class="line">$ wipe /dev/sda1        # 删除完整分区的内容</span><br><span class="line"></span><br><span class="line">-r - 告诉 wipe 递归地擦除子目录</span><br><span class="line">-f - 启用强制删除并禁用确认查询</span><br><span class="line">-i - 显示擦除进度</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Secure-Delete"><a href="#3-Secure-Delete" class="headerlink" title="3. Secure-Delete"></a>3. Secure-Delete</h3><p>Secure-Delete 是一组工具集合，提供srm、smem、sfill、sswap，4个安全删除文件的命令行工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install secure-delete   [Debian 及其衍生版]</span><br><span class="line">$ sudo yum install secure-delete       [基于 RedHat 的系统]</span><br></pre></td></tr></table></figure>
+
+<p><strong>srm</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ srm -vz private/*</span><br><span class="line"></span><br><span class="line">-v – 启用 verbose 模式</span><br><span class="line">-z – 用0而不是随机数据来擦除最后的写入</span><br></pre></td></tr></table></figure>
+
+<p><strong>sfill</strong></p>
+<p>sfill 是 secure-deletetion 工具包的一部分，是一个安全免费的磁盘和 inode 空间擦除器，它以安全的方法删除可用磁盘空间中的文件。sfill 会检查指定分区上的可用空间，并使用来自 &#x2F;dev&#x2F;urandom 的随机数据填充它</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo sfill -v /home/username</span><br></pre></td></tr></table></figure>
+
+<p><strong>sswap</strong></p>
+<p>sswap 以安全的方式删除 swap 分区上存在的数据，在使用 sswap 之前需卸载 swap 分区</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/swaps </span><br><span class="line">$ swapon                  # 检查分页和交换设备/文件是否已经使用</span><br><span class="line">$ sudo swapoff /dev/sda6  # 禁用分页和交换设备/文件</span><br><span class="line">$ sudo sswap /dev/sda6    # 命令要花费一些时间，默认要进行 38 遍擦除</span><br></pre></td></tr></table></figure>
+
+<p><strong>sdmem</strong></p>
+<p>sdmem 是一个安全的内存擦除器，其设计目的是以安全的方式删除存储器（RAM）中的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo sdmem -f -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-dd命令"><a href="#4-dd命令" class="headerlink" title="4. dd命令"></a>4. dd命令</h3><p>dd命令起初是用于磁盘克隆的，它用于将一个分区或者一个磁盘复制到另一个分区或者磁盘。但是它还可用于安全地清除硬盘或者分区的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dd if=/dev/random of=/dev/sda</span><br><span class="line"></span><br><span class="line">sudo dd if=/dev/zero of=要删除的文件 bs=大小 count=写入的次数</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-隐藏远程SSH登录记录"><a href="#5-隐藏远程SSH登录记录" class="headerlink" title="5. 隐藏远程SSH登录记录"></a>5. 隐藏远程SSH登录记录</h3><p>隐身登录系统，不会被w、who、last等指令检测到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T root@192.168.0.1 /bin/bash -i</span><br></pre></td></tr></table></figure>
+
+<p>不记录ssh公钥在本地.ssh目录中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -o UserKnownHostsFile=/dev/null -T user@host /bin/bash –i</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1070/">https://attack.mitre.org/techniques/T1070/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.tecmint.com/empty-delete-file-content-linux/">https://www.tecmint.com/empty-delete-file-content-linux/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.tecmint.com/permanently-and-securely-delete-files-directories-linux/">https://www.tecmint.com/permanently-and-securely-delete-files-directories-linux/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://linoxide.com/delete-files-permanatly-linux/">https://linoxide.com/delete-files-permanatly-linux/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/Rizer0/Log-killer">https://github.com/Rizer0/Log-killer</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/i2WvFmF1qQjbx-BaStXb1Q">https://mp.weixin.qq.com/s/i2WvFmF1qQjbx-BaStXb1Q</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Defense-Evasion/" rel="tag" <i class="fa fa-tag"></i> Defense Evasion</a>
+              <a href="/tags/Indicator-Removal/" rel="tag" <i class="fa fa-tag"></i> Indicator Removal</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/10124/" rel="prev" title="Linux应急响应进阶篇">
+                  <i class="fa fa-chevron-left"></i> Linux应急响应进阶篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/29809/" rel="next" title="Linux提权姿势总结">
+                  Linux提权姿势总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
