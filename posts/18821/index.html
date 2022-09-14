@@ -253,24 +253,177 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-基本配置"><a href="#0x01-基本配置" class="headerlink" title="0x01 基本配置"></a>0x01 基本配置</h2><h3 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1. 配置文件"></a>1. 配置文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/audit/audit.rules  # 审计规则文件</span><br></pre></td></tr></table></figure>
-<h3 id="2-基本参数"><a href="#2-基本参数" class="headerlink" title="2. 基本参数"></a>2. 基本参数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-D        # 删除所有以前存在的规则</span><br><span class="line">-b 8192   # 设置用于容纳审计消息的缓冲区数目</span><br><span class="line">-f 1      # 设置当内核需要处理严重错误时要使用的故障标志。可能的值为 0（静默）、1（printk，列显故障消息）和 2（恐慌，暂停系统）</span><br></pre></td></tr></table></figure>
+<h2 id="0x01-基本配置"><a href="#0x01-基本配置" class="headerlink" title="0x01 基本配置"></a>0x01 基本配置</h2><h3 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1. 配置文件"></a>1. 配置文件</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;audit&#x2F;audit.rules  # 审计规则文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="2-基本参数"><a href="#2-基本参数" class="headerlink" title="2. 基本参数"></a>2. 基本参数</h3><pre class="line-numbers language-none"><code class="language-none">-D        # 删除所有以前存在的规则
+-b 8192   # 设置用于容纳审计消息的缓冲区数目
+-f 1      # 设置当内核需要处理严重错误时要使用的故障标志。可能的值为 0（静默）、1（printk，列显故障消息）和 2（恐慌，暂停系统）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="3-启动停止"><a href="#3-启动停止" class="headerlink" title="3. 启动停止"></a>3. 启动停止</h3><p>systemctl is-enabled auditd<br>systemctl disable auditd<br>systemctl stop auditd</p>
 <h2 id="0x02-审计监测"><a href="#0x02-审计监测" class="headerlink" title="0x02 审计监测"></a>0x02 审计监测</h2><h3 id="1-监测审计日志及配置文件"><a href="#1-监测审计日志及配置文件" class="headerlink" title="1. 监测审计日志及配置文件"></a>1. 监测审计日志及配置文件</h3><p>添加审计配置文件和日志文件本身的监测项可确保您能够跟踪任何尝试篡改配置文件的操作，或检测任何尝试访问日志文件的操作</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-w /var/log/audit/               # 设置审计日志所在目录的监测项，对任何类型访问此目录的尝试均触发事件</span><br><span class="line">-w /var/log/audit/audit.log</span><br><span class="line"></span><br><span class="line">-w /var/log/audit/audit_log.1</span><br><span class="line">-w /var/log/audit/audit_log.2</span><br><span class="line">-w /var/log/audit/audit_log.3</span><br><span class="line">-w /var/log/audit/audit_log.4</span><br><span class="line"></span><br><span class="line">-w /etc/audit/auditd.conf -p wa  # 设置审计配置文件的监测项，记录对此文件的所有写入和属性更改尝试</span><br><span class="line">-w /etc/audit/audit.rules -p wa</span><br><span class="line">-w /etc/libaudit.conf -p wa</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;               # 设置审计日志所在目录的监测项，对任何类型访问此目录的尝试均触发事件
+-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit.log
+
+-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.1
+-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.2
+-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.3
+-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.4
+
+-w &#x2F;etc&#x2F;audit&#x2F;auditd.conf -p wa  # 设置审计配置文件的监测项，记录对此文件的所有写入和属性更改尝试
+-w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa
+-w &#x2F;etc&#x2F;libaudit.conf -p wa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-审计系统调用"><a href="#2-审计系统调用" class="headerlink" title="2. 审计系统调用"></a>2. 审计系统调用</h3><p>审计文件系统对象系统调用有助于跟踪高于应用程序级别的系统活动，发现异常系统调用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">1）审计文件系统系统调用</span><br><span class="line"></span><br><span class="line">-a entry,always -S chmod -S fchmod -S chown -S chown32 -S fchown -S fchown32 -S lchown -S lchown32  # 对更改文件所有权和权限相关的系统调用启用审计环境</span><br><span class="line"></span><br><span class="line">-a entry,always -S creat -S open -S truncate -S truncate64 -S ftruncate -S ftruncate64  # 对文件内容修改相关的系统调用启用审计环境</span><br><span class="line"></span><br><span class="line">-a entry,always -S mkdir -S rmdir  # 对任何目录操作（例如创建或去除目录）启用审计环境</span><br><span class="line"></span><br><span class="line">-a entry,always -S unlink -S rename -S link -S symlink  # 对任何链接操作（例如创建符号链接、创建链接、取消链接或重命名）启用审计环境</span><br><span class="line"></span><br><span class="line">-a entry,always -S setxattr   # 对扩展文件系统属性相关的任何操作启用审计环境。</span><br><span class="line">-a entry,always -S lsetxattr</span><br><span class="line">-a entry,always -S fsetxattr</span><br><span class="line">-a entry,always -S removexattr</span><br><span class="line">-a entry,always -S lremovexattr</span><br><span class="line">-a entry,always -S fremovexattr</span><br><span class="line"></span><br><span class="line">-a entry,always -S mknod    # 对用于创建特殊（设备）文件的 mknod 系统调用启用审计环境</span><br><span class="line"></span><br><span class="line">-a entry,always -S mount -S umount -S umount2  # 对任何装入或卸载操作启用审计环境: 对于 x86 体系结构，请禁用 umount 规则; 对于 Intel 64 体系结构，请禁用 umount2 规则</span><br><span class="line"></span><br><span class="line">2）审计其他系统调用</span><br><span class="line"></span><br><span class="line">-a entry,always -S clone -S fork -S vfork   # 跟踪任务创建</span><br><span class="line"></span><br><span class="line">-a entry,always -S umask   # 审计umask系统调用以跟踪进程是如何修改创建掩码</span><br><span class="line"></span><br><span class="line">-a entry,always -S adjtimex -S settimeofday   # 跟踪尝试更改系统时间的操作：使用adjtimex来调整时间，settimeofday会设置绝对时间</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1）审计文件系统系统调用
+
+-a entry,always -S chmod -S fchmod -S chown -S chown32 -S fchown -S fchown32 -S lchown -S lchown32  # 对更改文件所有权和权限相关的系统调用启用审计环境
+
+-a entry,always -S creat -S open -S truncate -S truncate64 -S ftruncate -S ftruncate64  # 对文件内容修改相关的系统调用启用审计环境
+
+-a entry,always -S mkdir -S rmdir  # 对任何目录操作（例如创建或去除目录）启用审计环境
+
+-a entry,always -S unlink -S rename -S link -S symlink  # 对任何链接操作（例如创建符号链接、创建链接、取消链接或重命名）启用审计环境
+
+-a entry,always -S setxattr   # 对扩展文件系统属性相关的任何操作启用审计环境。
+-a entry,always -S lsetxattr
+-a entry,always -S fsetxattr
+-a entry,always -S removexattr
+-a entry,always -S lremovexattr
+-a entry,always -S fremovexattr
+
+-a entry,always -S mknod    # 对用于创建特殊（设备）文件的 mknod 系统调用启用审计环境
+
+-a entry,always -S mount -S umount -S umount2  # 对任何装入或卸载操作启用审计环境: 对于 x86 体系结构，请禁用 umount 规则; 对于 Intel 64 体系结构，请禁用 umount2 规则
+
+2）审计其他系统调用
+
+-a entry,always -S clone -S fork -S vfork   # 跟踪任务创建
+
+-a entry,always -S umask   # 审计umask系统调用以跟踪进程是如何修改创建掩码
+
+-a entry,always -S adjtimex -S settimeofday   # 跟踪尝试更改系统时间的操作：使用adjtimex来调整时间，settimeofday会设置绝对时间<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="3-审计安全配置文件"><a href="#3-审计安全配置文件" class="headerlink" title="3. 审计安全配置文件"></a>3. 审计安全配置文件</h3><p>跟踪系统配置的更改（内核、服务、时间等）有助于发现他人尝试操纵您系统的基础功能的任何行为，适用于与安全身份验证和通讯相关的任何其他配置文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">1）定时任务监测</span><br><span class="line"></span><br><span class="line">-w /var/spool/atspool        # at配置监测</span><br><span class="line">-w /etc/at.allow</span><br><span class="line">-w /etc/at.deny</span><br><span class="line"></span><br><span class="line">-w /etc/cron.allow -p wa     # cron配置监测</span><br><span class="line">-w /etc/cron.deny -p wa</span><br><span class="line">-w /etc/cron.d/ -p wa</span><br><span class="line">-w /etc/cron.daily/ -p wa</span><br><span class="line">-w /etc/cron.hourly/ -p wa</span><br><span class="line">-w /etc/cron.monthly/ -p wa</span><br><span class="line">-w /etc/cron.weekly/ -p wa</span><br><span class="line">-w /etc/crontab -p wa</span><br><span class="line">-w /var/spool/cron/root</span><br><span class="line"></span><br><span class="line">2）用户及登录监测</span><br><span class="line"></span><br><span class="line">-w /etc/group -p wa</span><br><span class="line">-w /etc/passwd -p wa</span><br><span class="line">-w /etc/shadow</span><br><span class="line"></span><br><span class="line">-w /etc/login.defs -p wa</span><br><span class="line">-w /etc/securetty</span><br><span class="line">-w /var/log/lastlog</span><br><span class="line"></span><br><span class="line">3）主机及系统配置监测</span><br><span class="line"></span><br><span class="line">-w /etc/hosts -p wa     # 静态主机名配置设置监测</span><br><span class="line">-w /etc/sysconfig/      # 系统配置目录监测</span><br><span class="line">w /etc/init.d/          # 引导配置监测</span><br><span class="line">w /etc/ld.so.conf -p wa # 链接器配置监测</span><br><span class="line">w /etc/localtime -p wa  # 本地时间监测</span><br><span class="line"></span><br><span class="line">w /etc/sysctl.conf -p wa # 内核配置监测</span><br><span class="line">w /etc/modprobe.d/</span><br><span class="line">w /etc/modprobe.conf.local -p wa</span><br><span class="line">w /etc/modprobe.conf -p wa</span><br><span class="line"></span><br><span class="line">4）PAM配置目录监测</span><br><span class="line"></span><br><span class="line">w /etc/pam.d/</span><br><span class="line"></span><br><span class="line">5）别名文件监测</span><br><span class="line"></span><br><span class="line">-w /etc/aliases -p wa</span><br><span class="line"></span><br><span class="line">6）SSH等配置文件监测</span><br><span class="line"></span><br><span class="line">-w /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line">-w /etc/stunnel/stunnel.conf</span><br><span class="line">-w /etc/stunnel/stunnel.pem</span><br><span class="line"></span><br><span class="line">-w /etc/vsftpd.ftpusers</span><br><span class="line">-w /etc/vsftpd.conf</span><br><span class="line"></span><br><span class="line">7）主机名设置及系统标识配置监测</span><br><span class="line"></span><br><span class="line">-a exit,always -S sethostname</span><br><span class="line">-w /etc/issue -p wa</span><br><span class="line">-w /etc/issue.net -p wa</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1）定时任务监测
+
+-w &#x2F;var&#x2F;spool&#x2F;atspool        # at配置监测
+-w &#x2F;etc&#x2F;at.allow
+-w &#x2F;etc&#x2F;at.deny
+
+-w &#x2F;etc&#x2F;cron.allow -p wa     # cron配置监测
+-w &#x2F;etc&#x2F;cron.deny -p wa
+-w &#x2F;etc&#x2F;cron.d&#x2F; -p wa
+-w &#x2F;etc&#x2F;cron.daily&#x2F; -p wa
+-w &#x2F;etc&#x2F;cron.hourly&#x2F; -p wa
+-w &#x2F;etc&#x2F;cron.monthly&#x2F; -p wa
+-w &#x2F;etc&#x2F;cron.weekly&#x2F; -p wa
+-w &#x2F;etc&#x2F;crontab -p wa
+-w &#x2F;var&#x2F;spool&#x2F;cron&#x2F;root
+
+2）用户及登录监测
+
+-w &#x2F;etc&#x2F;group -p wa
+-w &#x2F;etc&#x2F;passwd -p wa
+-w &#x2F;etc&#x2F;shadow
+
+-w &#x2F;etc&#x2F;login.defs -p wa
+-w &#x2F;etc&#x2F;securetty
+-w &#x2F;var&#x2F;log&#x2F;lastlog
+
+3）主机及系统配置监测
+
+-w &#x2F;etc&#x2F;hosts -p wa     # 静态主机名配置设置监测
+-w &#x2F;etc&#x2F;sysconfig&#x2F;      # 系统配置目录监测
+w &#x2F;etc&#x2F;init.d&#x2F;          # 引导配置监测
+w &#x2F;etc&#x2F;ld.so.conf -p wa # 链接器配置监测
+w &#x2F;etc&#x2F;localtime -p wa  # 本地时间监测
+
+w &#x2F;etc&#x2F;sysctl.conf -p wa # 内核配置监测
+w &#x2F;etc&#x2F;modprobe.d&#x2F;
+w &#x2F;etc&#x2F;modprobe.conf.local -p wa
+w &#x2F;etc&#x2F;modprobe.conf -p wa
+
+4）PAM配置目录监测
+
+w &#x2F;etc&#x2F;pam.d&#x2F;
+
+5）别名文件监测
+
+-w &#x2F;etc&#x2F;aliases -p wa
+
+6）SSH等配置文件监测
+
+-w &#x2F;etc&#x2F;ssh&#x2F;sshd_config
+
+-w &#x2F;etc&#x2F;stunnel&#x2F;stunnel.conf
+-w &#x2F;etc&#x2F;stunnel&#x2F;stunnel.pem
+
+-w &#x2F;etc&#x2F;vsftpd.ftpusers
+-w &#x2F;etc&#x2F;vsftpd.conf
+
+7）主机名设置及系统标识配置监测
+
+-a exit,always -S sethostname
+-w &#x2F;etc&#x2F;issue -p wa
+-w &#x2F;etc&#x2F;issue.net -p wa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="4-过滤系统调用参数"><a href="#4-过滤系统调用参数" class="headerlink" title="4. 过滤系统调用参数"></a>4. 过滤系统调用参数</h3><p>审计系统调用会产生高负载的日志记录活动，而后者又会给内核带来繁重的负载，应用过滤器有助于将审计重点放在您主要关注的方面<br><strong>过滤非多路转换系统调用</strong><br>access 系统调用会检查是否允许某个进程读取、写入文件或文件系统对象或者测试该对象是否存在。请使用 -F 过滤标志以 -F a1&#x3D;ACCESS_MODE 格式构建与特定 access 调用匹配的规则。在 &#x2F;usr&#x2F;include&#x2F;fcntl.h 中检查 access 系统调用的可能参数列表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-a entry,always -S access -F a1=4  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 4 (R_OK) 时会进行审计。此规则过滤所有用于测试对用户或进程所访问的文件或文件系统是否拥有足够读取权限的 access 调用</span><br><span class="line">-a entry,always -S access -F a1=6  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 6（表示 4 OR 2，相当于 R_OK OR W_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取和写入权限的 access 调用</span><br><span class="line">-a entry,always -S access -F a1=7  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 7（表示 4 OR 2 OR 1，相当于 R_OK OR W_OK OR X_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取、写入和执行权限的 access 调用</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-a entry,always -S access -F a1&#x3D;4  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 4 (R_OK) 时会进行审计。此规则过滤所有用于测试对用户或进程所访问的文件或文件系统是否拥有足够读取权限的 access 调用
+-a entry,always -S access -F a1&#x3D;6  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 6（表示 4 OR 2，相当于 R_OK OR W_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取和写入权限的 access 调用
+-a entry,always -S access -F a1&#x3D;7  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 7（表示 4 OR 2 OR 1，相当于 R_OK OR W_OK OR X_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取、写入和执行权限的 access 调用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>过滤多路转换系统调用</strong><br>socketcall 系统调用是多路转换系统调用。多路转换是指在所有可能的调用中只存在一个系统调用，并且 libc 会传递实际的系统调用作为第一个参数 (a0)。有关可能的参数值和系统调用名称的列表，请参见 &#x2F;usr&#x2F;src&#x2F;linux&#x2F;include&#x2F;linux&#x2F;net.h。审计支持使用 -F a0&#x3D;SYSCALL_NUMBER 过滤特定的系统调用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-a entry,always -S socketcall -F a0=1 -F a1=10   # 审计 socket(PF_INET6) 系统调用。-F a0=1 过滤器会匹配所有 socket 系统调用，-F a1=10 过滤器可将匹配范围缩小为传递 IPv6 协议系列域参数 (PF_INET6) 的 socket 系统调用。有关第一个参数 (a0)，请查看 /usr/include/linux/net.h；有关第二个参数 (a1)，请查看 /usr/src/linux/include/linux/socket.h。AMD64/Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加对 PF_INET6 进行过滤的普通系统调用规则</span><br><span class="line">## Use this line on x86_64, ia64 instead</span><br><span class="line">#-a entry,always -S socket -F a0=10</span><br><span class="line"></span><br><span class="line">-a entry,always -S socketcall -F a0=5           # 审计 socketcall 系统调用。过滤标志设置为过滤 a0=5（socketcall 的第一个参数），如果您检查 /usr/include/linux/net.h，会发现此设置转换为 accept 系统调用。AMD64/Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加不含参数过滤的普通系统调用规则</span><br><span class="line">## Use this line on x86_64, ia64 instead</span><br><span class="line">#-a entry, always -S accept</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-a entry,always -S socketcall -F a0&#x3D;1 -F a1&#x3D;10   # 审计 socket(PF_INET6) 系统调用。-F a0&#x3D;1 过滤器会匹配所有 socket 系统调用，-F a1&#x3D;10 过滤器可将匹配范围缩小为传递 IPv6 协议系列域参数 (PF_INET6) 的 socket 系统调用。有关第一个参数 (a0)，请查看 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;net.h；有关第二个参数 (a1)，请查看 &#x2F;usr&#x2F;src&#x2F;linux&#x2F;include&#x2F;linux&#x2F;socket.h。AMD64&#x2F;Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加对 PF_INET6 进行过滤的普通系统调用规则
+## Use this line on x86_64, ia64 instead
+#-a entry,always -S socket -F a0&#x3D;10
+
+-a entry,always -S socketcall -F a0&#x3D;5           # 审计 socketcall 系统调用。过滤标志设置为过滤 a0&#x3D;5（socketcall 的第一个参数），如果您检查 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;net.h，会发现此设置转换为 accept 系统调用。AMD64&#x2F;Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加不含参数过滤的普通系统调用规则
+## Use this line on x86_64, ia64 instead
+#-a entry, always -S accept<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ipc 系统调用是多路转换系统调用的另一个示例。要调用的实际调用由传递给 ipc 系统调用的第一个参数决定。过滤这些参数有助于您将重点放在要关注的 IPC 调用上。在 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;ipc.h 中查看可能的参数值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">1) 审计与 IPC SYSV 消息队列相关的系统调用</span><br><span class="line"></span><br><span class="line">a0 值指定要针对 msgctl 和 msgget 系统调用（14 和 13）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则</span><br><span class="line"></span><br><span class="line">## msgctl</span><br><span class="line">-a entry,always -S ipc -F a0=14</span><br><span class="line">## msgget</span><br><span class="line">-a entry,always -S ipc -F a0=13</span><br><span class="line">## Use these lines on x86_64, ia64 instead</span><br><span class="line">#-a entry,always -S msgctl</span><br><span class="line">#-a entry,always -S msgget</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2) 审计与 IPC SYSV 消息信号相关的系统调用</span><br><span class="line"></span><br><span class="line">a0 值指定要针对 semctl、semget、semop 和 semtimedop 系统调用（3、2、1 和 4）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前四条规则注释掉，并添加不含参数过滤的普通系统调用规则</span><br><span class="line"></span><br><span class="line">## semctl</span><br><span class="line">-a entry,always -S ipc -F a0=3</span><br><span class="line">## semget</span><br><span class="line">-a entry,always -S ipc -F a0=2</span><br><span class="line">## semop</span><br><span class="line">-a entry,always -S ipc -F a0=1</span><br><span class="line">## semtimedop</span><br><span class="line">-a entry,always -S ipc -F a0=4</span><br><span class="line">## Use these lines on x86_64, ia64 instead</span><br><span class="line">#-a entry,always -S semctl</span><br><span class="line">#-a entry,always -S semget</span><br><span class="line">#-a entry,always -S semop</span><br><span class="line">#-a entry,always -S semtimedop</span><br><span class="line"></span><br><span class="line">3) 审计与 IPC SYSV 共享内存相关的系统调用</span><br><span class="line"></span><br><span class="line">a0 值指定要针对 shmctl 和 shmget 系统调用（24 和 23）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则</span><br><span class="line"></span><br><span class="line">## shmctl</span><br><span class="line">-a entry,always -S ipc -F a0=24</span><br><span class="line">## shmget</span><br><span class="line">-a entry,always -S ipc -F a0=23</span><br><span class="line">## Use these lines on x86_64, ia64 instead</span><br><span class="line">#-a entry,always -S shmctl</span><br><span class="line">#-a entry,always -S shmget</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) 审计与 IPC SYSV 消息队列相关的系统调用
+
+a0 值指定要针对 msgctl 和 msgget 系统调用（14 和 13）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
+
+## msgctl
+-a entry,always -S ipc -F a0&#x3D;14
+## msgget
+-a entry,always -S ipc -F a0&#x3D;13
+## Use these lines on x86_64, ia64 instead
+#-a entry,always -S msgctl
+#-a entry,always -S msgget
+
+
+2) 审计与 IPC SYSV 消息信号相关的系统调用
+
+a0 值指定要针对 semctl、semget、semop 和 semtimedop 系统调用（3、2、1 和 4）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前四条规则注释掉，并添加不含参数过滤的普通系统调用规则
+
+## semctl
+-a entry,always -S ipc -F a0&#x3D;3
+## semget
+-a entry,always -S ipc -F a0&#x3D;2
+## semop
+-a entry,always -S ipc -F a0&#x3D;1
+## semtimedop
+-a entry,always -S ipc -F a0&#x3D;4
+## Use these lines on x86_64, ia64 instead
+#-a entry,always -S semctl
+#-a entry,always -S semget
+#-a entry,always -S semop
+#-a entry,always -S semtimedop
+
+3) 审计与 IPC SYSV 共享内存相关的系统调用
+
+a0 值指定要针对 shmctl 和 shmget 系统调用（24 和 23）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
+
+## shmctl
+-a entry,always -S ipc -F a0&#x3D;24
+## shmget
+-a entry,always -S ipc -F a0&#x3D;23
+## Use these lines on x86_64, ia64 instead
+#-a entry,always -S shmctl
+#-a entry,always -S shmget<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="5-使用键管理审计事件记录"><a href="#5-使用键管理审计事件记录" class="headerlink" title="5. 使用键管理审计事件记录"></a>5. 使用键管理审计事件记录</h3><p>使用 ausearch 命令可以根据不同的准则过滤日志。通过使用 ausearch -m MESSAGE_TYPE，可以过滤特定类型的事件。但是，要过滤与特定规则相关的事件，需要在 &#x2F;etc&#x2F;audit&#x2F;audit.rules 文件中将一个键添加到此规则。然后，每次该规则记录一个事件时，此键就会添加到相应事件记录。要检索这些日志项，只需运行 ausearch -k YOUR_KEY 获取与该规则相关且带有此特定键的记录列表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-w /etc/audit/audit.rules -p wa</span><br><span class="line"></span><br><span class="line">-w /etc/audit/audit.rules -p wa -k CFG_audit.rules  # 使用 -k 选项将一个键添加到上述规则</span><br><span class="line"></span><br><span class="line">查找记录：ausearch -k CFG_audit.rules</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa
+
+-w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa -k CFG_audit.rules  # 使用 -k 选项将一个键添加到上述规则
+
+查找记录：ausearch -k CFG_audit.rules<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以指定任何文本字符串作为键。使用不同的键前缀（CFG、LOG 等）后接文件名来区分与不同文件类型（配置文件或日志文件）相关的各监测项</p>
 <h2 id="0xFF-参考链接"><a href="#0xFF-参考链接" class="headerlink" title="0xFF 参考链接"></a>0xFF 参考链接</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://documentation.suse.com/zh-cn/sled/15-SP3/html/SLED-all/cha-audit-scenarios.html">https://documentation.suse.com/zh-cn/sled/15-SP3/html/SLED-all/cha-audit-scenarios.html</a></li>

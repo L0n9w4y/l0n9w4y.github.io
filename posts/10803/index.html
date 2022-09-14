@@ -253,9 +253,9 @@
 <span id="more"></span>
 <hr>
 <h2 id="0x01-基于ARP发现内网存活主机"><a href="#0x01-基于ARP发现内网存活主机" class="headerlink" title="0x01 基于ARP发现内网存活主机"></a>0x01 基于ARP发现内网存活主机</h2><p><strong>ARP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">地址解析协议（英文：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，根据IP地址获取物理地址。主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -sn -PR 192.168.1.1/24</span><br></pre></td></tr></table></figure>
+<h3 id="1-nmap扫描"><a href="#1-nmap扫描" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre class="line-numbers language-none"><code class="language-none">$ nmap -sn -PR 192.168.1.1&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-msf扫描"><a href="#2-msf扫描" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre><code>msf &gt; use auxiliary/scanner/discovery/arp_sweep
 
@@ -265,53 +265,74 @@ msf auxiliary(arp_sweep) &gt; set THREADS 16
 
 msf auxiliary(arp_sweep) &gt; run
 </code></pre>
-<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install arp-scan  //安装</span><br><span class="line"></span><br><span class="line">$ arp-scan --interface=eth0 --localnet  //发现本地网络上所有主机</span><br></pre></td></tr></table></figure>
+<h3 id="3-arp-scan"><a href="#3-arp-scan" class="headerlink" title="3. arp-scan"></a>3. arp-scan</h3><pre class="line-numbers language-none"><code class="language-none">$ yum -y install arp-scan  &#x2F;&#x2F;安装
+
+$ arp-scan --interface&#x3D;eth0 --localnet  &#x2F;&#x2F;发现本地网络上所有主机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="4-powershell"><a href="#4-powershell" class="headerlink" title="4. powershell"></a>4. powershell</h3><pre><code>c:&gt;powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0/24&quot;
 </code></pre>
 <h3 id="5-netdiscover"><a href="#5-netdiscover" class="headerlink" title="5. netdiscover"></a>5. netdiscover</h3><pre><code>$ netdiscover -r 192.168.1.0/24 -i wlan0
 </code></pre>
 <h2 id="0x02-基于ICMP发现内网存活主机"><a href="#0x02-基于ICMP发现内网存活主机" class="headerlink" title="0x02 基于ICMP发现内网存活主机"></a>0x02 基于ICMP发现内网存活主机</h2><p><strong>ICMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP/IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">ICMP（Internet Control Message Protocol）Internet控制报文协议。它是TCP&#x2F;IP协议簇的一个子协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="1-nmap扫描-1"><a href="#1-nmap扫描-1" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre><code>$ nmap -sP -PI -T4 192.168.0.1/24
 </code></pre>
-<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1) Windows扫描</span><br><span class="line">for /l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr /i &quot;ttl=&quot;</span><br><span class="line"></span><br><span class="line">2）Linux扫描</span><br><span class="line">for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#x27;&#123;print $4&#125;&#x27;; done</span><br></pre></td></tr></table></figure>
+<h3 id="2-ping"><a href="#2-ping" class="headerlink" title="2. ping"></a>2. ping</h3><pre class="line-numbers language-none"><code class="language-none">1) Windows扫描
+for &#x2F;l %i in (1,1,255) do @ping 192.168.0.%i -w 1 -n 1|findstr &#x2F;i &quot;ttl&#x3D;&quot;
+
+2）Linux扫描
+for i in $( seq 1 255);do ping -c 1 192.168.0.$i|grep &quot;ttl&quot;|awk -F &quot;[ :]+&quot; &#39;&#123;print $4&#125;&#39;; done<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-fping"><a href="#3-fping" class="headerlink" title="3. fping"></a>3. fping</h3><p><strong>常用参数</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-a：只显示存活主机；</span><br><span class="line"></span><br><span class="line">-u：只显示不存活主机；</span><br><span class="line"></span><br><span class="line">-l：循环ping</span><br><span class="line"></span><br><span class="line">-g：指定扫描范围</span><br><span class="line"></span><br><span class="line">-f：扫描IP列表文件</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-a：只显示存活主机；
+
+-u：只显示不存活主机；
+
+-l：循环ping
+
+-g：指定扫描范围
+
+-f：扫描IP列表文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>扫描实战</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ fping -af iplist  //从文件中扫描存活主机</span><br><span class="line"></span><br><span class="line">$ fping -g IP1 IP2 //IP1地址开始范围，IP2地址结束范围</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$ fping -af iplist  &#x2F;&#x2F;从文件中扫描存活主机
 
-<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module ./Invoke‐TSPingSweep.ps1</span><br><span class="line">; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv</span><br><span class="line">eHost ‐ScanPort ‐Port 445,135&quot;</span><br></pre></td></tr></table></figure>
+$ fping -g IP1 IP2 &#x2F;&#x2F;IP1地址开始范围，IP2地址结束范围<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="powershell"><a href="#powershell" class="headerlink" title="powershell"></a>powershell</h3><pre class="line-numbers language-none"><code class="language-none">powershell.exe ‐exec bypass ‐Command &quot;Import‐Module .&#x2F;Invoke‐TSPingSweep.ps1
+; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐Resolv
+eHost ‐ScanPort ‐Port 445,135&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="tcping"><a href="#tcping" class="headerlink" title="tcping"></a>tcping</h3><pre><code>tcping.exe ‐n 1 192.168.1.0 80
 </code></pre>
 <h2 id="0x03-基于UDP发现内网存活主机"><a href="#0x03-基于UDP发现内网存活主机" class="headerlink" title="0x03 基于UDP发现内网存活主机"></a>0x03 基于UDP发现内网存活主机</h2><p><strong>UDP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">用户数据报协议（英语：User Datagram Protocol，缩写：UDP；又称用户数据包协议）是一个简单的面向数据报的通信协议，位于OSI模型的传输层；UDP报文没有可靠性保证、顺序保证和流量控制字段等，可靠性较差，但在数据传输过程中延迟小、数据传输效率高，适合对可靠性要求不高的应用程序<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_probe</span><br><span class="line">msf &gt; use auxiliary/scanner/discovery/udp_sweep</span><br></pre></td></tr></table></figure>
+<h3 id="1-msf扫描"><a href="#1-msf扫描" class="headerlink" title="1. msf扫描"></a>1. msf扫描</h3><pre class="line-numbers language-none"><code class="language-none">msf &gt; use auxiliary&#x2F;scanner&#x2F;discovery&#x2F;udp_probe
+msf &gt; use auxiliary&#x2F;scanner&#x2F;discovery&#x2F;udp_sweep<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unicornscan -mU 192.168.1.1</span><br></pre></td></tr></table></figure>
+<h3 id="2-unicornscan"><a href="#2-unicornscan" class="headerlink" title="2. unicornscan"></a>2. unicornscan</h3><pre class="line-numbers language-none"><code class="language-none">$ unicornscan -mU 192.168.1.1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500</span><br></pre></td></tr></table></figure>
+<h3 id="3-nmap"><a href="#3-nmap" class="headerlink" title="3. nmap"></a>3. nmap</h3><pre class="line-numbers language-none"><code class="language-none">$ nmap -sU -T5 -sV --max-retries 1 192.168.1.1 -p 500<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="0x04-基于snmp发现内网存活主机"><a href="#0x04-基于snmp发现内网存活主机" class="headerlink" title="0x04 基于snmp发现内网存活主机"></a>0x04 基于snmp发现内网存活主机</h2><p><strong>SNMP协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SNMP是一种简单网络管理协议，它属于TCP/IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">SNMP是一种简单网络管理协议，它属于TCP&#x2F;IP五层协议中的应用层协议，用于网络管理的协议。SNMP主要用于网络设备的管理。SNMP协议主要由两大部分构成：SNMP管理站和SNMP代理。SNMP管理站是一个中心节点，负责收集维护各个SNMP元素的信息，并对这些信息进行处理，最后反馈给网络管理员；而SNMP代理是运行在各个被管理的网络节点之上，负责统计该节点的各项信息，并且负责与SNMP管理站交互，接收并执行管理站的命令，上传各种本地的网络信息<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -sU --script snmp-brute 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+<h3 id="1-nmap扫描-2"><a href="#1-nmap扫描-2" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre class="line-numbers language-none"><code class="language-none">$ nmap -sU --script snmp-brute 192.168.1.0&#x2F;24 -T4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/snmp/snmp_enum</span><br></pre></td></tr></table></figure>
+<h3 id="2-msf扫描-1"><a href="#2-msf扫描-1" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre class="line-numbers language-none"><code class="language-none">msf &gt; use auxiliary&#x2F;scanner&#x2F;snmp&#x2F;snmp_enum<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="0x05-基于netbios发现内网存活主机"><a href="#0x05-基于netbios发现内网存活主机" class="headerlink" title="0x05 基于netbios发现内网存活主机"></a>0x05 基于netbios发现内网存活主机</h2><p><strong>netbios协议</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">该协议是一种在局域网上的程序可以使用的应用程序编程接口（API），为程序提供了请求低级服务的同一的命令集，作用是为了给局域网提供网络以及其他特殊功能；系统可以利用WINS服务、广播及Lmhost文件等多种模式将NetBIOS名-特指基于NETBIOS协议获得计算机名称——解析为相应IP地址，实现信息通讯，所以在局域网内部使用NetBIOS协议可以方便地实现消息通信及资源的共享<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nmap -sU --script nbstat.nse -p137 192.168.1.0/24 -T4</span><br></pre></td></tr></table></figure>
+<h3 id="1-nmap扫描-3"><a href="#1-nmap扫描-3" class="headerlink" title="1. nmap扫描"></a>1. nmap扫描</h3><pre class="line-numbers language-none"><code class="language-none">$ nmap -sU --script nbstat.nse -p137 192.168.1.0&#x2F;24 -T4<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; use auxiliary/scanner/netbios/nbname</span><br></pre></td></tr></table></figure>
+<h3 id="2-msf扫描-2"><a href="#2-msf扫描-2" class="headerlink" title="2. msf扫描"></a>2. msf扫描</h3><pre class="line-numbers language-none"><code class="language-none">msf &gt; use auxiliary&#x2F;scanner&#x2F;netbios&#x2F;nbname<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ nbtscan -r 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">$ nbtscan -v -s: 192.168.1.0/24</span><br></pre></td></tr></table></figure>
+<h3 id="3-nbtscan扫描"><a href="#3-nbtscan扫描" class="headerlink" title="3. nbtscan扫描"></a>3. nbtscan扫描</h3><pre class="line-numbers language-none"><code class="language-none">$ nbtscan -r 192.168.1.0&#x2F;24
+
+$ nbtscan -v -s: 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
     </div>
 
     

