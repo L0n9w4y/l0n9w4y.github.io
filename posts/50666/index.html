@@ -301,7 +301,7 @@
 <td>内核日志</td>
 </tr>
 </tbody></table>
-<h3 id="2-清空日志文件"><a href="#2-清空日志文件" class="headerlink" title="2. 清空日志文件"></a>2. 清空日志文件</h3><pre class="line-numbers language-none"><code class="language-none">1）通过重定向到空来清空日志
+<h3 id="2-清空日志文件"><a href="#2-清空日志文件" class="headerlink" title="2. 清空日志文件"></a>2. 清空日志文件</h3><pre class="language-none"><code class="language-none">1）通过重定向到空来清空日志
 
     &gt; &#x2F;var&#x2F;log&#x2F;access.log    # 清除web访问日志
 
@@ -335,18 +335,18 @@
 
     截断命令有助于收缩或文件的大小扩大到规定的尺寸，可以使用-s指定文件大小的选项。要清空文件内容，可使用大小为0（零）
 
-    truncate -s 0 access.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    truncate -s 0 access.log</code></pre>
 
 <h3 id="3-删除-x2F-替换日志"><a href="#3-删除-x2F-替换日志" class="headerlink" title="3. 删除&#x2F;替换日志"></a>3. 删除&#x2F;替换日志</h3><p>全部清空日志，动静太大，可选择性删除&#x2F;替换部分关键日志，隐藏痕迹</p>
-<pre class="line-numbers language-none"><code class="language-none">sed  -i &#39;&#x2F;攻击ip&#x2F;d&#39;  &#x2F;var&#x2F;log&#x2F;secure    # 删除登录日志攻击ip所在的行
+<pre class="language-none"><code class="language-none">sed  -i &#39;&#x2F;攻击ip&#x2F;d&#39;  &#x2F;var&#x2F;log&#x2F;secure    # 删除登录日志攻击ip所在的行
 
 sed -i &#39;s&#x2F;192.168.1.1&#x2F;127.0.0.1&#x2F;g&#39; &#x2F;var&#x2F;log&#x2F;access.log  # 全局替换访问IP地址
 
 cat &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log | grep -v shell.php &gt; tmp.log  # 删除入侵相关信息
 
-cat tmp.log &gt; &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log&#x2F;  # 把修改过的日志覆盖到原日志文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+cat tmp.log &gt; &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log&#x2F;  # 把修改过的日志覆盖到原日志文件</code></pre>
 
-<h2 id="0x02-清除历史命令"><a href="#0x02-清除历史命令" class="headerlink" title="0x02 清除历史命令"></a>0x02 清除历史命令</h2><pre class="line-numbers language-none"><code class="language-none">1) 清除&#x2F;部分删除历史命令
+<h2 id="0x02-清除历史命令"><a href="#0x02-清除历史命令" class="headerlink" title="0x02 清除历史命令"></a>0x02 清除历史命令</h2><pre class="language-none"><code class="language-none">1) 清除&#x2F;部分删除历史命令
 
     history -c &amp;&amp; exit
 
@@ -365,18 +365,18 @@ cat tmp.log &gt; &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log&#x2F;  # 把修�
     vsp ~&#x2F;.bash_history  # 用vim的分屏功能打开命令记录文件.bash_history，编辑文件删除历史操作命令
 
     :set history&#x3D;0   # vim中执行不想让其他人看到的命令
-    :!command<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    :!command</code></pre>
 
 <h2 id="0x03-文件删除工具"><a href="#0x03-文件删除工具" class="headerlink" title="0x03 文件删除工具"></a>0x03 文件删除工具</h2><h3 id="1-shred命令"><a href="#1-shred命令" class="headerlink" title="1. shred命令"></a>1. shred命令</h3><p>shred 会覆盖文件来隐藏它的内容，也可以选择删除</p>
-<pre class="line-numbers language-none"><code class="language-none">$ shred -zvu -n  5 passwords.list
+<pre class="language-none"><code class="language-none">$ shred -zvu -n  5 passwords.list
 
 -z - 用零覆盖以隐藏碎片
 -v - 显示操作进度
 -u - 在覆盖后截断并删除文件
--n - 指定覆盖文件内容的次数（默认值为3）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-n - 指定覆盖文件内容的次数（默认值为3）</code></pre>
 
 <h3 id="2-wipe命令"><a href="#2-wipe命令" class="headerlink" title="2. wipe命令"></a>2. wipe命令</h3><p>wipe 命令可以安全地擦除磁盘中的文件，从而无法恢复删除的文件或目录内容</p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo apt-get install wipe   [Debian 及其衍生版]
+<pre class="language-none"><code class="language-none">$ sudo apt-get install wipe   [Debian 及其衍生版]
 $ sudo yum install wipe       [基于 RedHat 的系统]
 
 $ wipe -rfi private&#x2F;*   # 销毁 private 目录下的所有文件
@@ -385,43 +385,43 @@ $ wipe &#x2F;dev&#x2F;sda1        # 删除完整分区的内容
 
 -r - 告诉 wipe 递归地擦除子目录
 -f - 启用强制删除并禁用确认查询
--i - 显示擦除进度<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-i - 显示擦除进度</code></pre>
 
 <h3 id="3-Secure-Delete"><a href="#3-Secure-Delete" class="headerlink" title="3. Secure-Delete"></a>3. Secure-Delete</h3><p>Secure-Delete 是一组工具集合，提供srm、smem、sfill、sswap，4个安全删除文件的命令行工具</p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo apt-get install secure-delete   [Debian 及其衍生版]
-$ sudo yum install secure-delete       [基于 RedHat 的系统]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ sudo apt-get install secure-delete   [Debian 及其衍生版]
+$ sudo yum install secure-delete       [基于 RedHat 的系统]</code></pre>
 
 <p><strong>srm</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ srm -vz private&#x2F;*
+<pre class="language-none"><code class="language-none">$ srm -vz private&#x2F;*
 
 -v – 启用 verbose 模式
--z – 用0而不是随机数据来擦除最后的写入<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+-z – 用0而不是随机数据来擦除最后的写入</code></pre>
 
 <p><strong>sfill</strong></p>
 <p>sfill 是 secure-deletetion 工具包的一部分，是一个安全免费的磁盘和 inode 空间擦除器，它以安全的方法删除可用磁盘空间中的文件。sfill 会检查指定分区上的可用空间，并使用来自 &#x2F;dev&#x2F;urandom 的随机数据填充它</p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo sfill -v &#x2F;home&#x2F;username<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ sudo sfill -v &#x2F;home&#x2F;username</code></pre>
 
 <p><strong>sswap</strong></p>
 <p>sswap 以安全的方式删除 swap 分区上存在的数据，在使用 sswap 之前需卸载 swap 分区</p>
-<pre class="line-numbers language-none"><code class="language-none">$ cat &#x2F;proc&#x2F;swaps 
+<pre class="language-none"><code class="language-none">$ cat &#x2F;proc&#x2F;swaps 
 $ swapon                  # 检查分页和交换设备&#x2F;文件是否已经使用
 $ sudo swapoff &#x2F;dev&#x2F;sda6  # 禁用分页和交换设备&#x2F;文件
-$ sudo sswap &#x2F;dev&#x2F;sda6    # 命令要花费一些时间，默认要进行 38 遍擦除<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+$ sudo sswap &#x2F;dev&#x2F;sda6    # 命令要花费一些时间，默认要进行 38 遍擦除</code></pre>
 
 <p><strong>sdmem</strong></p>
 <p>sdmem 是一个安全的内存擦除器，其设计目的是以安全的方式删除存储器（RAM）中的数据</p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo sdmem -f -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ sudo sdmem -f -v</code></pre>
 
 <h3 id="4-dd命令"><a href="#4-dd命令" class="headerlink" title="4. dd命令"></a>4. dd命令</h3><p>dd命令起初是用于磁盘克隆的，它用于将一个分区或者一个磁盘复制到另一个分区或者磁盘。但是它还可用于安全地清除硬盘或者分区的内容</p>
-<pre class="line-numbers language-none"><code class="language-none">sudo dd if&#x3D;&#x2F;dev&#x2F;random of&#x3D;&#x2F;dev&#x2F;sda
+<pre class="language-none"><code class="language-none">sudo dd if&#x3D;&#x2F;dev&#x2F;random of&#x3D;&#x2F;dev&#x2F;sda
 
-sudo dd if&#x3D;&#x2F;dev&#x2F;zero of&#x3D;要删除的文件 bs&#x3D;大小 count&#x3D;写入的次数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+sudo dd if&#x3D;&#x2F;dev&#x2F;zero of&#x3D;要删除的文件 bs&#x3D;大小 count&#x3D;写入的次数</code></pre>
 
 <h3 id="5-隐藏远程SSH登录记录"><a href="#5-隐藏远程SSH登录记录" class="headerlink" title="5. 隐藏远程SSH登录记录"></a>5. 隐藏远程SSH登录记录</h3><p>隐身登录系统，不会被w、who、last等指令检测到</p>
-<pre class="line-numbers language-none"><code class="language-none">ssh -T root@192.168.0.1 &#x2F;bin&#x2F;bash -i<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ssh -T root@192.168.0.1 &#x2F;bin&#x2F;bash -i</code></pre>
 
 <p>不记录ssh公钥在本地.ssh目录中</p>
-<pre class="line-numbers language-none"><code class="language-none">ssh -o UserKnownHostsFile&#x3D;&#x2F;dev&#x2F;null -T user@host &#x2F;bin&#x2F;bash –i<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ssh -o UserKnownHostsFile&#x3D;&#x2F;dev&#x2F;null -T user@host &#x2F;bin&#x2F;bash –i</code></pre>
 
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1070/">https://attack.mitre.org/techniques/T1070/</a></p>

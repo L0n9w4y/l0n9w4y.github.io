@@ -253,43 +253,43 @@
 
 <span id="more"></span>
 
-<h2 id="0x01-获取异常进程pid"><a href="#0x01-获取异常进程pid" class="headerlink" title="0x01 获取异常进程pid"></a>0x01 获取异常进程pid</h2><h3 id="1-CPU占用"><a href="#1-CPU占用" class="headerlink" title="1. CPU占用"></a>1. CPU占用</h3><pre class="line-numbers language-none"><code class="language-none">top -c -o %CPU
+<h2 id="0x01-获取异常进程pid"><a href="#0x01-获取异常进程pid" class="headerlink" title="0x01 获取异常进程pid"></a>0x01 获取异常进程pid</h2><h3 id="1-CPU占用"><a href="#1-CPU占用" class="headerlink" title="1. CPU占用"></a>1. CPU占用</h3><pre class="language-none"><code class="language-none">top -c -o %CPU
 
 -c 参数显示进程的命令行参数
--p 参数指定进程的pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+-p 参数指定进程的pid</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">ps -eo pid,ppid,%mem,%cpu,cmd --sort&#x3D;-%cpu | head -n 5
+<pre class="language-none"><code class="language-none">ps -eo pid,ppid,%mem,%cpu,cmd --sort&#x3D;-%cpu | head -n 5
 
-cpu占用前5的进程信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+cpu占用前5的进程信息</code></pre>
 
-<h3 id="2-内存占用"><a href="#2-内存占用" class="headerlink" title="2. 内存占用"></a>2. 内存占用</h3><pre class="line-numbers language-none"><code class="language-none">top -c -o %MEM
+<h3 id="2-内存占用"><a href="#2-内存占用" class="headerlink" title="2. 内存占用"></a>2. 内存占用</h3><pre class="language-none"><code class="language-none">top -c -o %MEM
 
 -c 参数显示进程的命令行参数
--p 参数指定进程的pid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+-p 参数指定进程的pid</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">ps -eo pid,ppid,%mem,%cpu,cmd --sort&#x3D;-%mem | head -n 5<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ps -eo pid,ppid,%mem,%cpu,cmd --sort&#x3D;-%mem | head -n 5</code></pre>
 
 <h3 id="3-网络占用"><a href="#3-网络占用" class="headerlink" title="3. 网络占用"></a>3. 网络占用</h3><p>网络占用需要安装如下软件，之后使用root权限进行执行</p>
-<pre class="line-numbers language-none"><code class="language-none">Debian&#x2F;Ubuntu 
+<pre class="language-none"><code class="language-none">Debian&#x2F;Ubuntu 
 apt-get install nethogs
 
 Centos&#x2F;RHEL 
 yum -y install epel-release
 yum -y install nethogs
 
-nethogs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+nethogs</code></pre>
 
 <h2 id="0x02-定位异常文件"><a href="#0x02-定位异常文件" class="headerlink" title="0x02 定位异常文件"></a>0x02 定位异常文件</h2><p><strong>根据进程名字或者部分字符串获取pid</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">pidof &quot;name&quot;
+<pre class="language-none"><code class="language-none">pidof &quot;name&quot;
 
 ps -aux | grep &quot;name&quot;
 
 ps -ef | grep &quot;name&quot; | grep -v grep | awk &#39;&#123;print $2&#125;&#39;
 
-pgrep -f &quot;name&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+pgrep -f &quot;name&quot;</code></pre>
 
 <p><strong>根据pid获取程序的详细信息</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">lsof -p pid
+<pre class="language-none"><code class="language-none">lsof -p pid
 
 pwdx pid 获取该pid的进程启动的时候的目录,并不一定是恶意文件所在的路径，只是启动恶意文件的路径
 
@@ -297,18 +297,18 @@ systemctl status pid 获取这个进程的status信息
 
 cat &#x2F;proc&#x2F;pid&#x2F;maps
 
-ls -al &#x2F;proc&#x2F;pid&#x2F;exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ls -al &#x2F;proc&#x2F;pid&#x2F;exe</code></pre>
 
 <p><strong>Tips</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">有些时候无法通过ps，top等命令根据pid进行查询，可能是因为攻击者将&#x2F;proc&#x2F;pid&#x2F; 进行了隐藏，可以通过以下方式进行隐藏: 
+<pre class="language-none"><code class="language-none">有些时候无法通过ps，top等命令根据pid进行查询，可能是因为攻击者将&#x2F;proc&#x2F;pid&#x2F; 进行了隐藏，可以通过以下方式进行隐藏: 
 
 mkdir .hidden
 mount -o bind .hidden &#x2F;proc&#x2F;PID
 
-这种情况可以使用 cat &#x2F;proc&#x2F;$$&#x2F;mountinfo 来查看挂载信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+这种情况可以使用 cat &#x2F;proc&#x2F;$$&#x2F;mountinfo 来查看挂载信息</code></pre>
 
 <p><strong>根据pid查看由进程起的线程</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">ps H -T -p pid
+<pre class="language-none"><code class="language-none">ps H -T -p pid
 
 ps -Lf pid
 
@@ -316,48 +316,48 @@ ps -Lf pid
 
 top -H -p pid -H 选项可以显示线程 
 
-pstree -acU 推荐，非常全面展示进程与线程间的关系<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+pstree -acU 推荐，非常全面展示进程与线程间的关系</code></pre>
 
 <h2 id="0x03-处理异常进程"><a href="#0x03-处理异常进程" class="headerlink" title="0x03 处理异常进程"></a>0x03 处理异常进程</h2><h3 id="1-进程查杀"><a href="#1-进程查杀" class="headerlink" title="1. 进程查杀"></a>1. 进程查杀</h3><p>有些进程会起子进程，可以使用如下命令查看</p>
-<pre class="line-numbers language-none"><code class="language-none">ps ajfx  #可以看到具体的PPID、PID、PGID、SID 信息
+<pre class="language-none"><code class="language-none">ps ajfx  #可以看到具体的PPID、PID、PGID、SID 信息
 
 systemctl status
  
 kill -9 pid 这样会直接杀死指定进程，但是，由这个进程产生的子进程不会被杀死
        
-kill -9 -pid 如果进程起子进程，可以使用此命令，这里pid前有个减号，表示杀掉这个进程组<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+kill -9 -pid 如果进程起子进程，可以使用此命令，这里pid前有个减号，表示杀掉这个进程组</code></pre>
 
 <h3 id="线程查杀"><a href="#线程查杀" class="headerlink" title="线程查杀"></a>线程查杀</h3><p><strong>根据pid查看由进程起的线程</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">ps -T -p pid
+<pre class="language-none"><code class="language-none">ps -T -p pid
 ps -aLf pid
 
 其中SPID就是线程ID，而CMD栏则显示了线程名称
 
 top -H -p pid -H 选项可以显示线程 
 
-pstree -agpU 推荐，非常全面展示进程与线程间的关系<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+pstree -agpU 推荐，非常全面展示进程与线程间的关系</code></pre>
 
 <p><strong>查看全部的线程</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">ps -eLFa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ps -eLFa</code></pre>
 
 <h2 id="0x04-清除恶意文件"><a href="#0x04-清除恶意文件" class="headerlink" title="0x04 清除恶意文件"></a>0x04 清除恶意文件</h2><blockquote>
 <p>通过进程pid以及&#x2F;proc&#x2F; ,已经定位到了文件的具体位置，接下来就是删除恶意文件</p>
 </blockquote>
 <p><strong>查看文件占用</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">a 和 i 属性导致文件不可删除 
+<pre class="language-none"><code class="language-none">a 和 i 属性导致文件不可删除 
 
 a属性 文件只能增加内容，不能修改之前的文件，不能删除文件
 i属性 内容不能改变，文件不能删除 
 
-可以使用 chattr -a 和 chattr -i<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+可以使用 chattr -a 和 chattr -i</code></pre>
 
 <p><strong>文件名导致文件不可删除</strong></p>
 <p>从windows向linux传输的文件或者攻击者恶意制造的文件，很多会有文件名乱码，无法直接通过乱码的文件名进行删除，可以使用inode来确定文件名，之后删除使用 inode 进行删除</p>
 <p>查看inode</p>
-<pre class="line-numbers language-none"><code class="language-none">ls -li eval.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ls -li eval.sh</code></pre>
 
 <p>删除文件</p>
-<pre class="line-numbers language-none"><code class="language-none">find .&#x2F;* -inum 12327526 -delete
+<pre class="language-none"><code class="language-none">find .&#x2F;* -inum 12327526 -delete
 
 find .&#x2F; -inum 12327526 -exec rm &#123;&#125; \;
 
@@ -367,26 +367,26 @@ find .&#x2F;* -inum 12327526 -exec rm -f &#123;&#125; \;(不进行确认直接�
 
 find .&#x2F;* -inum 12327526 |xargs rm -f
 
-rm &#96;find .&#x2F;* -inum 12327526&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+rm &#96;find .&#x2F;* -inum 12327526&#96;</code></pre>
 
-<h2 id="0x05-查找文件"><a href="#0x05-查找文件" class="headerlink" title="0x05 查找文件"></a>0x05 查找文件</h2><h3 id="1-locate"><a href="#1-locate" class="headerlink" title="1. locate"></a>1. locate</h3><pre class="line-numbers language-none"><code class="language-none">-b 只搜索文件名，不搜索文件夹名 
+<h2 id="0x05-查找文件"><a href="#0x05-查找文件" class="headerlink" title="0x05 查找文件"></a>0x05 查找文件</h2><h3 id="1-locate"><a href="#1-locate" class="headerlink" title="1. locate"></a>1. locate</h3><pre class="language-none"><code class="language-none">-b 只搜索文件名，不搜索文件夹名 
 -i 忽略大小写 
 -r &quot;&quot; 正则匹配
 
-执行前先运行：updatedb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+执行前先运行：updatedb</code></pre>
 
 <h3 id="2-find"><a href="#2-find" class="headerlink" title="2. find"></a>2. find</h3><blockquote>
 <p>find 默认文件和目录都会进行搜索，名称要准确 ，支持正则，可以使用通配符</p>
 </blockquote>
-<pre class="line-numbers language-none"><code class="language-none">-type 参数指定 
+<pre class="language-none"><code class="language-none">-type 参数指定 
 
 d 目录 
 f  文件 
 l 符号链接
-s socket<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+s socket</code></pre>
 
 <p><strong>基础用法</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">基础使用 
+<pre class="language-none"><code class="language-none">基础使用 
 find &#x2F; -name evil.sh
 
 忽略大小写 
@@ -399,10 +399,10 @@ find &#x2F; -name *evil* ! -name *.log
 find &#x2F; -name *evil* -path &quot;&#x2F;root&#x2F;home&#x2F;aaa&quot; -prune
 
 查找目录 
-find &#x2F; -type d -name eval<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+find &#x2F; -type d -name eval</code></pre>
 
 <p><strong>按照权限查找文件</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">查找 777 权限的文件 
+<pre class="language-none"><code class="language-none">查找 777 权限的文件 
 find &#x2F; -type f -perm 777
 
 查找 SUID 文件 
@@ -412,17 +412,17 @@ find &#x2F; -perm &#x2F;u&#x3D;s
 find &#x2F; -perm &#x2F;g&#x3D;s
 
 查找 Sticky 文件 
-find &#x2F; -perm &#x2F;o&#x3D;t<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+find &#x2F; -perm &#x2F;o&#x3D;t</code></pre>
 
 <p><strong>基于所有者和组查找文件</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">查找根目录下属于 root 的文件或文件夹 
+<pre class="language-none"><code class="language-none">查找根目录下属于 root 的文件或文件夹 
 find &#x2F; -user root
 
 查找ssh组的所有文件 
-find &#x2F; -group ssh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+find &#x2F; -group ssh</code></pre>
 
 <p><strong>基于时间进行查找</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">-mtime  修改时间 
+<pre class="language-none"><code class="language-none">-mtime  修改时间 
 查找最近三天修改过的文件 find &#x2F; -mtime -3
 查找三天前修改过的文件 find &#x2F; -mtime +3
 查找最近24小时修改过的文件 find &#x2F; -mtime -1
@@ -444,29 +444,29 @@ find &#x2F; -group ssh<span aria-hidden="true" class="line-numbers-rows"><span><
 查找三分钟前访问的文件 find &#x2F; -mmin +3
 查找三分钟内访问的文件 find &#x2F; -mmin -3
 查找三分钟前修改属性的文件 find &#x2F; -cmin +3
-找三分钟内修改属性的文件 find &#x2F; -cmin -3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+找三分钟内修改属性的文件 find &#x2F; -cmin -3</code></pre>
 
 <p>按照大小寻找文件 -size ，参数后单位可以为:</p>
-<pre class="line-numbers language-none"><code class="language-none">b  512-byte block
+<pre class="language-none"><code class="language-none">b  512-byte block
 c   bytes
 w  two-byte words 
 k  
 M
-G<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+G</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">寻找10M的文件 find &#x2F; -size 10M
+<pre class="language-none"><code class="language-none">寻找10M的文件 find &#x2F; -size 10M
 
 寻找大于10M的文件 find &#x2F; -size +10M
 
 寻找小于10M的文件 find &#x2F; -size -10M 
 
-寻找 10M到20M之间的文件 find &#x2F; -size +10MB -20M<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+寻找 10M到20M之间的文件 find &#x2F; -size +10MB -20M</code></pre>
 
 <h2 id="0x06-查找文件内容"><a href="#0x06-查找文件内容" class="headerlink" title="0x06 查找文件内容"></a>0x06 查找文件内容</h2><blockquote>
 <p>grep [OPTIONS] PATTERN [FILE…]</p>
 </blockquote>
 <p><strong>正则表达式相关参数</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">-E 扩展了正则表达式，支持了以下几种规则:
+<pre class="language-none"><code class="language-none">-E 扩展了正则表达式，支持了以下几种规则:
 
 +
 ?
@@ -490,15 +490,15 @@ x&#123;m,n&#125;
 
 -x 匹配整行
 
--z 跨行匹配<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-z 跨行匹配</code></pre>
 
 <p><strong>杂项</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">-s 禁止输出因文件不存在或文件没有读权限而产生的错误信息
+<pre class="language-none"><code class="language-none">-s 禁止输出因文件不存在或文件没有读权限而产生的错误信息
 -v 反转结果，不显示制定的正则
--V 版本信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+-V 版本信息</code></pre>
 
 <p><strong>输出控制</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">-m NUM 匹配到NUM行后停止
+<pre class="language-none"><code class="language-none">-m NUM 匹配到NUM行后停止
 -b 打印匹配的行在文件中的字节偏移量
 -n 显示匹配的行号
 -H 批量匹配时，显示匹配的文件名，默认参数
@@ -513,15 +513,15 @@ x&#123;m,n&#125;
 -R 递归的同时可以设置一些选项，比如排除一些目录等
 -L 显示未匹配到的文件名
 -l 只显示匹配到的文件名
--c 打印每一个文件中匹配结果的行数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-c 打印每一个文件中匹配结果的行数</code></pre>
 
 <p><strong>文本控制</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">-B &lt;NUM&gt; 显示查找到的行前的N行的内容
+<pre class="language-none"><code class="language-none">-B &lt;NUM&gt; 显示查找到的行前的N行的内容
 -A &lt;NUM&gt; 显示查找到的行后的N行的内容 
--C &lt;NUM&gt; 显示查找都的行前后各N行的内容<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+-C &lt;NUM&gt; 显示查找都的行前后各N行的内容</code></pre>
 
 <p><strong>常⻅使用方法</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">查找某个文件中的字符串 
+<pre class="language-none"><code class="language-none">查找某个文件中的字符串 
 grep &quot;str&quot; evil.sh
  
 在某个目录中的文件中搜索某个正则表达式 
@@ -547,7 +547,7 @@ grep &#39;abc&#39; --exclude&#x3D;*.elf &#x2F;root&#x2F;xxxx
 grep &#39;abc&#39; --include&#x3D;*.conf --exclude&#x3D;*demo.conf
  
 全盘搜索某个表达式
-grep -Rn -i &quot;str&quot; &#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+grep -Rn -i &quot;str&quot; &#x2F;</code></pre>
 
     </div>
 

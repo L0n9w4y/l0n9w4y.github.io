@@ -299,73 +299,73 @@
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/tcp_head.png"></p>
 <p><em>Refer:</em> <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE">wikipedia&#x2F;Transmission_Control_Protocol</a></p>
 <h5 id="a-TCP-全连接扫描"><a href="#a-TCP-全连接扫描" class="headerlink" title="a. TCP 全连接扫描"></a>a. TCP 全连接扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">TCP Connect扫描又称为全连接扫描，客户端与服务器建立 TCP 连接要进行一次三次握手，如果进行了一次成功的三次握手，则说明端口开放<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">TCP Connect扫描又称为全连接扫描，客户端与服务器建立 TCP 连接要进行一次三次握手，如果进行了一次成功的三次握手，则说明端口开放</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">客户端会发送一个带有SYN标识和端口号的TCP数据包给服务器，如果服务器这个端口是开放的，则会接受这个连接并返回一个带有SYN和ACK标识的数据包给客户端，随后客户端会发送带有ACK和RST标识的数据包给服务点，此时客户端与服务器建立了连接<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">客户端会发送一个带有SYN标识和端口号的TCP数据包给服务器，如果服务器这个端口是开放的，则会接受这个连接并返回一个带有SYN和ACK标识的数据包给客户端，随后客户端会发送带有ACK和RST标识的数据包给服务点，此时客户端与服务器建立了连接</code></pre>
 
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/1_open.png"></p>
-<pre class="line-numbers language-none"><code class="language-none">当客户端发送一个带有 SYN 标识和端口号的 TCP 数据包给服务器后，如果服务器端返回一个带 RST 标识的数据包，则说明端口处于关闭状态<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">当客户端发送一个带有 SYN 标识和端口号的 TCP 数据包给服务器后，如果服务器端返回一个带 RST 标识的数据包，则说明端口处于关闭状态</code></pre>
 
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/1_closed.png"></p>
 <h5 id="b-TCP-SYN扫描"><a href="#b-TCP-SYN扫描" class="headerlink" title="b. TCP SYN扫描"></a>b. TCP SYN扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">TCP SYN扫描又称半开式扫描，该过程不会和服务端建立完整的连接；SYN扫描是直接发RST，而TCP全连接扫描是发ACK和RST<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">TCP SYN扫描又称半开式扫描，该过程不会和服务端建立完整的连接；SYN扫描是直接发RST，而TCP全连接扫描是发ACK和RST</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">客户端会发送一个带有SYN标识和端口号的TCP数据包给服务器，如果服务器这个端口是开放的，则会接受这个连接并返回一个带有SYN和ACK标识的数据包给客户端，随后客户端会返回带有RST标识的数据包而不是返回一个带有ACK和RST标识的数据包<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">客户端会发送一个带有SYN标识和端口号的TCP数据包给服务器，如果服务器这个端口是开放的，则会接受这个连接并返回一个带有SYN和ACK标识的数据包给客户端，随后客户端会返回带有RST标识的数据包而不是返回一个带有ACK和RST标识的数据包</code></pre>
 
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_open.png"></p>
-<pre class="line-numbers language-none"><code class="language-none">如果目标端口处于关闭状态，则服务端会返回一个RST标识的数据包<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">如果目标端口处于关闭状态，则服务端会返回一个RST标识的数据包</code></pre>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/2_closed.png"></p>
 <h5 id="c-TCP-ACK扫描"><a href="#c-TCP-ACK扫描" class="headerlink" title="c. TCP ACK扫描"></a>c. TCP ACK扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">ACK扫描返回两种状态: unfiltered&#x2F;filtered；当发送给对方一个含有 ACK 表示的TCP报文的时候，都返回含有RST标志的报文，使用TCP ACK扫描来确定端口是否开放或者关闭；但可以利用它来扫描防火墙的配置，来发现防火墙规则，确定它们是有状态的还是无状态的，哪些端口是被过滤的<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">ACK扫描返回两种状态: unfiltered&#x2F;filtered；当发送给对方一个含有 ACK 表示的TCP报文的时候，都返回含有RST标志的报文，使用TCP ACK扫描来确定端口是否开放或者关闭；但可以利用它来扫描防火墙的配置，来发现防火墙规则，确定它们是有状态的还是无状态的，哪些端口是被过滤的</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">向服务端发送一个带有 ACK 标识的数据包，如果收到带有 RST 标识的响应，则说明服务端没有过滤，不存在状态防火墙<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">向服务端发送一个带有 ACK 标识的数据包，如果收到带有 RST 标识的响应，则说明服务端没有过滤，不存在状态防火墙</code></pre>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_unfilteredpng.png"></p>
-<pre class="line-numbers language-none"><code class="language-none">端口不响应，或者发送特定的ICMP错误消息(类型3，代号1，2，3，9，10， 或者13)的端口，标记为 filtered(被过滤的)；服务器REJECT掉数据包，客户端会有个ICMP包返回，如果是直接DROP掉，就会什么也不会返回<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">端口不响应，或者发送特定的ICMP错误消息(类型3，代号1，2，3，9，10， 或者13)的端口，标记为 filtered(被过滤的)；服务器REJECT掉数据包，客户端会有个ICMP包返回，如果是直接DROP掉，就会什么也不会返回</code></pre>
 
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/3_filtered.png"></p>
 <h5 id="d-TCP-Null扫描"><a href="#d-TCP-Null扫描" class="headerlink" title="d. TCP Null扫描"></a>d. TCP Null扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">在空扫描中，客户端发出的 TCP 数据包仅仅只会包含端口号而不会有其他任何的标识信息。
+<pre class="language-none"><code class="language-none">在空扫描中，客户端发出的 TCP 数据包仅仅只会包含端口号而不会有其他任何的标识信息。
 
 1）如果目标端口是开放的则不会回复任何信息
 
 2）如果服务器返回了一个 RST（或者RST+ACK) 数据包，则说明目标端口是关闭的
 
-3）如果返回 ICMP 错误类型3且代码为1，2，3，9，10或13的数据包，则说明端口被服务器过滤了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+3）如果返回 ICMP 错误类型3且代码为1，2，3，9，10或13的数据包，则说明端口被服务器过滤了</code></pre>
 
 <h5 id="e-TCP-Window扫描"><a href="#e-TCP-Window扫描" class="headerlink" title="e. TCP Window扫描"></a>e. TCP Window扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">TCP 窗口扫描的流程同 ACK 扫描类似，同样是客户端向服务器发送一个带有 ACK 标识和端口号的 TCP 数据包，这种扫描能够用于发现目标服务器端口的状态。在 ACK 扫描中返回 RST 表明没有被过滤，但在窗口扫描中，当收到返回的 RST 数据包后，它会检查窗口大小的值
+<pre class="language-none"><code class="language-none">TCP 窗口扫描的流程同 ACK 扫描类似，同样是客户端向服务器发送一个带有 ACK 标识和端口号的 TCP 数据包，这种扫描能够用于发现目标服务器端口的状态。在 ACK 扫描中返回 RST 表明没有被过滤，但在窗口扫描中，当收到返回的 RST 数据包后，它会检查窗口大小的值
 
 1) 如果窗口大小的值是个非零值，则说明目标端口是开放的
 
-2) 如果返回的 RST 数据包中的窗口大小为0，则说明目标端口是关闭的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+2) 如果返回的 RST 数据包中的窗口大小为0，则说明目标端口是关闭的</code></pre>
 
 <h5 id="f-TCP-FIN扫描"><a href="#f-TCP-FIN扫描" class="headerlink" title="f. TCP FIN扫描"></a>f. TCP FIN扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">FIN 扫描会向服务器发送带有 FIN 标识和端口号的 TCP 数据包。
+<pre class="language-none"><code class="language-none">FIN 扫描会向服务器发送带有 FIN 标识和端口号的 TCP 数据包。
 
 1）如果没有服务器端回应则说明端口开放
 
 2）如果服务器返回一个 RST 数据包，则说明目标端口是关闭的
 
-3）如果服务器返回了一个 ICMP 数据包，其中包含 ICMP 目标不可达错误类型3以及 ICMP 代码为1，2，3，9，10或13，则说明目标端口被过滤了无法确定端口状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+3）如果服务器返回了一个 ICMP 数据包，其中包含 ICMP 目标不可达错误类型3以及 ICMP 代码为1，2，3，9，10或13，则说明目标端口被过滤了无法确定端口状态</code></pre>
 
 <h5 id="g-TCP-Xmas扫描"><a href="#g-TCP-Xmas扫描" class="headerlink" title="g. TCP Xmas扫描"></a>g. TCP Xmas扫描</h5><p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">在发送的数据包中设置PSH（PUSH推送，数据包立刻发送）,FIN（结束会话）,URG（紧急）标志位
+<pre class="language-none"><code class="language-none">在发送的数据包中设置PSH（PUSH推送，数据包立刻发送）,FIN（结束会话）,URG（紧急）标志位
 
 1）如果目标端口是开放的则不会回复任何信息
 
 2）如果目标端口关闭则会返回一个RST+ACK的数据包
 
-3）如果服务器返回了一个 ICMP 数据包，其中包含 ICMP 目标不可达错误类型3以及 ICMP 状态码为1，2，3，9，10或13，则说明目标端口被过滤了无法确定是否处于开放状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+3）如果服务器返回了一个 ICMP 数据包，其中包含 ICMP 目标不可达错误类型3以及 ICMP 状态码为1，2，3，9，10或13，则说明目标端口被过滤了无法确定是否处于开放状态</code></pre>
 
 <h5 id="h-UDP扫描"><a href="#h-UDP扫描" class="headerlink" title="h. UDP扫描"></a>h. UDP扫描</h5><p><strong>TCP&#x2F;UDP 对比</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">TCP 是面向连接的协议，而UDP则是无连接的协议。
+<pre class="language-none"><code class="language-none">TCP 是面向连接的协议，而UDP则是无连接的协议。
 
 面向连接的协议会先在客户端和服务器之间建立通信信道，然后才会开始传输数据。如果客户端和服务器之间没有建立通信信道，则不会有任何产生任何通信数据。
 
-无连接的协议则不会事先建立客户端和服务器之间的通信信道，只要客户端到服务器存在可用信道，就会假设目标是可达的然后向对方发送数据<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+无连接的协议则不会事先建立客户端和服务器之间的通信信道，只要客户端到服务器存在可用信道，就会假设目标是可达的然后向对方发送数据</code></pre>
 
 <p><strong>扫描原理</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">客户端会向服务器发送一个带有端口号的 UDP 数据包
+<pre class="language-none"><code class="language-none">客户端会向服务器发送一个带有端口号的 UDP 数据包
 
 1）如果服务器回复了 UDP 数据包，则目标端口是开放的
 
@@ -373,7 +373,7 @@
 
 3）如果服务器返回一个 ICMP 错误类型3且代码为1，2，9，10或13的数据包，则说明目标端口被服务器过滤了
 
-4）如果服务器没有任何相应客户端的 UDP 请求，则可以断定目标端口可能是开放或被过滤的，无法判断端口的最终状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+4）如果服务器没有任何相应客户端的 UDP 请求，则可以断定目标端口可能是开放或被过滤的，无法判断端口的最终状态</code></pre>
 
 <h4 id="3-端口渗透"><a href="#3-端口渗透" class="headerlink" title="3. 端口渗透"></a>3. 端口渗透</h4><p>总计一些常用端口的渗透用途</p>
 <table>
@@ -710,7 +710,7 @@
 <td>a. 此选项使用两次，会提供更详细的信息  <br><br>b. 使用细节选项(-v)时，可启用命令行参数 (-d)，多次使用可提高调试级别<br><br>c. 要求Nmap打印发送和接收的每个报文的摘要，通常用于调试；为避免输出过多的行，可以限制扫描的端口数，如-p20-30；如果只需进行版本检测，使用–version-trace<br><br> d. 输出Nmap检测到的接口列表和系统路由，用于调试路由问题或设备描述失误</td>
 </tr>
 </tbody></table>
-<h4 id="2-端口选项"><a href="#2-端口选项" class="headerlink" title="2. 端口选项"></a>2. 端口选项</h4><pre class="line-numbers language-none"><code class="language-none">默认情况下，Nmap用指定的协议对端口1到1024以及nmap-services 文件中列出的更高的端口在扫描<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-端口选项"><a href="#2-端口选项" class="headerlink" title="2. 端口选项"></a>2. 端口选项</h4><pre class="language-none"><code class="language-none">默认情况下，Nmap用指定的协议对端口1到1024以及nmap-services 文件中列出的更高的端口在扫描</code></pre>
 
 <table>
 <thead>
@@ -733,31 +733,31 @@
 </tr>
 </tbody></table>
 <h4 id="3-扫描实战"><a href="#3-扫描实战" class="headerlink" title="3. 扫描实战"></a>3. 扫描实战</h4><p>全面扫描目标主机的所有信息</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -A  -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -A  -v 192.168.1.233</code></pre>
 
 <p>扫描目标机器详细服务</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -sV -sT -Pn --open -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -sV -sT -Pn --open -v 192.168.1.233</code></pre>
 
 <p>探测目标操作系统类型</p>
-<pre class="line-numbers language-none"><code class="language-none">$ namp -O -v 192.168.0.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ namp -O -v 192.168.0.233</code></pre>
 
 <p>扫描指定的常用端口</p>
-<pre class="line-numbers language-none"><code class="language-none">$ namp -p U:53,111,137,T:21-25,80,139,8080 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ namp -p U:53,111,137,T:21-25,80,139,8080 192.168.1.233</code></pre>
 
 <p>内网arp扫描,探测内网存活主机</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -sn -PR 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -sn -PR 192.168.1.0&#x2F;24</code></pre>
 
 <p>快速扫描整个C段</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -T5 --open 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -T5 --open 192.168.1.0&#x2F;24</code></pre>
 
 <p>观察扫描时的详细发包过程</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap --packet-trace  192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap --packet-trace  192.168.1.0&#x2F;24</code></pre>
 
 <p>扫描目标机器服务banner信息</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -sT -Pn --open -v banner.nse 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -sT -Pn --open -v banner.nse 192.168.1.233</code></pre>
 
 <p>常用组合语法</p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap --open -p port -Pn -v -sT -sV --script script_name ip&#x2F;domain&#x2F;cidr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap --open -p port -Pn -v -sT -sV --script script_name ip&#x2F;domain&#x2F;cidr</code></pre>
 
 <h3 id="0x03-脚本引擎"><a href="#0x03-脚本引擎" class="headerlink" title="0x03 脚本引擎"></a>0x03 脚本引擎</h3><h4 id="1-脚本分类"><a href="#1-脚本分类" class="headerlink" title="1. 脚本分类"></a>1. 脚本分类</h4><table>
 <thead>
@@ -855,7 +855,7 @@
 <td>显示脚本的帮助信息</td>
 </tr>
 </tbody></table>
-<h3 id="0x04-实用脚本"><a href="#0x04-实用脚本" class="headerlink" title="0x04 实用脚本"></a>0x04 实用脚本</h3><h4 id="1-FTP扫描脚本"><a href="#1-FTP扫描脚本" class="headerlink" title="1. FTP扫描脚本"></a>1. FTP扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 21 --script ftp-bounce.nse -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="0x04-实用脚本"><a href="#0x04-实用脚本" class="headerlink" title="0x04 实用脚本"></a>0x04 实用脚本</h3><h4 id="1-FTP扫描脚本"><a href="#1-FTP扫描脚本" class="headerlink" title="1. FTP扫描脚本"></a>1. FTP扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 21 --script ftp-bounce.nse -v 192.168.1.233</code></pre>
 
 <table>
 <thead>
@@ -885,7 +885,7 @@
 <td>ProFTPD 1.3.3c之前的netio.c文件中的pr_netio_telnet_gets函数中存在多个栈溢出</td>
 </tr>
 </tbody></table>
-<h4 id="2-SSH扫描脚本"><a href="#2-SSH扫描脚本" class="headerlink" title="2. SSH扫描脚本"></a>2. SSH扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 22 --script ssh-brute.nse -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-SSH扫描脚本"><a href="#2-SSH扫描脚本" class="headerlink" title="2. SSH扫描脚本"></a>2. SSH扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 22 --script ssh-brute.nse -v 192.168.1.233</code></pre>
 
 
 <table>
@@ -912,7 +912,7 @@
 <td>检查是否存在sshv1低版本漏洞</td>
 </tr>
 </tbody></table>
-<h4 id="3-Telnet扫描脚本"><a href="#3-Telnet扫描脚本" class="headerlink" title="3. Telnet扫描脚本"></a>3. Telnet扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 23 --script telnet-brute --script-args userdb&#x3D;myusers.lst,passdb&#x3D;mypwds.lst,telnet-brute.timeout&#x3D;8s -v 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="3-Telnet扫描脚本"><a href="#3-Telnet扫描脚本" class="headerlink" title="3. Telnet扫描脚本"></a>3. Telnet扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 23 --script telnet-brute --script-args userdb&#x3D;myusers.lst,passdb&#x3D;mypwds.lst,telnet-brute.timeout&#x3D;8s -v 192.168.1.0&#x2F;24</code></pre>
 
 <table>
 <thead>
@@ -926,7 +926,7 @@
 <td>telnet爆破脚本</td>
 </tr>
 </tbody></table>
-<h4 id="4-SMTP扫描脚本"><a href="#4-SMTP扫描脚本" class="headerlink" title="4. SMTP扫描脚本"></a>4. SMTP扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p  25 --script smtp-brute.nse 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="4-SMTP扫描脚本"><a href="#4-SMTP扫描脚本" class="headerlink" title="4. SMTP扫描脚本"></a>4. SMTP扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p  25 --script smtp-brute.nse 192.168.1.233</code></pre>
 <table>
 <thead>
 <tr>
@@ -955,7 +955,7 @@
 <td>Exim “dkim_exim_verify_finish()” 存在格式字符串漏洞</td>
 </tr>
 </tbody></table>
-<h4 id="5-POP3扫描脚本"><a href="#5-POP3扫描脚本" class="headerlink" title="5. POP3扫描脚本"></a>5. POP3扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 110 --script pop3-brute.nse -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="5-POP3扫描脚本"><a href="#5-POP3扫描脚本" class="headerlink" title="5. POP3扫描脚本"></a>5. POP3扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 110 --script pop3-brute.nse -v 192.168.1.233</code></pre>
 
 <table>
 <thead>
@@ -969,7 +969,7 @@
 <td>pop简单弱口令爆破脚本</td>
 </tr>
 </tbody></table>
-<h4 id="6-IMAP扫描脚本"><a href="#6-IMAP扫描脚本" class="headerlink" title="6. IMAP扫描脚本"></a>6. IMAP扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 143,993 --script imap-brute.nse -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="6-IMAP扫描脚本"><a href="#6-IMAP扫描脚本" class="headerlink" title="6. IMAP扫描脚本"></a>6. IMAP扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 143,993 --script imap-brute.nse -v 192.168.1.233</code></pre>
 
 <table>
 <thead>
@@ -983,7 +983,7 @@
 <td>imap简单弱口令爆破</td>
 </tr>
 </tbody></table>
-<h4 id="7-DNS利用脚本"><a href="#7-DNS利用脚本" class="headerlink" title="7. DNS利用脚本"></a>7. DNS利用脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 53 --script dns-zone-transfer.nse --script-args dns-zone-transfer.domain&#x3D;target.org -v 192.168.1.233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="7-DNS利用脚本"><a href="#7-DNS利用脚本" class="headerlink" title="7. DNS利用脚本"></a>7. DNS利用脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 53 --script dns-zone-transfer.nse --script-args dns-zone-transfer.domain&#x3D;target.org -v 192.168.1.233</code></pre>
 
 <table>
 <thead>
@@ -1009,7 +1009,7 @@
 <td>检查目标ns服务器是否允许传送</td>
 </tr>
 </tbody></table>
-<h4 id="8-SNMP扫描脚本"><a href="#8-SNMP扫描脚本" class="headerlink" title="8. SNMP扫描脚本"></a>8. SNMP扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -sU --script snmp-brute --script-args snmp-brute.communitiesdb&#x3D;user.txt 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="8-SNMP扫描脚本"><a href="#8-SNMP扫描脚本" class="headerlink" title="8. SNMP扫描脚本"></a>8. SNMP扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -sU --script snmp-brute --script-args snmp-brute.communitiesdb&#x3D;user.txt 192.168.1.0&#x2F;24</code></pre>
 <table>
 <thead>
 <tr>
@@ -1022,7 +1022,7 @@
 <td>SNMP暴力破解</td>
 </tr>
 </tbody></table>
-<h4 id="9-LDAP扫描脚本"><a href="#9-LDAP扫描脚本" class="headerlink" title="9. LDAP扫描脚本"></a>9. LDAP扫描脚本</h4><pre class="line-numbers language-none"><code class="language-none">$ nmap -p 389 --script ldap-brute --script-args ldap.base&#x3D;&#39;&quot;cn&#x3D;users,dc&#x3D;cqure,dc&#x3D;net&quot;&#39; 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="9-LDAP扫描脚本"><a href="#9-LDAP扫描脚本" class="headerlink" title="9. LDAP扫描脚本"></a>9. LDAP扫描脚本</h4><pre class="language-none"><code class="language-none">$ nmap -p 389 --script ldap-brute --script-args ldap.base&#x3D;&#39;&quot;cn&#x3D;users,dc&#x3D;cqure,dc&#x3D;net&quot;&#39; 192.168.1.0&#x2F;24</code></pre>
 
 <table>
 <thead>
@@ -1183,15 +1183,15 @@
 </tr>
 </tbody></table>
 <h4 id="13-SMB利用脚本"><a href="#13-SMB利用脚本" class="headerlink" title="13. SMB利用脚本"></a>13. SMB利用脚本</h4><p>SMB远程执行漏洞脚本</p>
-<pre class="line-numbers language-none"><code class="language-none">smb-vuln-ms06-025.nse
+<pre class="language-none"><code class="language-none">smb-vuln-ms06-025.nse
 smb-vuln-ms07-029.nse
 smb-vuln-ms08-067.nse
 smb-vuln-ms10-054.nse
 smb-vuln-ms10-061.nse
 smb-vuln-ms17-010.nse
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -p445 --script smb-vuln-ms17-010.nse 192.168.1.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -p445 --script smb-vuln-ms17-010.nse 192.168.1.0&#x2F;24</code></pre>
 
 <h4 id="14-其他脚本"><a href="#14-其他脚本" class="headerlink" title="14. 其他脚本"></a>14. 其他脚本</h4><table>
 <thead>
@@ -1232,14 +1232,14 @@ smb-vuln-ms17-010.nse
 <td>$ nmap –script shodan-api –script-args ‘shodan-api.target&#x3D;192.168.1.0&#x2F;24,shodan-api.apikey&#x3D;SHODANAPIKEY’</td>
 </tr>
 </tbody></table>
-<h3 id="0x05-扫描实战"><a href="#0x05-扫描实战" class="headerlink" title="0x05 扫描实战"></a>0x05 扫描实战</h3><pre class="line-numbers language-none"><code class="language-none">依据目标系统端口及服务，选取对应扫描脚本进行扫描探测<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="0x05-扫描实战"><a href="#0x05-扫描实战" class="headerlink" title="0x05 扫描实战"></a>0x05 扫描实战</h3><pre class="language-none"><code class="language-none">依据目标系统端口及服务，选取对应扫描脚本进行扫描探测</code></pre>
 
 <p><strong>目标C段常规漏洞扫描</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -sT -Pn -v --script dns-zone-transfer.nse,ftp-anon.nse,ftp-proftpd-backdoor.nse,ftp-vsftpd-backdoor.nse,ftp-vuln-cve2010-4221.nse,http-backup-finder.nse,http-cisco-anyconnect.nse,http-iis-short-name-brute.nse,http-put.nse,http-php-version.nse,http-shellshock.nse,http-robots.txt.nse,http-svn-enum.nse,http-webdav-scan.nse,iis-buffer-overflow.nse,iax2-version.nse,memcached-info.nse,mongodb-info.nse,msrpc-enum.nse,ms-sql-info.nse,mysql-info.nse,nrpe-enum.nse,pptp-version.nse,redis-info.nse,rpcinfo.nse,samba-vuln-cve-2012-1182.nse,smb-vuln-ms08-067.nse,smb-vuln-ms17-010.nse,snmp-info.nse,sshv1.nse,xmpp-info.nse,tftp-enum.nse,teamspeak2-version.nse 192.168.1.0&#x2F;24
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -sT -Pn -v --script dns-zone-transfer.nse,ftp-anon.nse,ftp-proftpd-backdoor.nse,ftp-vsftpd-backdoor.nse,ftp-vuln-cve2010-4221.nse,http-backup-finder.nse,http-cisco-anyconnect.nse,http-iis-short-name-brute.nse,http-put.nse,http-php-version.nse,http-shellshock.nse,http-robots.txt.nse,http-svn-enum.nse,http-webdav-scan.nse,iis-buffer-overflow.nse,iax2-version.nse,memcached-info.nse,mongodb-info.nse,msrpc-enum.nse,ms-sql-info.nse,mysql-info.nse,nrpe-enum.nse,pptp-version.nse,redis-info.nse,rpcinfo.nse,samba-vuln-cve-2012-1182.nse,smb-vuln-ms08-067.nse,smb-vuln-ms17-010.nse,snmp-info.nse,sshv1.nse,xmpp-info.nse,tftp-enum.nse,teamspeak2-version.nse 192.168.1.0&#x2F;24
+</code></pre>
 <p><strong>目标C段弱口令爆破</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ nmap -sT -v -Pn --script ftp-brute.nse,imap-brute.nse,smtp-brute.nse,pop3-brute.nse,mongodb-brute.nse,redis-brute.nse,ms-sql-brute.nse,rlogin-brute.nse,rsync-brute.nse,mysql-brute.nse,pgsql-brute.nse,oracle-sid-brute.nse,oracle-brute.nse,rtsp-url-brute.nse,snmp-brute.nse,svn-brute.nse,telnet-brute.nse,vnc-brute.nse,xmpp-brute.nse 192.168.1.0&#x2F;24
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ nmap -sT -v -Pn --script ftp-brute.nse,imap-brute.nse,smtp-brute.nse,pop3-brute.nse,mongodb-brute.nse,redis-brute.nse,ms-sql-brute.nse,rlogin-brute.nse,rsync-brute.nse,mysql-brute.nse,pgsql-brute.nse,oracle-sid-brute.nse,oracle-brute.nse,rtsp-url-brute.nse,snmp-brute.nse,svn-brute.nse,telnet-brute.nse,vnc-brute.nse,xmpp-brute.nse 192.168.1.0&#x2F;24
+</code></pre>
 
 <h3 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE">wikipedia&#x2F;Transmission_Control_Protocol</a></p>

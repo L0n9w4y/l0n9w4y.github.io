@@ -253,7 +253,7 @@
 
 <span id="more"></span>
 
-<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><pre class="line-numbers language-none"><code class="language-none">$ lscpu             #查看CPU信息
+<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><pre class="language-none"><code class="language-none">$ lscpu             #查看CPU信息
 
 $ uname -a          #操作系统信息
 
@@ -271,9 +271,9 @@ $ curl cip.cc     #查看主机公网IP信息
 
 $ hostname        #查看系统主机名称
 
-$ cat &#x2F;etc&#x2F;resolv.conf   #DNS配置查看<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ cat &#x2F;etc&#x2F;resolv.conf   #DNS配置查看</code></pre>
 
-<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><pre class="line-numbers language-none"><code class="language-none">(1) 查看系统用户信息
+<h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><pre class="language-none"><code class="language-none">(1) 查看系统用户信息
 
 $ cat &#x2F;etc&#x2F;passwd
 
@@ -324,26 +324,26 @@ $ usermod -L user    #禁用帐号，帐号无法登录，&#x2F;etc&#x2F;shadow�
 $ userdel user       #删除user用户
 
 $ userdel -r user    #将删除user用户，并且将&#x2F;home目录下的user目录一并删除
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 
-<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><pre class="line-numbers language-none"><code class="language-none">$ cat &#x2F;etc&#x2F;init.d&#x2F;rc.local
+<h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><pre class="language-none"><code class="language-none">$ cat &#x2F;etc&#x2F;init.d&#x2F;rc.local
 
 $ cat &#x2F;etc&#x2F;rc.local
 
-$ ls -alt &#x2F;etc&#x2F;init.d&#x2F; | head<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ ls -alt &#x2F;etc&#x2F;init.d&#x2F; | head</code></pre>
 
 <h3 id="4-定时任务"><a href="#4-定时任务" class="headerlink" title="4. 定时任务"></a>4. 定时任务</h3><p><code>crontab -u &lt;-l, -r, -e&gt;</code></p>
-<pre class="line-numbers language-none"><code class="language-none">-u 指定一个用户
+<pre class="language-none"><code class="language-none">-u 指定一个用户
 -l 列出某个用户的任务计划
 -r 删除某个用户的任务
--e 编辑某个用户的任务<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+-e 编辑某个用户的任务</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">$ crontab -u root -l  # 列出root用户的任务计划
+<pre class="language-none"><code class="language-none">$ crontab -u root -l  # 列出root用户的任务计划
 
-$ ls &#x2F;etc&#x2F;cron*       # 查看&#x2F;etc目录下任务计划相关文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+$ ls &#x2F;etc&#x2F;cron*       # 查看&#x2F;etc目录下任务计划相关文件</code></pre>
 
 <p><strong>重点关注目录</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;var&#x2F;spool&#x2F;cron&#x2F;*
+<pre class="language-none"><code class="language-none">&#x2F;var&#x2F;spool&#x2F;cron&#x2F;*
 &#x2F;etc&#x2F;crontab
 &#x2F;etc&#x2F;cron.d&#x2F;*
 &#x2F;etc&#x2F;cron.daily&#x2F;*
@@ -351,11 +351,11 @@ $ ls &#x2F;etc&#x2F;cron*       # 查看&#x2F;etc目录下任务计划相关文�
 &#x2F;etc&#x2F;cron.monthly&#x2F;*
 &#x2F;etc&#x2F;cron.weekly&#x2F;
 &#x2F;etc&#x2F;anacrontab
-&#x2F;var&#x2F;spool&#x2F;anacron&#x2F;*<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;var&#x2F;spool&#x2F;anacron&#x2F;*</code></pre>
 
 <h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-进程查看"><a href="#1-进程查看" class="headerlink" title="1. 进程查看"></a>1. 进程查看</h3><p><strong>netstat&#x2F;ss</strong></p>
 <p><code>分析可疑端口、可疑IP、可疑PID及程序进程</code></p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo netstat -ltpe | more   # 查看监听中的网络连接并显示进程ID、进程所有者用户名
+<pre class="language-none"><code class="language-none">$ sudo netstat -ltpe | more   # 查看监听中的网络连接并显示进程ID、进程所有者用户名
 
 $ sudo netstat -antp | grep &quot;ESTABLISHED&#39;&#39;  # 查看正在通信中的连接信息
 
@@ -366,31 +366,31 @@ $ netstat -ts  # 打印出tcp协议下的收发包数量等统计数据
 $ watch -d -n0 &quot;netstat -atnp | grep &quot;ESTA&quot;  # 监视active状态的连接
 
 $ ss -plat  # 检查哪些进程在监听端口
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 
 <p><strong>ps</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ ps -elf | grep pid  # 以长格式显示系统中的进程信息
+<pre class="language-none"><code class="language-none">$ ps -elf | grep pid  # 以长格式显示系统中的进程信息
 
 $ ps -aux --sort -pcpu | less   # 根据cpu使用率进行排序
 
 $ ps -aux --sort -pmem | less   # 根据内存使用来升序排序
 
-$ ps -axjf  # 以树形结构显示进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ ps -axjf  # 以树形结构显示进程</code></pre>
 
 <p><strong>top</strong></p>
 <p><code>动态查看进程状态, 可分析CPU占用较高的进程, 排查挖矿木马</code></p>
 <p>实用选项</p>
-<pre class="line-numbers language-none"><code class="language-none">-c:  显示完整命令
+<pre class="language-none"><code class="language-none">-c:  显示完整命令
 
 -d： 设置信息更新时间, 以秒为单位
 
 -u&lt;用户名&gt;：指定用户名
 
 -p&lt;进程号&gt;：显示指定进程信息
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 
 <p>交互命令</p>
-<pre class="line-numbers language-none"><code class="language-none">b： 高亮显示当前运行进程
+<pre class="language-none"><code class="language-none">b： 高亮显示当前运行进程
 
 c： 切换显示命令名称和完整命令行
 
@@ -410,12 +410,12 @@ m： 切换显示内存信息
 
 t： 切换显示进程和CPU状态信息
 
-w： 将当前设置写入~&#x2F;.toprc文件中<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+w： 将当前设置写入~&#x2F;.toprc文件中</code></pre>
 
 <p><strong>pstree</strong></p>
 <p><code>以树状图的方式展现进程之间的派生关系</code></p>
 <p>实用选项</p>
-<pre class="line-numbers language-none"><code class="language-none">-a：显示每个程序的完整指令，包含路径，参数或是常驻服务的标示
+<pre class="language-none"><code class="language-none">-a：显示每个程序的完整指令，包含路径，参数或是常驻服务的标示
 
 -h：列出树状图时，特别标明现在执行的程序
 
@@ -423,11 +423,11 @@ w： 将当前设置写入~&#x2F;.toprc文件中<span aria-hidden="true" class="
 
 -p：显示程序识别码
 
--u：显示用户名称<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-u：显示用户名称</code></pre>
 
 <p><strong>lsof</strong></p>
 <p><code>查看进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)</code></p>
-<pre class="line-numbers language-none"><code class="language-none">$ lsof -p pid   # 查看指定进程ID已打开的内容
+<pre class="language-none"><code class="language-none">$ lsof -p pid   # 查看指定进程ID已打开的内容
 
 $ lsof -i       # 显示所有连接
 
@@ -451,13 +451,13 @@ $ kill -9 &#96;lsof -t -u user&#96; # 杀死指定用户运行的所有进程
 
 $ lsof -u user -i @ip       # 显示用户user连接到指定IP所做的一切
 
-$ lsof +L1   # 显示所有打开的链接数小于1的文件，多表示某个攻击者正尝试通过删除文件入口来隐藏文件内容<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ lsof +L1   # 显示所有打开的链接数小于1的文件，多表示某个攻击者正尝试通过删除文件入口来隐藏文件内容</code></pre>
 
 <p><strong>&#x2F;proc 文件系统</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">Linux 内核提供了一种通过 proc 文件系统，在运行时访问内核内部数据结构、改变内核设置的机制，它以文件系统的方式为访问系统内核数据的操作提供接口，用户和应用程序可以通过 proc 得到系统的信息<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">Linux 内核提供了一种通过 proc 文件系统，在运行时访问内核内部数据结构、改变内核设置的机制，它以文件系统的方式为访问系统内核数据的操作提供接口，用户和应用程序可以通过 proc 得到系统的信息</code></pre>
 
 <p>进程相关项</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;proc&#x2F;N         pid为N的进程信息
+<pre class="language-none"><code class="language-none">&#x2F;proc&#x2F;N         pid为N的进程信息
 
 &#x2F;proc&#x2F;N&#x2F;cmdline 进程启动命令
 
@@ -481,16 +481,16 @@ $ lsof +L1   # 显示所有打开的链接数小于1的文件，多表示某个�
 
 &#x2F;proc&#x2F;N&#x2F;status  进程状态信息，比stat&#x2F;statm更具可读性
 
-&#x2F;proc&#x2F;self      链接到当前正在运行的进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#x2F;proc&#x2F;self      链接到当前正在运行的进程</code></pre>
 
 <p><strong>隐藏进程显示</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">step 1: ps -ef | awk &#39;&#123;print&#125;&#39; | sort -n | uniq &gt;1
+<pre class="language-none"><code class="language-none">step 1: ps -ef | awk &#39;&#123;print&#125;&#39; | sort -n | uniq &gt;1
 
 step 2: ls &#x2F;proc | sort -n | uniq &gt;2
 
-step 3: diff 1 2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+step 3: diff 1 2</code></pre>
 
-<h3 id="2-进程删除"><a href="#2-进程删除" class="headerlink" title="2. 进程删除"></a>2. 进程删除</h3><pre class="line-numbers language-none"><code class="language-none">$ kill -9 pid     #强制终止进程
+<h3 id="2-进程删除"><a href="#2-进程删除" class="headerlink" title="2. 进程删除"></a>2. 进程删除</h3><pre class="language-none"><code class="language-none">$ kill -9 pid     #强制终止进程
 
 $ killall name    #依据进程名称杀死进程
 
@@ -500,13 +500,13 @@ $ pkill name   #杀死指定进程名的进程
 
 $ ps -elf | grep &#39;root&#39; | grep &#39;&#123;*&#125;&#39; | grep -v grep | xargs kill -STOP  # 针对因存在守护进程无法删除的情况，可先把进程挂起，查杀守护进程后，再将进程删除
 
-$ lsattr file &#x2F; chattr -i file &#x2F; rm -rf file  #针对设置了不可更改权限的文件，先移除i属性，再进行删除<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ lsattr file &#x2F; chattr -i file &#x2F; rm -rf file  #针对设置了不可更改权限的文件，先移除i属性，再进行删除</code></pre>
 
 <h3 id="3-调试分析"><a href="#3-调试分析" class="headerlink" title="3. 调试分析"></a>3. 调试分析</h3><p><strong>strace</strong></p>
 <p><code>跟踪进程执行时的系统调用和所接收的信号,可跟踪用户进程与 Linux内核之间的交互</code></p>
-<pre class="line-numbers language-none"><code class="language-none">系统调用system call是程序从内核请求服务的一种编程方式，系统调用进入内核，使用trap机制从用户空间切换到内核空间，通过使用glibc系统库完成系统调用<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">系统调用system call是程序从内核请求服务的一种编程方式，系统调用进入内核，使用trap机制从用户空间切换到内核空间，通过使用glibc系统库完成系统调用</code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">$ strace -p &#96;pidof AliYunDun&#96;  # 依据pid跟踪进程正在进行的系统调用
+<pre class="language-none"><code class="language-none">$ strace -p &#96;pidof AliYunDun&#96;  # 依据pid跟踪进程正在进行的系统调用
 
 $ strace -o trace.log ls testdir&#x2F;   #将输出记录到文件中
 
@@ -520,11 +520,11 @@ $ strace -e write,getdents ls testdir  #查看多个系统调用
 
 $ strace -t ls testdir&#x2F;    #查看所有的系统调用的时间戳
 
-$ strace -r ls testdir&#x2F;    #显示执行每个系统调用所花费的时间<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ strace -r ls testdir&#x2F;    #显示执行每个系统调用所花费的时间</code></pre>
 
 <p><strong>ltrace</strong></p>
 <p><code>库调用跟踪器,用来跟踪进程调用库函数的情况</code></p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="language-none"><code class="language-none">
 用法：ltrace [option ...] [command [arg ...]]
 
 -d  打印调试信息
@@ -538,14 +538,14 @@ $ strace -r ls testdir&#x2F;    #显示执行每个系统调用所花费的时�
 -S 显示系统调用
 
 -T 输出每个调用过程的时间开销
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 
 <p><strong>pstack</strong></p>
 <p><code>显示每个进程的栈跟踪</code></p>
-<pre class="line-numbers language-none"><code class="language-none">$ pstack pid  #pstack 命令必须由相应进程的属主或 root 运行,唯一选项是要检查的进程的 PID<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ pstack pid  #pstack 命令必须由相应进程的属主或 root 运行,唯一选项是要检查的进程的 PID</code></pre>
 
 
-<h2 id="0x03-服务排查"><a href="#0x03-服务排查" class="headerlink" title="0x03 服务排查"></a>0x03 服务排查</h2><pre class="line-numbers language-none"><code class="language-none">$ chkconfig  --list  #查看系统运行的服务
+<h2 id="0x03-服务排查"><a href="#0x03-服务排查" class="headerlink" title="0x03 服务排查"></a>0x03 服务排查</h2><pre class="language-none"><code class="language-none">$ chkconfig  --list  #查看系统运行的服务
 
   # 0-6表示等级
 
@@ -563,9 +563,9 @@ $ strace -r ls testdir&#x2F;    #显示执行每个系统调用所花费的时�
 
 $ service --status-all | grep running ｜ more      #显示正在运行的服务
 
-$ systemctl list-unit-files | grep enabled | more  #列出 systemd 下正在运行服务<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ systemctl list-unit-files | grep enabled | more  #列出 systemd 下正在运行服务</code></pre>
 
-<h2 id="0x04-文件痕迹"><a href="#0x04-文件痕迹" class="headerlink" title="0x04 文件痕迹"></a>0x04 文件痕迹</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><pre class="line-numbers language-none"><code class="language-none">(1) 临时目录&#x2F;tmp、&#x2F;var&#x2F;tmp、&#x2F;dev&#x2F;shm下的文件，目录权限是1777，容易被上传木马文件
+<h2 id="0x04-文件痕迹"><a href="#0x04-文件痕迹" class="headerlink" title="0x04 文件痕迹"></a>0x04 文件痕迹</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><pre class="language-none"><code class="language-none">(1) 临时目录&#x2F;tmp、&#x2F;var&#x2F;tmp、&#x2F;dev&#x2F;shm下的文件，目录权限是1777，容易被上传木马文件
 
 (2) 命令目录&#x2F;usr&#x2F;bin、&#x2F;usr&#x2F;sbin等下的二进制文件容易被替换，替换后可下载busybox使用被替换命令
 
@@ -573,9 +573,9 @@ $ ls -alt &#x2F;usr&#x2F;bin | head   #按照最新修改时间显示，排查�
 
 (3) ~&#x2F;.ssh、&#x2F;etc&#x2F;ssh 经常作为一些后门配置的路径，需重点排查
 
-$ cat ~&#x2F;.ssh&#x2F;authorized_keys  #检查公钥是存在否异常注入<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ cat ~&#x2F;.ssh&#x2F;authorized_keys  #检查公钥是存在否异常注入</code></pre>
 
-<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><pre class="line-numbers language-none"><code class="language-none">列出攻击日志内变动的文件,排查恶意软件
+<h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><pre class="language-none"><code class="language-none">列出攻击日志内变动的文件,排查恶意软件
 
 $ ls --full-time .&#x2F;  | sed -n &#39;&#x2F;2019-01-01&#x2F;p&#39;   #查找当前文件夹下的某个日期产生的文件
 
@@ -586,26 +586,26 @@ $ find &#x2F; -ctime 0 -name &quot;.sh&quot;  #查找一天内新增的sh文件
   -atime -n +n     # 按文件访问时间来查找文件，-n 指 n 天以内，+n 指 n 天前
   -ctime -n +n     # 按文件创建时间来查找文件，-n 指 n 天以内，+n 指 n 天前
 
-$ find &#x2F;tmp -type f -amin -10 -print  #打印出10分钟内访问的所有文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ find &#x2F;tmp -type f -amin -10 -print  #打印出10分钟内访问的所有文件</code></pre>
 
-<h3 id="3-文件大小搜索"><a href="#3-文件大小搜索" class="headerlink" title="3. 文件大小搜索"></a>3. 文件大小搜索</h3><pre class="line-numbers language-none"><code class="language-none">$ find &#x2F; -size -1223124c -size +1223122c -exec ls -id &#123;&#125; \;   #搜索1223123大小的文件，盖茨木马
+<h3 id="3-文件大小搜索"><a href="#3-文件大小搜索" class="headerlink" title="3. 文件大小搜索"></a>3. 文件大小搜索</h3><pre class="language-none"><code class="language-none">$ find &#x2F; -size -1223124c -size +1223122c -exec ls -id &#123;&#125; \;   #搜索1223123大小的文件，盖茨木马
 
-$ find &#x2F;usr&#x2F;bin -type f -size 2k    # 查找大小等于2KB的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+$ find &#x2F;usr&#x2F;bin -type f -size 2k    # 查找大小等于2KB的文件</code></pre>
 
 <h3 id="4-特殊文件"><a href="#4-特殊文件" class="headerlink" title="4. 特殊文件"></a>4. 特殊文件</h3><p><strong>webshell匹配</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ find &#x2F;var&#x2F;www&#x2F; -name &quot;*.php&quot; |xargs egrep &#39;assert|phpspy|c99sh|milw0rm|eval|\(gunerpress|\(base64_decoolcode|spider_bc|shell_exec|passthru|\(\$\_\POST\[|eval \(str_rot13|\.chr\(|\$\&#123;\&quot;\_P|eval\(\$\_R|file_put_contents\(\.\*\$\_|base64_decode&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ find &#x2F;var&#x2F;www&#x2F; -name &quot;*.php&quot; |xargs egrep &#39;assert|phpspy|c99sh|milw0rm|eval|\(gunerpress|\(base64_decoolcode|spider_bc|shell_exec|passthru|\(\$\_\POST\[|eval \(str_rot13|\.chr\(|\$\&#123;\&quot;\_P|eval\(\$\_R|file_put_contents\(\.\*\$\_|base64_decode&#39;</code></pre>
 
 <p><strong>特殊权限文件查找</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ find &#x2F;tmp -perm 777   # 打印出权限为777的文件, -perm选项指明find应该只匹配具有特定权限值的文件
+<pre class="language-none"><code class="language-none">$ find &#x2F;tmp -perm 777   # 打印出权限为777的文件, -perm选项指明find应该只匹配具有特定权限值的文件
 
-$ find &#x2F; -type f -user root -print  # 打印出用户root拥有的所有文件, 选项-user USER找出由某个特定用户所拥有的文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+$ find &#x2F; -type f -user root -print  # 打印出用户root拥有的所有文件, 选项-user USER找出由某个特定用户所拥有的文件</code></pre>
 
 <p><strong>隐藏文件查找</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">$ ls -art &#x2F;var&#x2F;www&#x2F;html | grep &quot;^\.&quot;   # 查找web目录下以&quot;.&quot;开头的具有隐藏属性的文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">$ ls -art &#x2F;var&#x2F;www&#x2F;html | grep &quot;^\.&quot;   # 查找web目录下以&quot;.&quot;开头的具有隐藏属性的文件</code></pre>
 
-<h3 id="5-SUID程序"><a href="#5-SUID程序" class="headerlink" title="5. SUID程序"></a>5. SUID程序</h3><pre class="line-numbers language-none"><code class="language-none">$ find &#x2F; -type f -perm -04000 -ls -uid 0 2&gt;&#x2F;dev&#x2F;null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="5-SUID程序"><a href="#5-SUID程序" class="headerlink" title="5. SUID程序"></a>5. SUID程序</h3><pre class="language-none"><code class="language-none">$ find &#x2F; -type f -perm -04000 -ls -uid 0 2&gt;&#x2F;dev&#x2F;null</code></pre>
 
-<h3 id="6-二进制文件分析"><a href="#6-二进制文件分析" class="headerlink" title="6. 二进制文件分析"></a>6. 二进制文件分析</h3><pre class="line-numbers language-none"><code class="language-none">(1) file: 确定文件类型
+<h3 id="6-二进制文件分析"><a href="#6-二进制文件分析" class="headerlink" title="6. 二进制文件分析"></a>6. 二进制文件分析</h3><pre class="language-none"><code class="language-none">(1) file: 确定文件类型
 
 (2) ldd: 打印共享对象依赖关系, 即查询可执行程序所依赖的库和所在路径
 
@@ -617,7 +617,7 @@ $ find &#x2F; -type f -user root -print  # 打印出用户root拥有的所有文
 
 (6) objdump: 从对象文件中显示信息，读取二进制或可执行文件，并将汇编语言指令转储到屏幕上
 
-(7) nm: 列出对象文件中的符号，从二进制文件中识别变量和函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+(7) nm: 列出对象文件中的符号，从二进制文件中识别变量和函数</code></pre>
 
 <ul>
 <li><p><a target="_blank" rel="noopener" href="http://www.skyfree.org/linux/references/ELF_Format.pdf">http://www.skyfree.org/linux/references/ELF_Format.pdf</a></p>
@@ -671,7 +671,7 @@ $ find &#x2F; -type f -user root -print  # 打印出用户root拥有的所有文
 <td>记录系统启动后的信息和错误日志</td>
 </tr>
 </tbody></table>
-<h3 id="2-登录分析"><a href="#2-登录分析" class="headerlink" title="2. 登录分析"></a>2. 登录分析</h3><pre class="line-numbers language-none"><code class="language-none">(1) 登录成功IP统计
+<h3 id="2-登录分析"><a href="#2-登录分析" class="headerlink" title="2. 登录分析"></a>2. 登录分析</h3><pre class="language-none"><code class="language-none">(1) 登录成功IP统计
 
 $ grep -i Accepted &#x2F;var&#x2F;log&#x2F;secure | awk &#39;&#123;print $11&#125;&#39; | sort | uniq -c | sort -nr | more
 
@@ -681,10 +681,10 @@ $ grep &quot;Accepted&quot; &#x2F;var&#x2F;log&#x2F;secure | awk &#39;&#123;prin
 
 (3) 定位有多少IP在爆破主机的root帐号
 
-$ grep &quot;Failed password for root&quot; &#x2F;var&#x2F;log&#x2F;secure | awk &#39;&#123;print $11&#125;&#39; | sort | uniq -c | sort -nr | more<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ grep &quot;Failed password for root&quot; &#x2F;var&#x2F;log&#x2F;secure | awk &#39;&#123;print $11&#125;&#39; | sort | uniq -c | sort -nr | more</code></pre>
 
 <h3 id="3-Web日志分析"><a href="#3-Web日志分析" class="headerlink" title="3. Web日志分析"></a>3. Web日志分析</h3><p><strong>Apache 日志</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) apache日志文件位置
+<pre class="language-none"><code class="language-none">(1) apache日志文件位置
 &#x2F;var&#x2F;log&#x2F;httpd&#x2F;access.log     # Red Hat&#x2F;CentOS Apache访问日志位置
 &#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log   # Debian&#x2F;Ubuntu Apache访问日志文件位置
 
@@ -694,10 +694,10 @@ $ grep -i CustomLog &#x2F;etc&#x2F;httpd&#x2F;conf&#x2F;httpd.conf
 
 $ locate access.log access_log | grep httpd
 
-$ locate access.log access_log | grep apache<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ locate access.log access_log | grep apache</code></pre>
 
 <p><strong>Nginx 日志</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">日志定位
+<pre class="language-none"><code class="language-none">日志定位
 
 $ yum install mlocate &amp;&amp; updatedb  #安装locate所在文件包并更新搜索数据库
 
@@ -705,10 +705,10 @@ $ locate access.log | grep nginx   #定位nginx访问日志
 
 $ locate error.log | grep nginx    #定位nginx错误日志
 
-$ grep &#39;access.log&#39; &#96;locate nginx.conf&#96; #根据配置文件定位日志<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ grep &#39;access.log&#39; &#96;locate nginx.conf&#96; #根据配置文件定位日志</code></pre>
 
 <p><strong>日志分析技巧</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) 列出当天访问次数最多的10个IP
+<pre class="language-none"><code class="language-none">(1) 列出当天访问次数最多的10个IP
 
 $ awk -F &#39;-&#39; &#39;&#123;print $1&#125;&#39; log_file | uniq -c | sort -rn | head -10
 
@@ -754,18 +754,18 @@ $ cat &#x2F;www&#x2F;logs&#x2F;access.2018-11-11.log | awk &#39;&#123;print $7&#
 
 (12) 删除一个月前日志
 
-$ rm -f &#x2F;www&#x2F;logs&#x2F;access.log.$(date -d &#39;-1 month&#39; +&#39;%Y-%m&#39;)*<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ rm -f &#x2F;www&#x2F;logs&#x2F;access.log.$(date -d &#39;-1 month&#39; +&#39;%Y-%m&#39;)*</code></pre>
 
 <h2 id="0x06-工具总结"><a href="#0x06-工具总结" class="headerlink" title="0x06 工具总结"></a>0x06 工具总结</h2><h3 id="1-Busybox"><a href="#1-Busybox" class="headerlink" title="1. Busybox"></a>1. Busybox</h3><p><a target="_blank" rel="noopener" href="https://busybox.net/"><strong>Busybox</strong></a> <em>静态编译，可检测劫持了动态链接库的隐藏病毒</em></p>
 <p>安装运行</p>
-<pre class="line-numbers language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;busybox.net&#x2F;downloads&#x2F;binaries&#x2F;1.30.0-i686&#x2F;busybox
+<pre class="language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;busybox.net&#x2F;downloads&#x2F;binaries&#x2F;1.30.0-i686&#x2F;busybox
 
 $ chmod +x busybox
 
-$ .&#x2F;busybox commond<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ .&#x2F;busybox commond</code></pre>
 <h3 id="2-Rootkit查杀"><a href="#2-Rootkit查杀" class="headerlink" title="2. Rootkit查杀"></a>2. Rootkit查杀</h3><p><a target="_blank" rel="noopener" href="http://www.chkrootkit.org/"><strong>chkrootkit</strong></a> <em>Linux下rootkit检测工具</em></p>
 <p>下载运行</p>
-<pre class="line-numbers language-none"><code class="language-none">$ wget ftp:&#x2F;&#x2F;ftp.pangeia.com.br&#x2F;pub&#x2F;seg&#x2F;pac&#x2F;chkrootkit.tar.gz
+<pre class="language-none"><code class="language-none">$ wget ftp:&#x2F;&#x2F;ftp.pangeia.com.br&#x2F;pub&#x2F;seg&#x2F;pac&#x2F;chkrootkit.tar.gz
 
 $ tar zxf chkrootkit.tar.gz
 
@@ -779,39 +779,39 @@ $ cp -r chkrootkit- &#x2F;usr&#x2F;local&#x2F;chkrootkit
 
 $ rm -r chkrootkit-
 
-$ &#x2F;usr&#x2F;local&#x2F;chkrootkit&#x2F;chkrootkit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ &#x2F;usr&#x2F;local&#x2F;chkrootkit&#x2F;chkrootkit</code></pre>
 
 <p><a href="ttp://rkhunter.sourceforge.net"><strong>rkhunter</strong></a> <em>一款用于检测Liunx系统是否感染rootkit的工具</em></p>
 <p>下载运行</p>
-<pre class="line-numbers language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;jaist.dl.sourceforge.net&#x2F;project&#x2F;rkhunter&#x2F;rkhunter&#x2F;1.4.6&#x2F;rkhunter-1.4.6.tar.gz
+<pre class="language-none"><code class="language-none">$ wget https:&#x2F;&#x2F;jaist.dl.sourceforge.net&#x2F;project&#x2F;rkhunter&#x2F;rkhunter&#x2F;1.4.6&#x2F;rkhunter-1.4.6.tar.gz
 
 $ tar zxvf rkhunter-1.4.6.tar.gz
 
 $ cd rkhunter-1.4.4
 
-$ .&#x2F;install.sh --install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ .&#x2F;install.sh --install</code></pre>
 
 <p>rootkit检测</p>
-<pre class="line-numbers language-none"><code class="language-none">$ rkhunter –checkall #执行rootkit预定库，来检测本地系统文件
+<pre class="language-none"><code class="language-none">$ rkhunter –checkall #执行rootkit预定库，来检测本地系统文件
 
-$ rkhunter --checkall --skip-keypress  #--skip-keyperss参数来自动持续检测，一直到结束<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+$ rkhunter --checkall --skip-keypress  #--skip-keyperss参数来自动持续检测，一直到结束</code></pre>
 <h3 id="3-病毒查杀"><a href="#3-病毒查杀" class="headerlink" title="3. 病毒查杀"></a>3. 病毒查杀</h3><p><a target="_blank" rel="noopener" href="http://www.clamav.net/download.html"><strong>ClamAV</strong></a> <em>Linux平台上的开源反病毒引擎，病毒库较丰富，更新频率高</em></p>
 <p>下载运行</p>
-<pre class="line-numbers language-none"><code class="language-none">$ yum install epel-release -y
+<pre class="language-none"><code class="language-none">$ yum install epel-release -y
 
 $ yum -y install clamav
 
 $ freshclam   # 更新病毒库
 
-$ clamscan -r &#x2F;opt   # 扫描目录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ clamscan -r &#x2F;opt   # 扫描目录</code></pre>
 
 <p>病毒库更新</p>
-<pre class="line-numbers language-none"><code class="language-none">$ cd &#x2F;var&#x2F;lib&#x2F;clamav
+<pre class="language-none"><code class="language-none">$ cd &#x2F;var&#x2F;lib&#x2F;clamav
 $ wget http:&#x2F;&#x2F;database.clamav.net&#x2F;main.cvd
 $ wget http:&#x2F;&#x2F;database.clamav.net&#x2F;daily.cvd
 $ wget http:&#x2F;&#x2F;database.clamav.net&#x2F;bytecode.cvd
  
-$ chown clamav:clamav  *<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+$ chown clamav:clamav  *</code></pre>
 
 <h3 id="4-威胁取证"><a href="#4-威胁取证" class="headerlink" title="4.  威胁取证"></a>4.  威胁取证</h3><ul>
 <li><p>virustotal: <a target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home">https://www.virustotal.com/gui/home</a></p>
@@ -836,13 +836,13 @@ $ chown clamav:clamav  *<span aria-hidden="true" class="line-numbers-rows"><span
 </li>
 </ul>
 <h3 id="6-审计检查"><a href="#6-审计检查" class="headerlink" title="6. 审计检查"></a>6. 审计检查</h3><p><a target="_blank" rel="noopener" href="https://github.com/CISOfy/lynis"><strong>Lynis</strong></a>：<em>用于UNIX系统的安全审计工具</em></p>
-<pre class="line-numbers language-none"><code class="language-none">$ lynis show commands  # 查看 Lynis 中所有可用的命令
+<pre class="language-none"><code class="language-none">$ lynis show commands  # 查看 Lynis 中所有可用的命令
 
 $ lynis audit system  # 审计系统的安全状况，返回一份详细的报告
   Lynis 使用颜色编码使报告更容易解读
   绿色：一切正常
   黄色：跳过、未找到，可能有个建议
-  红色：你可能需要仔细看看这个<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  红色：你可能需要仔细看看这个</code></pre>
 
 <h3 id="7-工具合集"><a href="#7-工具合集" class="headerlink" title="7. 工具合集"></a>7. 工具合集</h3><p><a target="_blank" rel="noopener" href="https://www.rfxn.com/">R-FX NETWORKS</a> | <a target="_blank" rel="noopener" href="https://github.com/meirwah/awesome-incident-response/blob/master/README_ch.md">Awesome-incident-response</a> | <a target="_blank" rel="noopener" href="https://github.com/rshipp/awesome-malware-analysis">Awesome-malware-analysis</a></p>
 
