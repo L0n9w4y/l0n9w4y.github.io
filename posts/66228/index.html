@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文总结Windows系统安全机制...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows系统安全机制">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/66228/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文总结Windows系统安全机制...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWQAAU?ver=4002&q=90&m=2&h=2147483647&w=2147483647&b=%23FFFFFFFF&aim=true">
+<meta property="article:published_time" content="2021-12-05T13:32:55.000Z">
+<meta property="article:modified_time" content="2022-10-18T14:40:36.654Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWQAAU?ver=4002&q=90&m=2&h=2147483647&w=2147483647&b=%23FFFFFFFF&aim=true">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/66228/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/66228/","path":"posts/66228/","title":"Windows系统安全机制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Windows系统安全机制 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E9%9B%B6%E4%BF%A1%E4%BB%BB"><span class="nav-text">0x01 零信任</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="nav-text">1. 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-text">2. 架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%9B%B6%E4%BF%A1%E4%BB%BB%E5%8E%9F%E5%88%99"><span class="nav-text">3. 零信任原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Windows%E5%BA%94%E7%94%A8"><span class="nav-text">4. Windows应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-text">0x02 硬件安全性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8"><span class="nav-text">0x3 操作系统安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%89%E5%85%A8"><span class="nav-text">0x04 应用程序安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E5%AE%89%E5%85%A8%E6%A0%87%E8%AF%86%E5%92%8C%E9%9A%90%E7%A7%81"><span class="nav-text">0x05 安全标识和隐私</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/66228/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Windows系统安全机制 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows系统安全机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-05 21:32:55" itemprop="dateCreated datePublished" datetime="2021-12-05T21:32:55+08:00">2021-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%94%BB%E9%98%B2/" itemprop="url" rel="index"><span itemprop="name">系统攻防</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文总结Windows系统安全机制...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-零信任"><a href="#0x01-零信任" class="headerlink" title="0x01 零信任"></a>0x01 零信任</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h3><p>零信任模型假定泄露（而不是假定公司防火墙背后的所有内容均安全）并将每个请求都视为源自开放网络。无论请求源自何处或不管访问何种资源，都应坚守“永不信任，始终验证”的原则。每个访问请求在授予访问之前都应进行完全身份验证、授权和加密。应用微分段和最少特权访问原则以最大限度地减少横向迁移。利用丰富的智能和分析进行检测并及时响应异常情况</p>
+<h3 id="2-架构图"><a href="#2-架构图" class="headerlink" title="2. 架构图"></a>2. 架构图</h3><p><img src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWQAAU?ver=4002&q=90&m=2&h=2147483647&w=2147483647&b=%23FFFFFFFF&aim=true"></p>
+<p>完整的零信任实现范围应涵盖你的整个数字版图 - 包括标识、终结点、网络、数据、应用和基础结构。零信任体系结构充当了一种全面的端到端策略，需要在其中的元素间进行集成。</p>
+<p>零信任安全性的基础是标识。需要同时对人和非人标识实施严格授权，通过个人或公司的终结点与兼容设备连接，并同时在两端基于严格的策略申请访问权限，这些策略则基于显示验证、最少特权访问和假设泄露的零信任原则。</p>
+<p>作为统一实施的策略，零信任策略会截取请求，根据策略配置显式验证来自所有 6 个基本元素的信号，并实施最小特权访问。信号包括用户角色、位置、设备合规性、数据敏感度、应用敏感度等。除了遥测和状态信息外，系统还会将来自威胁防护的风险评估馈送到策略引擎，以自动实时响应威胁。将在访问时强制执行策略并在整个会话中持续进行评估。</p>
+<p>此策略通过策略优化得到进一步增强。治理和合规性对于零信任的强力实施至关重要。安全状况评估和生产力优化对于测量所有服务和系统的遥测是必要的。</p>
+<p>遥测和分析信息会馈送到威胁保护系统。大量遥测信息和分析结果辅以威胁智能，生成了高质量的风险评估，这些评估结果可手动调查也可自动执行。攻击以云速度发生 - 因此你的防御系统也需要以云速度响应和采取措施，但人类无法快速反应或了解所有风险。风险评估馈送到策略引擎中，以实现实时自动威胁保护，并在需要时进行额外的手动调查。</p>
+<p>在向任何公共或专用网络授予访问权限之前，会向零信任策略的评估和实施应用流量筛选和分段。应向电子邮件、文档和结构化数据应用数据分类、标记和加密。对应用的访问应该是自适应的，无论是对 SaaS 应用还是本地应用的访问。对于无服务器、含容器、IaaS、PaaS 和内部站点且实时 (JIT) 和版本控制处于活动状态的基础结构，将向其应用运行时控制。</p>
+<p>最后，会将来自网络、数据、应用和基础设施的遥测、分析和评估馈送到策略优化和威胁防护系统中。</p>
+<h3 id="3-零信任原则"><a href="#3-零信任原则" class="headerlink" title="3. 零信任原则"></a>3. 零信任原则</h3><ul>
+<li><p><strong>显式验证</strong>：始终基于所有可用数据点进行身份验证和授权，包括用户标识、位置、设备运行状况、服务或工作负荷、数据分类和监视异常。</p>
+</li>
+<li><p><strong>使用最少特权访问</strong>：通过适时和适度的访问权限、基于风险的自适应策略和数据保护来限制用户访问，以帮助保护数据并保持工作效率。</p>
+</li>
+<li><p><strong>假定存在违规</strong>：防止攻击者获取访问权限，以最大程度地减少对数据和系统的潜在损害。 保护特权角色，验证端到端加密，使用分析来获取可见性，并推动威胁检测以提高防御能力</p>
+</li>
+</ul>
+<h3 id="4-Windows应用"><a href="#4-Windows应用" class="headerlink" title="4. Windows应用"></a>4. Windows应用</h3><p>Windows 包含许多安全功能，可帮助保护用户免受恶意软件和攻击。 但是，仅当平台按预期启动且未受到篡改时，才能实现对 Windows 安全组件的信任。Windows 依赖于统一可扩展固件接口 (UEFI) 安全启动、早期启动反恶意软件 (ELAM)、用于度量的动态信任根 (DRTM)、受信任的启动以及其他低级别硬件和固件安全功能。 </p>
+<p>在开启电脑直到反恶意软件启动时，Windows 会获得适当的硬件配置支持，以帮助保护系统安全。 由启动加载程序和 BIOS 实现的 测量和受信任启动，以链接方式验证和加密记录启动的每个步骤。 这些事件绑定到充当信任根的安全共同处理器 (TPM) 上。 远程证明是服务读取和验证这些事件以提供可验证、无偏向和篡改复原报告的机制。 远程证明是系统启动的受信任审核员，允许特定实体信任设备。</p>
+<p>设备端的证明和零信任所涉及的步骤摘要如下所示:</p>
+<pre class="language-none"><code class="language-none">1. 在启动过程的每个步骤 (例如文件加载、特殊变量的更新等) 中，在 TPM PCR 中对文件哈希和签名等信息进行测量。 度量受 受信任的计算组规范 (TCG) 的约束，该规范指示可以记录哪些事件以及每个事件的格式。
+
+2. 启动 Windows 后，证明者&#x2F;验证程序会请求 TPM 提取存储在其平台配置注册表 (PCR) 中的测量数据以及 TCG 日志。 这两个组件中的度量共同构成了证明证据，然后发送到证明服务。
+
+3. TPM是通过使用芯片组上的密钥&#x2F;加密材料与 Azure 证书服务 进行验证的。
+
+4. 然后，将此信息发送到云中的证明服务，以验证设备是否安全。 Microsoft Endpoint Manger 与 Microsoft Azure 证明集成，以全面检查设备运行状况，并将此信息与 Azure Active Directory 条件访问相连接。 这种整合是“零信任”解决方案的关键，有助于将信任与不信任的设备结合起来。
+
+5. 证明服务执行以下任务:
+
+    - 验证证据的完整性。 此验证是通过重新播放 TCG 日志来验证与重新计算的值相匹配的 PCR 来实现的。
+    - 验证 TPM 是否具有由经过身份验证的 TPM 签发的有效证明标识密钥。
+    - 验证安全功能是否处于预期状态。
+
+6. 证明服务返回一个证明报告，其中包含有关基于证明服务中配置策略的安全功能的信息。
+
+7. 然后，设备将报告发送到 Microsoft Endpoint Manager 云，以根据管理员配置的设备合规性规则评估平台的可信度。
+
+8. 有条件的访问，加上设备合规性状态，然后决定允许或拒绝访问。</code></pre>
+
+<h2 id="0x02-硬件安全性"><a href="#0x02-硬件安全性" class="headerlink" title="0x02 硬件安全性"></a>0x02 硬件安全性</h2><p>硬件安全与软件安全技术之间具有很强的一致性，以保护用户、数据和设备。 单靠操作系统无法免受网络罪犯用来入侵其芯片深处计算机的广泛工具和技术的保护。 进入后，入侵者在从事从窃取重要数据到捕获电子邮件地址和其他敏感信息等多个恶意活动时可能难以检测。 这些新威胁要求计算安全到核心的硬件，包括硬件芯片和处理器</p>
+<table>
+<thead>
+<tr>
+<th align="left">安全措施</th>
+<th align="left">功能&amp;功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">受信任的平台模块 (TPM)</td>
+<td align="left">受信任的平台模块 (TPM) 旨在提供基于硬件的安全相关函数，并帮助防止不必要的篡改。 TPM 为系统硬件、平台所有者和用户提供安全和隐私权益。TPM 芯片是一种安全的加密处理器，可帮助执行生成、存储和限制加密密钥的使用等操作。 许多 TPM 包括多个物理安全机制，可使其防篡改，防止恶意软件篡改 TPM 的安全功能。</td>
+</tr>
+<tr>
+<td align="left">使用Windows Defender System Guard基于硬件的信任根</td>
+<td align="left">若要保护关键资源（例如Windows 身份验证、单一登录令牌、Windows Hello和虚拟受信任平台模块），系统固件和硬件必须值得信任。Windows Defender System Guard有助于在系统启动时保护和维护系统的完整性，并验证是否已通过本地和远程证明真正维护了系统完整性。</td>
+</tr>
+<tr>
+<td align="left">启用基于虚拟化的代码完整性保护</td>
+<td align="left">受虚拟机监控程序保护的代码完整性 (HVCI) 是基于虚拟化的安全 (VBS) 功能在 Windows 中可用。 在Windows设备安全设置中，HVCI 称为内存完整性。HVCI 和 VBS 改进了Windows的威胁模型，并针对试图利用Windows内核的恶意软件提供更有力的保护。 VBS 使用 Windows 虚拟机监控程序创建隔离的虚拟环境，该环境将成为 OS 的信任根源，假定内核可能遭到入侵。 HVCI 是一个关键组件，它通过在其中运行内核模式代码完整性并限制可用于破坏系统的内核内存分配来保护和强化此虚拟环境。</td>
+</tr>
+<tr>
+<td align="left">内核直接内存访问 (DMA) 保护</td>
+<td align="left">使用 Thunderbolt、USB4 和 CFexpress 等 PCIe 热插头设备，用户可以将新的外部外围设备类（包括图形卡或其他 PCI 设备）附加到具有与 USB 相同的体验的电脑。 由于 PCI 热插头端口在外部且易于访问，因此电脑容易受到直接内存访问 (DMA) 攻击。 内存访问保护 (也称为内核 DMA 保护) 通过限制这些外部外围设备在用户锁定其电脑时直接复制内存来保护电脑免受使用 PCIe 热插头设备的驱动 DMA 攻击。</td>
+</tr>
+<tr>
+<td align="left">安全核心电脑</td>
+<td align="left">Microsoft 正与 OEM 合作伙伴和芯片供应商密切合作，构建具有深度集成硬件、固件和软件的安全核心电脑，以确保增强设备、标识和数据的安全性。安全核心电脑提供有助于抵御复杂攻击的保护，在处理一些最敏感数据的行业、处理高业务影响和高度敏感数据的商业角色时，可以提供更多保证。</td>
+</tr>
+</tbody></table>
+<h2 id="0x3-操作系统安全"><a href="#0x3-操作系统安全" class="headerlink" title="0x3 操作系统安全"></a>0x3 操作系统安全</h2><p>安全和隐私依赖于一个操作系统，该操作系统从系统启动时起就保护系统和信息，从而提供基本的芯片到云保护。 Windows 具有广泛的安全措施，旨在帮助保护安全。 这些措施包括内置的高级加密和数据保护、可靠的网络和系统安全，以及防范不断变化的威胁的智能防护措施</p>
+<table>
+<thead>
+<tr>
+<th align="left">安全措施</th>
+<th align="left">功能&amp;功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">安全启动和受信任的启动</td>
+<td align="left">安全启动和受信任启动有助于防止在启动Windows设备时加载恶意软件和损坏的组件。 安全启动从初始启动保护开始，然后受信任的启动将启动进程。 安全启动和受信任的启动有助于确保Windows系统安全地启动。</td>
+</tr>
+<tr>
+<td align="left">加密和证书管理</td>
+<td align="left">加密使用代码转换数据，以便只有特定收件人才能使用密钥读取数据。 加密强制实施隐私，以防止除预期收件人以外的任何人读取数据、确保数据不受篡改的完整性，以及验证标识以确保通信安全的身份验证。</td>
+</tr>
+<tr>
+<td align="left">Windows 安全中心应用</td>
+<td align="left">在设置中找到的Windows内置安全应用程序可概览设备的安全状态和运行状况。 这些见解可帮助你识别问题，并采取措施确保你受到保护。 可以快速查看病毒和威胁防护、防火墙和网络安全、设备安全控制等的状态。</td>
+</tr>
+<tr>
+<td align="left">加密和数据保护</td>
+<td align="left">无论存储机密数据在哪里，都必须防止未经授权的访问，无论是通过物理设备盗窃还是恶意应用程序。 Windows提供了强大的静态数据保护解决方案，可防范恶意攻击者。</td>
+</tr>
+<tr>
+<td align="left">BitLocker</td>
+<td align="left">BitLocker 驱动器加密是一项数据保护功能，它与操作系统集成，用于解决来自丢失、被盗或销毁不当的计算机的数据被盗或泄露的威胁。 在与受信任的平台模块 (TPM) 版本 1.2 或更高版本一起使用时，BitLocker 提供最多保护。</td>
+</tr>
+<tr>
+<td align="left">加密硬盘驱动器</td>
+<td align="left">加密硬盘驱动器使用 BitLocker 驱动器加密提供的快速加密来增强数据安全性和管理。通过将加密操作卸载到硬件上，加密的硬盘驱动器将会增加 BitLocker 性能，并减少 CPU 使用率和电源消耗。 由于加密的硬盘驱动器能迅速地加密数据，企业设备可以在最小化生产效率影响的同时扩展 BitLocker 部署。</td>
+</tr>
+<tr>
+<td align="left">安全基线</td>
+<td align="left">安全基线是 Microsoft 建议的一组配置设置，并说明了这些设置的安全影响。 这些设置基于来自 Microsoft 安全工程团队、产品组、合作伙伴和客户的反馈。安全基线包含在可从 Microsoft 下载中心下载的安全合规性Toolkit中。</td>
+</tr>
+<tr>
+<td align="left">虚拟专用网络</td>
+<td align="left">虚拟专用网 (VPN) 是专用或公用网络上的点对点连接，例如 Internet。 VPN 客户端使用特殊 TCP&#x2F;IP 或基于 UDP 的协议（称为隧道协议），在 VPN 服务器上对虚拟端口进行虚拟调用。</td>
+</tr>
+<tr>
+<td align="left">Windows Defender 防火墙</td>
+<td align="left">Windows Defender 防火墙是一个有状态主机防火墙，它通过允许你创建规则来帮助保护设备，这些规则确定允许从网络进入设备的网络流量以及允许设备发送到网络的网络流量。 Windows Defender 防火墙还支持 Internet 协议安全 (IPsec) ，可用于要求任何尝试与设备通信的设备进行身份验证。</td>
+</tr>
+<tr>
+<td align="left">防病毒&amp;防恶意软件保护</td>
+<td align="left">Microsoft Defender 防病毒包含在所有版本的 Windows 10、Windows Server 2016 和更高版本中。 如果已安装并打开另一个防病毒应用，Microsoft Defender 防病毒将自动关闭。 如果卸载其他应用，Microsoft Defender 防病毒将重新打开。从启动Windows的那一刻起，Microsoft Defender 防病毒持续监视恶意软件、病毒和安全威胁。 自动下载更新以帮助保护设备免受威胁。 Microsoft Defender 防病毒不断扫描恶意软件和威胁，并检测和阻止可能不需要的应用程序 (应用程序，这些应用程序可能会对设备产生负面影响，即使它们不被视为恶意软件) 。Microsoft Defender 防病毒与云提供的保护集成，这有助于确保近乎即时地检测和阻止新威胁和新出现的威胁。</td>
+</tr>
+<tr>
+<td align="left">攻击面减少规则</td>
+<td align="left">攻击面是你容易受到网络攻击的地方和方式。 攻击面减少规则内置于Windows和Windows服务器中，以防止和阻止经常滥用的某些行为来破坏设备或网络。 此类行为可能包括启动尝试下载或运行其他文件的脚本或可执行文件、运行可疑脚本或执行应用通常不会在正常工作期间启动的其他行为。 可以配置攻击面减少规则，以防止这些风险行为。</td>
+</tr>
+<tr>
+<td align="left">防篡改保护</td>
+<td align="left">在网络攻击 (如勒索软件尝试) 期间，不良行为者试图禁用安全功能，例如针对目标设备的防病毒保护。 不良执行组件喜欢禁用安全功能，以便更轻松地访问用户的数据、安装恶意软件，或以其他方式利用用户的数据、标识和设备，而不必担心被阻止。 篡改保护有助于防止此类活动。使用篡改保护时，恶意软件会被禁止执行以下操作：禁用病毒和威胁防护、禁用实时保护、关闭行为监视、禁用防病毒 (，如 IOfficeAntivirus (IOAV) )、禁用云提供的保护、删除安全智能更新</td>
+</tr>
+<tr>
+<td align="left">网络保护</td>
+<td align="left">Windows中的网络保护有助于防止用户访问可能在 Internet 上托管网络钓鱼诈骗、攻击和其他恶意内容的危险 IP 地址和域。 网络保护是攻击面减少的一部分，有助于为用户提供额外的保护层。 使用基于信誉的服务，网络保护会阻止访问可能有害、基于低信誉的域和 IP 地址。在企业环境中，网络保护最适用于Microsoft Defender for Endpoint，该Microsoft Defender for Endpoint提供有关保护事件的详细报告，作为大型调查方案的一部分。</td>
+</tr>
+<tr>
+<td align="left">受控文件夹访问权限</td>
+<td align="left">使用受控文件夹访问权限，可以通过管理应用对特定文件夹的访问权限来保护特定文件夹中的宝贵信息。 只有受信任的应用可以访问受保护的文件夹，这些文件夹是在配置受控文件夹访问权限时指定的。 通常，常用的文件夹（例如用于文档、图片、下载的文件夹）包含在受控文件夹列表中。 受控文件夹访问有助于保护有价值的数据免受恶意应用和威胁（如勒索软件）的侵害。</td>
+</tr>
+<tr>
+<td align="left">Exploit Protection</td>
+<td align="left">Windows 10版本 1709 及更高版本中提供的 Exploit Protection 会自动将多个攻击缓解技术应用于操作系统进程和应用。 利用保护最适用于Microsoft Defender for Endpoint，这为组织提供了有关攻击保护事件和阻止的详细报告，作为典型警报调查方案的一部分。可以在单个设备上启用攻击保护，然后使用组策略同时将 XML 文件分发到多个设备。 当设备上有缓解时，操作中心将显示一条通知。 你可以使用公司的详细信息和联系人信息自定义通知。 还可以单独启用规则，以自定义功能监视器的技术。</td>
+</tr>
+<tr>
+<td align="left">Microsoft Defender for Endpoint</td>
+<td align="left">Windows E5 客户受益于Microsoft Defender for Endpoint，这是一种企业终结点检测和响应功能，可帮助企业安全团队检测、调查和响应高级威胁。 借助丰富的事件数据和攻击见解，Defender for Endpoint 使安全团队能够调查事件并高效地采取修正措施。Defender for Endpoint 也是Microsoft 365 Defender的一部分，这是一个统一的入侵前和帖子企业防御套件，可本机协调终结点、标识、电子邮件和应用程序的检测、预防、调查和响应，以提供针对复杂攻击的集成保护。</td>
+</tr>
+</tbody></table>
+<h2 id="0x04-应用程序安全"><a href="#0x04-应用程序安全" class="headerlink" title="0x04 应用程序安全"></a>0x04 应用程序安全</h2><p>攻击者经常通过黑客攻击应用程序来获取有价值的数据。 这可能包括“代码注入”攻击，其中攻击者插入可篡改数据的恶意代码，甚至销毁数据。 应用程序的安全配置可能错误，为黑客打开了大门。 或者重要的客户和企业信息可能会使敏感数据公开。 Windows使用应用程序安全层保护有价值的数据</p>
+<table>
+<thead>
+<tr>
+<th align="left">安全措施</th>
+<th align="left">功能&amp;功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Windows Defender 应用程序控制</td>
+<td align="left">应用程序控制是防止不需要或恶意代码运行的最有效安全控制措施之一。 它从应用程序信任模型（其中所有代码都被视为可信代码）移到应用必须赢得信任才能运行的模型。</td>
+</tr>
+<tr>
+<td align="left">Microsoft Defender 应用程序防护</td>
+<td align="left">Application Guard 使用基于芯片的硬件隔离来隔离不受信任的网站和不受信任的Office文件，在基于 Hyper-V 的独立容器中无缝运行不受信任的网站和文件，独立于桌面操作系统，并确保容器内发生的任何事件与桌面保持隔离。</td>
+</tr>
+<tr>
+<td align="left">Windows 沙盒</td>
+<td align="left">Windows 沙盒提供了轻型桌面环境，可以安全地在隔离状态下运行应用程序。 安装在 Windows 沙盒环境下的软件保持“沙盒”状态，并且与主机分开运行。 沙盒是临时的。 关闭后，系统将删除所有软件和文件以及状态。 每次打开应用程序时，都会获得沙盒的全新实例。</td>
+</tr>
+<tr>
+<td align="left">电子邮件安全性</td>
+<td align="left">借助Windows S&#x2F;MIME 电子邮件安全性，用户可以加密传出邮件和附件，因此只有具有数字标识 (ID) （也称为证书）的预定收件人才能读取这些邮件和附件。 用户可以对消息进行数字签名，这会验证发件人的身份并确保消息未被篡改。</td>
+</tr>
+<tr>
+<td align="left">Microsoft Defender SmartScreen</td>
+<td align="left">Microsoft Defender SmartScreen 可防止网络钓鱼或恶意软件的网站和应用程序以及潜在恶意文件的下载。</td>
+</tr>
+</tbody></table>
+<h2 id="0x05-安全标识和隐私"><a href="#0x05-安全标识和隐私" class="headerlink" title="0x05 安全标识和隐私"></a>0x05 安全标识和隐私</h2><p>恶意执行组件每天启动数百万次密码攻击。 弱密码、密码喷洒和网络钓鱼是许多攻击的入口点。 知道正确的用户正在访问正确的设备和正确的数据，对于确保业务、家庭和自我安全至关重要。 Windows Hello、Windows Hello 企业版和 Credential Guard 使客户能够 (MFA) 迁移到无密码多重身份验证。 MFA 可以降低组织中发生入侵的风险</p>
+<table>
+<thead>
+<tr>
+<th align="left">安全功能</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">使用Windows Hello保护用户标识</td>
+<td align="left">Windows Hello和Windows Hello 企业版将基于密码的身份验证替换为更强的身份验证模型，以便使用密码 (PIN) 或其他基于生物识别的身份验证登录到设备。 此基于 PIN 或基于生物识别的身份验证仅在注册它的设备上有效，不能在另一台设备上使用：Windows Hello 企业版</td>
+</tr>
+<tr>
+<td align="left">Windows Defender Credential Guard和远程凭据防护</td>
+<td align="left">Windows Defender Credential Guard有助于保护系统免受凭据盗窃攻击技术 (传递哈希或传递票证) ，并帮助防止恶意软件访问系统机密，即使该进程使用管理员权限运行。 Windows Defender远程凭据防护可帮助你通过远程桌面连接保护凭据，方法是将 Kerberos 请求重定向回请求连接的设备。 它还为远程桌面会话提供单一登录体验。</td>
+</tr>
+<tr>
+<td align="left">FIDO 联盟</td>
+<td align="left">快速标识联机 (FIDO) 定义的协议正在成为提供强身份验证的开放标准，有助于防止网络钓鱼和用户友好和隐私尊重。 Windows 11支持将设备登录与 FIDO 2 安全密钥配合使用，并支持使用Microsoft Edge或其他新式浏览器，支持使用安全 FIDO 支持的凭据来保护用户帐户。</td>
+</tr>
+<tr>
+<td align="left">Microsoft Authenticator</td>
+<td align="left">Microsoft Authenticator应用是帮助确保Windows 11安全的完美伴侣。 它允许使用多重身份验证、无密码电话登录或密码自动填充，轻松、安全地登录所有联机帐户。 你还可以为 Microsoft 个人帐户、工作帐户或学校帐户提供其他帐户管理选项。 Microsoft Authenticator可用于为用户设置多重身份验证。</td>
+</tr>
+<tr>
+<td align="left">智能卡</td>
+<td align="left">智能卡是防篡改的便携式存储设备，可增强Windows中任务的安全性，例如对客户端进行身份验证、签名代码、保护电子邮件以及使用Windows域帐户登录。</td>
+</tr>
+<tr>
+<td align="left">访问控制</td>
+<td align="left">访问控制是授权用户、组和计算机访问网络或计算机上的对象和资产的过程。 计算机可以通过相互关联的身份验证和授权机制控制系统和网络资源的使用。</td>
+</tr>
+</tbody></table>
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/security/">https://learn.microsoft.com/zh-cn/windows/security/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/security/business/zero-trust">https://www.microsoft.com/zh-cn/security/business/zero-trust</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Windows/" rel="tag" <i class="fa fa-tag"></i> Windows</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/18345/" rel="prev" title="恶意命令绕过与检测">
+                  <i class="fa fa-chevron-left"></i> 恶意命令绕过与检测
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/11223/" rel="next" title="内网穿透姿势总结">
+                  内网穿透姿势总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
