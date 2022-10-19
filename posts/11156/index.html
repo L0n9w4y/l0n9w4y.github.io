@@ -31,7 +31,7 @@
 <meta property="og:description" content="本文研究Powershell攻击技术及利用框架渗透指南..">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-04T13:36:45.000Z">
-<meta property="article:modified_time" content="2022-10-19T15:26:07.965Z">
+<meta property="article:modified_time" content="2022-10-19T15:30:32.206Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="PowerShell">
 <meta property="article:tag" content="Windows">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-text">0x01 基础介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E8%BF%9B%E9%98%B6%E6%8A%80%E6%9C%AF"><span class="nav-text">0x02 进阶技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WMI%E6%8A%80%E6%9C%AF"><span class="nav-text">1. WMI技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B3%A8%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-text">2. 注入技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%B7%E6%B7%86%E6%8A%80%E6%9C%AF"><span class="nav-text">3. 混淆技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%97%A5%E5%BF%97%E6%93%8D%E4%BD%9C"><span class="nav-text">5. 日志操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%88%A9%E7%94%A8%E6%A1%86%E6%9E%B6"><span class="nav-text">0x03 利用框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PowerSploit"><span class="nav-text">1. PowerSploit</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Find-AVSignature"><span class="nav-text">Find-AVSignature</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CodeExecution"><span class="nav-text">CodeExecution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exfiltration"><span class="nav-text">Exfiltration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Persistence"><span class="nav-text">Persistence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Privesc"><span class="nav-text">Privesc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recon"><span class="nav-text">Recon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ScriptModification"><span class="nav-text">ScriptModification</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Nishang"><span class="nav-text">2. Nishang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Empire"><span class="nav-text">3. Empire</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-text">0x01 基础介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E8%BF%9B%E9%98%B6%E6%8A%80%E6%9C%AF"><span class="nav-text">0x02 进阶技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WMI%E6%8A%80%E6%9C%AF"><span class="nav-text">1. WMI技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B3%A8%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-text">2. 注入技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%B7%E6%B7%86%E6%8A%80%E6%9C%AF"><span class="nav-text">3. 混淆技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%97%A5%E5%BF%97%E6%93%8D%E4%BD%9C"><span class="nav-text">4. 日志操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%88%A9%E7%94%A8%E6%A1%86%E6%9E%B6"><span class="nav-text">0x03 利用框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PowerSploit"><span class="nav-text">1. PowerSploit</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Find-AVSignature"><span class="nav-text">Find-AVSignature</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CodeExecution"><span class="nav-text">CodeExecution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exfiltration"><span class="nav-text">Exfiltration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Persistence"><span class="nav-text">Persistence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Privesc"><span class="nav-text">Privesc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recon"><span class="nav-text">Recon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ScriptModification"><span class="nav-text">ScriptModification</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Nishang"><span class="nav-text">2. Nishang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Empire"><span class="nav-text">3. Empire</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -147,7 +147,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -581,7 +581,7 @@ Invoke-Expression&#x2F;IEX命令是很常用的一个命令， 运行一个以�
     c. $ExecutionContext.InvokeCommand.GetCmdlets(&#39;I*e-E*&#39;)使用环境变量等等</code></pre>
 
 <p><em>tools:</em> <a target="_blank" rel="noopener" href="https://github.com/danielbohannon/Invoke-Obfuscation">https://github.com/danielbohannon/Invoke-Obfuscation</a></p>
-<h3 id="5-日志操作"><a href="#5-日志操作" class="headerlink" title="5. 日志操作"></a>5. 日志操作</h3><p><strong>CmdLet命令</strong></p>
+<h3 id="4-日志操作"><a href="#4-日志操作" class="headerlink" title="4. 日志操作"></a>4. 日志操作</h3><p><strong>CmdLet命令</strong></p>
 <pre class="language-none"><code class="language-none">Clear-EventLog
 
 Get-EventLog
@@ -767,8 +767,8 @@ Remove-Comments -ScriptBlock &#123; whoami &#125;   # 删除空白符</code></pr
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/33220/" rel="prev" title="Linux Hook技术研究">
-                  <i class="fa fa-chevron-left"></i> Linux Hook技术研究
+                <a href="/posts/22339/" rel="prev" title="Windows ATT&CK 技术研究">
+                  <i class="fa fa-chevron-left"></i> Windows ATT&CK 技术研究
                 </a>
             </div>
             <div class="post-nav-item">
