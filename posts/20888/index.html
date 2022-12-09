@@ -343,41 +343,22 @@ HTA是HTML Application的缩写，直接将HTML保存成HTA的格式，是一个
 <h4 id="b-域名"><a href="#b-域名" class="headerlink" title="b. 域名"></a>b. 域名</h4><p>购买与目标公司邮箱相近的域名</p>
 <h4 id="c-邮件服务器"><a href="#c-邮件服务器" class="headerlink" title="c. 邮件服务器"></a>c. 邮件服务器</h4><p><strong>方案一：开源自建邮件服务器</strong> - <a target="_blank" rel="noopener" href="https://github.com/gyxuehu/EwoMail">EwoMail</a></p>
 <p>Ewomail介绍</p>
-<pre><code>1. 基于Linux的开源邮件服务器软件，集成了一些稳定的组件，可快速搭建，集成组件如下：
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 基于Linux的开源邮件服务器软件，集成了一些稳定的组件，可快速搭建，集成组件如下：</span><br><span class="line"></span><br><span class="line">	Postfix：邮件服务器</span><br><span class="line">	Dovecot：IMAP/POP3/邮件存储</span><br><span class="line">	Amavisd：反垃圾和反病毒</span><br><span class="line">	LNMP：nginx,mysql,php</span><br><span class="line">	EwoMail-Admin：WEB邮箱管理后台</span><br><span class="line">	Rainloop：webmail</span><br><span class="line"></span><br><span class="line">2. 数据可单独存储在个人服务器，防止隐私被盗取，保护数据安全</span><br></pre></td></tr></table></figure>
 
-    Postfix：邮件服务器
-    Dovecot：IMAP/POP3/邮件存储
-    Amavisd：反垃圾和反病毒
-    LNMP：nginx,mysql,php
-    EwoMail-Admin：WEB邮箱管理后台
-    Rainloop：webmail
-
-2. 数据可单独存储在个人服务器，防止隐私被盗取，保护数据安全
-</code></pre>
 <p>使用体验</p>
-<pre><code>1. 搭建方便，配置简单，采用自建邮件服务器方案较为推荐
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 搭建方便，配置简单，采用自建邮件服务器方案较为推荐</span><br><span class="line"></span><br><span class="line">2. VPS一般会封禁25端口，需选择小众VPS厂商自建邮件服务器，或向客服申请25端口开放；对外发送邮件较麻烦</span><br><span class="line"></span><br><span class="line">3. 自建邮件服务器发送邮件容易被识别为垃圾邮件，即使配置SPF、DKIM也存在被当成垃圾邮件的情况；维护相对较麻烦</span><br></pre></td></tr></table></figure>
 
-2. VPS一般会封禁25端口，需选择小众VPS厂商自建邮件服务器，或向客服申请25端口开放；对外发送邮件较麻烦
-
-3. 自建邮件服务器发送邮件容易被识别为垃圾邮件，即使配置SPF、DKIM也存在被当成垃圾邮件的情况；维护相对较麻烦
-</code></pre>
 <p><strong>方案二：专业电子邮件托管服务</strong> - <a target="_blank" rel="noopener" href="https://www.zoho.com/mail/">Zoho Mail</a></p>
 <p>使用体验</p>
-<pre><code>1. 基本可以避免被识别为垃圾邮件的情况
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 基本可以避免被识别为垃圾邮件的情况</span><br><span class="line"></span><br><span class="line">2. 配置及维护方便，可避免自建邮件服务器带来的一系列问题</span><br><span class="line"></span><br><span class="line">3. 对外发送邮件基本不存在问题，SMTP默认使用465/587端口，加密传输邮件，安全性较高</span><br><span class="line"></span><br><span class="line">4. 实际使用中，与gophish钓鱼平台联动效果较好，基本不需要投入过多时间配置</span><br></pre></td></tr></table></figure>
 
-2. 配置及维护方便，可避免自建邮件服务器带来的一系列问题
-
-3. 对外发送邮件基本不存在问题，SMTP默认使用465/587端口，加密传输邮件，安全性较高
-
-4. 实际使用中，与gophish钓鱼平台联动效果较好，基本不需要投入过多时间配置
-</code></pre>
 <p><em>refer：</em> <a target="_blank" rel="noopener" href="https://www.10besty.com/best-email-hosting-providers/#two">https://www.10besty.com/best-email-hosting-providers/#two</a></p>
 <h4 id="d-钓鱼平台"><a href="#d-钓鱼平台" class="headerlink" title="d. 钓鱼平台"></a>d. 钓鱼平台</h4><p><a target="_blank" rel="noopener" href="https://github.com/gophish/gophish">Gophish</a></p>
-<pre><code>Gophish is a powerful, open-source phishing framework that makes it easy to test your organization&#39;s exposure to phishing
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Gophish is a powerful, open-source phishing framework that makes it easy to test your organization&#x27;s exposure to phishing</span><br></pre></td></tr></table></figure>
+
 <h4 id="e-红队平台"><a href="#e-红队平台" class="headerlink" title="e. 红队平台"></a>e. 红队平台</h4><p><a target="_blank" rel="noopener" href="https://blog.cobaltstrike.com/">Cobalt Strike</a></p>
-<pre><code>一款优秀的红队攻击平台，主要用于执行有目标的攻击和模拟高级威胁者的后渗透行动；本文主要用此制作钓鱼诱饵、载荷投递及远控，CS的Spear Phish模块也可进行钓鱼测试
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一款优秀的红队攻击平台，主要用于执行有目标的攻击和模拟高级威胁者的后渗透行动；本文主要用此制作钓鱼诱饵、载荷投递及远控，CS的Spear Phish模块也可进行钓鱼测试</span><br></pre></td></tr></table></figure>
+
 <h3 id="2-邮件服务器"><a href="#2-邮件服务器" class="headerlink" title="2. 邮件服务器"></a>2. 邮件服务器</h3><h4 id="a-Ewomail"><a href="#a-Ewomail" class="headerlink" title="a. Ewomail"></a>a. Ewomail</h4><p>参考<a target="_blank" rel="noopener" href="http://doc.ewomail.com/docs/ewomail/jianjie">EwoMail 邮件服务器(开源版文档)</a>进行邮件服务器的搭建</p>
 <p><strong>邮件基础</strong></p>
 <table>
@@ -405,74 +386,14 @@ HTA是HTML Application的缩写，直接将HTML保存成HTA的格式，是一个
 </tr>
 </tbody></table>
 <p><strong>注意事项</strong></p>
-<pre><code>1. 服务器VPS需要干净环境，要求全新干净系统，最好单独供Ewomail使用，不能安装在已有的nginx,mysql的环境中
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 服务器VPS需要干净环境，要求全新干净系统，最好单独供Ewomail使用，不能安装在已有的nginx,mysql的环境中</span><br><span class="line"></span><br><span class="line">2. 新版本的杀毒软件占用的内存比较多，可参考(http://doc.ewomail.com/docs/ewomail/reduce_memory)降低内存占用</span><br><span class="line"></span><br><span class="line">3. webmail https证书配置：系统自带了本地SSL证书，但未经认证；可使用经互联网经认证的证书，如通过 Let’s Encrypt、Cloudlare等申请免费可信证书</span><br><span class="line"></span><br><span class="line">4. 开放端口：必须打开的端口8000(webmail)，8010(管理后台)，25(SMTP)，143(IMAP)；可修改</span><br><span class="line"></span><br><span class="line">5. DKIM设置：推荐设置域名密钥识别邮件标准，用来防止被判定为垃圾邮件；参考(http://doc.ewomail.com/docs/ewomail/dkim)</span><br></pre></td></tr></table></figure>
 
-2. 新版本的杀毒软件占用的内存比较多，可参考(http://doc.ewomail.com/docs/ewomail/reduce_memory)降低内存占用
-
-3. webmail https证书配置：系统自带了本地SSL证书，但未经认证；可使用经互联网经认证的证书，如通过 Let’s Encrypt、Cloudlare等申请免费可信证书
-
-4. 开放端口：必须打开的端口8000(webmail)，8010(管理后台)，25(SMTP)，143(IMAP)；可修改
-
-5. DKIM设置：推荐设置域名密钥识别邮件标准，用来防止被判定为垃圾邮件；参考(http://doc.ewomail.com/docs/ewomail/dkim)
-</code></pre>
 <p><strong>问题总结</strong></p>
-<pre><code>1. 无法连接服务器：邮件无法发送、接收等
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 无法连接服务器：邮件无法发送、接收等</span><br><span class="line"></span><br><span class="line">a. 检查VPS服务商是否开放25端口出站方向，如未开放可通过工单、客服等联系运营商申请开放25端口出站方向；或使用465等其他端口发送邮件</span><br><span class="line"></span><br><span class="line">b. 25端口正常的情况下，如果不能链接服务器，请检查域名DNS解析，或做内部通信</span><br><span class="line"></span><br><span class="line">2. 域不允许</span><br><span class="line"></span><br><span class="line">a. 当显示域不允许的时候，先检查域名解析是否已做好，如果只在本地搭建测试，测试内部通信是否正常</span><br><span class="line">	</span><br><span class="line">b. 如以上2个步骤还不行，参考自定义访问路径文章(http://doc.ewomail.com/docs/ewomail/custom_path)，填上具体的访问地址</span><br></pre></td></tr></table></figure>
 
-a. 检查VPS服务商是否开放25端口出站方向，如未开放可通过工单、客服等联系运营商申请开放25端口出站方向；或使用465等其他端口发送邮件
-
-b. 25端口正常的情况下，如果不能链接服务器，请检查域名DNS解析，或做内部通信
-
-2. 域不允许
-
-a. 当显示域不允许的时候，先检查域名解析是否已做好，如果只在本地搭建测试，测试内部通信是否正常
-    
-b. 如以上2个步骤还不行，参考自定义访问路径文章(http://doc.ewomail.com/docs/ewomail/custom_path)，填上具体的访问地址
-</code></pre>
 <p><strong>配置&#x2F;命令</strong></p>
-<pre><code>1. 默认安装及配置目录
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1. 默认安装及配置目录</span><br><span class="line"></span><br><span class="line">/ewomail</span><br><span class="line">.</span><br><span class="line">├── config.ini</span><br><span class="line">├── dkim</span><br><span class="line">├── mail</span><br><span class="line">├── mysql</span><br><span class="line">├── nginx</span><br><span class="line">├── php72</span><br><span class="line">└── www</span><br><span class="line"></span><br><span class="line">2. 管理后台、webmail的nginx配置</span><br><span class="line"></span><br><span class="line">/ewomail/nginx/conf/vhost</span><br><span class="line"></span><br><span class="line">├── ewomail-admin.conf      //管理后台</span><br><span class="line">├── phpmyadmin.conf         //数据库</span><br><span class="line">├── rainloop.conf           //webmail</span><br><span class="line">└── rainloop.conf.ssl       //webmail ssl配置</span><br><span class="line"></span><br><span class="line">3. PHP配置文件: 可修改后台管理或webmail的访问路径</span><br><span class="line"></span><br><span class="line">/ewomail/www/ewomail-admin/core/config.php</span><br><span class="line">	</span><br><span class="line">├── &#x27;url&#x27; =&gt; &#x27;ewomail后台访问路径&#x27;</span><br><span class="line">└── &#x27;webmail_url&#x27; =&gt; &#x27;webmail的访问路径&#x27;</span><br><span class="line"></span><br><span class="line">4. 卸载命令</span><br><span class="line"></span><br><span class="line">$ systemctl stop nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">$ rm -rf /ewomail</span><br><span class="line"></span><br><span class="line">5. 重启命令</span><br><span class="line"></span><br><span class="line">$ systemctl restart nginx php-fpm mysqld postfix dovecot amavisd</span><br><span class="line"></span><br><span class="line">6. 组件查找</span><br><span class="line"></span><br><span class="line">$ yum install mlocate &amp;&amp; updatedb   // 安装locate所在文件包并更新搜索数据库</span><br><span class="line">	</span><br><span class="line">$ locate amavisd   //查找邮件内容过滤器amavised相关文件/文件夹</span><br></pre></td></tr></table></figure>
 
-/ewomail
-.
-├── config.ini
-├── dkim
-├── mail
-├── mysql
-├── nginx
-├── php72
-└── www
-
-2. 管理后台、webmail的nginx配置
-
-/ewomail/nginx/conf/vhost
-
-├── ewomail-admin.conf      //管理后台
-├── phpmyadmin.conf         //数据库
-├── rainloop.conf           //webmail
-└── rainloop.conf.ssl       //webmail ssl配置
-
-3. PHP配置文件: 可修改后台管理或webmail的访问路径
-
-/ewomail/www/ewomail-admin/core/config.php
-    
-├── &#39;url&#39; =&gt; &#39;ewomail后台访问路径&#39;
-└── &#39;webmail_url&#39; =&gt; &#39;webmail的访问路径&#39;
-
-4. 卸载命令
-
-$ systemctl stop nginx php-fpm mysqld postfix dovecot amavisd
-
-$ rm -rf /ewomail
-
-5. 重启命令
-
-$ systemctl restart nginx php-fpm mysqld postfix dovecot amavisd
-
-6. 组件查找
-
-$ yum install mlocate &amp;&amp; updatedb   // 安装locate所在文件包并更新搜索数据库
-    
-$ locate amavisd   //查找邮件内容过滤器amavised相关文件/文件夹
-</code></pre>
 <p><strong>管理后台</strong></p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/ewomail.png"></p>
 <p><strong>Webmail</strong></p>
@@ -484,28 +405,8 @@ $ locate amavisd   //查找邮件内容过滤器amavised相关文件/文件夹
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/send.png"></p>
 <p><code>采用此方案，对外发送邮件基本没什么问题，也不用担心被识别为垃圾邮件</code></p>
 <h3 id="3-钓鱼平台"><a href="#3-钓鱼平台" class="headerlink" title="3. 钓鱼平台"></a>3. 钓鱼平台</h3><p><strong>安装运行</strong></p>
-<pre><code>1. 下载解压
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1. 下载解压</span><br><span class="line"></span><br><span class="line">$ wget https://github.com/gophish/gophish/releases/download/v0.11.0/gophish-v0.11.0-linux-64bit.zip</span><br><span class="line"></span><br><span class="line">$ unzip gophish-v0.11.0-linux-64bit.zip -d gophish</span><br><span class="line"></span><br><span class="line">2. 修改配置(config.json)</span><br><span class="line"></span><br><span class="line">admin_server是后台管理页面，将127.0.0.1 改为 0.0.0.0，默认开放的端口3333。phish_server是钓鱼网站，默认开放80端口</span><br><span class="line"></span><br><span class="line">3. 启动运行</span><br><span class="line"></span><br><span class="line">$ cd gophish &amp;&amp; chmod 640 config.json &amp;&amp; chmod +x gophish</span><br><span class="line"></span><br><span class="line">$ nohup ./gophish &amp;  //后台运行，日志记录至nohup.out文件</span><br><span class="line"></span><br><span class="line">成功启动后，在nohup.out文件中的初始账户密码可用来登录控制台</span><br><span class="line"></span><br><span class="line">4. 首次登录强制修改密码，要求八位以上字符</span><br><span class="line"></span><br><span class="line">地址：https://x.x.x.x:3333/</span><br></pre></td></tr></table></figure>
 
-$ wget https://github.com/gophish/gophish/releases/download/v0.11.0/gophish-v0.11.0-linux-64bit.zip
-
-$ unzip gophish-v0.11.0-linux-64bit.zip -d gophish
-
-2. 修改配置(config.json)
-
-admin_server是后台管理页面，将127.0.0.1 改为 0.0.0.0，默认开放的端口3333。phish_server是钓鱼网站，默认开放80端口
-
-3. 启动运行
-
-$ cd gophish &amp;&amp; chmod 640 config.json &amp;&amp; chmod +x gophish
-
-$ nohup ./gophish &amp;  //后台运行，日志记录至nohup.out文件
-
-成功启动后，在nohup.out文件中的初始账户密码可用来登录控制台
-
-4. 首次登录强制修改密码，要求八位以上字符
-
-地址：https://x.x.x.x:3333/
-</code></pre>
 <p><strong>功能介绍</strong></p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/phish.png"></p>
 <center>功能|<center>简述
@@ -520,39 +421,12 @@ Account Settings|账户、UI、报告等设置
 
 <h3 id="4-CS-平台"><a href="#4-CS-平台" class="headerlink" title="4. CS 平台"></a>4. CS 平台</h3><p>搭建及使用可参考<a target="_blank" rel="noopener" href="https://blog.ateam.qianxin.com/CobaltStrike4.0%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91.pdf">A-Team: Cobalt Strike 4.0 手册</a>及<a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/">Cobalt Strike Book</a></p>
 <p><strong>目录简介</strong></p>
-<pre><code>➜  CobaltStrike4.1 tree -L 1
-.
-├── agscript               //[拓展应用的脚本]
-├── agscript.bat
-├── c2lint                 //[检查c2配置文件语法和预览]
-├── c2lint.bat
-├── cobaltstrike           //[客户端启动程序]
-├── cobaltstrike.auth
-├── cobaltstrike.bat       //[CS Windows客户端启动程序]
-├── CobaltStrikeCN.jar     //[翻译插件]
-├── cobaltstrike.jar       //[主体程序]
-├── cobaltstrike.store
-├── data
-├── logs
-├── nohup.out              //[后台启动日志记录]-个人创建
-├── peclone
-├── peclone.bat
-├── start.sh               //[服务端后台启动脚本] -个人创建
-├── teamserver             //[Linux服务端启动程序]
-├── teamserver.bat
-└── third-party            //[vnc远程功能的dll等第三方工具]
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  CobaltStrike4.1 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── agscript               //[拓展应用的脚本]</span><br><span class="line">├── agscript.bat</span><br><span class="line">├── c2lint                 //[检查c2配置文件语法和预览]</span><br><span class="line">├── c2lint.bat</span><br><span class="line">├── cobaltstrike           //[客户端启动程序]</span><br><span class="line">├── cobaltstrike.auth</span><br><span class="line">├── cobaltstrike.bat       //[CS Windows客户端启动程序]</span><br><span class="line">├── CobaltStrikeCN.jar     //[翻译插件]</span><br><span class="line">├── cobaltstrike.jar       //[主体程序]</span><br><span class="line">├── cobaltstrike.store</span><br><span class="line">├── data</span><br><span class="line">├── logs</span><br><span class="line">├── nohup.out              //[后台启动日志记录]-个人创建</span><br><span class="line">├── peclone</span><br><span class="line">├── peclone.bat</span><br><span class="line">├── start.sh               //[服务端后台启动脚本] -个人创建</span><br><span class="line">├── teamserver             //[Linux服务端启动程序]</span><br><span class="line">├── teamserver.bat</span><br><span class="line">└── third-party            //[vnc远程功能的dll等第三方工具]</span><br></pre></td></tr></table></figure>
+
 <p><strong>启动运行</strong></p>
-<pre><code>1. Cobalt Strike 团队服务器建议在VPS Linux 系统上运行，可持久运行，连接便捷
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Cobalt Strike 团队服务器建议在VPS Linux 系统上运行，可持久运行，连接便捷</span><br><span class="line"></span><br><span class="line">$ nohup sh start.sh &amp;  //后台启动，日志记录至nohup.out</span><br><span class="line"></span><br><span class="line">启动脚本start.sh：teamserver &lt;server_host&gt; &lt;password&gt; [/path/to/c2.profile] [YYYY-MM-DD]</span><br><span class="line"></span><br><span class="line">2. 客户端选用Windows：运行teamserver.bat启动，输入服务端启动时配置的server_host、password即可</span><br></pre></td></tr></table></figure>
 
-$ nohup sh start.sh &amp;  //后台启动，日志记录至nohup.out
-
-启动脚本start.sh：teamserver &lt;server_host&gt; &lt;password&gt; [/path/to/c2.profile] [YYYY-MM-DD]
-
-2. 客户端选用Windows：运行teamserver.bat启动，输入服务端启动时配置的server_host、password即可
-</code></pre>
-<h2 id="0x04-钓鱼实战"><a href="#0x04-钓鱼实战" class="headerlink" title="0x04 钓鱼实战"></a>0x04 钓鱼实战</h2><pre><code>根据搭建的钓鱼平台、制定的钓鱼方案，选取个人及同事通用邮箱、内部邮箱进行测试；针对全体员工的钓鱼测试修改收件人邮箱账号即可，原理及方法类似；本测试选取邮箱账户密码更新钓鱼场景，其余场景过程类似
-</code></pre>
+<h2 id="0x04-钓鱼实战"><a href="#0x04-钓鱼实战" class="headerlink" title="0x04 钓鱼实战"></a>0x04 钓鱼实战</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据搭建的钓鱼平台、制定的钓鱼方案，选取个人及同事通用邮箱、内部邮箱进行测试；针对全体员工的钓鱼测试修改收件人邮箱账号即可，原理及方法类似；本测试选取邮箱账户密码更新钓鱼场景，其余场景过程类似</span><br></pre></td></tr></table></figure>
 <h3 id="1-创建邮件用户-x2F-组"><a href="#1-创建邮件用户-x2F-组" class="headerlink" title="1. 创建邮件用户&#x2F;组"></a>1. 创建邮件用户&#x2F;组</h3><p>可通过上传CVS文件，进行批量添加邮件账号，批量发送邮件</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/group.png"></p>
 <p>测试选取了两个外部邮件服务商邮件账号、一个内部邮件账号</p>
@@ -563,18 +437,15 @@ $ nohup sh start.sh &amp;  //后台启动，日志记录至nohup.out
 </code></pre>
 <h3 id="3-伪造钓鱼页面"><a href="#3-伪造钓鱼页面" class="headerlink" title="3. 伪造钓鱼页面"></a>3. 伪造钓鱼页面</h3><p>配置好钓鱼邮件后，可以通过LandingPages模块来新建钓鱼网站页面，支持手写 html文件，也可通过导入网站功能，针对目标网页进行克隆; 如以下抓取内部网页邮箱登录界面：</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/4_page.png"></p>
-<pre><code>1. 选上CaptureSubmitted Data和CapturePasswords，记录受害者输入的账号和密码，为安全性，暂不选取密码记录
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 选上CaptureSubmitted Data和CapturePasswords，记录受害者输入的账号和密码，为安全性，暂不选取密码记录</span><br><span class="line"></span><br><span class="line">2. Redirect to 是受害者点击完提交按钮后，自动跳转的网站</span><br></pre></td></tr></table></figure>
 
-2. Redirect to 是受害者点击完提交按钮后，自动跳转的网站
-</code></pre>
 <h3 id="4-发起钓鱼攻击"><a href="#4-发起钓鱼攻击" class="headerlink" title="4. 发起钓鱼攻击"></a>4. 发起钓鱼攻击</h3><p>配置Campaigns，填写Name、选择钓鱼邮件模板、选择钓鱼网站模板、填写钓鱼网站 URL、填写发件邮箱、选择受害者邮件组</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/5_campaign.png"></p>
-<pre><code>钓鱼网站URL根据实际钓鱼邮件测试情况，填写对应的地址，点击Launch Campaign即可成功发起一次钓鱼邮件攻击测试
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">钓鱼网站URL根据实际钓鱼邮件测试情况，填写对应的地址，点击Launch Campaign即可成功发起一次钓鱼邮件攻击测试</span><br></pre></td></tr></table></figure>
+
 <h3 id="5-仪表板查看"><a href="#5-仪表板查看" class="headerlink" title="5. 仪表板查看"></a>5. 仪表板查看</h3><p>实际测试中，选取了三个邮件账号，一个未打开邮件、一个打开邮件并点击链接、一个打开邮件后点击链接并输入登录账号密码，最终结果如下，和测试结果相同：</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/6_dashboard.png"></p>
-<pre><code>通过仪表盘可详细看到那些邮件账户打开了邮件、点击了指定链接、并输入了账户和密码信息；钓鱼链接对主机无危害、仅显示那些账号对其进行了访问
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过仪表盘可详细看到那些邮件账户打开了邮件、点击了指定链接、并输入了账户和密码信息；钓鱼链接对主机无危害、仅显示那些账号对其进行了访问</span><br></pre></td></tr></table></figure>
 <hr>
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
 </center></center>

@@ -301,128 +301,46 @@
 <td>内核日志</td>
 </tr>
 </tbody></table>
-<h3 id="2-清空日志文件"><a href="#2-清空日志文件" class="headerlink" title="2. 清空日志文件"></a>2. 清空日志文件</h3><pre><code>1）通过重定向到空来清空日志
+<h3 id="2-清空日志文件"><a href="#2-清空日志文件" class="headerlink" title="2. 清空日志文件"></a>2. 清空日志文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1）通过重定向到空来清空日志</span><br><span class="line"></span><br><span class="line">    &gt; /var/log/access.log    # 清除web访问日志</span><br><span class="line"></span><br><span class="line">2）将输出:或true内置命令重定向到文件</span><br><span class="line"></span><br><span class="line">    ：&gt; /var/log/secure      # 清除安全日志记录</span><br><span class="line">    OR</span><br><span class="line">    true &gt; /var/log/secure</span><br><span class="line"></span><br><span class="line">3）cat/cp/dd命令结合/dev/null清空文件</span><br><span class="line"></span><br><span class="line">    /dev/null设备文件是一个特殊文件，可以注销（删除）发送给它的任何输入</span><br><span class="line"></span><br><span class="line">    cat /dev/null &gt; /var/log/cron</span><br><span class="line"></span><br><span class="line">    cp /dev/null  /var/log/cron</span><br><span class="line"></span><br><span class="line">    dd if=dev/null of=/var/log/cron  # if表示输入文件,of引用输出文件</span><br><span class="line"></span><br><span class="line">4) 使用echo命令清空文件</span><br><span class="line"></span><br><span class="line">    使用带有空字符串的echo命令，并将其重定向到文件，空字符串与null不同，字符串是一个对象，因为它可能是空的，而null意味着不存在对象</span><br><span class="line"></span><br><span class="line">    echo &quot;&quot; &gt; access.log </span><br><span class="line">    或</span><br><span class="line">    echo &gt; access.log</span><br><span class="line">    或</span><br><span class="line">    echo -n &quot;&quot; &gt; access.log   # 使用-n告知echo的标志不输出导致上一个命令中生成的空行的尾部换行符</span><br><span class="line"></span><br><span class="line">5）使用truncate命令清空文件</span><br><span class="line"></span><br><span class="line">    截断命令有助于收缩或文件的大小扩大到规定的尺寸，可以使用-s指定文件大小的选项。要清空文件内容，可使用大小为0（零）</span><br><span class="line"></span><br><span class="line">    truncate -s 0 access.log</span><br></pre></td></tr></table></figure>
 
-    &gt; /var/log/access.log    # 清除web访问日志
-
-2）将输出:或true内置命令重定向到文件
-
-    ：&gt; /var/log/secure      # 清除安全日志记录
-    OR
-    true &gt; /var/log/secure
-
-3）cat/cp/dd命令结合/dev/null清空文件
-
-    /dev/null设备文件是一个特殊文件，可以注销（删除）发送给它的任何输入
-
-    cat /dev/null &gt; /var/log/cron
-
-    cp /dev/null  /var/log/cron
-
-    dd if=dev/null of=/var/log/cron  # if表示输入文件,of引用输出文件
-
-4) 使用echo命令清空文件
-
-    使用带有空字符串的echo命令，并将其重定向到文件，空字符串与null不同，字符串是一个对象，因为它可能是空的，而null意味着不存在对象
-
-    echo &quot;&quot; &gt; access.log 
-    或
-    echo &gt; access.log
-    或
-    echo -n &quot;&quot; &gt; access.log   # 使用-n告知echo的标志不输出导致上一个命令中生成的空行的尾部换行符
-
-5）使用truncate命令清空文件
-
-    截断命令有助于收缩或文件的大小扩大到规定的尺寸，可以使用-s指定文件大小的选项。要清空文件内容，可使用大小为0（零）
-
-    truncate -s 0 access.log
-</code></pre>
 <h3 id="3-删除-x2F-替换日志"><a href="#3-删除-x2F-替换日志" class="headerlink" title="3. 删除&#x2F;替换日志"></a>3. 删除&#x2F;替换日志</h3><p>全部清空日志，动静太大，可选择性删除&#x2F;替换部分关键日志，隐藏痕迹</p>
-<pre><code>sed  -i &#39;/攻击ip/d&#39;  /var/log/secure    # 删除登录日志攻击ip所在的行
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed  -i &#x27;/攻击ip/d&#x27;  /var/log/secure    # 删除登录日志攻击ip所在的行</span><br><span class="line"></span><br><span class="line">sed -i &#x27;s/192.168.1.1/127.0.0.1/g&#x27; /var/log/access.log  # 全局替换访问IP地址</span><br><span class="line"></span><br><span class="line">cat /var/log/nginx/access.log | grep -v shell.php &gt; tmp.log  # 删除入侵相关信息</span><br><span class="line"></span><br><span class="line">cat tmp.log &gt; /var/log/nginx/access.log/  # 把修改过的日志覆盖到原日志文件</span><br></pre></td></tr></table></figure>
 
-sed -i &#39;s/192.168.1.1/127.0.0.1/g&#39; /var/log/access.log  # 全局替换访问IP地址
+<h2 id="0x02-清除历史命令"><a href="#0x02-清除历史命令" class="headerlink" title="0x02 清除历史命令"></a>0x02 清除历史命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1) 清除/部分删除历史命令</span><br><span class="line"></span><br><span class="line">    history -c &amp;&amp; exit</span><br><span class="line"></span><br><span class="line">    vim ~/.bash_history</span><br><span class="line"></span><br><span class="line">2）不记录历史命令</span><br><span class="line"></span><br><span class="line">    unset HISTORY HISTFILE HISTSAVE HISTZONE HISTORY HISTLOG; export HISTFILE=/dev/null; export HISTSIZE=0; export HISTFILESIZE=0</span><br><span class="line"></span><br><span class="line">    修改配置文件/etc/profile，不再保存命令记录：HISTSIZE=0</span><br><span class="line"></span><br><span class="line">3）vim特性利用</span><br><span class="line"></span><br><span class="line">    :set history=0   # 设置vim不记录命令，vim会将命令历史记录，保存在viminfo文件中</span><br><span class="line"></span><br><span class="line">    vsp ~/.bash_history  # 用vim的分屏功能打开命令记录文件.bash_history，编辑文件删除历史操作命令</span><br><span class="line"></span><br><span class="line">    :set history=0   # vim中执行不想让其他人看到的命令</span><br><span class="line">    :!command</span><br></pre></td></tr></table></figure>
 
-cat /var/log/nginx/access.log | grep -v shell.php &gt; tmp.log  # 删除入侵相关信息
-
-cat tmp.log &gt; /var/log/nginx/access.log/  # 把修改过的日志覆盖到原日志文件
-</code></pre>
-<h2 id="0x02-清除历史命令"><a href="#0x02-清除历史命令" class="headerlink" title="0x02 清除历史命令"></a>0x02 清除历史命令</h2><pre><code>1) 清除/部分删除历史命令
-
-    history -c &amp;&amp; exit
-
-    vim ~/.bash_history
-
-2）不记录历史命令
-
-    unset HISTORY HISTFILE HISTSAVE HISTZONE HISTORY HISTLOG; export HISTFILE=/dev/null; export HISTSIZE=0; export HISTFILESIZE=0
-
-    修改配置文件/etc/profile，不再保存命令记录：HISTSIZE=0
-
-3）vim特性利用
-
-    :set history=0   # 设置vim不记录命令，vim会将命令历史记录，保存在viminfo文件中
-
-    vsp ~/.bash_history  # 用vim的分屏功能打开命令记录文件.bash_history，编辑文件删除历史操作命令
-
-    :set history=0   # vim中执行不想让其他人看到的命令
-    :!command
-</code></pre>
 <h2 id="0x03-文件删除工具"><a href="#0x03-文件删除工具" class="headerlink" title="0x03 文件删除工具"></a>0x03 文件删除工具</h2><h3 id="1-shred命令"><a href="#1-shred命令" class="headerlink" title="1. shred命令"></a>1. shred命令</h3><p>shred 会覆盖文件来隐藏它的内容，也可以选择删除</p>
-<pre><code>$ shred -zvu -n  5 passwords.list
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ shred -zvu -n  5 passwords.list</span><br><span class="line"></span><br><span class="line">-z - 用零覆盖以隐藏碎片</span><br><span class="line">-v - 显示操作进度</span><br><span class="line">-u - 在覆盖后截断并删除文件</span><br><span class="line">-n - 指定覆盖文件内容的次数（默认值为3）</span><br></pre></td></tr></table></figure>
 
--z - 用零覆盖以隐藏碎片
--v - 显示操作进度
--u - 在覆盖后截断并删除文件
--n - 指定覆盖文件内容的次数（默认值为3）
-</code></pre>
 <h3 id="2-wipe命令"><a href="#2-wipe命令" class="headerlink" title="2. wipe命令"></a>2. wipe命令</h3><p>wipe 命令可以安全地擦除磁盘中的文件，从而无法恢复删除的文件或目录内容</p>
-<pre><code>$ sudo apt-get install wipe   [Debian 及其衍生版]
-$ sudo yum install wipe       [基于 RedHat 的系统]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install wipe   [Debian 及其衍生版]</span><br><span class="line">$ sudo yum install wipe       [基于 RedHat 的系统]</span><br><span class="line"></span><br><span class="line">$ wipe -rfi private/*   # 销毁 private 目录下的所有文件</span><br><span class="line"></span><br><span class="line">$ wipe /dev/sda1        # 删除完整分区的内容</span><br><span class="line"></span><br><span class="line">-r - 告诉 wipe 递归地擦除子目录</span><br><span class="line">-f - 启用强制删除并禁用确认查询</span><br><span class="line">-i - 显示擦除进度</span><br></pre></td></tr></table></figure>
 
-$ wipe -rfi private/*   # 销毁 private 目录下的所有文件
-
-$ wipe /dev/sda1        # 删除完整分区的内容
-
--r - 告诉 wipe 递归地擦除子目录
--f - 启用强制删除并禁用确认查询
--i - 显示擦除进度
-</code></pre>
 <h3 id="3-Secure-Delete"><a href="#3-Secure-Delete" class="headerlink" title="3. Secure-Delete"></a>3. Secure-Delete</h3><p>Secure-Delete 是一组工具集合，提供srm、smem、sfill、sswap，4个安全删除文件的命令行工具</p>
-<pre><code>$ sudo apt-get install secure-delete   [Debian 及其衍生版]
-$ sudo yum install secure-delete       [基于 RedHat 的系统]
-</code></pre>
-<p><strong>srm</strong></p>
-<pre><code>$ srm -vz private/*
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install secure-delete   [Debian 及其衍生版]</span><br><span class="line">$ sudo yum install secure-delete       [基于 RedHat 的系统]</span><br></pre></td></tr></table></figure>
 
--v – 启用 verbose 模式
--z – 用0而不是随机数据来擦除最后的写入
-</code></pre>
+<p><strong>srm</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ srm -vz private/*</span><br><span class="line"></span><br><span class="line">-v – 启用 verbose 模式</span><br><span class="line">-z – 用0而不是随机数据来擦除最后的写入</span><br></pre></td></tr></table></figure>
+
 <p><strong>sfill</strong></p>
 <p>sfill 是 secure-deletetion 工具包的一部分，是一个安全免费的磁盘和 inode 空间擦除器，它以安全的方法删除可用磁盘空间中的文件。sfill 会检查指定分区上的可用空间，并使用来自 &#x2F;dev&#x2F;urandom 的随机数据填充它</p>
-<pre><code>$ sudo sfill -v /home/username
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo sfill -v /home/username</span><br></pre></td></tr></table></figure>
+
 <p><strong>sswap</strong></p>
 <p>sswap 以安全的方式删除 swap 分区上存在的数据，在使用 sswap 之前需卸载 swap 分区</p>
-<pre><code>$ cat /proc/swaps 
-$ swapon                  # 检查分页和交换设备/文件是否已经使用
-$ sudo swapoff /dev/sda6  # 禁用分页和交换设备/文件
-$ sudo sswap /dev/sda6    # 命令要花费一些时间，默认要进行 38 遍擦除
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/swaps </span><br><span class="line">$ swapon                  # 检查分页和交换设备/文件是否已经使用</span><br><span class="line">$ sudo swapoff /dev/sda6  # 禁用分页和交换设备/文件</span><br><span class="line">$ sudo sswap /dev/sda6    # 命令要花费一些时间，默认要进行 38 遍擦除</span><br></pre></td></tr></table></figure>
+
 <p><strong>sdmem</strong></p>
 <p>sdmem 是一个安全的内存擦除器，其设计目的是以安全的方式删除存储器（RAM）中的数据</p>
-<pre><code>$ sudo sdmem -f -v
-</code></pre>
-<h3 id="4-dd命令"><a href="#4-dd命令" class="headerlink" title="4. dd命令"></a>4. dd命令</h3><p>dd命令起初是用于磁盘克隆的，它用于将一个分区或者一个磁盘复制到另一个分区或者磁盘。但是它还可用于安全地清除硬盘或者分区的内容</p>
-<pre><code>sudo dd if=/dev/random of=/dev/sda
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo sdmem -f -v</span><br></pre></td></tr></table></figure>
 
-sudo dd if=/dev/zero of=要删除的文件 bs=大小 count=写入的次数
-</code></pre>
+<h3 id="4-dd命令"><a href="#4-dd命令" class="headerlink" title="4. dd命令"></a>4. dd命令</h3><p>dd命令起初是用于磁盘克隆的，它用于将一个分区或者一个磁盘复制到另一个分区或者磁盘。但是它还可用于安全地清除硬盘或者分区的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dd if=/dev/random of=/dev/sda</span><br><span class="line"></span><br><span class="line">sudo dd if=/dev/zero of=要删除的文件 bs=大小 count=写入的次数</span><br></pre></td></tr></table></figure>
+
 <h3 id="5-隐藏远程SSH登录记录"><a href="#5-隐藏远程SSH登录记录" class="headerlink" title="5. 隐藏远程SSH登录记录"></a>5. 隐藏远程SSH登录记录</h3><p>隐身登录系统，不会被w、who、last等指令检测到</p>
-<pre><code>ssh -T root@192.168.0.1 /bin/bash -i
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T root@192.168.0.1 /bin/bash -i</span><br></pre></td></tr></table></figure>
+
 <p>不记录ssh公钥在本地.ssh目录中</p>
-<pre><code>ssh -o UserKnownHostsFile=/dev/null -T user@host /bin/bash –i
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -o UserKnownHostsFile=/dev/null -T user@host /bin/bash –i</span><br></pre></td></tr></table></figure>
+
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1070/">https://attack.mitre.org/techniques/T1070/</a></p>
 </li>

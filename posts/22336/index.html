@@ -262,10 +262,8 @@
 </li>
 </ul>
 <p>在Python中，列表用方括号[]表示，元组用圆括号()表示，字典用花括号{}表示</p>
-<pre><code class="python">my_list = [1, 2, 3]
-my_tuple = (4, 5, 6)
-my_dict = &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3&#125;
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">my_tuple = (<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">my_dict = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+
 <p><strong>适用场景</strong></p>
 <p>在Python中，列表、元组和字典都有自己的用途：</p>
 <ul>
@@ -276,132 +274,34 @@ my_dict = &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3&#125;
 <p>总之，应该根据实际情况来选择使用哪种数据类型。例如，如果需要保存一组不可变的数据，那么元组是最好的选择；如果需要保存一组键值对，那么字典是最好的选择。</p>
 <p><strong>操作实现</strong></p>
 <p>列表是有序的对象集合，可以通过编号访问其中的对象。它们用方括号括起来，并用逗号分隔其中的元素</p>
-<pre><code class="python"># 创建一个列表
-my_list = [1, 2, 3]
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个列表</span></span><br><span class="line">my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问列表中的元素</span></span><br><span class="line"><span class="built_in">print</span>(my_list[<span class="number">0</span>]) <span class="comment"># 输出 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改列表中的元素</span></span><br><span class="line">my_list[<span class="number">1</span>] = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在列表末尾添加元素</span></span><br><span class="line">my_list.append(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在列表中插入元素</span></span><br><span class="line">my_list.insert(<span class="number">1</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从列表中删除元素</span></span><br><span class="line"><span class="keyword">del</span> my_list[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
 
-# 访问列表中的元素
-print(my_list[0]) # 输出 1
-
-# 修改列表中的元素
-my_list[1] = 4
-
-# 在列表末尾添加元素
-my_list.append(5)
-
-# 在列表中插入元素
-my_list.insert(1, 6)
-
-# 从列表中删除元素
-del my_list[2]
-</code></pre>
 <p>元组与列表类似，也是有序的对象集合。但是与列表不同，元组是不可变的，一旦创建，就不能修改。它们用圆括号括起来，并用逗号分隔其中的元素</p>
-<pre><code class="python"># 创建一个元组
-my_tuple = (1, 2, 3)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个元组</span></span><br><span class="line">my_tuple = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问元组中的元素</span></span><br><span class="line"><span class="built_in">print</span>(my_tuple[<span class="number">0</span>]) <span class="comment"># 输出 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 元组是不可变的，因此无法修改元素</span></span><br><span class="line"><span class="comment"># 例如，下面的代码将会抛出 TypeError 异常</span></span><br><span class="line">my_tuple[<span class="number">1</span>] = <span class="number">4</span></span><br></pre></td></tr></table></figure>
 
-# 访问元组中的元素
-print(my_tuple[0]) # 输出 1
-
-# 元组是不可变的，因此无法修改元素
-# 例如，下面的代码将会抛出 TypeError 异常
-my_tuple[1] = 4
-</code></pre>
 <p>字典是一种映射类型，它将对象映射到键上，通过键来访问对象。它们用大括号括起来，并用冒号分隔键和值，多个键值对用逗号分隔</p>
-<pre><code class="python"># 创建一个字典
-my_dict = &#123;&quot;key1&quot;: 1, &quot;key2&quot;: 2, &quot;key3&quot;: 3&#125;
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个字典</span></span><br><span class="line">my_dict = &#123;<span class="string">&quot;key1&quot;</span>: <span class="number">1</span>, <span class="string">&quot;key2&quot;</span>: <span class="number">2</span>, <span class="string">&quot;key3&quot;</span>: <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问字典中的元素</span></span><br><span class="line"><span class="built_in">print</span>(my_dict[<span class="string">&quot;key1&quot;</span>]) <span class="comment"># 输出 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改字典中的元素</span></span><br><span class="line">my_dict[<span class="string">&quot;key2&quot;</span>] = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在字典中添加元素</span></span><br><span class="line">my_dict[<span class="string">&quot;key4&quot;</span>] = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除字典中的元素</span></span><br><span class="line"><span class="keyword">del</span> my_dict[<span class="string">&quot;key3&quot;</span>]</span><br></pre></td></tr></table></figure>
 
-# 访问字典中的元素
-print(my_dict[&quot;key1&quot;]) # 输出 1
-
-# 修改字典中的元素
-my_dict[&quot;key2&quot;] = 4
-
-# 在字典中添加元素
-my_dict[&quot;key4&quot;] = 5
-
-# 删除字典中的元素
-del my_dict[&quot;key3&quot;]
-</code></pre>
 <p>字典的键必须是不可变的类型，例如字符串或数字。但是值可以是任意类型，包括可变类型，例如列表</p>
-<pre><code class="python"># 创建一个字典，其中值是列表
-my_dict = &#123;&quot;key1&quot;: [1, 2, 3], &quot;key2&quot;: [4, 5, 6]&#125;
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个字典，其中值是列表</span></span><br><span class="line">my_dict = &#123;<span class="string">&quot;key1&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">&quot;key2&quot;</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问字典中的元素</span></span><br><span class="line"><span class="built_in">print</span>(my_dict[<span class="string">&quot;key1&quot;</span>]) <span class="comment"># 输出 [1, 2, 3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改字典中的元素，例如添加元素到列表中</span></span><br><span class="line">my_dict[<span class="string">&quot;key1&quot;</span>].append(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除字典中的元素</span></span><br><span class="line"><span class="keyword">del</span> my_dict[<span class="string">&quot;key2&quot;</span>]</span><br></pre></td></tr></table></figure>
 
-# 访问字典中的元素
-print(my_dict[&quot;key1&quot;]) # 输出 [1, 2, 3]
-
-# 修改字典中的元素，例如添加元素到列表中
-my_dict[&quot;key1&quot;].append(4)
-
-# 删除字典中的元素
-del my_dict[&quot;key2&quot;]
-</code></pre>
 <h3 id="2-迭代器与生成器"><a href="#2-迭代器与生成器" class="headerlink" title="2. 迭代器与生成器"></a>2. 迭代器与生成器</h3><p>迭代器和生成器都可以用来遍历序列中的元素。迭代器是一种对象，它能够用来遍历序列中的元素，但它不能用来修改序列中的元素。相反，生成器是一种特殊的迭代器，它可以用来生成新的值，而不是遍历已有的值。</p>
 <p>使用迭代器可以让我们更容易地遍历序列中的元素，而使用生成器则可以让我们更容易地生成新的值。</p>
 <p>使用迭代器来遍历一个列表：</p>
-<pre><code class="python">my_list = [1, 2, 3]
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">my_list = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建迭代器</span></span><br><span class="line">it = <span class="built_in">iter</span>(my_list)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过迭代器遍历列表中的元素</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(it))  <span class="comment"># 输出 1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(it))  <span class="comment"># 输出 2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(it))  <span class="comment"># 输出 3</span></span><br></pre></td></tr></table></figure>
 
-# 创建迭代器
-it = iter(my_list)
-
-# 通过迭代器遍历列表中的元素
-print(next(it))  # 输出 1
-print(next(it))  # 输出 2
-print(next(it))  # 输出 3
-</code></pre>
 <p>使用生成器来生成斐波那契数列中的元素：</p>
-<pre><code class="python">def fibonacci():
-    a, b = 0, 1
-    while True:
-        yield a
-        a, b = b, a + b
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>():</span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建生成器</span></span><br><span class="line">fib = fibonacci()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过生成器生成斐波那契数列中的元素</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(fib))  <span class="comment"># 输出 0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(fib))  <span class="comment"># 输出 1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(fib))  <span class="comment"># 输出 1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(fib))  <span class="comment"># 输出 2</span></span><br></pre></td></tr></table></figure>
 
-# 创建生成器
-fib = fibonacci()
-
-# 通过生成器生成斐波那契数列中的元素
-print(next(fib))  # 输出 0
-print(next(fib))  # 输出 1
-print(next(fib))  # 输出 1
-print(next(fib))  # 输出 2
-</code></pre>
 <h3 id="3-Python装饰器"><a href="#3-Python装饰器" class="headerlink" title="3. Python装饰器"></a>3. Python装饰器</h3><p>Python 装饰器是一个高阶函数，它接受一个函数作为输入并返回一个新的函数作为输出。允许在不改变原函数的基础上，添加额外的功能，有助于减少重复代码</p>
 <p><strong>定义一个装饰器来记录一个函数被调用的次数：</strong></p>
-<pre><code class="python">def call_counter(func):
-    def helper(*args, **kwargs):
-        helper.calls += 1
-        return func(*args, **kwargs)
-    helper.calls = 0
-    return helper
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">call_counter</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        helper.calls += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    helper.calls = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> helper</span><br><span class="line"></span><br><span class="line"><span class="meta">@call_counter</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">succ</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(succ.calls)  <span class="comment"># 0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    succ(i)</span><br><span class="line"><span class="built_in">print</span>(succ.calls)  <span class="comment"># 10</span></span><br></pre></td></tr></table></figure>
 
-@call_counter
-def succ(x):
-    return x + 1
-
-print(succ.calls)  # 0
-for i in range(10):
-    succ(i)
-print(succ.calls)  # 10
-</code></pre>
 <p>在这个例子中，我们定义了一个 call_counter 装饰器，它接受一个函数作为输入并返回一个新的函数，这个新函数会记录它被调用的次数。我们通过使用 @call_counter 语法来将这个装饰器应用于函数 succ。</p>
 <p>通过使用装饰器，我们能够在不改变 succ 函数本身的情况下添加一个计数功能。这种技术在很多场景下都很有用，包括缓存、权限控制、日志记录等等</p>
 <p><strong>实现一个计时器，对任何函数的执行时间计时：</strong></p>
-<pre><code class="python">import time
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">timer</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        start = time.time()</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        end = time.time()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;func.__name__&#125;</span> took <span class="subst">&#123;end - start&#125;</span> seconds to run.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@timer</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>():</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;hello!&quot;</span>)</span><br><span class="line"></span><br><span class="line">say_hello()  <span class="comment"># prints: &quot;hello!&quot; and &quot;say_hello took 1.0005841255187988 seconds to run.&quot;</span></span><br></pre></td></tr></table></figure>
 
-def timer(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        end = time.time()
-        print(f&quot;&#123;func.__name__&#125; took &#123;end - start&#125; seconds to run.&quot;)
-        return result
-    return wrapper
-
-@timer
-def say_hello():
-    time.sleep(1)
-    print(&quot;hello!&quot;)
-
-say_hello()  # prints: &quot;hello!&quot; and &quot;say_hello took 1.0005841255187988 seconds to run.&quot;
-</code></pre>
 <p>在这个示例中，timer 函数是一个装饰器，它接受一个函数作为参数并返回一个新函数，该函数在调用原函数之前计算运行时间，并在运行完成后打印出来。我们可以使用 @timer 语法糖来调用装饰器，这样就不用手动调用 timer 函数</p>
 <h3 id="4-多进程、多线程与协程"><a href="#4-多进程、多线程与协程" class="headerlink" title="4. 多进程、多线程与协程"></a>4. 多进程、多线程与协程</h3><p>Python有三种主要的并发模型：多进程、多线程和协程。</p>
 <p>多进程和多线程都可以用来实现并发执行多个任务。进程是操作系统中的一个基本执行单元，拥有独立的内存空间和系统资源，并且可以并行执行多个进程。线程是进程的一个执行流，拥有独立的执行栈和局部变量，并且可以并行执行多个线程。</p>
@@ -423,146 +323,31 @@ say_hello()  # prints: &quot;hello!&quot; and &quot;say_hello took 1.00058412551
 <h4 id="c-代码实现"><a href="#c-代码实现" class="headerlink" title="c. 代码实现"></a>c. 代码实现</h4><p><strong>多进程</strong></p>
 <p>在 Python 中，使用 multiprocessing 模块中的 Process 类或 Pool 类可以在多个 CPU 核心上运行多个进程，使用 concurrent.futures 模块中的 ProcessPoolExecutor 类或 ThreadPoolExecutor 类可以在单个 CPU 核心上运行多个进程</p>
 <p>1）使用 multiprocessing 模块中的 Process 类：</p>
-<pre><code class="python">from multiprocessing import Process
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting process <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a list to store the processes we want to run.</span></span><br><span class="line">    processes = []</span><br><span class="line">    <span class="comment"># Start 5 processes, each running the foo() function with a different number.</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        <span class="comment"># Create the Process object, passing the foo() function and the number we want to print.</span></span><br><span class="line">        p = Process(target=foo, args=(i,))</span><br><span class="line">        <span class="comment"># Add the process to the list of processes.</span></span><br><span class="line">        processes.append(p)</span><br><span class="line">        <span class="comment"># Start the process.</span></span><br><span class="line">        p.start()</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting process &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a list to store the processes we want to run.
-    processes = []
-    # Start 5 processes, each running the foo() function with a different number.
-    for i in range(5):
-        # Create the Process object, passing the foo() function and the number we want to print.
-        p = Process(target=foo, args=(i,))
-        # Add the process to the list of processes.
-        processes.append(p)
-        # Start the process.
-        p.start()
-</code></pre>
 <p>2）使用 multiprocessing 模块中的 Pool 类</p>
-<pre><code class="python">from multiprocessing import Pool
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting process <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a Pool object with 5 worker processes.</span></span><br><span class="line">    pool = Pool(<span class="number">5</span>)</span><br><span class="line">    <span class="comment"># Apply the foo() function to each number in the range 0-4.</span></span><br><span class="line">    pool.<span class="built_in">map</span>(foo, <span class="built_in">range</span>(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting process &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a Pool object with 5 worker processes.
-    pool = Pool(5)
-    # Apply the foo() function to each number in the range 0-4.
-    pool.map(foo, range(5))
-</code></pre>
 <p>3）使用 concurrent.futures 模块中的 ProcessPoolExecutor 类</p>
-<pre><code class="python">from concurrent.futures import ProcessPoolExecutor
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting process <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a ProcessPoolExecutor object with 5 worker processes.</span></span><br><span class="line">    <span class="keyword">with</span> ProcessPoolExecutor(max_workers=<span class="number">5</span>) <span class="keyword">as</span> executor:</span><br><span class="line">        <span class="comment"># Apply the foo() function to each number in the range 0-4.</span></span><br><span class="line">        executor.<span class="built_in">map</span>(foo, <span class="built_in">range</span>(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting process &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a ProcessPoolExecutor object with 5 worker processes.
-    with ProcessPoolExecutor(max_workers=5) as executor:
-        # Apply the foo() function to each number in the range 0-4.
-        executor.map(foo, range(5))
-</code></pre>
 <p>4）使用 concurrent.futures 模块中的 ThreadPoolExecutor 类</p>
-<pre><code class="python">from concurrent.futures import ThreadPoolExecutor
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting process <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a ThreadPoolExecutor object with 5 worker processes.</span></span><br><span class="line">    <span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">5</span>) <span class="keyword">as</span> executor:</span><br><span class="line">        <span class="comment"># Apply the foo() function to each number in the range 0-4.</span></span><br><span class="line">        executor.<span class="built_in">map</span>(foo, <span class="built_in">range</span>(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting process &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a ThreadPoolExecutor object with 5 worker processes.
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        # Apply the foo() function to each number in the range 0-4.
-        executor.map(foo, range(5))
-</code></pre>
 <p><strong>多线程</strong></p>
 <p>在 Python 中，使用 threading 模块中的 Thread 类或装饰器可以在单个 CPU 核心上运行多个线程，而使用 concurrent.futures 模块中的 ThreadPoolExecutor 类或 ProcessPoolExecutor 类可以在多个 CPU 核心上运行多个线程。</p>
 <p>1）使用 threading 模块中的 Thread 类</p>
-<pre><code class="python">from threading import Thread
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting thread <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a list to store the threads we want to run.</span></span><br><span class="line">    threads = []</span><br><span class="line">    <span class="comment"># Start 5 threads, each running the foo() function with a different number.</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        <span class="comment"># Create the Thread object, passing the foo() function and the number we want to print.</span></span><br><span class="line">        t = Thread(target=foo, args=(i,))</span><br><span class="line">        <span class="comment"># Add the thread to the list of threads.</span></span><br><span class="line">        threads.append(t)</span><br><span class="line">        <span class="comment"># Start the thread.</span></span><br><span class="line">        t.start()</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting thread &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a list to store the threads we want to run.
-    threads = []
-    # Start 5 threads, each running the foo() function with a different number.
-    for i in range(5):
-        # Create the Thread object, passing the foo() function and the number we want to print.
-        t = Thread(target=foo, args=(i,))
-        # Add the thread to the list of threads.
-        threads.append(t)
-        # Start the thread.
-        t.start()
-</code></pre>
 <p>2）使用 threading 模块中的 Thread 类和装饰器</p>
-<pre><code class="python">from threading import Thread
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="meta">@Thread</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting thread <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a list to store the threads we want to run.</span></span><br><span class="line">    threads = []</span><br><span class="line">    <span class="comment"># Start 5 threads, each running the foo() function with a different number.</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        <span class="comment"># Call the foo() function with the number we want to print.</span></span><br><span class="line">        <span class="comment"># This automatically creates a Thread object and starts it.</span></span><br><span class="line">        t = foo(i)</span><br><span class="line">        <span class="comment"># Add the thread to the list of threads.</span></span><br><span class="line">        threads.append(t)</span><br></pre></td></tr></table></figure>
 
-@Thread
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting thread &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a list to store the threads we want to run.
-    threads = []
-    # Start 5 threads, each running the foo() function with a different number.
-    for i in range(5):
-        # Call the foo() function with the number we want to print.
-        # This automatically creates a Thread object and starts it.
-        t = foo(i)
-        # Add the thread to the list of threads.
-        threads.append(t)
-</code></pre>
 <p>3）使用 concurrent.futures 模块中的 ThreadPoolExecutor 类</p>
-<pre><code class="python">from concurrent.futures import ThreadPoolExecutor
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">i</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A function that prints the number passed to it.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Starting thread <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># Create a ThreadPoolExecutor object with 5 worker threads.</span></span><br><span class="line">    <span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">5</span>) <span class="keyword">as</span> executor:</span><br><span class="line">        <span class="comment"># Apply the foo() function to each number in the range 0-4.</span></span><br><span class="line">        executor.<span class="built_in">map</span>(foo, <span class="built_in">range</span>(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 
-def foo(i):
-    &quot;&quot;&quot;
-    A function that prints the number passed to it.
-    &quot;&quot;&quot;
-    print(f&quot;Starting thread &#123;i&#125;&quot;)
-
-if __name__ == &#39;__main__&#39;:
-    # Create a ThreadPoolExecutor object with 5 worker threads.
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        # Apply the foo() function to each number in the range 0-4.
-        executor.map(foo, range(5))
-</code></pre>
 <p>4）使用 concurrent.futures 模块中的 ProcessPoolExecutor 类</p>
-<pre><code class="python">from concurrent.futures import ProcessPoolExecutor
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个需要多线程处理的函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">some_function</span>(<span class="params">arg</span>):</span><br><span class="line">    <span class="comment"># do something with arg</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 ProcessPoolExecutor 类来创建一个进程池</span></span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor() <span class="keyword">as</span> executor:</span><br><span class="line">    <span class="comment"># 使用 map 函数来将 some_function 应用到一个可迭代对象中的每一个元素上</span></span><br><span class="line">    results = executor.<span class="built_in">map</span>(some_function, iterable_object)</span><br><span class="line">    <span class="comment"># 迭代处理结果</span></span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> results:</span><br><span class="line">        <span class="comment"># do something with result</span></span><br></pre></td></tr></table></figure>
 
-# 定义一个需要多线程处理的函数
-def some_function(arg):
-    # do something with arg
-    return result
-
-# 使用 ProcessPoolExecutor 类来创建一个进程池
-with ProcessPoolExecutor() as executor:
-    # 使用 map 函数来将 some_function 应用到一个可迭代对象中的每一个元素上
-    results = executor.map(some_function, iterable_object)
-    # 迭代处理结果
-    for result in results:
-        # do something with result
-</code></pre>
 <p>上面的代码会创建一个进程池，然后使用 map 函数来并行地执行 some_function 函数，并处理结果，使用 ProcessPoolExecutor 类的优点是它能够自动管理进程池</p>
 <p><strong>协程</strong></p>
 <p>协程是一种用于在单线程中支持并发编程的方法，在 Python 中，协程可以通过四种方式来实现：</p>
@@ -575,72 +360,17 @@ with ProcessPoolExecutor() as executor:
 <ol>
 <li>使用生成器函数</li>
 </ol>
-<pre><code class="python">def my_coroutine():
-    while True:
-        received = yield
-        print(&#39;Received:&#39;, received)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_coroutine</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        received = <span class="keyword">yield</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Received:&#x27;</span>, received)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建协程对象</span></span><br><span class="line">coro = my_coroutine()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动协程</span></span><br><span class="line"><span class="built_in">next</span>(coro)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向协程发送数据</span></span><br><span class="line">coro.send(<span class="string">&#x27;Hello!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 创建协程对象
-coro = my_coroutine()
-
-# 启动协程
-next(coro)
-
-# 向协程发送数据
-coro.send(&#39;Hello!&#39;)
-</code></pre>
 <p>2）使用 asyncio 库</p>
-<pre><code class="python">import asyncio
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">my_coroutine</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        received = <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Received:&#x27;</span>, received)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建协程对象</span></span><br><span class="line">coro = my_coroutine()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动协程</span></span><br><span class="line">asyncio.run(coro)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向协程发送数据</span></span><br><span class="line">coro.send(<span class="string">&#x27;Hello!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-async def my_coroutine():
-    while True:
-        received = await asyncio.sleep(0.1)
-        print(&#39;Received:&#39;, received)
-
-# 创建协程对象
-coro = my_coroutine()
-
-# 启动协程
-asyncio.run(coro)
-
-# 向协程发送数据
-coro.send(&#39;Hello!&#39;)
-</code></pre>
 <p>3）使用 Trio 库：</p>
-<pre><code class="python">import trio
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> trio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">my_coroutine</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        received = <span class="keyword">await</span> trio.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Received:&#x27;</span>, received)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建协程对象</span></span><br><span class="line">coro = my_coroutine()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动协程</span></span><br><span class="line">trio.run(coro)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向协程发送数据</span></span><br><span class="line">coro.send(<span class="string">&#x27;Hello!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-async def my_coroutine():
-    while True:
-        received = await trio.sleep(0.1)
-        print(&#39;Received:&#39;, received)
-
-# 创建协程对象
-coro = my_coroutine()
-
-# 启动协程
-trio.run(coro)
-
-# 向协程发送数据
-coro.send(&#39;Hello!&#39;)
-</code></pre>
 <p>4）使用 Trollius 库：</p>
-<pre><code class="python">import trollius
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> trollius</span><br><span class="line"></span><br><span class="line"><span class="meta">@trollius.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">my_coroutine</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        received = <span class="keyword">yield</span> trollius.From(trollius.sleep(<span class="number">0.1</span>))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Received:&#x27;</span>, received)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建协程对象</span></span><br><span class="line">coro = my_coroutine()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动协程</span></span><br><span class="line">trollius.get_event_loop().run_until_complete(coro)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向协程发送数据</span></span><br><span class="line">coro.send(<span class="string">&#x27;Hello!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-@trollius.coroutine
-def my_coroutine():
-    while True:
-        received = yield trollius.From(trollius.sleep(0.1))
-        print(&#39;Received:&#39;, received)
-
-# 创建协程对象
-coro = my_coroutine()
-
-# 启动协程
-trollius.get_event_loop().run_until_complete(coro)
-
-# 向协程发送数据
-coro.send(&#39;Hello!&#39;)
-</code></pre>
 <h2 id="0x02-实用类库"><a href="#0x02-实用类库" class="headerlink" title="0x02 实用类库"></a>0x02 实用类库</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><h4 id="a-os模块"><a href="#a-os模块" class="headerlink" title="a. os模块"></a>a. os模块</h4><p>Python的os模块提供了与操作系统交互的功能，可用于执行文件和目录操作。下面是一些常用的文件&#x2F;目录方法：</p>
 <ul>
 <li>os.getcwd()：返回当前工作目录。</li>
@@ -655,105 +385,15 @@ coro.send(&#39;Hello!&#39;)
 <li>os.path.isfile(path)：检查给定路径是否为文件。</li>
 </ul>
 <p>代码示例：</p>
-<pre><code class="python">import os
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前工作目录</span></span><br><span class="line">current_dir = os.getcwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;当前工作目录为：<span class="subst">&#123;current_dir&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改工作目录</span></span><br><span class="line">os.chdir(<span class="string">&#x27;/tmp&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;当前工作目录为：<span class="subst">&#123;os.getcwd()&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出指定目录下的文件和目录</span></span><br><span class="line">files = os.listdir(<span class="string">&#x27;/tmp&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;目录/tmp下的文件和目录：<span class="subst">&#123;files&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建新目录</span></span><br><span class="line">os.mkdir(<span class="string">&#x27;/tmp/test_dir&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;目录/tmp下的文件和目录：<span class="subst">&#123;os.listdir(<span class="string">&quot;/tmp&quot;</span>)&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除新目录</span></span><br><span class="line">os.rmdir(<span class="string">&#x27;/tmp/test_dir&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;目录/tmp下的文件和目录：<span class="subst">&#123;os.listdir(<span class="string">&quot;/tmp&quot;</span>)&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查路径是否存在</span></span><br><span class="line">path = <span class="string">&#x27;/tmp/test_dir&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;path&#125;</span>是否存在：<span class="subst">&#123;os.path.exists(path)&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查路径是否为目录</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;path&#125;</span>是否为目录：<span class="subst">&#123;os.path.isdir(path)&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查路径是否为文件</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;path&#125;</span>是否为文件：<span class="subst">&#123;os.path.isfile(path)&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 获取当前工作目录
-current_dir = os.getcwd()
-print(f&#39;当前工作目录为：&#123;current_dir&#125;&#39;)
-
-# 更改工作目录
-os.chdir(&#39;/tmp&#39;)
-print(f&#39;当前工作目录为：&#123;os.getcwd()&#125;&#39;)
-
-# 列出指定目录下的文件和目录
-files = os.listdir(&#39;/tmp&#39;)
-print(f&#39;目录/tmp下的文件和目录：&#123;files&#125;&#39;)
-
-# 创建新目录
-os.mkdir(&#39;/tmp/test_dir&#39;)
-print(f&#39;目录/tmp下的文件和目录：&#123;os.listdir(&quot;/tmp&quot;)&#125;&#39;)
-
-# 删除新目录
-os.rmdir(&#39;/tmp/test_dir&#39;)
-print(f&#39;目录/tmp下的文件和目录：&#123;os.listdir(&quot;/tmp&quot;)&#125;&#39;)
-
-# 检查路径是否存在
-path = &#39;/tmp/test_dir&#39;
-print(f&#39;&#123;path&#125;是否存在：&#123;os.path.exists(path)&#125;&#39;)
-
-# 检查路径是否为目录
-print(f&#39;&#123;path&#125;是否为目录：&#123;os.path.isdir(path)&#125;&#39;)
-
-# 检查路径是否为文件
-print(f&#39;&#123;path&#125;是否为文件：&#123;os.path.isfile(path)&#125;&#39;)
-</code></pre>
 <h4 id="b-psutil库"><a href="#b-psutil库" class="headerlink" title="b. psutil库"></a>b. psutil库</h4><p>psutil 是一个跨平台的库，可以用来监控系统的 CPU、内存、磁盘、网络等信息。</p>
 <p>代码示例：</p>
-<pre><code class="python">import psutil
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_system_info</span>():</span><br><span class="line">    <span class="comment"># 获取CPU信息</span></span><br><span class="line">    cpu_count = psutil.cpu_count()  <span class="comment"># CPU逻辑数量</span></span><br><span class="line">    cpu_percent = psutil.cpu_percent()  <span class="comment"># CPU使用率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取内存信息</span></span><br><span class="line">    memory = psutil.virtual_memory()  <span class="comment"># 内存信息</span></span><br><span class="line">    memory_total = memory.total  <span class="comment"># 总内存</span></span><br><span class="line">    memory_used = memory.used  <span class="comment"># 已使用内存</span></span><br><span class="line">    memory_free = memory.free  <span class="comment"># 空闲内存</span></span><br><span class="line">    memory_percent = memory.percent  <span class="comment"># 内存使用率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取磁盘信息</span></span><br><span class="line">    disk = psutil.disk_partitions()  <span class="comment"># 磁盘分区信息</span></span><br><span class="line">    disk_total = psutil.disk_usage(<span class="string">&#x27;/&#x27;</span>).total  <span class="comment"># 总磁盘大小</span></span><br><span class="line">    disk_used = psutil.disk_usage(<span class="string">&#x27;/&#x27;</span>).used  <span class="comment"># 已使用磁盘大小</span></span><br><span class="line">    disk_free = psutil.disk_usage(<span class="string">&#x27;/&#x27;</span>).free  <span class="comment"># 空闲磁盘大小</span></span><br><span class="line">    disk_percent = psutil.disk_usage(<span class="string">&#x27;/&#x27;</span>).percent  <span class="comment"># 磁盘使用率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取网络信息</span></span><br><span class="line">    net = psutil.net_io_counters()  <span class="comment"># 网络信息</span></span><br><span class="line">    net_sent = net.bytes_sent  <span class="comment"># 发送的总字节数</span></span><br><span class="line">    net_recv = net.bytes_recv  <span class="comment"># 接收的总字节数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取进程信息</span></span><br><span class="line">    process = psutil.Process()  <span class="comment"># 当前进程信息</span></span><br><span class="line">    process_name = process.name()  <span class="comment"># 进程名称</span></span><br><span class="line">    process_pid = process.pid  <span class="comment"># 进程ID</span></span><br><span class="line">    process_cpu_percent = process.cpu_percent()  <span class="comment"># 进程CPU使用率</span></span><br><span class="line">    process_memory_percent = process.memory_percent()  <span class="comment"># 进程内存使用率</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取系统用户信息</span></span><br><span class="line">    users = psutil.users()  <span class="comment"># 系统用户信息</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取系统启动时间</span></span><br><span class="line">    boot_time = psutil.boot_time() <span class="comment"># 系统启动时间</span></span><br></pre></td></tr></table></figure>
 
-def get_system_info():
-    # 获取CPU信息
-    cpu_count = psutil.cpu_count()  # CPU逻辑数量
-    cpu_percent = psutil.cpu_percent()  # CPU使用率
-
-    # 获取内存信息
-    memory = psutil.virtual_memory()  # 内存信息
-    memory_total = memory.total  # 总内存
-    memory_used = memory.used  # 已使用内存
-    memory_free = memory.free  # 空闲内存
-    memory_percent = memory.percent  # 内存使用率
-
-    # 获取磁盘信息
-    disk = psutil.disk_partitions()  # 磁盘分区信息
-    disk_total = psutil.disk_usage(&#39;/&#39;).total  # 总磁盘大小
-    disk_used = psutil.disk_usage(&#39;/&#39;).used  # 已使用磁盘大小
-    disk_free = psutil.disk_usage(&#39;/&#39;).free  # 空闲磁盘大小
-    disk_percent = psutil.disk_usage(&#39;/&#39;).percent  # 磁盘使用率
-
-    # 获取网络信息
-    net = psutil.net_io_counters()  # 网络信息
-    net_sent = net.bytes_sent  # 发送的总字节数
-    net_recv = net.bytes_recv  # 接收的总字节数
-
-    # 获取进程信息
-    process = psutil.Process()  # 当前进程信息
-    process_name = process.name()  # 进程名称
-    process_pid = process.pid  # 进程ID
-    process_cpu_percent = process.cpu_percent()  # 进程CPU使用率
-    process_memory_percent = process.memory_percent()  # 进程内存使用率
-
-    # 获取系统用户信息
-    users = psutil.users()  # 系统用户信息
-
-    # 获取系统启动时间
-    boot_time = psutil.boot_time() # 系统启动时间
-</code></pre>
 <p>获取全部网络及进程信息：</p>
-<pre><code class="python">import psutil
-import json
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_network_and_process_info</span>():</span><br><span class="line">    net_conns = psutil.net_connections()</span><br><span class="line">    proc_info = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> proc <span class="keyword">in</span> psutil.process_iter():</span><br><span class="line">        proc_info[proc.pid] = &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: proc.name(),</span><br><span class="line">            <span class="string">&quot;cpu_times&quot;</span>: proc.cpu_times(),</span><br><span class="line">            <span class="comment"># 这里还可以添加其他有关进程的信息</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;network_connections&quot;</span>: net_conns,</span><br><span class="line">        <span class="string">&quot;processes&quot;</span>: proc_info</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">info = get_network_and_process_info()</span><br><span class="line"></span><br><span class="line">info = get_network_and_process_info()</span><br><span class="line"></span><br><span class="line">json_str = json.dumps(info, indent=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(json_str)</span><br></pre></td></tr></table></figure>
 
-def get_network_and_process_info():
-    net_conns = psutil.net_connections()
-    proc_info = &#123;&#125;
-    for proc in psutil.process_iter():
-        proc_info[proc.pid] = &#123;
-            &quot;name&quot;: proc.name(),
-            &quot;cpu_times&quot;: proc.cpu_times(),
-            # 这里还可以添加其他有关进程的信息
-        &#125;
-    return &#123;
-        &quot;network_connections&quot;: net_conns,
-        &quot;processes&quot;: proc_info
-    &#125;
-
-
-info = get_network_and_process_info()
-
-info = get_network_and_process_info()
-
-json_str = json.dumps(info, indent=2)
-print(json_str)
-</code></pre>
 <h3 id="2-正则表达式"><a href="#2-正则表达式" class="headerlink" title="2. 正则表达式"></a>2. 正则表达式</h3><p>Python 中使用正则表达式通常是通过 re 模块来实现，它提供了一组用于处理正则表达式的函数。下面是一些常用的 re 模块函数：</p>
 <ul>
 <li>re.search(pattern, string, flags&#x3D;0)：在给定字符串中搜索匹配正则表达式的第一个位置。返回一个 Match 对象，如果没有匹配返回 None。</li>
@@ -765,111 +405,34 @@ print(json_str)
 </ul>
 <p><strong>代码示例</strong></p>
 <p>1）匹配 email 地址：</p>
-<pre><code class="python">import re
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要匹配的字符串</span></span><br><span class="line">s = <span class="string">&quot;my email address is example@gmail.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式查找 email 地址</span></span><br><span class="line">email = re.search(<span class="string">r&quot;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]&#123;2,&#125;\b&quot;</span>, s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出匹配的 email 地址</span></span><br><span class="line"><span class="built_in">print</span>(email.group())</span><br></pre></td></tr></table></figure>
 
-# 定义要匹配的字符串
-s = &quot;my email address is example@gmail.com&quot;
-
-# 使用正则表达式查找 email 地址
-email = re.search(r&quot;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]&#123;2,&#125;\b&quot;, s)
-
-# 输出匹配的 email 地址
-print(email.group())
-</code></pre>
 <p>2）替换字符串中的文本：</p>
-<pre><code class="python">import re
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要匹配的字符串</span></span><br><span class="line">s = <span class="string">&quot;The quick brown fox jumps over the lazy dog.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式替换文本</span></span><br><span class="line">new_s = re.sub(<span class="string">r&quot;\b(the)\b&quot;</span>, <span class="string">&quot;a&quot;</span>, s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出替换后的字符串</span></span><br><span class="line"><span class="built_in">print</span>(new_s)</span><br></pre></td></tr></table></figure>
 
-# 定义要匹配的字符串
-s = &quot;The quick brown fox jumps over the lazy dog.&quot;
-
-# 使用正则表达式替换文本
-new_s = re.sub(r&quot;\b(the)\b&quot;, &quot;a&quot;, s)
-
-# 输出替换后的字符串
-print(new_s)
-</code></pre>
 <p>3）提取 HTML 标签中的属性：</p>
-<pre><code class="python">import re
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要匹配的字符串</span></span><br><span class="line">s = <span class="string">&#x27;&lt;a href=&quot;https://www.example.com&quot; class=&quot;link&quot;&gt;Example&lt;/a&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式提取属性</span></span><br><span class="line">attr = re.search(<span class="string">r&#x27;href=&quot;(.+?)&quot; class=&quot;(.+?)&quot;&#x27;</span>, s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line"><span class="built_in">print</span>(attr.groups())</span><br></pre></td></tr></table></figure>
 
-# 定义要匹配的字符串
-s = &#39;&lt;a href=&quot;https://www.example.com&quot; class=&quot;link&quot;&gt;Example&lt;/a&gt;&#39;
-
-# 使用正则表达式提取属性
-attr = re.search(r&#39;href=&quot;(.+?)&quot; class=&quot;(.+?)&quot;&#39;, s)
-
-# 输出结果
-print(attr.groups())
-</code></pre>
 <p>输出结果：</p>
-<pre><code>(&#39;https://www.example.com&#39;, &#39;link&#39;)
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&#x27;https://www.example.com&#x27;, &#x27;link&#x27;)</span><br></pre></td></tr></table></figure>
+
 <p>4）提取日期：</p>
-<pre><code class="python">import re
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要匹配的字符串</span></span><br><span class="line">s = <span class="string">&quot;Today is December 07, 2022.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式提取日期</span></span><br><span class="line">date = re.search(<span class="string">r&quot;\b(?P&lt;month&gt;\w+)\s+(?P&lt;day&gt;\d+),\s+(?P&lt;year&gt;\d+)\b&quot;</span>, s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line"><span class="built_in">print</span>(date.groups())</span><br></pre></td></tr></table></figure>
 
-# 定义要匹配的字符串
-s = &quot;Today is December 07, 2022.&quot;
-
-# 使用正则表达式提取日期
-date = re.search(r&quot;\b(?P&lt;month&gt;\w+)\s+(?P&lt;day&gt;\d+),\s+(?P&lt;year&gt;\d+)\b&quot;, s)
-
-# 输出结果
-print(date.groups())
-</code></pre>
 <p>5）提取文本中的所有 URL：</p>
-<pre><code class="python">import re
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要匹配的字符串</span></span><br><span class="line">s = <span class="string">&quot;Here are some URLs: https://www.example.com, https://www.google.com, https://www.python.org&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式提取所有 URL</span></span><br><span class="line">urls = re.findall(<span class="string">r&quot;https?://[\w.-]+&quot;</span>, s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line"><span class="built_in">print</span>(urls)</span><br></pre></td></tr></table></figure>
 
-# 定义要匹配的字符串
-s = &quot;Here are some URLs: https://www.example.com, https://www.google.com, https://www.python.org&quot;
-
-# 使用正则表达式提取所有 URL
-urls = re.findall(r&quot;https?://[\w.-]+&quot;, s)
-
-# 输出结果
-print(urls)
-</code></pre>
 <h3 id="3-文件读写"><a href="#3-文件读写" class="headerlink" title="3. 文件读写"></a>3. 文件读写</h3><p>常用读写文件的方式主要包括以下两种：</p>
 <ul>
 <li>使用 open() 函数打开文件并通过 .read() 或 .write() 方法来读写文件</li>
 <li>使用 with open() 语句块来管理文件对象，推荐用法</li>
 </ul>
 <p><strong>使用 open() 函数打开文件并读写文件</strong></p>
-<pre><code class="python"># 打开文件
-f = open(&#39;myfile.txt&#39;, &#39;w&#39;)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;myfile.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向文件中写入字符串</span></span><br><span class="line">f.write(<span class="string">&#x27;Hello World!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;myfile.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取文件中的内容</span></span><br><span class="line">content = f.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(content)  <span class="comment"># 输出: Hello World!</span></span><br></pre></td></tr></table></figure>
 
-# 向文件中写入字符串
-f.write(&#39;Hello World!&#39;)
-
-# 关闭文件
-f.close()
-
-# 打开文件
-f = open(&#39;myfile.txt&#39;, &#39;r&#39;)
-
-# 读取文件中的内容
-content = f.read()
-
-# 关闭文件
-f.close()
-
-print(content)  # 输出: Hello World!
-</code></pre>
 <p><strong>使用 with open() 语句块来管理文件对象</strong></p>
-<pre><code class="python"># 使用 with open() 语句块来打开文件
-with open(&#39;myfile.txt&#39;, &#39;w&#39;) as f:
-    # 向文件中写入字符串
-    f.write(&#39;Hello World!&#39;)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 with open() 语句块来打开文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;myfile.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># 向文件中写入字符串</span></span><br><span class="line">    f.write(<span class="string">&#x27;Hello World!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件会在 with open() 语句块结束时自动关闭</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 with open() 语句块来打开文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;myfile.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># 读取文件中的内容</span></span><br><span class="line">    content = f.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件会在 with open() 语句块结束时自动关闭</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(content)  <span class="comment"># 输出: Hello World!</span></span><br></pre></td></tr></table></figure>
 
-# 文件会在 with open() 语句块结束时自动关闭
-
-# 使用 with open() 语句块来打开文件
-with open(&#39;myfile.txt&#39;, &#39;r&#39;) as f:
-    # 读取文件中的内容
-    content = f.read()
-
-# 文件会在 with open() 语句块结束时自动关闭
-
-print(content)  # 输出: Hello World!
-</code></pre>
 <h3 id="4-数据处理"><a href="#4-数据处理" class="headerlink" title="4. 数据处理"></a>4. 数据处理</h3><h4 id="a-json格式处理"><a href="#a-json格式处理" class="headerlink" title="a. json格式处理"></a>a. json格式处理</h4><p><strong>内置json模块</strong></p>
 <p>在 Python 中，可以使用内置的 json 模块来处理 JSON 格式的数据。常用的 json 模块函数：</p>
 <ul>
@@ -879,57 +442,14 @@ print(content)  # 输出: Hello World!
 <li>json.dump(obj, fp, *, skipkeys&#x3D;False, ensure_ascii&#x3D;True, check_circular&#x3D;True, allow_nan&#x3D;True, cls&#x3D;None, indent&#x3D;None, separators&#x3D;None, default&#x3D;None, sort_keys&#x3D;False, **kw)：将 Python 对象 obj 编码为 JSON 格式并写入文件对象 fp。</li>
 </ul>
 <p>1）将JSON 数据解码为 Python 字典，使用 json.loads() 函数</p>
-<pre><code class="python">import json
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设我们有一个包含 JSON 数据的字符串</span></span><br><span class="line">json_string = <span class="string">&#x27;&#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 35, &quot;city&quot;: &quot;New York&quot;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 json.loads() 函数可以将 JSON 数据解码为 Python 字典</span></span><br><span class="line">json_data = json.loads(json_string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在我们可以像访问字典中的值一样访问 JSON 数据</span></span><br><span class="line"><span class="built_in">print</span>(json_data[<span class="string">&quot;name&quot;</span>])  <span class="comment"># 输出 &quot;John Doe&quot;</span></span><br><span class="line"><span class="built_in">print</span>(json_data[<span class="string">&quot;age&quot;</span>])   <span class="comment"># 输出 35</span></span><br><span class="line"><span class="built_in">print</span>(json_data[<span class="string">&quot;city&quot;</span>])  <span class="comment"># 输出 &quot;New York&quot;</span></span><br></pre></td></tr></table></figure>
 
-# 假设我们有一个包含 JSON 数据的字符串
-json_string = &#39;&#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 35, &quot;city&quot;: &quot;New York&quot;&#125;&#39;
-
-# 使用 json.loads() 函数可以将 JSON 数据解码为 Python 字典
-json_data = json.loads(json_string)
-
-# 现在我们可以像访问字典中的值一样访问 JSON 数据
-print(json_data[&quot;name&quot;])  # 输出 &quot;John Doe&quot;
-print(json_data[&quot;age&quot;])   # 输出 35
-print(json_data[&quot;city&quot;])  # 输出 &quot;New York&quot;
-</code></pre>
 <p>2） 将Python 字典编码为 JSON 数据，使用 json.dumps() 函数</p>
-<pre><code class="python">import json
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设我们有一个 Python 字典</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;John Doe&quot;</span>,</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: <span class="number">35</span>,</span><br><span class="line">    <span class="string">&quot;city&quot;</span>: <span class="string">&quot;New York&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 json.dumps() 函数可以将字典编码为 JSON 数据</span></span><br><span class="line">json_string = json.dumps(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在，json_string 变量中包含了编码后的 JSON 数据</span></span><br><span class="line"><span class="comment"># 可以将它保存到文件中，或者在网络上传输</span></span><br><span class="line"><span class="built_in">print</span>(json_string)  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出 &#x27;&#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 35, &quot;city&quot;: &quot;New York&quot;&#125;&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-# 假设我们有一个 Python 字典
-data = &#123;
-    &quot;name&quot;: &quot;John Doe&quot;,
-    &quot;age&quot;: 35,
-    &quot;city&quot;: &quot;New York&quot;
-&#125;
-
-# 使用 json.dumps() 函数可以将字典编码为 JSON 数据
-json_string = json.dumps(data)
-
-# 现在，json_string 变量中包含了编码后的 JSON 数据
-# 可以将它保存到文件中，或者在网络上传输
-print(json_string)  
-
-# 输出 &#39;&#123;&quot;name&quot;: &quot;John Doe&quot;, &quot;age&quot;: 35, &quot;city&quot;: &quot;New York&quot;&#125;&#39;
-</code></pre>
 <p>3）使用 json 模块读取和写入 JSON 数据：</p>
-<pre><code class="python">import json
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 JSON 格式的数据</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;data.json&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    data = json.load(fp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用字典访问 JSON 数据</span></span><br><span class="line"><span class="built_in">print</span>(data[<span class="string">&quot;name&quot;</span>])  <span class="comment"># 输出 &quot;John Doe&quot;</span></span><br><span class="line"><span class="built_in">print</span>(data[<span class="string">&quot;age&quot;</span>])   <span class="comment"># 输出 35</span></span><br><span class="line"><span class="built_in">print</span>(data[<span class="string">&quot;city&quot;</span>])  <span class="comment"># 输出 &quot;New York&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 Python 字典编码为 JSON 格式</span></span><br><span class="line">json_string = json.dumps(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 JSON 数据写入文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;data2.json&quot;</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    json.dump(json_string, fp)</span><br></pre></td></tr></table></figure>
 
-# 读取 JSON 格式的数据
-with open(&quot;data.json&quot;) as fp:
-    data = json.load(fp)
-
-# 使用字典访问 JSON 数据
-print(data[&quot;name&quot;])  # 输出 &quot;John Doe&quot;
-print(data[&quot;age&quot;])   # 输出 35
-print(data[&quot;city&quot;])  # 输出 &quot;New York&quot;
-
-# 将 Python 字典编码为 JSON 格式
-json_string = json.dumps(data)
-
-# 将 JSON 数据写入文件
-with open(&quot;data2.json&quot;, &quot;w&quot;) as fp:
-    json.dump(json_string, fp)
-</code></pre>
 <p><strong>第三方库</strong></p>
 <ul>
 <li>ujson：提供了与 json 模块相似的 API，但是比 json 模块快得多。</li>
@@ -941,25 +461,11 @@ with open(&quot;data2.json&quot;, &quot;w&quot;) as fp:
 <p><strong>simplejson</strong></p>
 <p>simplejson是一个第三方库，与Python内置的json模块功能相似，但速度更快、支持更多的Python数据类型和更好的Unicode支持。</p>
 <p>使用pip安装程序：</p>
-<pre><code>pip install simplejson
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install simplejson</span><br></pre></td></tr></table></figure>
+
 <p>使用simplejson库读写JSON文件：</p>
-<pre><code class="python">import simplejson as json
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> simplejson <span class="keyword">as</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取JSON文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.json&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问字典中的值</span></span><br><span class="line"><span class="built_in">print</span>(data[<span class="string">&#x27;key1&#x27;</span>])  <span class="comment"># 输出：value1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改字典</span></span><br><span class="line">data[<span class="string">&#x27;key1&#x27;</span>] = <span class="string">&#x27;new_value&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入JSON文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data, f)</span><br></pre></td></tr></table></figure>
 
-# 读取JSON文件
-with open(&#39;data.json&#39;, &#39;r&#39;) as f:
-    data = json.load(f)
-
-# 访问字典中的值
-print(data[&#39;key1&#39;])  # 输出：value1
-
-# 修改字典
-data[&#39;key1&#39;] = &#39;new_value&#39;
-
-# 写入JSON文件
-with open(&#39;data.json&#39;, &#39;w&#39;) as f:
-    json.dump(data, f)
-</code></pre>
 <h4 id="b-xml格式处理"><a href="#b-xml格式处理" class="headerlink" title="b. xml格式处理"></a>b. xml格式处理</h4><p>XML（Extensible Markup Language，可扩展标记语言）是一种用于存储和传输数据的标准格式，python常用如下三种方法处理xml数据：</p>
 <ul>
 <li><p>SAX（Simple API for XML）：一种流式解析XML数据的模式，通过事件驱动的方式来解析XML数据，即当解析器发现XML文档中的特定事件时，会触发对应的事件处理函数。这种方式的优点是高效率，因为它只需要一次遍历XML文档，就可以处理完所有的数据。缺点是代码实现较为复杂，需要编写多个事件处理函数。</p>
@@ -970,195 +476,44 @@ with open(&#39;data.json&#39;, &#39;w&#39;) as f:
 </li>
 </ul>
 <p><strong>使用SAX处理XML数据</strong></p>
-<pre><code class="python">import xml.sax
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xml.sax</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个事件处理器类，继承自xml.sax.ContentHandler类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BookHandler</span>(xml.sax.ContentHandler):</span><br><span class="line">  <span class="comment"># 元素开始事件处理</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">startElement</span>(<span class="params">self, name, attrs</span>):</span><br><span class="line">    <span class="comment"># 处理&lt;book&gt;元素的category属性</span></span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;book&#x27;</span>:</span><br><span class="line">      <span class="built_in">print</span>(attrs[<span class="string">&#x27;category&#x27;</span>])</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 元素结束事件处理</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">endElement</span>(<span class="params">self, name</span>):</span><br><span class="line">    <span class="comment"># 处理&lt;title&gt;元素的文本内容</span></span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;title&#x27;</span>:</span><br><span class="line">      <span class="built_in">print</span>(self.title)</span><br><span class="line">    <span class="comment"># 处理&lt;year&gt;元素的文本内容</span></span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;year&#x27;</span>:</span><br><span class="line">      <span class="built_in">print</span>(self.year)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 元素文本内容事件处理</span></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">characters</span>(<span class="params">self, data</span>):</span><br><span class="line">    <span class="comment"># 记录当前处理的元素名称</span></span><br><span class="line">    self.curr_elem = name</span><br><span class="line">    <span class="comment"># 处理&lt;title&gt;元素的文本内容</span></span><br><span class="line">    <span class="keyword">if</span> self.curr_elem == <span class="string">&#x27;title&#x27;</span>:</span><br><span class="line">      self.title = data</span><br><span class="line">    <span class="comment"># 处理&lt;year&gt;元素的文本内容</span></span><br><span class="line">    <span class="keyword">elif</span> self.curr_elem == <span class="string">&#x27;year&#x27;</span>:</span><br><span class="line">      self.year = data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个解析器</span></span><br><span class="line">parser = xml.sax.make_parser()</span><br><span class="line"><span class="comment"># 设置事件处理器</span></span><br><span class="line">parser.setContentHandler(BookHandler())</span><br><span class="line"><span class="comment"># 解析XML数据</span></span><br><span class="line">parser.parse(<span class="string">&#x27;books.xml&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 定义一个事件处理器类，继承自xml.sax.ContentHandler类
-class BookHandler(xml.sax.ContentHandler):
-  # 元素开始事件处理
-  def startElement(self, name, attrs):
-    # 处理&lt;book&gt;元素的category属性
-    if name == &#39;book&#39;:
-      print(attrs[&#39;category&#39;])
-
-  # 元素结束事件处理
-  def endElement(self, name):
-    # 处理&lt;title&gt;元素的文本内容
-    if name == &#39;title&#39;:
-      print(self.title)
-    # 处理&lt;year&gt;元素的文本内容
-    elif name == &#39;year&#39;:
-      print(self.year)
-
-  # 元素文本内容事件处理
-  def characters(self, data):
-    # 记录当前处理的元素名称
-    self.curr_elem = name
-    # 处理&lt;title&gt;元素的文本内容
-    if self.curr_elem == &#39;title&#39;:
-      self.title = data
-    # 处理&lt;year&gt;元素的文本内容
-    elif self.curr_elem == &#39;year&#39;:
-      self.year = data
-
-# 创建一个解析器
-parser = xml.sax.make_parser()
-# 设置事件处理器
-parser.setContentHandler(BookHandler())
-# 解析XML数据
-parser.parse(&#39;books.xml&#39;)
-</code></pre>
 <p><strong>使用DOM处理XML数据</strong></p>
-<pre><code class="python">import xml.dom.minidom
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xml.dom.minidom</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析XML数据</span></span><br><span class="line">dom = xml.dom.minidom.parse(<span class="string">&#x27;books.xml&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取XML文档的根节点</span></span><br><span class="line">root = dom.documentElement</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代XML数据</span></span><br><span class="line"><span class="keyword">for</span> book <span class="keyword">in</span> root.childNodes:</span><br><span class="line">  <span class="comment"># 只处理元素节点</span></span><br><span class="line">  <span class="keyword">if</span> book.nodeType == book.ELEMENT_NODE:</span><br><span class="line">    <span class="comment"># 获取&lt;title&gt;元素</span></span><br><span class="line">    title = book.getElementsByTagName(<span class="string">&#x27;title&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 获取&lt;author&gt;元素</span></span><br><span class="line">    author = book.getElementsByTagName(<span class="string">&#x27;author&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 获取&lt;year&gt;元素</span></span><br><span class="line">    year = book.getElementsByTagName(<span class="string">&#x27;year&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 输出&lt;title&gt;、&lt;author&gt;、&lt;year&gt;元素的文本内容</span></span><br><span class="line">    <span class="built_in">print</span>(title.firstChild.data, author.firstChild.data, year.firstChild.data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以上代码会解析XML文档中的元素的文本内容，并输出到控制台</span></span><br></pre></td></tr></table></figure>
 
-# 解析XML数据
-dom = xml.dom.minidom.parse(&#39;books.xml&#39;)
-
-# 获取XML文档的根节点
-root = dom.documentElement
-
-# 迭代XML数据
-for book in root.childNodes:
-  # 只处理元素节点
-  if book.nodeType == book.ELEMENT_NODE:
-    # 获取&lt;title&gt;元素
-    title = book.getElementsByTagName(&#39;title&#39;)[0]
-    # 获取&lt;author&gt;元素
-    author = book.getElementsByTagName(&#39;author&#39;)[0]
-    # 获取&lt;year&gt;元素
-    year = book.getElementsByTagName(&#39;year&#39;)[0]
-    # 输出&lt;title&gt;、&lt;author&gt;、&lt;year&gt;元素的文本内容
-    print(title.firstChild.data, author.firstChild.data, year.firstChild.data)
-
-# 以上代码会解析XML文档中的元素的文本内容，并输出到控制台
-</code></pre>
 <p><strong>使用xml.etree.ElementTree库处理XML数据</strong></p>
-<pre><code class="python">from xml.etree import ElementTree
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> xml.etree <span class="keyword">import</span> ElementTree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析XML文件</span></span><br><span class="line">tree = ElementTree.parse(<span class="string">&quot;data.xml&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取XML文件的根元素</span></span><br><span class="line">root = tree.getroot()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历XML文件中的所有元素</span></span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> root.<span class="built_in">iter</span>():</span><br><span class="line">    <span class="comment"># 输出元素名和元素属性</span></span><br><span class="line">    <span class="built_in">print</span>(elem.tag, elem.attrib)</span><br></pre></td></tr></table></figure>
 
-# 解析XML文件
-tree = ElementTree.parse(&quot;data.xml&quot;)
-
-# 获取XML文件的根元素
-root = tree.getroot()
-
-# 遍历XML文件中的所有元素
-for elem in root.iter():
-    # 输出元素名和元素属性
-    print(elem.tag, elem.attrib)
-</code></pre>
 <p><strong>第三方库-lxml</strong></p>
 <p>lxml是一个Python的XML处理库，可以用来解析、操作和生成XML数据。它可以方便地与Python的其它库（如BeautifulSoup）集成使用。lxml库还提供了XPath和XSLT的支持，可以用来快速查找XML文件中的特定元素。</p>
 <p>安装lxml库：</p>
-<pre><code>pip install lxml
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install lxml</span><br></pre></td></tr></table></figure>
+
 <p>使用lxml库解析XML文件：</p>
-<pre><code class="python">from lxml import etree
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析XML文件</span></span><br><span class="line">tree = etree.parse(<span class="string">&quot;data.xml&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取XML文件的根元素</span></span><br><span class="line">root = tree.getroot()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历XML文件中的所有元素</span></span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> root.<span class="built_in">iter</span>():</span><br><span class="line">    <span class="comment"># 输出元素名和元素属性</span></span><br><span class="line">    <span class="built_in">print</span>(elem.tag, elem.attrib)</span><br></pre></td></tr></table></figure>
 
-# 解析XML文件
-tree = etree.parse(&quot;data.xml&quot;)
-
-# 获取XML文件的根元素
-root = tree.getroot()
-
-# 遍历XML文件中的所有元素
-for elem in root.iter():
-    # 输出元素名和元素属性
-    print(elem.tag, elem.attrib)
-</code></pre>
 <h4 id="c-CSV格式处理"><a href="#c-CSV格式处理" class="headerlink" title="c. CSV格式处理"></a>c. CSV格式处理</h4><p>Pandas是一个用于数据操作和分析的Python库。它主要用于处理和分析表格型数据，例如电子表格和数据库。Pandas提供了大量的函数和方法来让我们能够完成常见的数据分析任务，例如过滤、转换、聚合、合并等等。</p>
 <p><strong>处理CSV文件</strong></p>
-<pre><code class="python">import pandas as pd
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取CSV文件</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;my_data.csv&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看前5行数据</span></span><br><span class="line"><span class="built_in">print</span>(df.head())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 统计每个列的均值</span></span><br><span class="line"><span class="built_in">print</span>(df.mean())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 筛选出某列值大于某个阈值的行</span></span><br><span class="line">df = df[df[<span class="string">&#x27;my_column&#x27;</span>] &gt; my_threshold]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将表格按某列分组，并计算每组的和</span></span><br><span class="line">df = df.groupby(<span class="string">&#x27;my_column&#x27;</span>)[<span class="string">&#x27;my_other_column&#x27;</span>].<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
 
-# 读取CSV文件
-df = pd.read_csv(&#39;my_data.csv&#39;)
-
-# 查看前5行数据
-print(df.head())
-
-# 统计每个列的均值
-print(df.mean())
-
-# 筛选出某列值大于某个阈值的行
-df = df[df[&#39;my_column&#39;] &gt; my_threshold]
-
-# 将表格按某列分组，并计算每组的和
-df = df.groupby(&#39;my_column&#39;)[&#39;my_other_column&#39;].sum()
-</code></pre>
 <h4 id="d-Excel格式处理"><a href="#d-Excel格式处理" class="headerlink" title="d. Excel格式处理"></a>d. Excel格式处理</h4><p>最常用的库之一是 openpyxl，可以用来读取、写入和处理 Excel 文件</p>
 <p><strong>安装openpyxl 库</strong></p>
-<pre><code>pip install openpyxl
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install openpyxl</span><br></pre></td></tr></table></figure>
+
 <p><strong>读取一个 Excel 文件中的数据：</strong></p>
-<pre><code class="python"># 导入 openpyxl 库
-import openpyxl
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入 openpyxl 库</span></span><br><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 Excel 文件</span></span><br><span class="line">wb = openpyxl.load_workbook(<span class="string">&#x27;my_file.xlsx&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取活动工作表</span></span><br><span class="line">ws = wb.active</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历工作表中的每一行</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> ws.rows:</span><br><span class="line">    <span class="comment"># 遍历每一行中的每一列</span></span><br><span class="line">    <span class="keyword">for</span> cell <span class="keyword">in</span> row:</span><br><span class="line">        <span class="comment"># 输出单元格的值</span></span><br><span class="line">        <span class="built_in">print</span>(cell.value)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 my_file.xlsx 文件中的数据，并将每个单元格的值打印出来</span></span><br></pre></td></tr></table></figure>
 
-# 读取 Excel 文件
-wb = openpyxl.load_workbook(&#39;my_file.xlsx&#39;)
-
-# 获取活动工作表
-ws = wb.active
-
-# 遍历工作表中的每一行
-for row in ws.rows:
-    # 遍历每一行中的每一列
-    for cell in row:
-        # 输出单元格的值
-        print(cell.value)
-
-# 读取 my_file.xlsx 文件中的数据，并将每个单元格的值打印出来
-</code></pre>
 <p><strong>写入数据到 Excel 文件：</strong></p>
-<pre><code class="python"># 导入 openpyxl 第三方库
-import openpyxl
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入 openpyxl 第三方库</span></span><br><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个工作簿</span></span><br><span class="line">workbook = openpyxl.Workbook()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取第一个工作表</span></span><br><span class="line">worksheet = workbook.active</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入数据到单元格</span></span><br><span class="line">worksheet[<span class="string">&#x27;A1&#x27;</span>] = <span class="string">&#x27;Foo&#x27;</span></span><br><span class="line">worksheet[<span class="string">&#x27;B1&#x27;</span>] = <span class="string">&#x27;Bar&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存工作簿</span></span><br><span class="line">workbook.save(<span class="string">&#x27;example.xlsx&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 创建一个工作簿
-workbook = openpyxl.Workbook()
-
-# 获取第一个工作表
-worksheet = workbook.active
-
-# 写入数据到单元格
-worksheet[&#39;A1&#39;] = &#39;Foo&#39;
-worksheet[&#39;B1&#39;] = &#39;Bar&#39;
-
-# 保存工作簿
-workbook.save(&#39;example.xlsx&#39;)
-</code></pre>
 <h3 id="5-日志处理"><a href="#5-日志处理" class="headerlink" title="5. 日志处理"></a>5. 日志处理</h3><p><strong>logging模块</strong></p>
 <p>Python 标准库中的 logging 模块提供了一个统一的接口用于记录日志。它可以将日志信息输出到文件、控制台或其他外部存储，并且支持对日志进行级别分类和过滤。</p>
 <p>使用 logging 模块记录日志的基本步骤：</p>
-<pre><code>1) 创建一个 Logger 对象。
-2) 设置日志级别。
-3) 设置日志格式。
-4) 创建一个 Handler 对象，用于将日志输出到指定的目的地。
-5) 将 Handler 对象添加到 Logger 对象中。
-6) 使用 Logger 对象记录日志。
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1) 创建一个 Logger 对象。</span><br><span class="line">2) 设置日志级别。</span><br><span class="line">3) 设置日志格式。</span><br><span class="line">4) 创建一个 Handler 对象，用于将日志输出到指定的目的地。</span><br><span class="line">5) 将 Handler 对象添加到 Logger 对象中。</span><br><span class="line">6) 使用 Logger 对象记录日志。</span><br></pre></td></tr></table></figure>
+
 <p>使用 logging 模块将日志输出到文件：</p>
-<pre><code class="python">import logging
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 Logger 对象</span></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置日志级别</span></span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 Handler 对象，用于将日志输出到文件</span></span><br><span class="line">file_handler = logging.FileHandler(<span class="string">&#x27;app.log&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置日志格式</span></span><br><span class="line">formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line">file_handler.setFormatter(formatter)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 Handler 添加到 Logger 中</span></span><br><span class="line">logger.addHandler(file_handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 记录日志</span></span><br><span class="line">logger.debug(<span class="string">&#x27;This is a debug message.&#x27;</span>)</span><br><span class="line">logger.info(<span class="string">&#x27;This is an info message.&#x27;</span>)</span><br><span class="line">logger.warning(<span class="string">&#x27;This is a warning message.&#x27;</span>)</span><br><span class="line">logger.error(<span class="string">&#x27;This is an error message.&#x27;</span>)</span><br><span class="line">logger.critical(<span class="string">&#x27;This is a critical message.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 创建一个 Logger 对象
-logger = logging.getLogger(__name__)
-
-# 设置日志级别
-logger.setLevel(logging.INFO)
-
-# 创建一个 Handler 对象，用于将日志输出到文件
-file_handler = logging.FileHandler(&#39;app.log&#39;)
-
-# 设置日志格式
-formatter = logging.Formatter(&#39;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#39;)
-file_handler.setFormatter(formatter)
-
-# 将 Handler 添加到 Logger 中
-logger.addHandler(file_handler)
-
-# 记录日志
-logger.debug(&#39;This is a debug message.&#39;)
-logger.info(&#39;This is an info message.&#39;)
-logger.warning(&#39;This is a warning message.&#39;)
-logger.error(&#39;This is an error message.&#39;)
-logger.critical(&#39;This is a critical message.&#39;)
-</code></pre>
 <h3 id="6-数据库操作"><a href="#6-数据库操作" class="headerlink" title="6. 数据库操作"></a>6. 数据库操作</h3><h4 id="a-MySQL"><a href="#a-MySQL" class="headerlink" title="a. MySQL"></a>a. MySQL</h4><p>在Python中可以通过多种库来访问MySQL数据库。常用的MySQL库包括：</p>
 <ul>
 <li>MySQLdb: 这是Python中最流行的MySQL数据库访问库，它提供了一种简单的方法来执行SQL语句并处理结果。</li>
@@ -1169,143 +524,24 @@ logger.critical(&#39;This is a critical message.&#39;)
 <p><strong>PyMySQL</strong></p>
 <p>PyMySQL是一个用于Python的免费、开源的MySQL数据库访问库，具有与MySQLdb相同的接口，可以轻松地替换MySQLdb</p>
 <p>1）使用PyMySQL访问MySQL数据库</p>
-<pre><code class="python"># 导入PyMySQL模块
-import pymysql
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入PyMySQL模块</span></span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到MySQL数据库</span></span><br><span class="line">conn = pymysql.connect(host=<span class="string">&#x27;localhost&#x27;</span>, user=<span class="string">&#x27;username&#x27;</span>, password=<span class="string">&#x27;password&#x27;</span>, database=<span class="string">&#x27;mydb&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个游标（cursor）</span></span><br><span class="line">cursor = conn.cursor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行一条SQL语句，插入一条记录</span></span><br><span class="line">cursor.execute(<span class="string">&quot;INSERT INTO users (name, email) VALUES (&#x27;John Doe&#x27;, &#x27;johndoe@example.com&#x27;)&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交事务</span></span><br><span class="line">conn.commit()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭游标和连接</span></span><br><span class="line">cursor.close()</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
 
-# 连接到MySQL数据库
-conn = pymysql.connect(host=&#39;localhost&#39;, user=&#39;username&#39;, password=&#39;password&#39;, database=&#39;mydb&#39;)
-
-# 创建一个游标（cursor）
-cursor = conn.cursor()
-
-# 执行一条SQL语句，插入一条记录
-cursor.execute(&quot;INSERT INTO users (name, email) VALUES (&#39;John Doe&#39;, &#39;johndoe@example.com&#39;)&quot;)
-
-# 提交事务
-conn.commit()
-
-# 关闭游标和连接
-cursor.close()
-conn.close()
-</code></pre>
 <p>2）使用PyMySQL查询数据库中所有用户记录</p>
-<pre><code class="python"># 导入PyMySQL模块
-import pymysql
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入PyMySQL模块</span></span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到MySQL数据库</span></span><br><span class="line">conn = pymysql.connect(host=<span class="string">&#x27;localhost&#x27;</span>, user=<span class="string">&#x27;username&#x27;</span>, password=<span class="string">&#x27;password&#x27;</span>, database=<span class="string">&#x27;mydb&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个游标（cursor）</span></span><br><span class="line">cursor = conn.cursor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行一条SQL语句，查询所有用户记录</span></span><br><span class="line">cursor.execute(<span class="string">&quot;SELECT * FROM users&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取查询结果</span></span><br><span class="line">result = cursor.fetchall()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印查询结果</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(row)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭游标和连接</span></span><br><span class="line">cursor.close()</span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
 
-# 连接到MySQL数据库
-conn = pymysql.connect(host=&#39;localhost&#39;, user=&#39;username&#39;, password=&#39;password&#39;, database=&#39;mydb&#39;)
-
-# 创建一个游标（cursor）
-cursor = conn.cursor()
-
-# 执行一条SQL语句，查询所有用户记录
-cursor.execute(&quot;SELECT * FROM users&quot;)
-
-# 获取查询结果
-result = cursor.fetchall()
-
-# 打印查询结果
-for row in result:
-    print(row)
-
-# 关闭游标和连接
-cursor.close()
-conn.close()
-</code></pre>
 <h3 id="7-网络编程"><a href="#7-网络编程" class="headerlink" title="7. 网络编程"></a>7. 网络编程</h3><h4 id="a-套接字编程"><a href="#a-套接字编程" class="headerlink" title="a. 套接字编程"></a>a. 套接字编程</h4><p>socket 模块提供了标准的 BSD Sockets API，用于创建基于流的套接字。通过使用 socket 模块，可以实现客户端和服务器端程序之间的通信</p>
 <p><strong>使用 socket 模块实现一个简单的客户端和服务器端程序：</strong></p>
 <p>客户端</p>
-<pre><code class="python"># 导入 socket 模块
-import socket
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入 socket 模块</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 socket 对象</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取本地主机名</span></span><br><span class="line">host = socket.gethostname()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port = <span class="number">9999</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接服务，指定主机和端口</span></span><br><span class="line">s.connect((host, port))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 接收小于 1024 字节的数据</span></span><br><span class="line">msg = s.recv(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">s.close()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(msg.decode(<span class="string">&quot;utf-8&quot;</span>))</span><br></pre></td></tr></table></figure>
 
-# 创建一个 socket 对象
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# 获取本地主机名
-host = socket.gethostname()
-
-# 设置端口号
-port = 9999
-
-# 连接服务，指定主机和端口
-s.connect((host, port))
-
-# 接收小于 1024 字节的数据
-msg = s.recv(1024)
-
-s.close()
-
-print(msg.decode(&quot;utf-8&quot;))
-</code></pre>
 <p>服务端</p>
-<pre><code class="python"># 导入 socket 模块
-import socket
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入 socket 模块</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 socket 对象</span></span><br><span class="line">serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取本地主机名</span></span><br><span class="line">host = socket.gethostname()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port = <span class="number">9999</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绑定端口</span></span><br><span class="line">serversocket.bind((host, port))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置最大连接数，超过后排队</span></span><br><span class="line">serversocket.listen(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 建立客户端连接</span></span><br><span class="line">    clientsocket, addr = serversocket.accept()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;连接地址: %s&quot;</span> % <span class="built_in">str</span>(addr))</span><br><span class="line"></span><br><span class="line">    msg = <span class="string">&quot;欢迎访问编程网站！&quot;</span> + <span class="string">&quot;\r\n&quot;</span></span><br><span class="line">    clientsocket.send(msg.encode(<span class="string">&quot;utf-8&quot;</span>))</span><br><span class="line">    clientsocket.close()</span><br></pre></td></tr></table></figure>
 
-# 创建一个 socket 对象
-serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# 获取本地主机名
-host = socket.gethostname()
-
-# 设置端口号
-port = 9999
-
-# 绑定端口
-serversocket.bind((host, port))
-
-# 设置最大连接数，超过后排队
-serversocket.listen(5)
-
-while True:
-    # 建立客户端连接
-    clientsocket, addr = serversocket.accept()
-
-    print(&quot;连接地址: %s&quot; % str(addr))
-
-    msg = &quot;欢迎访问编程网站！&quot; + &quot;\r\n&quot;
-    clientsocket.send(msg.encode(&quot;utf-8&quot;))
-    clientsocket.close()
-</code></pre>
 <p><strong>使用 socket 模块创建简单的 UDP 客户端&#x2F;服务器程序</strong></p>
-<pre><code class="python"># 客户端
-import socket
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 客户端</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 socket 对象</span></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义服务器地址</span></span><br><span class="line">host = <span class="string">&quot;localhost&quot;</span></span><br><span class="line">port = <span class="number">9999</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送消息</span></span><br><span class="line">msg = <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">s.sendto(msg.encode(<span class="string">&quot;utf-8&quot;</span>), (host, port))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 接收数据</span></span><br><span class="line">data, addr = s.recvfrom(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">s.close()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Received from server: %s&quot;</span> % data.decode(<span class="string">&quot;utf-8&quot;</span>))</span><br></pre></td></tr></table></figure>
 
-# 创建一个 socket 对象
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 socket 对象</span></span><br><span class="line">serversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绑定端口</span></span><br><span class="line">serversocket.bind((<span class="string">&quot;localhost&quot;</span>, <span class="number">9999</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 接收数据</span></span><br><span class="line">    data, addr = serversocket.recvfrom(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Received from client: %s&quot;</span> % data.decode(<span class="string">&quot;utf-8&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送数据</span></span><br><span class="line">    serversocket.sendto(data, addr)</span><br></pre></td></tr></table></figure>
 
-# 定义服务器地址
-host = &quot;localhost&quot;
-port = 9999
-
-# 发送消息
-msg = &quot;Hello World!&quot;
-s.sendto(msg.encode(&quot;utf-8&quot;), (host, port))
-
-# 接收数据
-data, addr = s.recvfrom(1024)
-
-s.close()
-
-print(&quot;Received from server: %s&quot; % data.decode(&quot;utf-8&quot;))
-</code></pre>
-<pre><code class="python"># 服务器
-import socket
-
-# 创建一个 socket 对象
-serversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-# 绑定端口
-serversocket.bind((&quot;localhost&quot;, 9999))
-
-while True:
-    # 接收数据
-    data, addr = serversocket.recvfrom(1024)
-
-    print(&quot;Received from client: %s&quot; % data.decode(&quot;utf-8&quot;))
-
-    # 发送数据
-    serversocket.sendto(data, addr)
-</code></pre>
 <h4 id="b-HTTP库"><a href="#b-HTTP库" class="headerlink" title="b. HTTP库"></a>b. HTTP库</h4><p>Python requests库是一个用于发送网络请求的第三方 Python 库。它允许你发送各种不同类型的 HTTP 请求，包括 GET、POST、PUT 和 DELETE。</p>
 <p><strong>requests 方法</strong></p>
 <table>
@@ -1345,83 +581,24 @@ while True:
 </tr>
 </tbody></table>
 <p>安装 requests 库：</p>
-<pre><code>pip install requests
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+
 <p><strong>代码示例</strong></p>
 <p>1）发送一个 GET 请求</p>
-<pre><code class="python">import requests
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 GET 请求</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查响应状态码</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Success!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;An error occurred.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 发送 GET 请求
-response = requests.get(&#39;https://www.example.com&#39;)
-
-# 检查响应状态码
-if response.status_code == 200:
-  print(&#39;Success!&#39;)
-else:
-  print(&#39;An error occurred.&#39;)
-</code></pre>
 <p>2）发送一个带有查询参数的 GET 请求</p>
-<pre><code class="python">import requests
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 GET 请求</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.example.com/search&#x27;</span>, params=&#123;<span class="string">&#x27;q&#x27;</span>: <span class="string">&#x27;python&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查响应状态码</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Success!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;An error occurred.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 发送 GET 请求
-response = requests.get(&#39;https://www.example.com/search&#39;, params=&#123;&#39;q&#39;: &#39;python&#39;&#125;)
-
-# 检查响应状态码
-if response.status_code == 200:
-  print(&#39;Success!&#39;)
-else:
-  print(&#39;An error occurred.&#39;)
-</code></pre>
 <p>3）发送一个带有自定义头部的 GET 请求</p>
-<pre><code class="python">import requests
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 GET 请求</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.example.com&#x27;</span>, headers=&#123;<span class="string">&#x27;X-Custom-Header&#x27;</span>: <span class="string">&#x27;MyValue&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查响应状态码</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Success!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;An error occurred.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 发送 GET 请求
-response = requests.get(&#39;https://www.example.com&#39;, headers=&#123;&#39;X-Custom-Header&#39;: &#39;MyValue&#39;&#125;)
-
-# 检查响应状态码
-if response.status_code == 200:
-  print(&#39;Success!&#39;)
-else:
-  print(&#39;An error occurred.&#39;)
-</code></pre>
 <p>4）从响应中提取数据</p>
-<pre><code class="python">import requests
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 GET 请求</span></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理响应数据</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">  <span class="comment"># 获取响应文本</span></span><br><span class="line">  response_text = response.text</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Response text:&#x27;</span>)</span><br><span class="line">  <span class="built_in">print</span>(response_text)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 获取响应头信息</span></span><br><span class="line">  response_headers = response.headers</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Response headers:&#x27;</span>)</span><br><span class="line">  <span class="built_in">print</span>(response_headers)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 获取响应 Cookies</span></span><br><span class="line">  response_cookies = response.cookies</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Response cookies:&#x27;</span>)</span><br><span class="line">  <span class="built_in">print</span>(response_cookies)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;An error occurred.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 发送 GET 请求
-response = requests.get(&#39;https://www.example.com&#39;)
-
-# 处理响应数据
-if response.status_code == 200:
-  # 获取响应文本
-  response_text = response.text
-  print(&#39;Response text:&#39;)
-  print(response_text)
-
-  # 获取响应头信息
-  response_headers = response.headers
-  print(&#39;Response headers:&#39;)
-  print(response_headers)
-
-  # 获取响应 Cookies
-  response_cookies = response.cookies
-  print(&#39;Response cookies:&#39;)
-  print(response_cookies)
-
-else:
-  print(&#39;An error occurred.&#39;)
-</code></pre>
 <p>5）发送一个 POST 请求</p>
-<pre><code class="python">import requests
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 POST 请求</span></span><br><span class="line">response = requests.post(<span class="string">&#x27;https://www.example.com/login&#x27;</span>, data=&#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;john&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;1234&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查响应状态码</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Success!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;An error occurred.&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-# 发送 POST 请求
-response = requests.post(&#39;https://www.example.com/login&#39;, data=&#123;&#39;username&#39;: &#39;john&#39;, &#39;password&#39;: &#39;1234&#39;&#125;)
-
-# 检查响应状态码
-if response.status_code == 200:
-  print(&#39;Success!&#39;)
-else:
-  print(&#39;An error occurred.&#39;)
-</code></pre>
 <h4 id="c-电子邮件"><a href="#c-电子邮件" class="headerlink" title="c. 电子邮件"></a>c. 电子邮件</h4><p>在 Python 中，常用的处理电子邮件的库有：</p>
 <ul>
 <li>email：提供了一组用于处理复杂电子邮件消息的模块。</li>
@@ -1429,119 +606,14 @@ else:
 <li>imaplib：提供了一个实现 Internet Message Access Protocol (IMAP) 的客户端。</li>
 </ul>
 <p><strong>发送邮件</strong></p>
-<pre><code class="python">import smtplib
-from email.message import EmailMessage
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">from</span> email.message <span class="keyword">import</span> EmailMessage</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_email</span>():</span><br><span class="line">    <span class="comment"># 创建 SMTP 客户端对象</span></span><br><span class="line">    smtp_client = smtplib.SMTP(<span class="string">&#x27;smtp.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 登录邮件服务器</span></span><br><span class="line">    smtp_client.login(<span class="string">&#x27;user@example.com&#x27;</span>, <span class="string">&#x27;password&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建邮件对象</span></span><br><span class="line">    msg = EmailMessage()</span><br><span class="line">    msg.set_content(<span class="string">&#x27;Hello, this is a test email&#x27;</span>)</span><br><span class="line">    msg[<span class="string">&#x27;Subject&#x27;</span>] = <span class="string">&#x27;Test Email&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;From&#x27;</span>] = <span class="string">&#x27;user@example.com&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;To&#x27;</span>] = <span class="string">&#x27;recipient@example.com&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送邮件</span></span><br><span class="line">    smtp_client.sendmail(<span class="string">&#x27;user@example.com&#x27;</span>, [<span class="string">&#x27;recipient@example.com&#x27;</span>], msg.as_string())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 断开连接</span></span><br><span class="line">    smtp_client.quit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    send_email()</span><br></pre></td></tr></table></figure>
 
-def send_email():
-    # 创建 SMTP 客户端对象
-    smtp_client = smtplib.SMTP(&#39;smtp.example.com&#39;)
-
-    # 登录邮件服务器
-    smtp_client.login(&#39;user@example.com&#39;, &#39;password&#39;)
-
-    # 创建邮件对象
-    msg = EmailMessage()
-    msg.set_content(&#39;Hello, this is a test email&#39;)
-    msg[&#39;Subject&#39;] = &#39;Test Email&#39;
-    msg[&#39;From&#39;] = &#39;user@example.com&#39;
-    msg[&#39;To&#39;] = &#39;recipient@example.com&#39;
-
-    # 发送邮件
-    smtp_client.sendmail(&#39;user@example.com&#39;, [&#39;recipient@example.com&#39;], msg.as_string())
-
-    # 断开连接
-    smtp_client.quit()
-
-if __name__ == &#39;__main__&#39;:
-    send_email()
-</code></pre>
 <p><strong>发送带有附件的邮件</strong></p>
-<pre><code class="python">import smtplib
-from email.message import EmailMessage
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">from</span> email.message <span class="keyword">import</span> EmailMessage</span><br><span class="line"><span class="keyword">from</span> email.mime.multipart <span class="keyword">import</span> MIMEMultipart</span><br><span class="line"><span class="keyword">from</span> email.mime.base <span class="keyword">import</span> MIMEBase</span><br><span class="line"><span class="keyword">from</span> email <span class="keyword">import</span> encoders</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_email</span>():</span><br><span class="line">    <span class="comment"># 创建 SMTP 客户端对象</span></span><br><span class="line">    smtp_client = smtplib.SMTP(<span class="string">&#x27;smtp.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 登录邮件服务器</span></span><br><span class="line">    smtp_client.login(<span class="string">&#x27;user@example.com&#x27;</span>, <span class="string">&#x27;password&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建邮件对象</span></span><br><span class="line">    msg = MIMEMultipart()</span><br><span class="line">    msg[<span class="string">&#x27;Subject&#x27;</span>] = <span class="string">&#x27;Test Email with Attachment&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;From&#x27;</span>] = <span class="string">&#x27;user@example.com&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;To&#x27;</span>] = <span class="string">&#x27;recipient@example.com&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 添加附件</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;attachment.txt&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        part = MIMEBase(<span class="string">&#x27;application&#x27;</span>, <span class="string">&#x27;octet-stream&#x27;</span>)</span><br><span class="line">        part.set_payload(f.read())</span><br><span class="line">        encoders.encode_base64(part)</span><br><span class="line">        part.add_header(<span class="string">&#x27;Content-Disposition&#x27;</span>,</span><br><span class="line">                        <span class="string">&#x27;attachment; filename=&quot;attachment.txt&quot;&#x27;</span>)</span><br><span class="line">        msg.attach(part)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送邮件</span></span><br><span class="line">    smtp_client.sendmail(<span class="string">&#x27;user@example.com&#x27;</span>, [<span class="string">&#x27;recipient@example.com&#x27;</span>], msg.as_string())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 断开连接</span></span><br><span class="line">    smtp_client.quit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    send_email()</span><br></pre></td></tr></table></figure>
 
-def send_email():
-    # 创建 SMTP 客户端对象
-    smtp_client = smtplib.SMTP(&#39;smtp.example.com&#39;)
-
-    # 登录邮件服务器
-    smtp_client.login(&#39;user@example.com&#39;, &#39;password&#39;)
-
-    # 创建邮件对象
-    msg = MIMEMultipart()
-    msg[&#39;Subject&#39;] = &#39;Test Email with Attachment&#39;
-    msg[&#39;From&#39;] = &#39;user@example.com&#39;
-    msg[&#39;To&#39;] = &#39;recipient@example.com&#39;
-
-    # 添加附件
-    with open(&#39;attachment.txt&#39;, &#39;rb&#39;) as f:
-        part = MIMEBase(&#39;application&#39;, &#39;octet-stream&#39;)
-        part.set_payload(f.read())
-        encoders.encode_base64(part)
-        part.add_header(&#39;Content-Disposition&#39;,
-                        &#39;attachment; filename=&quot;attachment.txt&quot;&#39;)
-        msg.attach(part)
-
-    # 发送邮件
-    smtp_client.sendmail(&#39;user@example.com&#39;, [&#39;recipient@example.com&#39;], msg.as_string())
-
-    # 断开连接
-    smtp_client.quit()
-
-if __name__ == &#39;__main__&#39;:
-    send_email()
-</code></pre>
 <p><strong>向多个用户发送带有 HTML 表格的 HTML 格式邮件</strong></p>
-<pre><code class="python">import smtplib
-from email.message import EmailMessage
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">from</span> email.message <span class="keyword">import</span> EmailMessage</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_email</span>():</span><br><span class="line">    <span class="comment"># 创建 SMTP 客户端对象</span></span><br><span class="line">    smtp_client = smtplib.SMTP(<span class="string">&#x27;smtp.example.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 登录邮件服务器</span></span><br><span class="line">    smtp_client.login(<span class="string">&#x27;user@example.com&#x27;</span>, <span class="string">&#x27;password&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建邮件对象</span></span><br><span class="line">    msg = EmailMessage()</span><br><span class="line">    msg[<span class="string">&#x27;Subject&#x27;</span>] = <span class="string">&#x27;Test HTML Email with Table&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;From&#x27;</span>] = <span class="string">&#x27;user@example.com&#x27;</span></span><br><span class="line">    msg[<span class="string">&#x27;To&#x27;</span>] = <span class="string">&#x27;recipient1@example.com, recipient2@example.com&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置邮件正文为 HTML 格式</span></span><br><span class="line">    msg.add_alternative(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    &lt;html&gt;</span></span><br><span class="line"><span class="string">        &lt;body&gt;</span></span><br><span class="line"><span class="string">            &lt;h1&gt;Hello, this is a test HTML email&lt;/h1&gt;</span></span><br><span class="line"><span class="string">            &lt;table&gt;</span></span><br><span class="line"><span class="string">                &lt;tr&gt;</span></span><br><span class="line"><span class="string">                    &lt;th&gt;Name&lt;/th&gt;</span></span><br><span class="line"><span class="string">                    &lt;th&gt;Age&lt;/th&gt;</span></span><br><span class="line"><span class="string">                &lt;/tr&gt;</span></span><br><span class="line"><span class="string">                &lt;tr&gt;</span></span><br><span class="line"><span class="string">                    &lt;td&gt;Alice&lt;/td&gt;</span></span><br><span class="line"><span class="string">                    &lt;td&gt;20&lt;/td&gt;</span></span><br><span class="line"><span class="string">                &lt;/tr&gt;</span></span><br><span class="line"><span class="string">                &lt;tr&gt;</span></span><br><span class="line"><span class="string">                    &lt;td&gt;Bob&lt;/td&gt;</span></span><br><span class="line"><span class="string">                    &lt;td&gt;22&lt;/td&gt;</span></span><br><span class="line"><span class="string">                &lt;/tr&gt;</span></span><br><span class="line"><span class="string">            &lt;/table&gt;</span></span><br><span class="line"><span class="string">        &lt;/body&gt;</span></span><br><span class="line"><span class="string">    &lt;/html&gt;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>, subtype=<span class="string">&#x27;html&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送邮件</span></span><br><span class="line">    smtp_client.sendmail(<span class="string">&#x27;user@example.com&#x27;</span>, [<span class="string">&#x27;recipient1@example.com&#x27;</span>, <span class="string">&#x27;recipient2@example.com&#x27;</span>], msg.as_string())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 断开连接</span></span><br><span class="line">    smtp_client.quit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    send_email()</span><br></pre></td></tr></table></figure>
 
-def send_email():
-    # 创建 SMTP 客户端对象
-    smtp_client = smtplib.SMTP(&#39;smtp.example.com&#39;)
-
-    # 登录邮件服务器
-    smtp_client.login(&#39;user@example.com&#39;, &#39;password&#39;)
-
-    # 创建邮件对象
-    msg = EmailMessage()
-    msg[&#39;Subject&#39;] = &#39;Test HTML Email with Table&#39;
-    msg[&#39;From&#39;] = &#39;user@example.com&#39;
-    msg[&#39;To&#39;] = &#39;recipient1@example.com, recipient2@example.com&#39;
-
-    # 设置邮件正文为 HTML 格式
-    msg.add_alternative(&quot;&quot;&quot;
-    &lt;html&gt;
-        &lt;body&gt;
-            &lt;h1&gt;Hello, this is a test HTML email&lt;/h1&gt;
-            &lt;table&gt;
-                &lt;tr&gt;
-                    &lt;th&gt;Name&lt;/th&gt;
-                    &lt;th&gt;Age&lt;/th&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;Alice&lt;/td&gt;
-                    &lt;td&gt;20&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;Bob&lt;/td&gt;
-                    &lt;td&gt;22&lt;/td&gt;
-                &lt;/tr&gt;
-            &lt;/table&gt;
-        &lt;/body&gt;
-    &lt;/html&gt;
-    &quot;&quot;&quot;, subtype=&#39;html&#39;)
-
-    # 发送邮件
-    smtp_client.sendmail(&#39;user@example.com&#39;, [&#39;recipient1@example.com&#39;, &#39;recipient2@example.com&#39;], msg.as_string())
-
-    # 断开连接
-    smtp_client.quit()
-
-if __name__ == &#39;__main__&#39;:
-    send_email()
-</code></pre>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://docs.python.org/3.7/tutorial/index.html">https://docs.python.org/3.7/tutorial/index.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://docs.python.org/3.7/library/index.html">https://docs.python.org/3.7/library/index.html</a></li>

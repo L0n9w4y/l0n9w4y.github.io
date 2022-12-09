@@ -274,26 +274,8 @@
 <h3 id="4-Windows应用"><a href="#4-Windows应用" class="headerlink" title="4. Windows应用"></a>4. Windows应用</h3><p>Windows 包含许多安全功能，可帮助保护用户免受恶意软件和攻击。 但是，仅当平台按预期启动且未受到篡改时，才能实现对 Windows 安全组件的信任。Windows 依赖于统一可扩展固件接口 (UEFI) 安全启动、早期启动反恶意软件 (ELAM)、用于度量的动态信任根 (DRTM)、受信任的启动以及其他低级别硬件和固件安全功能。 </p>
 <p>在开启电脑直到反恶意软件启动时，Windows 会获得适当的硬件配置支持，以帮助保护系统安全。 由启动加载程序和 BIOS 实现的 测量和受信任启动，以链接方式验证和加密记录启动的每个步骤。 这些事件绑定到充当信任根的安全共同处理器 (TPM) 上。 远程证明是服务读取和验证这些事件以提供可验证、无偏向和篡改复原报告的机制。 远程证明是系统启动的受信任审核员，允许特定实体信任设备。</p>
 <p>设备端的证明和零信任所涉及的步骤摘要如下所示:</p>
-<pre><code>1. 在启动过程的每个步骤 (例如文件加载、特殊变量的更新等) 中，在 TPM PCR 中对文件哈希和签名等信息进行测量。 度量受 受信任的计算组规范 (TCG) 的约束，该规范指示可以记录哪些事件以及每个事件的格式。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1. 在启动过程的每个步骤 (例如文件加载、特殊变量的更新等) 中，在 TPM PCR 中对文件哈希和签名等信息进行测量。 度量受 受信任的计算组规范 (TCG) 的约束，该规范指示可以记录哪些事件以及每个事件的格式。</span><br><span class="line"></span><br><span class="line">2. 启动 Windows 后，证明者/验证程序会请求 TPM 提取存储在其平台配置注册表 (PCR) 中的测量数据以及 TCG 日志。 这两个组件中的度量共同构成了证明证据，然后发送到证明服务。</span><br><span class="line"></span><br><span class="line">3. TPM是通过使用芯片组上的密钥/加密材料与 Azure 证书服务 进行验证的。</span><br><span class="line"></span><br><span class="line">4. 然后，将此信息发送到云中的证明服务，以验证设备是否安全。 Microsoft Endpoint Manger 与 Microsoft Azure 证明集成，以全面检查设备运行状况，并将此信息与 Azure Active Directory 条件访问相连接。 这种整合是“零信任”解决方案的关键，有助于将信任与不信任的设备结合起来。</span><br><span class="line"></span><br><span class="line">5. 证明服务执行以下任务:</span><br><span class="line"></span><br><span class="line">    - 验证证据的完整性。 此验证是通过重新播放 TCG 日志来验证与重新计算的值相匹配的 PCR 来实现的。</span><br><span class="line">    - 验证 TPM 是否具有由经过身份验证的 TPM 签发的有效证明标识密钥。</span><br><span class="line">    - 验证安全功能是否处于预期状态。</span><br><span class="line"></span><br><span class="line">6. 证明服务返回一个证明报告，其中包含有关基于证明服务中配置策略的安全功能的信息。</span><br><span class="line"></span><br><span class="line">7. 然后，设备将报告发送到 Microsoft Endpoint Manager 云，以根据管理员配置的设备合规性规则评估平台的可信度。</span><br><span class="line"></span><br><span class="line">8. 有条件的访问，加上设备合规性状态，然后决定允许或拒绝访问。</span><br></pre></td></tr></table></figure>
 
-2. 启动 Windows 后，证明者/验证程序会请求 TPM 提取存储在其平台配置注册表 (PCR) 中的测量数据以及 TCG 日志。 这两个组件中的度量共同构成了证明证据，然后发送到证明服务。
-
-3. TPM是通过使用芯片组上的密钥/加密材料与 Azure 证书服务 进行验证的。
-
-4. 然后，将此信息发送到云中的证明服务，以验证设备是否安全。 Microsoft Endpoint Manger 与 Microsoft Azure 证明集成，以全面检查设备运行状况，并将此信息与 Azure Active Directory 条件访问相连接。 这种整合是“零信任”解决方案的关键，有助于将信任与不信任的设备结合起来。
-
-5. 证明服务执行以下任务:
-
-    - 验证证据的完整性。 此验证是通过重新播放 TCG 日志来验证与重新计算的值相匹配的 PCR 来实现的。
-    - 验证 TPM 是否具有由经过身份验证的 TPM 签发的有效证明标识密钥。
-    - 验证安全功能是否处于预期状态。
-
-6. 证明服务返回一个证明报告，其中包含有关基于证明服务中配置策略的安全功能的信息。
-
-7. 然后，设备将报告发送到 Microsoft Endpoint Manager 云，以根据管理员配置的设备合规性规则评估平台的可信度。
-
-8. 有条件的访问，加上设备合规性状态，然后决定允许或拒绝访问。
-</code></pre>
 <h2 id="0x02-硬件安全性"><a href="#0x02-硬件安全性" class="headerlink" title="0x02 硬件安全性"></a>0x02 硬件安全性</h2><p>硬件安全与软件安全技术之间具有很强的一致性，以保护用户、数据和设备。 单靠操作系统无法免受网络罪犯用来入侵其芯片深处计算机的广泛工具和技术的保护。 进入后，入侵者在从事从窃取重要数据到捕获电子邮件地址和其他敏感信息等多个恶意活动时可能难以检测。 这些新威胁要求计算安全到核心的硬件，包括硬件芯片和处理器</p>
 <table>
 <thead>

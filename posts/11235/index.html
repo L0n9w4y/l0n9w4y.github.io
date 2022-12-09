@@ -265,40 +265,22 @@
 </code></pre>
 <h3 id="2-检测分析能力"><a href="#2-检测分析能力" class="headerlink" title="2. 检测分析能力"></a>2. 检测分析能力</h3><p>能检测到什么程度的攻击(一般入侵 —&gt; 渗透测试 —&gt; 红队演练 —&gt; APT)</p>
 <p><strong>核心能力</strong></p>
-<pre><code>1. 入侵对抗：基于网络攻杀链、ATT &amp; CK模型等各个阶段的攻击战术、技术、过程检测与响应
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 入侵对抗：基于网络攻杀链、ATT &amp; CK模型等各个阶段的攻击战术、技术、过程检测与响应</span><br><span class="line"></span><br><span class="line">2. 数据分析：基于特征(IOCs库、TTPs库)、图计算、入侵链路可视化分析、用户和实体行为分析、威胁智能分析、模型智能编排</span><br></pre></td></tr></table></figure>
 
-2. 数据分析：基于特征(IOCs库、TTPs库)、图计算、入侵链路可视化分析、用户和实体行为分析、威胁智能分析、模型智能编排
-</code></pre>
-<h2 id="0x02-考虑因素"><a href="#0x02-考虑因素" class="headerlink" title="0x02  考虑因素"></a>0x02  考虑因素</h2><h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. 安全性</h3><pre><code>(1) Agent跟Server的配置下发通道安全，数据传输加密
+<h2 id="0x02-考虑因素"><a href="#0x02-考虑因素" class="headerlink" title="0x02  考虑因素"></a>0x02  考虑因素</h2><h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. 安全性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(1) Agent跟Server的配置下发通道安全，数据传输加密</span><br><span class="line"></span><br><span class="line">(2) 配置信息读取写入需要鉴权、配置变更历史需记录</span><br><span class="line"></span><br><span class="line">(3) 不预留包含任何命令执行的功能，服务端操作下发严格鉴权，保证agent低侵入性</span><br><span class="line"></span><br><span class="line">(4) agent更新时，对升级包的完整性进行检测验证，防止被攻击者替换</span><br><span class="line"></span><br><span class="line">(5) 通过system服务自启动、watch守护进程逆行监控，对异常agent下线进行监控和告警</span><br><span class="line"></span><br><span class="line">(6) Agent反调试、防逆向手段，提升攻击者对agent逆向分析难度</span><br></pre></td></tr></table></figure>
 
-(2) 配置信息读取写入需要鉴权、配置变更历史需记录
+<h3 id="2-低损耗"><a href="#2-低损耗" class="headerlink" title="2. 低损耗"></a>2. 低损耗</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">节省资源，占用较少的CPU、内存；可使用cgroup等严格限制资源占用</span><br></pre></td></tr></table></figure>
 
-(3) 不预留包含任何命令执行的功能，服务端操作下发严格鉴权，保证agent低侵入性
+<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需保证agent长期运行稳定，确保agent本身不影响正常服务及业务</span><br></pre></td></tr></table></figure>
 
-(4) agent更新时，对升级包的完整性进行检测验证，防止被攻击者替换
+<h3 id="3-高可用"><a href="#3-高可用" class="headerlink" title="3. 高可用"></a>3. 高可用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) 需满足数十万服务器量级的IDC规模</span><br><span class="line"></span><br><span class="line">(2) 进程包活、心跳检测、实时获取新指令能力</span><br><span class="line"></span><br><span class="line">(3) 支持分布式部署，并行处理任务，保证数据的一致性，服务器数量规模达到百万级的集群负载能力</span><br></pre></td></tr></table></figure>
 
-(5) 通过system服务自启动、watch守护进程逆行监控，对异常agent下线进行监控和告警
+<h3 id="4-可控性"><a href="#4-可控性" class="headerlink" title="4. 可控性"></a>4. 可控性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 精确的熔断限流，服务端命令下发响应需控制在分钟级以内</span><br><span class="line"></span><br><span class="line">(2) 服务端能控制agent的启动、终止，当agent出现异常时，也许保证可控</span><br></pre></td></tr></table></figure>
 
-(6) Agent反调试、防逆向手段，提升攻击者对agent逆向分析难度
-</code></pre>
-<h3 id="2-低损耗"><a href="#2-低损耗" class="headerlink" title="2. 低损耗"></a>2. 低损耗</h3><pre><code>节省资源，占用较少的CPU、内存；可使用cgroup等严格限制资源占用
-</code></pre>
-<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><pre><code>需保证agent长期运行稳定，确保agent本身不影响正常服务及业务
-</code></pre>
-<h3 id="3-高可用"><a href="#3-高可用" class="headerlink" title="3. 高可用"></a>3. 高可用</h3><pre><code>(1) 需满足数十万服务器量级的IDC规模
+<h3 id="5-部署兼容性"><a href="#5-部署兼容性" class="headerlink" title="5. 部署兼容性"></a>5. 部署兼容性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需满足广泛的部署兼容性、兼容Linux各种版本、支持容器环境等</span><br></pre></td></tr></table></figure>
 
-(2) 进程包活、心跳检测、实时获取新指令能力
+<h3 id="6-可扩展性"><a href="#6-可扩展性" class="headerlink" title="6. 可扩展性"></a>6. 可扩展性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">系统功能增加、版本更新及维护较为方便，满足可扩展性</span><br></pre></td></tr></table></figure>
 
-(3) 支持分布式部署，并行处理任务，保证数据的一致性，服务器数量规模达到百万级的集群负载能力
-</code></pre>
-<h3 id="4-可控性"><a href="#4-可控性" class="headerlink" title="4. 可控性"></a>4. 可控性</h3><pre><code>(1) 精确的熔断限流，服务端命令下发响应需控制在分钟级以内
-
-(2) 服务端能控制agent的启动、终止，当agent出现异常时，也许保证可控
-</code></pre>
-<h3 id="5-部署兼容性"><a href="#5-部署兼容性" class="headerlink" title="5. 部署兼容性"></a>5. 部署兼容性</h3><pre><code>需满足广泛的部署兼容性、兼容Linux各种版本、支持容器环境等
-</code></pre>
-<h3 id="6-可扩展性"><a href="#6-可扩展性" class="headerlink" title="6. 可扩展性"></a>6. 可扩展性</h3><pre><code>系统功能增加、版本更新及维护较为方便，满足可扩展性
-</code></pre>
 <h2 id="0x03-数据采集"><a href="#0x03-数据采集" class="headerlink" title="0x03 数据采集"></a>0x03 数据采集</h2><h3 id="1-采集维度"><a href="#1-采集维度" class="headerlink" title="1. 采集维度"></a>1. 采集维度</h3><p>依据安全需求、等保合规、威胁检测模型等梳理HIDS需要采集的数据维度、数据项…</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/agent_data.png"></p>
 <h3 id="2-技术方案"><a href="#2-技术方案" class="headerlink" title="2. 技术方案"></a>2. 技术方案</h3><p>总结业界成熟的主机入侵检测技术方案、开源项目核心模块…</p>
@@ -361,54 +343,10 @@
 </ul>
 <h2 id="0x04-检测分析"><a href="#0x04-检测分析" class="headerlink" title="0x04 检测分析"></a>0x04 检测分析</h2><h3 id="1-检测模型"><a href="#1-检测模型" class="headerlink" title="1. 检测模型"></a>1. 检测模型</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/threat_detection.png"></p>
 <p><strong>Refer:</strong> <a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/191144.html">https://help.aliyun.com/document_detail/191144.html</a></p>
-<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><h4 id="a-误用检测方法"><a href="#a-误用检测方法" class="headerlink" title="a. 误用检测方法"></a>a. 误用检测方法</h4><pre><code>1) 模式匹配法
+<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><h4 id="a-误用检测方法"><a href="#a-误用检测方法" class="headerlink" title="a. 误用检测方法"></a>a. 误用检测方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1) 模式匹配法</span><br><span class="line"></span><br><span class="line">通过把收集到的信息与网络入侵和系统误用模式数据库中的已知信息进行比较，从而对违背安全策略的行为进行发现。模式匹配法可以显著地减少系统负担，有较高的检测率和准确率</span><br><span class="line"></span><br><span class="line">2) 专家系统法</span><br><span class="line"></span><br><span class="line">通过将安全专家的知识表示成IF-THEN规则，形成专家知识库，然后，运用推理算法进行检测入侵。专家系统的IF-THEN规则，就是由模式匹配规则组成，即”与或非组合模式匹配规则“，通过组合多个模式匹配规则，来获得单个模式匹配规则所无法取得的效果，主要是针对有特征的入侵行为</span><br><span class="line"></span><br><span class="line">3) 状态转移分析法</span><br><span class="line"></span><br><span class="line">该方法的基本思想是将攻击看成一个连续的、分步骤的并且各个步骤之间有一定的关联的过程。在网络中发生入侵时及时阻断入侵行为，防止可能还会进一步发生的类似攻击行为。在状态转移分析方法中，一个渗透过程可以看作是由攻击者做出的一系列的行为而导致系统从某个初始状态变为最终某个被危害的状态</span><br></pre></td></tr></table></figure>
 
-通过把收集到的信息与网络入侵和系统误用模式数据库中的已知信息进行比较，从而对违背安全策略的行为进行发现。模式匹配法可以显著地减少系统负担，有较高的检测率和准确率
+<h4 id="b-异常检测方法"><a href="#b-异常检测方法" class="headerlink" title="b. 异常检测方法"></a>b. 异常检测方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">1) 基于贝叶斯推理检测法</span><br><span class="line"></span><br><span class="line">通过在任何给定的时刻，测量变量值，推理判断系统是否发生入侵事件</span><br><span class="line"></span><br><span class="line">2) 基于特征选择检测法</span><br><span class="line"></span><br><span class="line">指从一组度量中挑选出能检测入侵的度量，用它来对入侵行为进行预测或分类</span><br><span class="line"></span><br><span class="line">3) 基于贝叶斯网络检测法</span><br><span class="line"></span><br><span class="line">用图形方式表示随机变量之间的关系。通过指定的与邻接节点相关一个小的概率集来计算随机变量的联接概率分布。按给定全部节点组合，所有根节点的先验概率和非根节点概率构成这个集。贝叶斯网络是一个有向图，弧表示父、子结点之间的依赖关系。当随机变量的值变为已知时，就允许将它吸收为证据，为其他的剩余随机变量条件值判断提供计算框架</span><br><span class="line"></span><br><span class="line">4) 基于模式预测的检测法</span><br><span class="line"></span><br><span class="line">事件序列不是随机发生的而是遵循某种可辨别的模式是基于模式预测的异常检测法的假设条件，其特点是事件序列及相互联系被考虑到了，只关心少数相关安全事件是该检测法的最大优点</span><br><span class="line"></span><br><span class="line">5) 基于统计的异常检测法</span><br><span class="line"></span><br><span class="line">根据用户对象的活动为每个用户都建立一个特征轮廓表，通过对当前特征与以前已经建立的特征进行比较，来判断当前行为的异常性。用户特征轮廓表要根据审计记录情况不断更新，其保护去多衡量指标，这些指标值要根据经验值或一段时间内的统计而得到</span><br><span class="line"></span><br><span class="line">6) 基于机器学习检测法</span><br><span class="line"></span><br><span class="line">根据离散数据临时序列学习获得网络、系统和个体的行为特征，并提出了一个实例学习法IBL，IBL是基于相似度，该方法通过新的序列相似度计算将原始数据（如离散事件流和无序的记录）转化成可度量的空间。然后，应用IBL学习技术和一种新的基于序列的分类方法，发现异常类型事件，从而检测入侵行为。其中，成员分类的概率由阈值的选取来决定</span><br><span class="line"></span><br><span class="line">7) 数据挖掘检测法</span><br><span class="line"></span><br><span class="line">数据挖掘的目的是要从海量的数据中提取出有用的数据信息。网络中会有大量的审计记录存在，审计记录大多都是以文件形式存放的。如果靠手工方法来发现记录中的异常现象是远远不够的，所以将数据挖掘技术应用于入侵检测中，可以从审计数据中提取有用的知识，然后用这些知识区检测异常入侵和已知的入侵。采用的方法有KDD算法，其优点是善于处理大量数据的能力与数据关联分析的能力，但是实时性较差</span><br><span class="line"></span><br><span class="line">8) 基于应用模式的异常检测法</span><br><span class="line"></span><br><span class="line">该方法是根据服务请求类型、服务请求长度、服务请求包大小分布计算网络服务的异常值。通过实时计算的异常值和所训练的阈值比较，从而发现异常行为</span><br><span class="line"></span><br><span class="line">9) 基于文本分类的异常检测法</span><br><span class="line"></span><br><span class="line">该方法是将系统产生的进程调用集合转换为“文档”。利用K邻聚类文本分类算法，计算文档的相似性</span><br></pre></td></tr></table></figure>
 
-2) 专家系统法
-
-通过将安全专家的知识表示成IF-THEN规则，形成专家知识库，然后，运用推理算法进行检测入侵。专家系统的IF-THEN规则，就是由模式匹配规则组成，即”与或非组合模式匹配规则“，通过组合多个模式匹配规则，来获得单个模式匹配规则所无法取得的效果，主要是针对有特征的入侵行为
-
-3) 状态转移分析法
-
-该方法的基本思想是将攻击看成一个连续的、分步骤的并且各个步骤之间有一定的关联的过程。在网络中发生入侵时及时阻断入侵行为，防止可能还会进一步发生的类似攻击行为。在状态转移分析方法中，一个渗透过程可以看作是由攻击者做出的一系列的行为而导致系统从某个初始状态变为最终某个被危害的状态
-</code></pre>
-<h4 id="b-异常检测方法"><a href="#b-异常检测方法" class="headerlink" title="b. 异常检测方法"></a>b. 异常检测方法</h4><pre><code>1) 基于贝叶斯推理检测法
-
-通过在任何给定的时刻，测量变量值，推理判断系统是否发生入侵事件
-
-2) 基于特征选择检测法
-
-指从一组度量中挑选出能检测入侵的度量，用它来对入侵行为进行预测或分类
-
-3) 基于贝叶斯网络检测法
-
-用图形方式表示随机变量之间的关系。通过指定的与邻接节点相关一个小的概率集来计算随机变量的联接概率分布。按给定全部节点组合，所有根节点的先验概率和非根节点概率构成这个集。贝叶斯网络是一个有向图，弧表示父、子结点之间的依赖关系。当随机变量的值变为已知时，就允许将它吸收为证据，为其他的剩余随机变量条件值判断提供计算框架
-
-4) 基于模式预测的检测法
-
-事件序列不是随机发生的而是遵循某种可辨别的模式是基于模式预测的异常检测法的假设条件，其特点是事件序列及相互联系被考虑到了，只关心少数相关安全事件是该检测法的最大优点
-
-5) 基于统计的异常检测法
-
-根据用户对象的活动为每个用户都建立一个特征轮廓表，通过对当前特征与以前已经建立的特征进行比较，来判断当前行为的异常性。用户特征轮廓表要根据审计记录情况不断更新，其保护去多衡量指标，这些指标值要根据经验值或一段时间内的统计而得到
-
-6) 基于机器学习检测法
-
-根据离散数据临时序列学习获得网络、系统和个体的行为特征，并提出了一个实例学习法IBL，IBL是基于相似度，该方法通过新的序列相似度计算将原始数据（如离散事件流和无序的记录）转化成可度量的空间。然后，应用IBL学习技术和一种新的基于序列的分类方法，发现异常类型事件，从而检测入侵行为。其中，成员分类的概率由阈值的选取来决定
-
-7) 数据挖掘检测法
-
-数据挖掘的目的是要从海量的数据中提取出有用的数据信息。网络中会有大量的审计记录存在，审计记录大多都是以文件形式存放的。如果靠手工方法来发现记录中的异常现象是远远不够的，所以将数据挖掘技术应用于入侵检测中，可以从审计数据中提取有用的知识，然后用这些知识区检测异常入侵和已知的入侵。采用的方法有KDD算法，其优点是善于处理大量数据的能力与数据关联分析的能力，但是实时性较差
-
-8) 基于应用模式的异常检测法
-
-该方法是根据服务请求类型、服务请求长度、服务请求包大小分布计算网络服务的异常值。通过实时计算的异常值和所训练的阈值比较，从而发现异常行为
-
-9) 基于文本分类的异常检测法
-
-该方法是将系统产生的进程调用集合转换为“文档”。利用K邻聚类文本分类算法，计算文档的相似性
-</code></pre>
 <h3 id="3-特征库"><a href="#3-特征库" class="headerlink" title="3. 特征库"></a>3. 特征库</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://osintframework.com/">https://osintframework.com/</a></p>
 </li>

