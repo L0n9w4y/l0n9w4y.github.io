@@ -265,11 +265,11 @@
 </code></pre>
 <h3 id="2-检测分析能力"><a href="#2-检测分析能力" class="headerlink" title="2. 检测分析能力"></a>2. 检测分析能力</h3><p>能检测到什么程度的攻击(一般入侵 —&gt; 渗透测试 —&gt; 红队演练 —&gt; APT)</p>
 <p><strong>核心能力</strong></p>
-<pre class="language-none"><code class="language-none">1. 入侵对抗：基于网络攻杀链、ATT &amp; CK模型等各个阶段的攻击战术、技术、过程检测与响应
+<pre class="line-numbers language-none"><code class="language-none">1. 入侵对抗：基于网络攻杀链、ATT &amp; CK模型等各个阶段的攻击战术、技术、过程检测与响应
 
-2. 数据分析：基于特征(IOCs库、TTPs库)、图计算、入侵链路可视化分析、用户和实体行为分析、威胁智能分析、模型智能编排</code></pre>
+2. 数据分析：基于特征(IOCs库、TTPs库)、图计算、入侵链路可视化分析、用户和实体行为分析、威胁智能分析、模型智能编排<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x02-考虑因素"><a href="#0x02-考虑因素" class="headerlink" title="0x02  考虑因素"></a>0x02  考虑因素</h2><h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. 安全性</h3><pre class="language-none"><code class="language-none">(1) Agent跟Server的配置下发通道安全，数据传输加密
+<h2 id="0x02-考虑因素"><a href="#0x02-考虑因素" class="headerlink" title="0x02  考虑因素"></a>0x02  考虑因素</h2><h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. 安全性</h3><pre class="line-numbers language-none"><code class="language-none">(1) Agent跟Server的配置下发通道安全，数据传输加密
 
 (2) 配置信息读取写入需要鉴权、配置变更历史需记录
 
@@ -279,25 +279,25 @@
 
 (5) 通过system服务自启动、watch守护进程逆行监控，对异常agent下线进行监控和告警
 
-(6) Agent反调试、防逆向手段，提升攻击者对agent逆向分析难度</code></pre>
+(6) Agent反调试、防逆向手段，提升攻击者对agent逆向分析难度<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-低损耗"><a href="#2-低损耗" class="headerlink" title="2. 低损耗"></a>2. 低损耗</h3><pre class="language-none"><code class="language-none">节省资源，占用较少的CPU、内存；可使用cgroup等严格限制资源占用</code></pre>
+<h3 id="2-低损耗"><a href="#2-低损耗" class="headerlink" title="2. 低损耗"></a>2. 低损耗</h3><pre class="line-numbers language-none"><code class="language-none">节省资源，占用较少的CPU、内存；可使用cgroup等严格限制资源占用<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><pre class="language-none"><code class="language-none">需保证agent长期运行稳定，确保agent本身不影响正常服务及业务</code></pre>
+<h3 id="3-稳定性"><a href="#3-稳定性" class="headerlink" title="3. 稳定性"></a>3. 稳定性</h3><pre class="line-numbers language-none"><code class="language-none">需保证agent长期运行稳定，确保agent本身不影响正常服务及业务<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="3-高可用"><a href="#3-高可用" class="headerlink" title="3. 高可用"></a>3. 高可用</h3><pre class="language-none"><code class="language-none">(1) 需满足数十万服务器量级的IDC规模
+<h3 id="3-高可用"><a href="#3-高可用" class="headerlink" title="3. 高可用"></a>3. 高可用</h3><pre class="line-numbers language-none"><code class="language-none">(1) 需满足数十万服务器量级的IDC规模
 
 (2) 进程包活、心跳检测、实时获取新指令能力
 
-(3) 支持分布式部署，并行处理任务，保证数据的一致性，服务器数量规模达到百万级的集群负载能力</code></pre>
+(3) 支持分布式部署，并行处理任务，保证数据的一致性，服务器数量规模达到百万级的集群负载能力<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="4-可控性"><a href="#4-可控性" class="headerlink" title="4. 可控性"></a>4. 可控性</h3><pre class="language-none"><code class="language-none">(1) 精确的熔断限流，服务端命令下发响应需控制在分钟级以内
+<h3 id="4-可控性"><a href="#4-可控性" class="headerlink" title="4. 可控性"></a>4. 可控性</h3><pre class="line-numbers language-none"><code class="language-none">(1) 精确的熔断限流，服务端命令下发响应需控制在分钟级以内
 
-(2) 服务端能控制agent的启动、终止，当agent出现异常时，也许保证可控</code></pre>
+(2) 服务端能控制agent的启动、终止，当agent出现异常时，也许保证可控<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="5-部署兼容性"><a href="#5-部署兼容性" class="headerlink" title="5. 部署兼容性"></a>5. 部署兼容性</h3><pre class="language-none"><code class="language-none">需满足广泛的部署兼容性、兼容Linux各种版本、支持容器环境等</code></pre>
+<h3 id="5-部署兼容性"><a href="#5-部署兼容性" class="headerlink" title="5. 部署兼容性"></a>5. 部署兼容性</h3><pre class="line-numbers language-none"><code class="language-none">需满足广泛的部署兼容性、兼容Linux各种版本、支持容器环境等<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="6-可扩展性"><a href="#6-可扩展性" class="headerlink" title="6. 可扩展性"></a>6. 可扩展性</h3><pre class="language-none"><code class="language-none">系统功能增加、版本更新及维护较为方便，满足可扩展性</code></pre>
+<h3 id="6-可扩展性"><a href="#6-可扩展性" class="headerlink" title="6. 可扩展性"></a>6. 可扩展性</h3><pre class="line-numbers language-none"><code class="language-none">系统功能增加、版本更新及维护较为方便，满足可扩展性<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="0x03-数据采集"><a href="#0x03-数据采集" class="headerlink" title="0x03 数据采集"></a>0x03 数据采集</h2><h3 id="1-采集维度"><a href="#1-采集维度" class="headerlink" title="1. 采集维度"></a>1. 采集维度</h3><p>依据安全需求、等保合规、威胁检测模型等梳理HIDS需要采集的数据维度、数据项…</p>
 <p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/agent_data.png"></p>
@@ -361,7 +361,7 @@
 </ul>
 <h2 id="0x04-检测分析"><a href="#0x04-检测分析" class="headerlink" title="0x04 检测分析"></a>0x04 检测分析</h2><h3 id="1-检测模型"><a href="#1-检测模型" class="headerlink" title="1. 检测模型"></a>1. 检测模型</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/threat_detection.png"></p>
 <p><strong>Refer:</strong> <a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/191144.html">https://help.aliyun.com/document_detail/191144.html</a></p>
-<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><h4 id="a-误用检测方法"><a href="#a-误用检测方法" class="headerlink" title="a. 误用检测方法"></a>a. 误用检测方法</h4><pre class="language-none"><code class="language-none">1) 模式匹配法
+<h3 id="2-检测方法"><a href="#2-检测方法" class="headerlink" title="2. 检测方法"></a>2. 检测方法</h3><h4 id="a-误用检测方法"><a href="#a-误用检测方法" class="headerlink" title="a. 误用检测方法"></a>a. 误用检测方法</h4><pre class="line-numbers language-none"><code class="language-none">1) 模式匹配法
 
 通过把收集到的信息与网络入侵和系统误用模式数据库中的已知信息进行比较，从而对违背安全策略的行为进行发现。模式匹配法可以显著地减少系统负担，有较高的检测率和准确率
 
@@ -371,9 +371,9 @@
 
 3) 状态转移分析法
 
-该方法的基本思想是将攻击看成一个连续的、分步骤的并且各个步骤之间有一定的关联的过程。在网络中发生入侵时及时阻断入侵行为，防止可能还会进一步发生的类似攻击行为。在状态转移分析方法中，一个渗透过程可以看作是由攻击者做出的一系列的行为而导致系统从某个初始状态变为最终某个被危害的状态</code></pre>
+该方法的基本思想是将攻击看成一个连续的、分步骤的并且各个步骤之间有一定的关联的过程。在网络中发生入侵时及时阻断入侵行为，防止可能还会进一步发生的类似攻击行为。在状态转移分析方法中，一个渗透过程可以看作是由攻击者做出的一系列的行为而导致系统从某个初始状态变为最终某个被危害的状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="b-异常检测方法"><a href="#b-异常检测方法" class="headerlink" title="b. 异常检测方法"></a>b. 异常检测方法</h4><pre class="language-none"><code class="language-none">1) 基于贝叶斯推理检测法
+<h4 id="b-异常检测方法"><a href="#b-异常检测方法" class="headerlink" title="b. 异常检测方法"></a>b. 异常检测方法</h4><pre class="line-numbers language-none"><code class="language-none">1) 基于贝叶斯推理检测法
 
 通过在任何给定的时刻，测量变量值，推理判断系统是否发生入侵事件
 
@@ -407,7 +407,7 @@
 
 9) 基于文本分类的异常检测法
 
-该方法是将系统产生的进程调用集合转换为“文档”。利用K邻聚类文本分类算法，计算文档的相似性</code></pre>
+该方法是将系统产生的进程调用集合转换为“文档”。利用K邻聚类文本分类算法，计算文档的相似性<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-特征库"><a href="#3-特征库" class="headerlink" title="3. 特征库"></a>3. 特征库</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://osintframework.com/">https://osintframework.com/</a></p>

@@ -274,7 +274,7 @@
 <h3 id="4-Windows应用"><a href="#4-Windows应用" class="headerlink" title="4. Windows应用"></a>4. Windows应用</h3><p>Windows 包含许多安全功能，可帮助保护用户免受恶意软件和攻击。 但是，仅当平台按预期启动且未受到篡改时，才能实现对 Windows 安全组件的信任。Windows 依赖于统一可扩展固件接口 (UEFI) 安全启动、早期启动反恶意软件 (ELAM)、用于度量的动态信任根 (DRTM)、受信任的启动以及其他低级别硬件和固件安全功能。 </p>
 <p>在开启电脑直到反恶意软件启动时，Windows 会获得适当的硬件配置支持，以帮助保护系统安全。 由启动加载程序和 BIOS 实现的 测量和受信任启动，以链接方式验证和加密记录启动的每个步骤。 这些事件绑定到充当信任根的安全共同处理器 (TPM) 上。 远程证明是服务读取和验证这些事件以提供可验证、无偏向和篡改复原报告的机制。 远程证明是系统启动的受信任审核员，允许特定实体信任设备。</p>
 <p>设备端的证明和零信任所涉及的步骤摘要如下所示:</p>
-<pre class="language-none"><code class="language-none">1. 在启动过程的每个步骤 (例如文件加载、特殊变量的更新等) 中，在 TPM PCR 中对文件哈希和签名等信息进行测量。 度量受 受信任的计算组规范 (TCG) 的约束，该规范指示可以记录哪些事件以及每个事件的格式。
+<pre class="line-numbers language-none"><code class="language-none">1. 在启动过程的每个步骤 (例如文件加载、特殊变量的更新等) 中，在 TPM PCR 中对文件哈希和签名等信息进行测量。 度量受 受信任的计算组规范 (TCG) 的约束，该规范指示可以记录哪些事件以及每个事件的格式。
 
 2. 启动 Windows 后，证明者&#x2F;验证程序会请求 TPM 提取存储在其平台配置注册表 (PCR) 中的测量数据以及 TCG 日志。 这两个组件中的度量共同构成了证明证据，然后发送到证明服务。
 
@@ -292,7 +292,7 @@
 
 7. 然后，设备将报告发送到 Microsoft Endpoint Manager 云，以根据管理员配置的设备合规性规则评估平台的可信度。
 
-8. 有条件的访问，加上设备合规性状态，然后决定允许或拒绝访问。</code></pre>
+8. 有条件的访问，加上设备合规性状态，然后决定允许或拒绝访问。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x02-硬件安全性"><a href="#0x02-硬件安全性" class="headerlink" title="0x02 硬件安全性"></a>0x02 硬件安全性</h2><p>硬件安全与软件安全技术之间具有很强的一致性，以保护用户、数据和设备。 单靠操作系统无法免受网络罪犯用来入侵其芯片深处计算机的广泛工具和技术的保护。 进入后，入侵者在从事从窃取重要数据到捕获电子邮件地址和其他敏感信息等多个恶意活动时可能难以检测。 这些新威胁要求计算安全到核心的硬件，包括硬件芯片和处理器</p>
 <table>

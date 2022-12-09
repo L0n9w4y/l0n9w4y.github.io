@@ -262,9 +262,9 @@
 </li>
 </ul>
 <p>在Python中，列表用方括号[]表示，元组用圆括号()表示，字典用花括号{}表示</p>
-<pre class="language-python" data-language="python"><code class="language-python">my_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">my_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 my_tuple <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
-my_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">&#125;</span></code></pre>
+my_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>适用场景</strong></p>
 <p>在Python中，列表、元组和字典都有自己的用途：</p>
@@ -276,7 +276,7 @@ my_dict <span class="token operator">=</span> <span class="token punctuation">&#
 <p>总之，应该根据实际情况来选择使用哪种数据类型。例如，如果需要保存一组不可变的数据，那么元组是最好的选择；如果需要保存一组键值对，那么字典是最好的选择。</p>
 <p><strong>操作实现</strong></p>
 <p>列表是有序的对象集合，可以通过编号访问其中的对象。它们用方括号括起来，并用逗号分隔其中的元素</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个列表</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个列表</span>
 my_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token comment"># 访问列表中的元素</span>
@@ -292,10 +292,10 @@ my_list<span class="token punctuation">.</span>append<span class="token punctuat
 my_list<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
 
 <span class="token comment"># 从列表中删除元素</span>
-<span class="token keyword">del</span> my_list<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span></code></pre>
+<span class="token keyword">del</span> my_list<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>元组与列表类似，也是有序的对象集合。但是与列表不同，元组是不可变的，一旦创建，就不能修改。它们用圆括号括起来，并用逗号分隔其中的元素</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个元组</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个元组</span>
 my_tuple <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
 
 <span class="token comment"># 访问元组中的元素</span>
@@ -303,10 +303,10 @@ my_tuple <span class="token operator">=</span> <span class="token punctuation">(
 
 <span class="token comment"># 元组是不可变的，因此无法修改元素</span>
 <span class="token comment"># 例如，下面的代码将会抛出 TypeError 异常</span>
-my_tuple<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span></code></pre>
+my_tuple<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>字典是一种映射类型，它将对象映射到键上，通过键来访问对象。它们用大括号括起来，并用冒号分隔键和值，多个键值对用逗号分隔</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个字典</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个字典</span>
 my_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"key1"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"key2"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"key3"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">&#125;</span>
 
 <span class="token comment"># 访问字典中的元素</span>
@@ -319,10 +319,10 @@ my_dict<span class="token punctuation">[</span><span class="token string">"key2"
 my_dict<span class="token punctuation">[</span><span class="token string">"key4"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span>
 
 <span class="token comment"># 删除字典中的元素</span>
-<span class="token keyword">del</span> my_dict<span class="token punctuation">[</span><span class="token string">"key3"</span><span class="token punctuation">]</span></code></pre>
+<span class="token keyword">del</span> my_dict<span class="token punctuation">[</span><span class="token string">"key3"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>字典的键必须是不可变的类型，例如字符串或数字。但是值可以是任意类型，包括可变类型，例如列表</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个字典，其中值是列表</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个字典，其中值是列表</span>
 my_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"key1"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"key2"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span>
 
 <span class="token comment"># 访问字典中的元素</span>
@@ -332,12 +332,12 @@ my_dict <span class="token operator">=</span> <span class="token punctuation">&#
 my_dict<span class="token punctuation">[</span><span class="token string">"key1"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
 
 <span class="token comment"># 删除字典中的元素</span>
-<span class="token keyword">del</span> my_dict<span class="token punctuation">[</span><span class="token string">"key2"</span><span class="token punctuation">]</span></code></pre>
+<span class="token keyword">del</span> my_dict<span class="token punctuation">[</span><span class="token string">"key2"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-迭代器与生成器"><a href="#2-迭代器与生成器" class="headerlink" title="2. 迭代器与生成器"></a>2. 迭代器与生成器</h3><p>迭代器和生成器都可以用来遍历序列中的元素。迭代器是一种对象，它能够用来遍历序列中的元素，但它不能用来修改序列中的元素。相反，生成器是一种特殊的迭代器，它可以用来生成新的值，而不是遍历已有的值。</p>
 <p>使用迭代器可以让我们更容易地遍历序列中的元素，而使用生成器则可以让我们更容易地生成新的值。</p>
 <p>使用迭代器来遍历一个列表：</p>
-<pre class="language-python" data-language="python"><code class="language-python">my_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">my_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token comment"># 创建迭代器</span>
 it <span class="token operator">=</span> <span class="token builtin">iter</span><span class="token punctuation">(</span>my_list<span class="token punctuation">)</span>
@@ -345,10 +345,10 @@ it <span class="token operator">=</span> <span class="token builtin">iter</span>
 <span class="token comment"># 通过迭代器遍历列表中的元素</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 1</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 2</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 3</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>使用生成器来生成斐波那契数列中的元素：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     a<span class="token punctuation">,</span> b <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span>
     <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
         <span class="token keyword">yield</span> a
@@ -361,11 +361,11 @@ fib <span class="token operator">=</span> fibonacci<span class="token punctuatio
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 0</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 1</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 1</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 2</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">next</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-Python装饰器"><a href="#3-Python装饰器" class="headerlink" title="3. Python装饰器"></a>3. Python装饰器</h3><p>Python 装饰器是一个高阶函数，它接受一个函数作为输入并返回一个新的函数作为输出。允许在不改变原函数的基础上，添加额外的功能，有助于减少重复代码</p>
 <p><strong>定义一个装饰器来记录一个函数被调用的次数：</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">call_counter</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">call_counter</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">helper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
         helper<span class="token punctuation">.</span>calls <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span>
@@ -379,12 +379,12 @@ fib <span class="token operator">=</span> fibonacci<span class="token punctuatio
 <span class="token keyword">print</span><span class="token punctuation">(</span>succ<span class="token punctuation">.</span>calls<span class="token punctuation">)</span>  <span class="token comment"># 0</span>
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     succ<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>succ<span class="token punctuation">.</span>calls<span class="token punctuation">)</span>  <span class="token comment"># 10</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>succ<span class="token punctuation">.</span>calls<span class="token punctuation">)</span>  <span class="token comment"># 10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在这个例子中，我们定义了一个 call_counter 装饰器，它接受一个函数作为输入并返回一个新的函数，这个新函数会记录它被调用的次数。我们通过使用 @call_counter 语法来将这个装饰器应用于函数 succ。</p>
 <p>通过使用装饰器，我们能够在不改变 succ 函数本身的情况下添加一个计数功能。这种技术在很多场景下都很有用，包括缓存、权限控制、日志记录等等</p>
 <p><strong>实现一个计时器，对任何函数的执行时间计时：</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
 
 <span class="token keyword">def</span> <span class="token function">timer</span><span class="token punctuation">(</span>func<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">wrapper</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -400,7 +400,7 @@ fib <span class="token operator">=</span> fibonacci<span class="token punctuatio
     time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"hello!"</span><span class="token punctuation">)</span>
 
-say_hello<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># prints: "hello!" and "say_hello took 1.0005841255187988 seconds to run."</span></code></pre>
+say_hello<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># prints: "hello!" and "say_hello took 1.0005841255187988 seconds to run."</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在这个示例中，timer 函数是一个装饰器，它接受一个函数作为参数并返回一个新函数，该函数在调用原函数之前计算运行时间，并在运行完成后打印出来。我们可以使用 @timer 语法糖来调用装饰器，这样就不用手动调用 timer 函数</p>
 <h3 id="4-多进程、多线程与协程"><a href="#4-多进程、多线程与协程" class="headerlink" title="4. 多进程、多线程与协程"></a>4. 多进程、多线程与协程</h3><p>Python有三种主要的并发模型：多进程、多线程和协程。</p>
@@ -423,7 +423,7 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
 <h4 id="c-代码实现"><a href="#c-代码实现" class="headerlink" title="c. 代码实现"></a>c. 代码实现</h4><p><strong>多进程</strong></p>
 <p>在 Python 中，使用 multiprocessing 模块中的 Process 类或 Pool 类可以在多个 CPU 核心上运行多个进程，使用 concurrent.futures 模块中的 ProcessPoolExecutor 类或 ThreadPoolExecutor 类可以在单个 CPU 核心上运行多个进程</p>
 <p>1）使用 multiprocessing 模块中的 Process 类：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -441,10 +441,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
         <span class="token comment"># Add the process to the list of processes.</span>
         processes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>p<span class="token punctuation">)</span>
         <span class="token comment"># Start the process.</span>
-        p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+        p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）使用 multiprocessing 模块中的 Pool 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -456,10 +456,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
     <span class="token comment"># Create a Pool object with 5 worker processes.</span>
     pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
     <span class="token comment"># Apply the foo() function to each number in the range 0-4.</span>
-    pool<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+    pool<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）使用 concurrent.futures 模块中的 ProcessPoolExecutor 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -471,10 +471,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
     <span class="token comment"># Create a ProcessPoolExecutor object with 5 worker processes.</span>
     <span class="token keyword">with</span> ProcessPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
         <span class="token comment"># Apply the foo() function to each number in the range 0-4.</span>
-        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>4）使用 concurrent.futures 模块中的 ThreadPoolExecutor 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -486,12 +486,12 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
     <span class="token comment"># Create a ThreadPoolExecutor object with 5 worker processes.</span>
     <span class="token keyword">with</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
         <span class="token comment"># Apply the foo() function to each number in the range 0-4.</span>
-        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>多线程</strong></p>
 <p>在 Python 中，使用 threading 模块中的 Thread 类或装饰器可以在单个 CPU 核心上运行多个线程，而使用 concurrent.futures 模块中的 ThreadPoolExecutor 类或 ProcessPoolExecutor 类可以在多个 CPU 核心上运行多个线程。</p>
 <p>1）使用 threading 模块中的 Thread 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -509,10 +509,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
         <span class="token comment"># Add the thread to the list of threads.</span>
         threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
         <span class="token comment"># Start the thread.</span>
-        t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+        t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）使用 threading 模块中的 Thread 类和装饰器</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
 
 <span class="token decorator annotation punctuation">@Thread</span>
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -530,10 +530,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
         <span class="token comment"># This automatically creates a Thread object and starts it.</span>
         t <span class="token operator">=</span> foo<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
         <span class="token comment"># Add the thread to the list of threads.</span>
-        threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span></code></pre>
+        threads<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）使用 concurrent.futures 模块中的 ThreadPoolExecutor 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ThreadPoolExecutor
 
 <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
@@ -545,10 +545,10 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
     <span class="token comment"># Create a ThreadPoolExecutor object with 5 worker threads.</span>
     <span class="token keyword">with</span> ThreadPoolExecutor<span class="token punctuation">(</span>max_workers<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token keyword">as</span> executor<span class="token punctuation">:</span>
         <span class="token comment"># Apply the foo() function to each number in the range 0-4.</span>
-        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+        executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>4）使用 concurrent.futures 模块中的 ProcessPoolExecutor 类</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> concurrent<span class="token punctuation">.</span>futures <span class="token keyword">import</span> ProcessPoolExecutor
 
 <span class="token comment"># 定义一个需要多线程处理的函数</span>
 <span class="token keyword">def</span> <span class="token function">some_function</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -561,7 +561,7 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
     results <span class="token operator">=</span> executor<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>some_function<span class="token punctuation">,</span> iterable_object<span class="token punctuation">)</span>
     <span class="token comment"># 迭代处理结果</span>
     <span class="token keyword">for</span> result <span class="token keyword">in</span> results<span class="token punctuation">:</span>
-        <span class="token comment"># do something with result</span></code></pre>
+        <span class="token comment"># do something with result</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>上面的代码会创建一个进程池，然后使用 map 函数来并行地执行 some_function 函数，并处理结果，使用 ProcessPoolExecutor 类的优点是它能够自动管理进程池</p>
 <p><strong>协程</strong></p>
@@ -575,7 +575,7 @@ say_hello<span class="token punctuation">(</span><span class="token punctuation"
 <ol>
 <li>使用生成器函数</li>
 </ol>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_coroutine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">my_coroutine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
         received <span class="token operator">=</span> <span class="token keyword">yield</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Received:'</span><span class="token punctuation">,</span> received<span class="token punctuation">)</span>
@@ -587,10 +587,10 @@ coro <span class="token operator">=</span> my_coroutine<span class="token punctu
 <span class="token builtin">next</span><span class="token punctuation">(</span>coro<span class="token punctuation">)</span>
 
 <span class="token comment"># 向协程发送数据</span>
-coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span></code></pre>
+coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）使用 asyncio 库</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> asyncio
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> asyncio
 
 <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">my_coroutine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
@@ -604,10 +604,10 @@ coro <span class="token operator">=</span> my_coroutine<span class="token punctu
 asyncio<span class="token punctuation">.</span>run<span class="token punctuation">(</span>coro<span class="token punctuation">)</span>
 
 <span class="token comment"># 向协程发送数据</span>
-coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span></code></pre>
+coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）使用 Trio 库：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> trio
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> trio
 
 <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">my_coroutine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
@@ -621,10 +621,10 @@ coro <span class="token operator">=</span> my_coroutine<span class="token punctu
 trio<span class="token punctuation">.</span>run<span class="token punctuation">(</span>coro<span class="token punctuation">)</span>
 
 <span class="token comment"># 向协程发送数据</span>
-coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span></code></pre>
+coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>4）使用 Trollius 库：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> trollius
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> trollius
 
 <span class="token decorator annotation punctuation">@trollius<span class="token punctuation">.</span>coroutine</span>
 <span class="token keyword">def</span> <span class="token function">my_coroutine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -639,7 +639,7 @@ coro <span class="token operator">=</span> my_coroutine<span class="token punctu
 trollius<span class="token punctuation">.</span>get_event_loop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run_until_complete<span class="token punctuation">(</span>coro<span class="token punctuation">)</span>
 
 <span class="token comment"># 向协程发送数据</span>
-coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span></code></pre>
+coro<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'Hello!'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x02-实用类库"><a href="#0x02-实用类库" class="headerlink" title="0x02 实用类库"></a>0x02 实用类库</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><h4 id="a-os模块"><a href="#a-os模块" class="headerlink" title="a. os模块"></a>a. os模块</h4><p>Python的os模块提供了与操作系统交互的功能，可用于执行文件和目录操作。下面是一些常用的文件&#x2F;目录方法：</p>
 <ul>
@@ -655,7 +655,7 @@ coro<span class="token punctuation">.</span>send<span class="token punctuation">
 <li>os.path.isfile(path)：检查给定路径是否为文件。</li>
 </ul>
 <p>代码示例：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
 
 <span class="token comment"># 获取当前工作目录</span>
 current_dir <span class="token operator">=</span> os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -685,11 +685,11 @@ path <span class="token operator">=</span> <span class="token string">'/tmp/test
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>path<span class="token punctuation">&#125;</span></span><span class="token string">是否为目录：</span><span class="token interpolation"><span class="token punctuation">&#123;</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isdir<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">)</span>
 
 <span class="token comment"># 检查路径是否为文件</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>path<span class="token punctuation">&#125;</span></span><span class="token string">是否为文件：</span><span class="token interpolation"><span class="token punctuation">&#123;</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isfile<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>path<span class="token punctuation">&#125;</span></span><span class="token string">是否为文件：</span><span class="token interpolation"><span class="token punctuation">&#123;</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>isfile<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="b-psutil库"><a href="#b-psutil库" class="headerlink" title="b. psutil库"></a>b. psutil库</h4><p>psutil 是一个跨平台的库，可以用来监控系统的 CPU、内存、磁盘、网络等信息。</p>
 <p>代码示例：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> psutil
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> psutil
 
 <span class="token keyword">def</span> <span class="token function">get_system_info</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 获取CPU信息</span>
@@ -726,10 +726,10 @@ path <span class="token operator">=</span> <span class="token string">'/tmp/test
     users <span class="token operator">=</span> psutil<span class="token punctuation">.</span>users<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 系统用户信息</span>
 
     <span class="token comment"># 获取系统启动时间</span>
-    boot_time <span class="token operator">=</span> psutil<span class="token punctuation">.</span>boot_time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 系统启动时间</span></code></pre>
+    boot_time <span class="token operator">=</span> psutil<span class="token punctuation">.</span>boot_time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 系统启动时间</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>获取全部网络及进程信息：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> psutil
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> psutil
 <span class="token keyword">import</span> json
 
 <span class="token keyword">def</span> <span class="token function">get_network_and_process_info</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -752,7 +752,7 @@ info <span class="token operator">=</span> get_network_and_process_info<span cla
 info <span class="token operator">=</span> get_network_and_process_info<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 json_str <span class="token operator">=</span> json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>info<span class="token punctuation">,</span> indent<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>json_str<span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>json_str<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-正则表达式"><a href="#2-正则表达式" class="headerlink" title="2. 正则表达式"></a>2. 正则表达式</h3><p>Python 中使用正则表达式通常是通过 re 模块来实现，它提供了一组用于处理正则表达式的函数。下面是一些常用的 re 模块函数：</p>
 <ul>
@@ -765,7 +765,7 @@ json_str <span class="token operator">=</span> json<span class="token punctuatio
 </ul>
 <p><strong>代码示例</strong></p>
 <p>1）匹配 email 地址：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
 
 <span class="token comment"># 定义要匹配的字符串</span>
 s <span class="token operator">=</span> <span class="token string">"my email address is example@gmail.com"</span>
@@ -774,10 +774,10 @@ s <span class="token operator">=</span> <span class="token string">"my email add
 email <span class="token operator">=</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span><span class="token string">r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]&#123;2,&#125;\b"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
 
 <span class="token comment"># 输出匹配的 email 地址</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>email<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>email<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）替换字符串中的文本：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
 
 <span class="token comment"># 定义要匹配的字符串</span>
 s <span class="token operator">=</span> <span class="token string">"The quick brown fox jumps over the lazy dog."</span>
@@ -786,10 +786,10 @@ s <span class="token operator">=</span> <span class="token string">"The quick br
 new_s <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">r"\b(the)\b"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
 
 <span class="token comment"># 输出替换后的字符串</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>new_s<span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>new_s<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）提取 HTML 标签中的属性：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
 
 <span class="token comment"># 定义要匹配的字符串</span>
 s <span class="token operator">=</span> <span class="token string">'&lt;a href="https://www.example.com" class="link">Example&lt;/a>'</span>
@@ -798,13 +798,13 @@ s <span class="token operator">=</span> <span class="token string">'&lt;a href="
 attr <span class="token operator">=</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span><span class="token string">r'href="(.+?)" class="(.+?)"'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
 
 <span class="token comment"># 输出结果</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>attr<span class="token punctuation">.</span>groups<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>attr<span class="token punctuation">.</span>groups<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>输出结果：</p>
-<pre class="language-none"><code class="language-none">(&#39;https:&#x2F;&#x2F;www.example.com&#39;, &#39;link&#39;)</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">(&#39;https:&#x2F;&#x2F;www.example.com&#39;, &#39;link&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>4）提取日期：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
 
 <span class="token comment"># 定义要匹配的字符串</span>
 s <span class="token operator">=</span> <span class="token string">"Today is December 07, 2022."</span>
@@ -813,10 +813,10 @@ s <span class="token operator">=</span> <span class="token string">"Today is Dec
 date <span class="token operator">=</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span><span class="token string">r"\b(?P&lt;month>\w+)\s+(?P&lt;day>\d+),\s+(?P&lt;year>\d+)\b"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
 
 <span class="token comment"># 输出结果</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>date<span class="token punctuation">.</span>groups<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>date<span class="token punctuation">.</span>groups<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>5）提取文本中的所有 URL：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> re
 
 <span class="token comment"># 定义要匹配的字符串</span>
 s <span class="token operator">=</span> <span class="token string">"Here are some URLs: https://www.example.com, https://www.google.com, https://www.python.org"</span>
@@ -825,7 +825,7 @@ s <span class="token operator">=</span> <span class="token string">"Here are som
 urls <span class="token operator">=</span> re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span><span class="token string">r"https?://[\w.-]+"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
 
 <span class="token comment"># 输出结果</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>urls<span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>urls<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="3-文件读写"><a href="#3-文件读写" class="headerlink" title="3. 文件读写"></a>3. 文件读写</h3><p>常用读写文件的方式主要包括以下两种：</p>
 <ul>
@@ -833,7 +833,7 @@ urls <span class="token operator">=</span> re<span class="token punctuation">.</
 <li>使用 with open() 语句块来管理文件对象，推荐用法</li>
 </ul>
 <p><strong>使用 open() 函数打开文件并读写文件</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 打开文件</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 打开文件</span>
 f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'myfile.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span>
 
 <span class="token comment"># 向文件中写入字符串</span>
@@ -851,10 +851,10 @@ content <span class="token operator">=</span> f<span class="token punctuation">.
 <span class="token comment"># 关闭文件</span>
 f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span>  <span class="token comment"># 输出: Hello World!</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span>  <span class="token comment"># 输出: Hello World!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>使用 with open() 语句块来管理文件对象</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 使用 with open() 语句块来打开文件</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 使用 with open() 语句块来打开文件</span>
 <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'myfile.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
     <span class="token comment"># 向文件中写入字符串</span>
     f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'Hello World!'</span><span class="token punctuation">)</span>
@@ -868,7 +868,7 @@ f<span class="token punctuation">.</span>close<span class="token punctuation">(<
 
 <span class="token comment"># 文件会在 with open() 语句块结束时自动关闭</span>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span>  <span class="token comment"># 输出: Hello World!</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span>  <span class="token comment"># 输出: Hello World!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="4-数据处理"><a href="#4-数据处理" class="headerlink" title="4. 数据处理"></a>4. 数据处理</h3><h4 id="a-json格式处理"><a href="#a-json格式处理" class="headerlink" title="a. json格式处理"></a>a. json格式处理</h4><p><strong>内置json模块</strong></p>
 <p>在 Python 中，可以使用内置的 json 模块来处理 JSON 格式的数据。常用的 json 模块函数：</p>
@@ -879,7 +879,7 @@ f<span class="token punctuation">.</span>close<span class="token punctuation">(<
 <li>json.dump(obj, fp, *, skipkeys&#x3D;False, ensure_ascii&#x3D;True, check_circular&#x3D;True, allow_nan&#x3D;True, cls&#x3D;None, indent&#x3D;None, separators&#x3D;None, default&#x3D;None, sort_keys&#x3D;False, **kw)：将 Python 对象 obj 编码为 JSON 格式并写入文件对象 fp。</li>
 </ul>
 <p>1）将JSON 数据解码为 Python 字典，使用 json.loads() 函数</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
 
 <span class="token comment"># 假设我们有一个包含 JSON 数据的字符串</span>
 json_string <span class="token operator">=</span> <span class="token string">'&#123;"name": "John Doe", "age": 35, "city": "New York"&#125;'</span>
@@ -890,10 +890,10 @@ json_data <span class="token operator">=</span> json<span class="token punctuati
 <span class="token comment"># 现在我们可以像访问字典中的值一样访问 JSON 数据</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>json_data<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 "John Doe"</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>json_data<span class="token punctuation">[</span><span class="token string">"age"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment"># 输出 35</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>json_data<span class="token punctuation">[</span><span class="token string">"city"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 "New York"</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>json_data<span class="token punctuation">[</span><span class="token string">"city"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 输出 "New York"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2） 将Python 字典编码为 JSON 数据，使用 json.dumps() 函数</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
 
 <span class="token comment"># 假设我们有一个 Python 字典</span>
 data <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -910,10 +910,10 @@ json_string <span class="token operator">=</span> json<span class="token punctua
 <span class="token keyword">print</span><span class="token punctuation">(</span>json_string<span class="token punctuation">)</span>  
 
 <span class="token comment"># 输出 '&#123;"name": "John Doe", "age": 35, "city": "New York"&#125;'</span>
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）使用 json 模块读取和写入 JSON 数据：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> json
 
 <span class="token comment"># 读取 JSON 格式的数据</span>
 <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"data.json"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> fp<span class="token punctuation">:</span>
@@ -929,7 +929,7 @@ json_string <span class="token operator">=</span> json<span class="token punctua
 
 <span class="token comment"># 将 JSON 数据写入文件</span>
 <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"data2.json"</span><span class="token punctuation">,</span> <span class="token string">"w"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> fp<span class="token punctuation">:</span>
-    json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>json_string<span class="token punctuation">,</span> fp<span class="token punctuation">)</span></code></pre>
+    json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>json_string<span class="token punctuation">,</span> fp<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>第三方库</strong></p>
 <ul>
@@ -942,10 +942,10 @@ json_string <span class="token operator">=</span> json<span class="token punctua
 <p><strong>simplejson</strong></p>
 <p>simplejson是一个第三方库，与Python内置的json模块功能相似，但速度更快、支持更多的Python数据类型和更好的Unicode支持。</p>
 <p>使用pip安装程序：</p>
-<pre class="language-none"><code class="language-none">pip install simplejson</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">pip install simplejson<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用simplejson库读写JSON文件：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> simplejson <span class="token keyword">as</span> json
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> simplejson <span class="token keyword">as</span> json
 
 <span class="token comment"># 读取JSON文件</span>
 <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'data.json'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
@@ -959,7 +959,7 @@ data<span class="token punctuation">[</span><span class="token string">'key1'</s
 
 <span class="token comment"># 写入JSON文件</span>
 <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'data.json'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-    json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>data<span class="token punctuation">,</span> f<span class="token punctuation">)</span></code></pre>
+    json<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>data<span class="token punctuation">,</span> f<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="b-xml格式处理"><a href="#b-xml格式处理" class="headerlink" title="b. xml格式处理"></a>b. xml格式处理</h4><p>XML（Extensible Markup Language，可扩展标记语言）是一种用于存储和传输数据的标准格式，python常用如下三种方法处理xml数据：</p>
 <ul>
@@ -971,7 +971,7 @@ data<span class="token punctuation">[</span><span class="token string">'key1'</s
 </li>
 </ul>
 <p><strong>使用SAX处理XML数据</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xml<span class="token punctuation">.</span>sax
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xml<span class="token punctuation">.</span>sax
 
 <span class="token comment"># 定义一个事件处理器类，继承自xml.sax.ContentHandler类</span>
 <span class="token keyword">class</span> <span class="token class-name">BookHandler</span><span class="token punctuation">(</span>xml<span class="token punctuation">.</span>sax<span class="token punctuation">.</span>ContentHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1006,10 +1006,10 @@ parser <span class="token operator">=</span> xml<span class="token punctuation">
 <span class="token comment"># 设置事件处理器</span>
 parser<span class="token punctuation">.</span>setContentHandler<span class="token punctuation">(</span>BookHandler<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token comment"># 解析XML数据</span>
-parser<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'books.xml'</span><span class="token punctuation">)</span></code></pre>
+parser<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'books.xml'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>使用DOM处理XML数据</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xml<span class="token punctuation">.</span>dom<span class="token punctuation">.</span>minidom
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xml<span class="token punctuation">.</span>dom<span class="token punctuation">.</span>minidom
 
 <span class="token comment"># 解析XML数据</span>
 dom <span class="token operator">=</span> xml<span class="token punctuation">.</span>dom<span class="token punctuation">.</span>minidom<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'books.xml'</span><span class="token punctuation">)</span>
@@ -1030,10 +1030,10 @@ root <span class="token operator">=</span> dom<span class="token punctuation">.<
     <span class="token comment"># 输出&lt;title>、&lt;author>、&lt;year>元素的文本内容</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>title<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span>data<span class="token punctuation">,</span> author<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span>data<span class="token punctuation">,</span> year<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
 
-<span class="token comment"># 以上代码会解析XML文档中的元素的文本内容，并输出到控制台</span></code></pre>
+<span class="token comment"># 以上代码会解析XML文档中的元素的文本内容，并输出到控制台</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>使用xml.etree.ElementTree库处理XML数据</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> xml<span class="token punctuation">.</span>etree <span class="token keyword">import</span> ElementTree
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> xml<span class="token punctuation">.</span>etree <span class="token keyword">import</span> ElementTree
 
 <span class="token comment"># 解析XML文件</span>
 tree <span class="token operator">=</span> ElementTree<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">"data.xml"</span><span class="token punctuation">)</span>
@@ -1044,15 +1044,15 @@ root <span class="token operator">=</span> tree<span class="token punctuation">.
 <span class="token comment"># 遍历XML文件中的所有元素</span>
 <span class="token keyword">for</span> elem <span class="token keyword">in</span> root<span class="token punctuation">.</span><span class="token builtin">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 输出元素名和元素属性</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>elem<span class="token punctuation">.</span>tag<span class="token punctuation">,</span> elem<span class="token punctuation">.</span>attrib<span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>elem<span class="token punctuation">.</span>tag<span class="token punctuation">,</span> elem<span class="token punctuation">.</span>attrib<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>第三方库-lxml</strong></p>
 <p>lxml是一个Python的XML处理库，可以用来解析、操作和生成XML数据。它可以方便地与Python的其它库（如BeautifulSoup）集成使用。lxml库还提供了XPath和XSLT的支持，可以用来快速查找XML文件中的特定元素。</p>
 <p>安装lxml库：</p>
-<pre class="language-none"><code class="language-none">pip install lxml</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">pip install lxml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用lxml库解析XML文件：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> lxml <span class="token keyword">import</span> etree
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> lxml <span class="token keyword">import</span> etree
 
 <span class="token comment"># 解析XML文件</span>
 tree <span class="token operator">=</span> etree<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">"data.xml"</span><span class="token punctuation">)</span>
@@ -1063,11 +1063,11 @@ root <span class="token operator">=</span> tree<span class="token punctuation">.
 <span class="token comment"># 遍历XML文件中的所有元素</span>
 <span class="token keyword">for</span> elem <span class="token keyword">in</span> root<span class="token punctuation">.</span><span class="token builtin">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 输出元素名和元素属性</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>elem<span class="token punctuation">.</span>tag<span class="token punctuation">,</span> elem<span class="token punctuation">.</span>attrib<span class="token punctuation">)</span></code></pre>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>elem<span class="token punctuation">.</span>tag<span class="token punctuation">,</span> elem<span class="token punctuation">.</span>attrib<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="c-CSV格式处理"><a href="#c-CSV格式处理" class="headerlink" title="c. CSV格式处理"></a>c. CSV格式处理</h4><p>Pandas是一个用于数据操作和分析的Python库。它主要用于处理和分析表格型数据，例如电子表格和数据库。Pandas提供了大量的函数和方法来让我们能够完成常见的数据分析任务，例如过滤、转换、聚合、合并等等。</p>
 <p><strong>处理CSV文件</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
 
 <span class="token comment"># 读取CSV文件</span>
 df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'my_data.csv'</span><span class="token punctuation">)</span>
@@ -1082,14 +1082,14 @@ df <span class="token operator">=</span> pd<span class="token punctuation">.</sp
 df <span class="token operator">=</span> df<span class="token punctuation">[</span>df<span class="token punctuation">[</span><span class="token string">'my_column'</span><span class="token punctuation">]</span> <span class="token operator">></span> my_threshold<span class="token punctuation">]</span>
 
 <span class="token comment"># 将表格按某列分组，并计算每组的和</span>
-df <span class="token operator">=</span> df<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'my_column'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'my_other_column'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+df <span class="token operator">=</span> df<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'my_column'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'my_other_column'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="d-Excel格式处理"><a href="#d-Excel格式处理" class="headerlink" title="d. Excel格式处理"></a>d. Excel格式处理</h4><p>最常用的库之一是 openpyxl，可以用来读取、写入和处理 Excel 文件</p>
 <p><strong>安装openpyxl 库</strong></p>
-<pre class="language-none"><code class="language-none">pip install openpyxl</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">pip install openpyxl<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>读取一个 Excel 文件中的数据：</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 openpyxl 库</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 openpyxl 库</span>
 <span class="token keyword">import</span> openpyxl
 
 <span class="token comment"># 读取 Excel 文件</span>
@@ -1105,10 +1105,10 @@ ws <span class="token operator">=</span> wb<span class="token punctuation">.</sp
         <span class="token comment"># 输出单元格的值</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span>cell<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
 
-<span class="token comment"># 读取 my_file.xlsx 文件中的数据，并将每个单元格的值打印出来</span></code></pre>
+<span class="token comment"># 读取 my_file.xlsx 文件中的数据，并将每个单元格的值打印出来</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>写入数据到 Excel 文件：</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 openpyxl 第三方库</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 openpyxl 第三方库</span>
 <span class="token keyword">import</span> openpyxl
 
 <span class="token comment"># 创建一个工作簿</span>
@@ -1122,20 +1122,20 @@ worksheet<span class="token punctuation">[</span><span class="token string">'A1'
 worksheet<span class="token punctuation">[</span><span class="token string">'B1'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'Bar'</span>
 
 <span class="token comment"># 保存工作簿</span>
-workbook<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'example.xlsx'</span><span class="token punctuation">)</span></code></pre>
+workbook<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'example.xlsx'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="5-日志处理"><a href="#5-日志处理" class="headerlink" title="5. 日志处理"></a>5. 日志处理</h3><p><strong>logging模块</strong></p>
 <p>Python 标准库中的 logging 模块提供了一个统一的接口用于记录日志。它可以将日志信息输出到文件、控制台或其他外部存储，并且支持对日志进行级别分类和过滤。</p>
 <p>使用 logging 模块记录日志的基本步骤：</p>
-<pre class="language-none"><code class="language-none">1) 创建一个 Logger 对象。
+<pre class="line-numbers language-none"><code class="language-none">1) 创建一个 Logger 对象。
 2) 设置日志级别。
 3) 设置日志格式。
 4) 创建一个 Handler 对象，用于将日志输出到指定的目的地。
 5) 将 Handler 对象添加到 Logger 对象中。
-6) 使用 Logger 对象记录日志。</code></pre>
+6) 使用 Logger 对象记录日志。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>使用 logging 模块将日志输出到文件：</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
 
 <span class="token comment"># 创建一个 Logger 对象</span>
 logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
@@ -1158,7 +1158,7 @@ logger<span class="token punctuation">.</span>debug<span class="token punctuatio
 logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'This is an info message.'</span><span class="token punctuation">)</span>
 logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string">'This is a warning message.'</span><span class="token punctuation">)</span>
 logger<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">'This is an error message.'</span><span class="token punctuation">)</span>
-logger<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">'This is a critical message.'</span><span class="token punctuation">)</span></code></pre>
+logger<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">'This is a critical message.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="6-数据库操作"><a href="#6-数据库操作" class="headerlink" title="6. 数据库操作"></a>6. 数据库操作</h3><h4 id="a-MySQL"><a href="#a-MySQL" class="headerlink" title="a. MySQL"></a>a. MySQL</h4><p>在Python中可以通过多种库来访问MySQL数据库。常用的MySQL库包括：</p>
 <ul>
@@ -1170,7 +1170,7 @@ logger<span class="token punctuation">.</span>critical<span class="token punctua
 <p><strong>PyMySQL</strong></p>
 <p>PyMySQL是一个用于Python的免费、开源的MySQL数据库访问库，具有与MySQLdb相同的接口，可以轻松地替换MySQLdb</p>
 <p>1）使用PyMySQL访问MySQL数据库</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入PyMySQL模块</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入PyMySQL模块</span>
 <span class="token keyword">import</span> pymysql
 
 <span class="token comment"># 连接到MySQL数据库</span>
@@ -1187,10 +1187,10 @@ conn<span class="token punctuation">.</span>commit<span class="token punctuation
 
 <span class="token comment"># 关闭游标和连接</span>
 cursor<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）使用PyMySQL查询数据库中所有用户记录</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入PyMySQL模块</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入PyMySQL模块</span>
 <span class="token keyword">import</span> pymysql
 
 <span class="token comment"># 连接到MySQL数据库</span>
@@ -1211,12 +1211,12 @@ result <span class="token operator">=</span> cursor<span class="token punctuatio
 
 <span class="token comment"># 关闭游标和连接</span>
 cursor<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="7-网络编程"><a href="#7-网络编程" class="headerlink" title="7. 网络编程"></a>7. 网络编程</h3><h4 id="a-套接字编程"><a href="#a-套接字编程" class="headerlink" title="a. 套接字编程"></a>a. 套接字编程</h4><p>socket 模块提供了标准的 BSD Sockets API，用于创建基于流的套接字。通过使用 socket 模块，可以实现客户端和服务器端程序之间的通信</p>
 <p><strong>使用 socket 模块实现一个简单的客户端和服务器端程序：</strong></p>
 <p>客户端</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 socket 模块</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 socket 模块</span>
 <span class="token keyword">import</span> socket
 
 <span class="token comment"># 创建一个 socket 对象</span>
@@ -1236,10 +1236,10 @@ msg <span class="token operator">=</span> s<span class="token punctuation">.</sp
 
 s<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>服务端</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 socket 模块</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入 socket 模块</span>
 <span class="token keyword">import</span> socket
 
 <span class="token comment"># 创建一个 socket 对象</span>
@@ -1265,10 +1265,10 @@ serversocket<span class="token punctuation">.</span>listen<span class="token pun
 
     msg <span class="token operator">=</span> <span class="token string">"欢迎访问编程网站！"</span> <span class="token operator">+</span> <span class="token string">"\r\n"</span>
     clientsocket<span class="token punctuation">.</span>send<span class="token punctuation">(</span>msg<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    clientsocket<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    clientsocket<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>使用 socket 模块创建简单的 UDP 客户端&#x2F;服务器程序</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 客户端</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 客户端</span>
 <span class="token keyword">import</span> socket
 
 <span class="token comment"># 创建一个 socket 对象</span>
@@ -1287,9 +1287,9 @@ data<span class="token punctuation">,</span> addr <span class="token operator">=
 
 s<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Received from server: %s"</span> <span class="token operator">%</span> data<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Received from server: %s"</span> <span class="token operator">%</span> data<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># 服务器</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 服务器</span>
 <span class="token keyword">import</span> socket
 
 <span class="token comment"># 创建一个 socket 对象</span>
@@ -1305,7 +1305,7 @@ serversocket<span class="token punctuation">.</span>bind<span class="token punct
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Received from client: %s"</span> <span class="token operator">%</span> data<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
     <span class="token comment"># 发送数据</span>
-    serversocket<span class="token punctuation">.</span>sendto<span class="token punctuation">(</span>data<span class="token punctuation">,</span> addr<span class="token punctuation">)</span></code></pre>
+    serversocket<span class="token punctuation">.</span>sendto<span class="token punctuation">(</span>data<span class="token punctuation">,</span> addr<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="b-HTTP库"><a href="#b-HTTP库" class="headerlink" title="b. HTTP库"></a>b. HTTP库</h4><p>Python requests库是一个用于发送网络请求的第三方 Python 库。它允许你发送各种不同类型的 HTTP 请求，包括 GET、POST、PUT 和 DELETE。</p>
 <p><strong>requests 方法</strong></p>
@@ -1346,11 +1346,11 @@ serversocket<span class="token punctuation">.</span>bind<span class="token punct
 </tr>
 </tbody></table>
 <p>安装 requests 库：</p>
-<pre class="language-none"><code class="language-none">pip install requests</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">pip install requests<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>代码示例</strong></p>
 <p>1）发送一个 GET 请求</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 
 <span class="token comment"># 发送 GET 请求</span>
 response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.example.com'</span><span class="token punctuation">)</span>
@@ -1359,10 +1359,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
 <span class="token keyword">if</span> response<span class="token punctuation">.</span>status_code <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">:</span>
   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Success!'</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span></code></pre>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>2）发送一个带有查询参数的 GET 请求</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 
 <span class="token comment"># 发送 GET 请求</span>
 response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.example.com/search'</span><span class="token punctuation">,</span> params<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'q'</span><span class="token punctuation">:</span> <span class="token string">'python'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
@@ -1371,10 +1371,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
 <span class="token keyword">if</span> response<span class="token punctuation">.</span>status_code <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">:</span>
   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Success!'</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span></code></pre>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>3）发送一个带有自定义头部的 GET 请求</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 
 <span class="token comment"># 发送 GET 请求</span>
 response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.example.com'</span><span class="token punctuation">,</span> headers<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'X-Custom-Header'</span><span class="token punctuation">:</span> <span class="token string">'MyValue'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
@@ -1383,10 +1383,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
 <span class="token keyword">if</span> response<span class="token punctuation">.</span>status_code <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">:</span>
   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Success!'</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span></code></pre>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>4）从响应中提取数据</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 
 <span class="token comment"># 发送 GET 请求</span>
 response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://www.example.com'</span><span class="token punctuation">)</span>
@@ -1409,10 +1409,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
   <span class="token keyword">print</span><span class="token punctuation">(</span>response_cookies<span class="token punctuation">)</span>
 
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span></code></pre>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>5）发送一个 POST 请求</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 
 <span class="token comment"># 发送 POST 请求</span>
 response <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">'https://www.example.com/login'</span><span class="token punctuation">,</span> data<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'username'</span><span class="token punctuation">:</span> <span class="token string">'john'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">:</span> <span class="token string">'1234'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
@@ -1421,7 +1421,7 @@ response <span class="token operator">=</span> requests<span class="token punctu
 <span class="token keyword">if</span> response<span class="token punctuation">.</span>status_code <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">:</span>
   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Success!'</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span></code></pre>
+  <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'An error occurred.'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="c-电子邮件"><a href="#c-电子邮件" class="headerlink" title="c. 电子邮件"></a>c. 电子邮件</h4><p>在 Python 中，常用的处理电子邮件的库有：</p>
 <ul>
@@ -1430,7 +1430,7 @@ response <span class="token operator">=</span> requests<span class="token punctu
 <li>imaplib：提供了一个实现 Internet Message Access Protocol (IMAP) 的客户端。</li>
 </ul>
 <p><strong>发送邮件</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
 <span class="token keyword">from</span> email<span class="token punctuation">.</span>message <span class="token keyword">import</span> EmailMessage
 
 <span class="token keyword">def</span> <span class="token function">send_email</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1454,10 +1454,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
     smtp_client<span class="token punctuation">.</span>quit<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>发送带有附件的邮件</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
 <span class="token keyword">from</span> email<span class="token punctuation">.</span>message <span class="token keyword">import</span> EmailMessage
 <span class="token keyword">from</span> email<span class="token punctuation">.</span>mime<span class="token punctuation">.</span>multipart <span class="token keyword">import</span> MIMEMultipart
 <span class="token keyword">from</span> email<span class="token punctuation">.</span>mime<span class="token punctuation">.</span>base <span class="token keyword">import</span> MIMEBase
@@ -1492,10 +1492,10 @@ response <span class="token operator">=</span> requests<span class="token punctu
     smtp_client<span class="token punctuation">.</span>quit<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>向多个用户发送带有 HTML 表格的 HTML 格式邮件</strong></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> smtplib
 <span class="token keyword">from</span> email<span class="token punctuation">.</span>message <span class="token keyword">import</span> EmailMessage
 
 <span class="token keyword">def</span> <span class="token function">send_email</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1541,7 +1541,7 @@ response <span class="token operator">=</span> requests<span class="token punctu
     smtp_client<span class="token punctuation">.</span>quit<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+    send_email<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://docs.python.org/3.7/tutorial/index.html">https://docs.python.org/3.7/tutorial/index.html</a></li>

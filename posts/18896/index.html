@@ -261,7 +261,7 @@
 <p><strong>操作内存修改内核</strong>：指在系统不支持lkm机制时修改内核的一种方法，通过写入 &#x2F;dev&#x2F;kmem、&#x2F;dev&#x2F;mem等设备可以在运行时覆盖内核，从而执行任意修改</p>
 <p><strong>3）硬件级rootkit</strong></p>
 <p>主要指bios rootkit，可以在系统加载前获得控制权，通过向磁盘中写入文件，再由引导程序加载该文件重新获得控制权，也可以采用虚拟机技术，控制整个操作系统运行</p>
-<h3 id="3-目的功能"><a href="#3-目的功能" class="headerlink" title="3. 目的功能"></a>3. 目的功能</h3><pre class="language-none"><code class="language-none">1. 隐藏文件
+<h3 id="3-目的功能"><a href="#3-目的功能" class="headerlink" title="3. 目的功能"></a>3. 目的功能</h3><pre class="line-numbers language-none"><code class="language-none">1. 隐藏文件
 通过strace ls可以发现ls命令其实是通过sys_getdents64获得文件目录的，因此可以通过修改sys_getdents64系统调用或者更底层的readdir实现隐藏文件及目录 
 
  2. 隐藏进程
@@ -294,9 +294,9 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
     1) 本地的提权后门
     本地的提权可以通过对内核模块发送定制命令实现
     2) 网络的监听后门
-    网络内核后门可以在IP层对进入主机的数据包进行监听，发现匹配的指定数据包后立刻启动回连进程</code></pre>
+    网络内核后门可以在IP层对进入主机的数据包进行监听，发现匹配的指定数据包后立刻启动回连进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x02-隐藏技术"><a href="#0x02-隐藏技术" class="headerlink" title="0x02 隐藏技术"></a>0x02 隐藏技术</h2><pre class="language-none"><code class="language-none">1. 灵活的指令配置
+<h2 id="0x02-隐藏技术"><a href="#0x02-隐藏技术" class="headerlink" title="0x02 隐藏技术"></a>0x02 隐藏技术</h2><pre class="line-numbers language-none"><code class="language-none">1. 灵活的指令配置
     1) 通过创建&#x2F;proc下虚拟目录的读写接口函数接收ring3层的指令、指令灵活配置
     2) 通过netlink技术实现ring3和ring0的通信，向rootkit下发指令
 
@@ -334,37 +334,37 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
     2) 借助HTTP、或DNS协议进行通信
  
 9. 键盘记录
-    1) 密码记录(ssh, su, mysql, pop3, passwd etc)</code></pre>
+    1) 密码记录(ssh, su, mysql, pop3, passwd etc)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x03-驻留技术"><a href="#0x03-驻留技术" class="headerlink" title="0x03 驻留技术"></a>0x03 驻留技术</h2><h3 id="1-用户态驻留点"><a href="#1-用户态驻留点" class="headerlink" title="1. 用户态驻留点"></a>1. 用户态驻留点</h3><h4 id="a-INIT自启动利用"><a href="#a-INIT自启动利用" class="headerlink" title="a. INIT自启动利用"></a>a. INIT自启动利用</h4><p><strong>Linux init</strong></p>
 <p>在systemd成为主流之前，sysvinit是大多数发行版的选择。作为Linux的init程序，也就是PID 1，负责启动之后的所有进程，所有的服务都是由它管理，可用其实现rootkit驻留</p>
 <p>对于sysvinit，常见的驻留点需要以root身份写入：</p>
-<pre class="language-none"><code class="language-none">&#x2F;etc&#x2F;init.d
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;init.d
 &#x2F;etc&#x2F;rc[runlevel].d
-&#x2F;etc&#x2F;rc.local</code></pre>
+&#x2F;etc&#x2F;rc.local<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>对于systemd，可以用更多手段实现驻留，不需要root权限也可以：</p>
-<pre class="language-none"><code class="language-none">etc&#x2F;systemd&#x2F;system
+<pre class="line-numbers language-none"><code class="language-none">etc&#x2F;systemd&#x2F;system
 &#x2F;etc&#x2F;systemd&#x2F;user
 &#x2F;lib&#x2F;systemd&#x2F;system
 &#x2F;lib&#x2F;systemd&#x2F;user
 ~&#x2F;.local&#x2F;share&#x2F;systemd&#x2F;user
-~&#x2F;.config&#x2F;systemd&#x2F;user</code></pre>
+~&#x2F;.config&#x2F;systemd&#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><code>systemctl --user enable ervice</code>使服务随用户登录启动， <code>systemctl enable service</code> 让服务随系统启动。</p>
 <p><strong>bashrc</strong></p>
 <p>bashrc或者zshrc等文件会随着shell的运行而被执行，利用时只需在里面加入恶意的shell script</p>
-<pre class="language-none"><code class="language-none">&#x2F;etc&#x2F;profile
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;profile
 ~&#x2F;.bashrc
 ~&#x2F;.bash_profile
-~&#x2F;.bash_logout</code></pre>
+~&#x2F;.bash_logout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>xinitrc</strong></p>
 <p>当目标主机有安装Xorg，也可以以下位置写入shell script实现rootkit驻留，不需要root权限</p>
-<pre class="language-none"><code class="language-none">～&#x2F;.xinitrc
+<pre class="line-numbers language-none"><code class="language-none">～&#x2F;.xinitrc
 ~&#x2F;.xserverrc
 &#x2F;etc&#x2F;X11&#x2F;xinit&#x2F;xinitrc
-&#x2F;etc&#x2F;X11&#x2F;xinit&#x2F;xserverrc</code></pre>
+&#x2F;etc&#x2F;X11&#x2F;xinit&#x2F;xserverrc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>用户initrc</strong></p>
 <p>任何应用程序都可能在启动时执行代码，而且它们可能会执行用户home目录的rc文件，可用于rootkit驻留</p>
@@ -372,7 +372,7 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
 <p>可以在vimrc里 写入vimscript来执行代码实现rookit的驻留，可以不需要root权限</p>
 <h4 id="b-CROND计划任务利用"><a href="#b-CROND计划任务利用" class="headerlink" title="b. CROND计划任务利用"></a>b. CROND计划任务利用</h4><p>写入软件包使用的crontab里面，如&#x2F;etc&#x2F;cron.d目录，模拟正常程序隐藏rootkit</p>
 <p><strong>定时任务文件</strong></p>
-<pre class="language-none"><code class="language-none">1) 系统配置项：系统执行的计划任务
+<pre class="line-numbers language-none"><code class="language-none">1) 系统配置项：系统执行的计划任务
 
     &#x2F;etc&#x2F;crontab 
     &#x2F;etc&#x2F;cron.d&#x2F;
@@ -392,10 +392,10 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
     &#x2F;etc&#x2F;cron.deny
     &#x2F;etc&#x2F;cron.hourly
     &#x2F;etc&#x2F;cron.monthly
-    &#x2F;etc&#x2F;cron.weekly</code></pre>
+    &#x2F;etc&#x2F;cron.weekly<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="c-命令-x2F-文件替换"><a href="#c-命令-x2F-文件替换" class="headerlink" title="c. 命令&#x2F;文件替换"></a>c. 命令&#x2F;文件替换</h4><p><strong>常用替换命令</strong></p>
-<pre class="language-none"><code class="language-none">1) bin目录
+<pre class="line-numbers language-none"><code class="language-none">1) bin目录
 
     &#x2F;bin&#x2F;ls
 
@@ -479,7 +479,7 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
 
     &#x2F;sbin&#x2F;syslog-ng
 
-    &#x2F;sbin&#x2F;rsyslogd</code></pre>
+    &#x2F;sbin&#x2F;rsyslogd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>程序文件替换</strong></p>
 <p>替换或者patch一些会被服务或用户本身执行的程序文件，同时执行恶意代码，是比较常见的驻留方式</p>

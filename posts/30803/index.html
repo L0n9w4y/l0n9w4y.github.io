@@ -253,7 +253,7 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><pre class="language-none"><code class="language-none">Usage: python sqlmap.py [options]
+<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><pre class="line-numbers language-none"><code class="language-none">Usage: python sqlmap.py [options]
 
 Options（选项）:
 
@@ -263,9 +263,9 @@ Options（选项）:
 
 --version   ## 显示程序的版本号
 
--v          ## 详细级别：0-6（默认为1）</code></pre>
+-v          ## 详细级别：0-6（默认为1）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><pre class="language-none"><code class="language-none">Target（目标）:
+<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><pre class="line-numbers language-none"><code class="language-none">Target（目标）:
 
 -d      ## 指定具体数据库
 
@@ -281,9 +281,9 @@ Options（选项）:
 
 -g      ## 处理Google的结果作为目标URL
 
--c      ## 从INI配置文件中加载选项</code></pre>
+-c      ## 从INI配置文件中加载选项<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><pre class="language-none"><code class="language-none">Request（请求）: 这些选项可以用来指定如何连接到目标URL
+<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><pre class="line-numbers language-none"><code class="language-none">Request（请求）: 这些选项可以用来指定如何连接到目标URL
 
 --method&#x3D;METHOD  ## 强制使用给定的HTTP方法（e.g. POST）
 
@@ -361,9 +361,9 @@ Options（选项）:
 
 --hpp ## 使用HTTP参数pollution的方法
 
---eval&#x3D;EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2&#x3D;hashlib.md5(id).hexdigest()&quot;)</code></pre>
+--eval&#x3D;EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2&#x3D;hashlib.md5(id).hexdigest()&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><pre class="language-none"><code class="language-none">Optimization（优化）: 这些选项可用于优化sqlmap的性能
+<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><pre class="line-numbers language-none"><code class="language-none">Optimization（优化）: 这些选项可用于优化sqlmap的性能
 
 -o ## 开启所有优化开关
 
@@ -373,9 +373,9 @@ Options（选项）:
 
 --null-connection ## 从没有实际的HTTP响应体中检索页面长度
 
---threads&#x3D;THREADS ## 最大的HTTP（S）请求并发量（默认为1）</code></pre>
+--threads&#x3D;THREADS ## 最大的HTTP（S）请求并发量（默认为1）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><pre class="language-none"><code class="language-none">Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本
+<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><pre class="line-numbers language-none"><code class="language-none">Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本
 
 -p ## 可测试的参数（S）
 
@@ -405,9 +405,9 @@ Options（选项）:
 
 --suffix&#x3D;SUFFIX ## 注入payload字符串后缀
 
---tamper&#x3D;TAMPER ## 使用给定的脚本（S）篡改注入数据</code></pre>
+--tamper&#x3D;TAMPER ## 使用给定的脚本（S）篡改注入数据<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><pre class="language-none"><code class="language-none">Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容
+<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><pre class="line-numbers language-none"><code class="language-none">Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容
 
 --level&#x3D;LEVEL ## 执行测试的等级（1-5，默认为1）
 
@@ -423,9 +423,9 @@ Options（选项）:
 
 --text-only ## 仅基于在文本内容比较网页
 
---titles ##  仅根据他们的标题进行比较</code></pre>
+--titles ##  仅根据他们的标题进行比较<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><pre class="language-none"><code class="language-none">Techniques（技巧）: 用于调整具体的SQL注入测试。
+<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><pre class="line-numbers language-none"><code class="language-none">Techniques（技巧）: 用于调整具体的SQL注入测试。
 
 --technique&#x3D;TECH ## SQL 注入技术测试（默认BEUST）
 
@@ -439,13 +439,13 @@ Options（选项）:
 
 --dns-domain&#x3D;DNS.. ##  域名用于DNS漏出攻击
 
---second-order&#x3D;S.. ## 生成页面的URL搜索为second-order响应</code></pre>
+--second-order&#x3D;S.. ## 生成页面的URL搜索为second-order响应<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><pre class="language-none"><code class="language-none">Fingerprint（指纹）
+<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><pre class="line-numbers language-none"><code class="language-none">Fingerprint（指纹）
 
--f  ## 执行检查广泛的DBMS版本指纹</code></pre>
+-f  ## 执行检查广泛的DBMS版本指纹<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><pre class="language-none"><code class="language-none">Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句
+<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><pre class="line-numbers language-none"><code class="language-none">Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句
 
 -a, ## 检索一切
 
@@ -513,26 +513,26 @@ Options（选项）:
 
 --sql-shell ## 提示交互式SQL的shell
 
---sql-file&#x3D;SQLFILE ## 从给定文件执行SQL语句</code></pre>
+--sql-file&#x3D;SQLFILE ## 从给定文件执行SQL语句<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><pre class="language-none"><code class="language-none">Brute force（蛮力）: 可以被用来运行蛮力检查
+<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><pre class="line-numbers language-none"><code class="language-none">Brute force（蛮力）: 可以被用来运行蛮力检查
 
 --common-tables ## 检查存在共同表
 
---common-columns ## 检查存在共同列</code></pre>
+--common-columns ## 检查存在共同列<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x0B-访问操作"><a href="#0x0B-访问操作" class="headerlink" title="0x0B 访问操作"></a>0x0B 访问操作</h2><p><strong>访问文件系统</strong></p>
-<pre class="language-none"><code class="language-none">File system access（访问文件系统）:
+<pre class="line-numbers language-none"><code class="language-none">File system access（访问文件系统）:
  可以被用来访问后端数据库管理系统的底层文件系统
 
 --file-read&#x3D;RFILE ## 从后端的数据库管理系统文件系统读取文件
 
 --file-write&#x3D;WFILE ## 编辑后端的数据库管理系统文件系统上的本地文件
 
---file-dest&#x3D;DFILE ## 后端的数据库管理系统写入文件的绝对路径</code></pre>
+--file-dest&#x3D;DFILE ## 后端的数据库管理系统写入文件的绝对路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>操作系统访问</strong></p>
-<pre class="language-none"><code class="language-none">Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统
+<pre class="line-numbers language-none"><code class="language-none">Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统
 
 --os-cmd&#x3D;OSCMD ## 执行操作系统命令
 
@@ -549,10 +549,10 @@ Options（选项）:
 
 --msf-path&#x3D;MSFPATH ## 本地的安装路径
 
---tmp-path&#x3D;TMPPATH ## 远程临时文件目录的绝对路径</code></pre>
+--tmp-path&#x3D;TMPPATH ## 远程临时文件目录的绝对路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>Windows注册表访问</strong></p>
-<pre class="language-none"><code class="language-none">Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。
+<pre class="line-numbers language-none"><code class="language-none">Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。
 
 --reg-read ## 读一个Windows注册表项值
 
@@ -566,9 +566,9 @@ Options（选项）:
 
 --reg-data&#x3D;REGDATA ## Windows注册表键值数据
 
---reg-type&#x3D;REGTYPE ## Windows注册表项值类型</code></pre>
+--reg-type&#x3D;REGTYPE ## Windows注册表项值类型<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><pre class="language-none"><code class="language-none">General : 可以用来设置一些一般的工作参数
+<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><pre class="line-numbers language-none"><code class="language-none">General : 可以用来设置一些一般的工作参数
 
 -s SESSIONFILE ## 保存和恢复检索会话文件的所有数据
 
@@ -611,9 +611,9 @@ Options（选项）:
 --test-skip&#x3D;TEST.. ## 根据有效负载和&#x2F;或标题跳过测试（e.g. BENCHMARK）
 
 --update  ## 更新SqlMap
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><pre class="language-none"><code class="language-none">Miscellaneous（杂项）:
+<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><pre class="line-numbers language-none"><code class="language-none">Miscellaneous（杂项）:
 
 -z ## 使用简短的助记符 (如 &quot;flu,bat,ban,tec&#x3D;EU&quot;)
 
@@ -647,7 +647,7 @@ Options（选项）:
 
 --sqlmap-shell ## 提示交互式 sqlmap shell
 
---wizard ## 给初级用户的简单向导界面</code></pre>
+--wizard ## 给初级用户的简单向导界面<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/sqlmapproject/sqlmap/wiki/Usage">https://github.com/sqlmapproject/sqlmap/wiki/Usage</a></li>

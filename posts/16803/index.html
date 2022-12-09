@@ -257,7 +257,7 @@
 <hr>
 <h2 id="0x01-基本介绍"><a href="#0x01-基本介绍" class="headerlink" title="0x01 基本介绍"></a>0x01 基本介绍</h2><h3 id="1-架构图"><a href="#1-架构图" class="headerlink" title="1. 架构图"></a>1. 架构图</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/msfarch2.png"></p>
 <h3 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h3><p><strong>源码结构</strong></p>
-<pre class="language-none"><code class="language-none">├── bin
+<pre class="line-numbers language-none"><code class="language-none">├── bin
 │   ├── msfbinscan
 │   ├── msfconsole
 │   ├── msfd
@@ -281,10 +281,10 @@
 ├── LICENSE
 ├── LICENSES
 ├── version-manifest.json
-└── version-manifest.txt  </code></pre>
+└── version-manifest.txt  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>Metasploit框架</strong></p>
-<pre class="language-none"><code class="language-none">1）framework目录
+<pre class="line-numbers language-none"><code class="language-none">1）framework目录
 
 $ tree -L 1 &#x2F;opt&#x2F;metasploit-framework&#x2F;embedded&#x2F;framework
 .
@@ -313,9 +313,9 @@ $ tree -L 2 &#x2F;opt&#x2F;metasploit-framework&#x2F;embedded&#x2F;framework&#x2
 |-- exploits     &#x2F;&#x2F;漏洞利用模块:对某些可能存在漏洞的目标进行漏洞利用
 |-- nops         &#x2F;&#x2F;空指令模块:不影响进程运行的空命令或无关命令，用于填充
 |-- payloads     &#x2F;&#x2F;攻击载荷:攻击成功后在目标机执行的代码，如反弹shell、bind shell等
-&#96;-- post         &#x2F;&#x2F;后渗透模块:用于内网渗透</code></pre>
+&#96;-- post         &#x2F;&#x2F;后渗透模块:用于内网渗透<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="0x02-常用命令"><a href="#0x02-常用命令" class="headerlink" title="0x02 常用命令"></a>0x02 常用命令</h2><h3 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1. 基础命令"></a>1. 基础命令</h3><pre class="language-none"><code class="language-none">show exploits – 查看所有可用的渗透攻击程序代码 
+<h2 id="0x02-常用命令"><a href="#0x02-常用命令" class="headerlink" title="0x02 常用命令"></a>0x02 常用命令</h2><h3 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1. 基础命令"></a>1. 基础命令</h3><pre class="line-numbers language-none"><code class="language-none">show exploits – 查看所有可用的渗透攻击程序代码 
 show auxiliary – 查看所有可用的辅助攻击工具 
 show options – 查看该模块所有可用选项 
 show payloads – 查看该模块适用的所有载荷代码 
@@ -329,10 +329,10 @@ check - 检查目标是否可漏洞利用
 grep - 匹配指定内容
 set&#x2F;unset – 设置&#x2F;禁用模块中的某个参数 
 setg&#x2F;unsetg – 设置&#x2F;禁用适用于所有模块的全局参数 
-save – 将当前设置值保存下来，以便下次启动MSF终端时仍可使用</code></pre>
+save – 将当前设置值保存下来，以便下次启动MSF终端时仍可使用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>命令示例</strong></p>
-<pre class="language-none"><code class="language-none">msf &gt; grep http search mysql
+<pre class="line-numbers language-none"><code class="language-none">msf &gt; grep http search mysql
 
 msf &gt; search name:mysql  &#x2F;&#x2F;根据名称搜索
 
@@ -346,9 +346,9 @@ msf exploit(3proxy) &gt; sessions -l    &#x2F;&#x2F;列出活动的会话
 
 msf exploit(3proxy) &gt; sessions -i 1   &#x2F;&#x2F;指定会话ID进行交互
 
-msf exploit(3proxy) &gt; sessions -s checkvm -i 2-4  &#x2F;&#x2F;在指定会话上执行脚本</code></pre>
+msf exploit(3proxy) &gt; sessions -s checkvm -i 2-4  &#x2F;&#x2F;在指定会话上执行脚本<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="2-Meterpreter命令"><a href="#2-Meterpreter命令" class="headerlink" title="2. Meterpreter命令"></a>2. Meterpreter命令</h3><pre class="language-none"><code class="language-none">meterpreter &gt; background  放回后台
+<h3 id="2-Meterpreter命令"><a href="#2-Meterpreter命令" class="headerlink" title="2. Meterpreter命令"></a>2. Meterpreter命令</h3><pre class="line-numbers language-none"><code class="language-none">meterpreter &gt; background  放回后台
 meterpreter &gt; exit  关闭会话
 meterpreter &gt; help  帮助信息
 meterpreter &gt; Sysinfo系统平台信息
@@ -383,7 +383,7 @@ meterpreter &gt; run autoroute -p  查看自动路由表
 创建代理通道:
 msf &gt; use auxiliary&#x2F;server&#x2F;socks4a   设置socks4代理模块
 msf auxiliary(socks4a) &gt; show options 
-msf auxiliary(socks4a) &gt; run</code></pre>
+msf auxiliary(socks4a) &gt; run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://metasploit.help.rapid7.com/docs">https://metasploit.help.rapid7.com/docs</a></p>

