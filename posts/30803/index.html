@@ -253,7 +253,7 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><pre class="line-numbers language-none"><code class="language-none">Usage: python sqlmap.py [options]
+<h2 id="0x01-选项"><a href="#0x01-选项" class="headerlink" title="0x01 选项"></a>0x01 选项</h2><pre><code>Usage: python sqlmap.py [options]
 
 Options（选项）:
 
@@ -263,13 +263,13 @@ Options（选项）:
 
 --version   ## 显示程序的版本号
 
--v          ## 详细级别：0-6（默认为1）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><pre class="line-numbers language-none"><code class="language-none">Target（目标）:
+-v          ## 详细级别：0-6（默认为1）
+</code></pre>
+<h2 id="0x02-目标"><a href="#0x02-目标" class="headerlink" title="0x02 目标"></a>0x02 目标</h2><pre><code>Target（目标）:
 
 -d      ## 指定具体数据库
 
--u URL  ## 目标URL (e.g. &quot;http:&#x2F;&#x2F;www.example.com&#x2F;test.php?id&#x3D;1&quot;)
+-u URL  ## 目标URL (e.g. &quot;http://www.example.com/test.php?id=1&quot;)
 
 -l      ## 解析目标(s)从Burp或WebScarab代理日志文件
 
@@ -281,89 +281,89 @@ Options（选项）:
 
 -g      ## 处理Google的结果作为目标URL
 
--c      ## 从INI配置文件中加载选项<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-c      ## 从INI配置文件中加载选项
+</code></pre>
+<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><pre><code>Request（请求）: 这些选项可以用来指定如何连接到目标URL
 
-<h2 id="0x03-请求"><a href="#0x03-请求" class="headerlink" title="0x03 请求"></a>0x03 请求</h2><pre class="line-numbers language-none"><code class="language-none">Request（请求）: 这些选项可以用来指定如何连接到目标URL
+--method=METHOD  ## 强制使用给定的HTTP方法（e.g. POST）
 
---method&#x3D;METHOD  ## 强制使用给定的HTTP方法（e.g. POST）
+--data=DATA ## 通过POST发送的数据字符串
 
---data&#x3D;DATA ## 通过POST发送的数据字符串
+--param-del=PARA..  ## 用于拆分参数值的字符
 
---param-del&#x3D;PARA..  ## 用于拆分参数值的字符
+--cookie=COOKIE ## Cookie头的值
 
---cookie&#x3D;COOKIE ## Cookie头的值
+--cookie-del=COO.. ## 用于分割Cookie值的字符
 
---cookie-del&#x3D;COO.. ## 用于分割Cookie值的字符
-
---load-cookies&#x3D;L.. ## 包含Netscape&#x2F;wget格式的cookie的文件
+--load-cookies=L.. ## 包含Netscape/wget格式的cookie的文件
 
 --drop-set-cookie ## 从响应中忽略Set-Cookie头
 
---user-agent&#x3D;AGENT ## 指定 HTTP User - Agent头
+--user-agent=AGENT ## 指定 HTTP User - Agent头
 
 --random-agent ##  使用随机选定的HTTP User - Agent头
 
---host&#x3D;HOST ## HTTP主机头值
+--host=HOST ## HTTP主机头值
 
---referer&#x3D;REFERER ##  指定 HTTP Referer头
+--referer=REFERER ##  指定 HTTP Referer头
 
 -H HEADER, --hea.. ## 额外header (e.g. &quot;X-Forwarded-For: 127.0.0.1&quot;)
 
---headers&#x3D;HEADERS ## 额外header (e.g. &quot;Accept-Language: fr\\nETag: 123&quot;)
+--headers=HEADERS ## 额外header (e.g. &quot;Accept-Language: fr\\nETag: 123&quot;)
 
---auth-type&#x3D;AUTH.. ## 认证类型(Basic, Digest, NTLM or PKI)
+--auth-type=AUTH.. ## 认证类型(Basic, Digest, NTLM or PKI)
 
---auth-cred&#x3D;AUTH.. ##  HTTP认证凭证(name:password)
+--auth-cred=AUTH.. ##  HTTP认证凭证(name:password)
 
---auth-file&#x3D;AUTH.. ## HTTP认证 PEM认证&#x2F;私钥文件
+--auth-file=AUTH.. ## HTTP认证 PEM认证/私钥文件
 
 --ignore-401 ## 忽略HTTP错误401
 
---proxy&#x3D;PROXY ## 使用代理连接到目标网址
+--proxy=PROXY ## 使用代理连接到目标网址
 
---proxy-cred&#x3D;PRO.. ## 代理认证证书(name:password)
+--proxy-cred=PRO.. ## 代理认证证书(name:password)
 
---proxy-file&#x3D;PRO.. ## 从文件中加载代理列表
+--proxy-file=PRO.. ## 从文件中加载代理列表
 
 --ignore-proxy ## 忽略系统默认代理设置
 
 --tor ## 使用Tor匿名网络
 
---tor-port&#x3D;TORPORT ##  设置Tor代理端口而不是默认值
+--tor-port=TORPORT ##  设置Tor代理端口而不是默认值
 
---tor-type&#x3D;TORTYPE ## 设置Tor代理类型
+--tor-type=TORTYPE ## 设置Tor代理类型
 
 --check-tor ## 检查Tor是否正确使用
 
---delay&#x3D;DELAY ## 每个HTTP请求之间的延迟（秒）
+--delay=DELAY ## 每个HTTP请求之间的延迟（秒）
 
---timeout&#x3D;TIMEOUT ## 秒超时连接前等待（默认30）
+--timeout=TIMEOUT ## 秒超时连接前等待（默认30）
 
---retries&#x3D;RETRIES ##  连接超时时重试（默认值3）
+--retries=RETRIES ##  连接超时时重试（默认值3）
 
---randomize&#x3D;RPARAM ## 随机更改给定参数的值(s)
+--randomize=RPARAM ## 随机更改给定参数的值(s)
 
---safe-url&#x3D;SAFEURL ## 在测试期间频繁访问的URL地址
+--safe-url=SAFEURL ## 在测试期间频繁访问的URL地址
 
---safe-post&#x3D;SAFE.. ## POST数据发送到安全URL
+--safe-post=SAFE.. ## POST数据发送到安全URL
 
---safe-req&#x3D;SAFER.. ## 从文件加载安全HTTP请求
+--safe-req=SAFER.. ## 从文件加载安全HTTP请求
 
---safe-freq&#x3D;SAFE.. ## 在两次访问给定安全网址之间测试请求
+--safe-freq=SAFE.. ## 在两次访问给定安全网址之间测试请求
 
 --skip-urlencode ## 跳过有效载荷数据的URL编码
 
---csrf-token&#x3D;CSR.. ## 参数用于保存anti-CSRF令牌
+--csrf-token=CSR.. ## 参数用于保存anti-CSRF令牌
 
---csrf-url&#x3D;CSRFURL ## 提取anti-CSRF URL地址访问令牌
+--csrf-url=CSRFURL ## 提取anti-CSRF URL地址访问令牌
 
---force-ssl ## 强制使用SSL &#x2F;HTTPS
+--force-ssl ## 强制使用SSL /HTTPS
 
 --hpp ## 使用HTTP参数pollution的方法
 
---eval&#x3D;EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2&#x3D;hashlib.md5(id).hexdigest()&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><pre class="line-numbers language-none"><code class="language-none">Optimization（优化）: 这些选项可用于优化sqlmap的性能
+--eval=EVALCODE ## 评估请求之前提供Python代码(如&quot;import hashlib;id2=hashlib.md5(id).hexdigest()&quot;)
+</code></pre>
+<h2 id="0x04-性能优化"><a href="#0x04-性能优化" class="headerlink" title="0x04 性能优化"></a>0x04 性能优化</h2><pre><code>Optimization（优化）: 这些选项可用于优化sqlmap的性能
 
 -o ## 开启所有优化开关
 
@@ -373,23 +373,23 @@ Options（选项）:
 
 --null-connection ## 从没有实际的HTTP响应体中检索页面长度
 
---threads&#x3D;THREADS ## 最大的HTTP（S）请求并发量（默认为1）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><pre class="line-numbers language-none"><code class="language-none">Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本
+--threads=THREADS ## 最大的HTTP（S）请求并发量（默认为1）
+</code></pre>
+<h2 id="0x05-注入"><a href="#0x05-注入" class="headerlink" title="0x05 注入"></a>0x05 注入</h2><pre><code>Injection（注入）: 用来指定测试哪些参数，提供自定义的注入payloads和可选篡改脚本
 
 -p ## 可测试的参数（S）
 
---skip&#x3D;SKIP ## 跳过对给定参数的测试
+--skip=SKIP ## 跳过对给定参数的测试
 
 --skip-static ## 跳过测试不显示为动态的参数
 
---param-exclude&#x3D;.. ## 使用正则表达式排除参数进行测试（e.g. &quot;ses&quot;）
+--param-exclude=.. ## 使用正则表达式排除参数进行测试（e.g. &quot;ses&quot;）
 
---dbms&#x3D;DBMS ## 强制后端的DBMS为此值
+--dbms=DBMS ## 强制后端的DBMS为此值
 
---dbms-cred&#x3D;DBMS.. ## DBMS认证凭证(user:password)
+--dbms-cred=DBMS.. ## DBMS认证凭证(user:password)
 
---os&#x3D;OS ## 强制后端的DBMS操作系统为这个值
+--os=OS ## 强制后端的DBMS操作系统为这个值
 
 --invalid-bignum ## 使用大数字使值无效
 
@@ -401,51 +401,51 @@ Options（选项）:
 
 --no-escape ## 关闭字符串转义机制
 
---prefix&#x3D;PREFIX ## 注入payload字符串前缀
+--prefix=PREFIX ## 注入payload字符串前缀
 
---suffix&#x3D;SUFFIX ## 注入payload字符串后缀
+--suffix=SUFFIX ## 注入payload字符串后缀
 
---tamper&#x3D;TAMPER ## 使用给定的脚本（S）篡改注入数据<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+--tamper=TAMPER ## 使用给定的脚本（S）篡改注入数据
+</code></pre>
+<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><pre><code>Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容
 
-<h2 id="0x06-检测"><a href="#0x06-检测" class="headerlink" title="0x06 检测"></a>0x06 检测</h2><pre class="line-numbers language-none"><code class="language-none">Detection（检测）: 用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容
+--level=LEVEL ## 执行测试的等级（1-5，默认为1）
 
---level&#x3D;LEVEL ## 执行测试的等级（1-5，默认为1）
+--risk=RISK ## 执行测试的风险（0-3，默认为1）
 
---risk&#x3D;RISK ## 执行测试的风险（0-3，默认为1）
+--string=STRING ## 查询时有效时在页面匹配字符串
 
---string&#x3D;STRING ## 查询时有效时在页面匹配字符串
+--not-string=NOT.. ## 当查询求值为无效时匹配的字符串
 
---not-string&#x3D;NOT.. ## 当查询求值为无效时匹配的字符串
+--regexp=REGEXP ## 查询时有效时在页面匹配正则表达式
 
---regexp&#x3D;REGEXP ## 查询时有效时在页面匹配正则表达式
-
---code&#x3D;CODE ## 当查询求值为True时匹配的HTTP代码
+--code=CODE ## 当查询求值为True时匹配的HTTP代码
 
 --text-only ## 仅基于在文本内容比较网页
 
---titles ##  仅根据他们的标题进行比较<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+--titles ##  仅根据他们的标题进行比较
+</code></pre>
+<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><pre><code>Techniques（技巧）: 用于调整具体的SQL注入测试。
 
-<h2 id="0x07-技巧"><a href="#0x07-技巧" class="headerlink" title="0x07 技巧"></a>0x07 技巧</h2><pre class="line-numbers language-none"><code class="language-none">Techniques（技巧）: 用于调整具体的SQL注入测试。
+--technique=TECH ## SQL 注入技术测试（默认BEUST）
 
---technique&#x3D;TECH ## SQL 注入技术测试（默认BEUST）
+--time-sec=TIMESEC ##  DBMS响应的延迟时间（默认为5秒）
 
---time-sec&#x3D;TIMESEC ##  DBMS响应的延迟时间（默认为5秒）
+--union-cols=UCOLS ##  定列范围用于测试UNION查询注入
 
---union-cols&#x3D;UCOLS ##  定列范围用于测试UNION查询注入
+--union-char=UCHAR ##  用于暴力猜解列数的字符
 
---union-char&#x3D;UCHAR ##  用于暴力猜解列数的字符
+--union-from=UFROM ##  要在UNION查询SQL注入的FROM部分使用的表
 
---union-from&#x3D;UFROM ##  要在UNION查询SQL注入的FROM部分使用的表
+--dns-domain=DNS.. ##  域名用于DNS漏出攻击
 
---dns-domain&#x3D;DNS.. ##  域名用于DNS漏出攻击
+--second-order=S.. ## 生成页面的URL搜索为second-order响应
+</code></pre>
+<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><pre><code>Fingerprint（指纹）
 
---second-order&#x3D;S.. ## 生成页面的URL搜索为second-order响应<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x08-指纹"><a href="#0x08-指纹" class="headerlink" title="0x08 指纹"></a>0x08 指纹</h2><pre class="line-numbers language-none"><code class="language-none">Fingerprint（指纹）
-
--f  ## 执行检查广泛的DBMS版本指纹<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><pre class="line-numbers language-none"><code class="language-none">Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句
+-f  ## 执行检查广泛的DBMS版本指纹
+</code></pre>
+<h2 id="0x09-枚举"><a href="#0x09-枚举" class="headerlink" title="0x09 枚举"></a>0x09 枚举</h2><pre><code>Enumeration（枚举）: 用来列举后端数据库管理系统的信息、表中的结构和数据，还可以运行自己的SQL语句
 
 -a, ## 检索一切
 
@@ -481,7 +481,7 @@ Options（选项）:
 
 --dump-all ## 转储数据库管理系统的数据库中的表项
 
---search ## 搜索列（S），表（S）和&#x2F;或数据库名称（S）
+--search ## 搜索列（S），表（S）和/或数据库名称（S）
 
 --comments ## 检索数据库的comments(注释、评论)
 
@@ -497,44 +497,44 @@ Options（选项）:
 
 --exclude-sysdbs ## 枚举表时排除系统数据库
 
---pivot-column&#x3D;P.. ## 主列名称
+--pivot-column=P.. ## 主列名称
 
---where&#x3D;DUMPWHERE ## 使用WHERE条件进行表转储
+--where=DUMPWHERE ## 使用WHERE条件进行表转储
 
---start&#x3D;LIMITSTART ## 第一个查询输出进入检索
+--start=LIMITSTART ## 第一个查询输出进入检索
 
---stop&#x3D;LIMITSTOP ## 最后查询的输出进入检索
+--stop=LIMITSTOP ## 最后查询的输出进入检索
 
---first&#x3D;FIRSTCHAR ## 第一个查询输出字的字符检索
+--first=FIRSTCHAR ## 第一个查询输出字的字符检索
 
---last&#x3D;LASTCHAR ## 最后查询的输出字字符检索
+--last=LASTCHAR ## 最后查询的输出字字符检索
 
---sql-query&#x3D;QUERY ## 要执行的SQL语句
+--sql-query=QUERY ## 要执行的SQL语句
 
 --sql-shell ## 提示交互式SQL的shell
 
---sql-file&#x3D;SQLFILE ## 从给定文件执行SQL语句<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><pre class="line-numbers language-none"><code class="language-none">Brute force（蛮力）: 可以被用来运行蛮力检查
+--sql-file=SQLFILE ## 从给定文件执行SQL语句
+</code></pre>
+<h2 id="0x0A-蛮力检查"><a href="#0x0A-蛮力检查" class="headerlink" title="0x0A 蛮力检查"></a>0x0A 蛮力检查</h2><pre><code>Brute force（蛮力）: 可以被用来运行蛮力检查
 
 --common-tables ## 检查存在共同表
 
---common-columns ## 检查存在共同列<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+--common-columns ## 检查存在共同列
+</code></pre>
 <h2 id="0x0B-访问操作"><a href="#0x0B-访问操作" class="headerlink" title="0x0B 访问操作"></a>0x0B 访问操作</h2><p><strong>访问文件系统</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">File system access（访问文件系统）:
+<pre><code>File system access（访问文件系统）:
  可以被用来访问后端数据库管理系统的底层文件系统
 
---file-read&#x3D;RFILE ## 从后端的数据库管理系统文件系统读取文件
+--file-read=RFILE ## 从后端的数据库管理系统文件系统读取文件
 
---file-write&#x3D;WFILE ## 编辑后端的数据库管理系统文件系统上的本地文件
+--file-write=WFILE ## 编辑后端的数据库管理系统文件系统上的本地文件
 
---file-dest&#x3D;DFILE ## 后端的数据库管理系统写入文件的绝对路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+--file-dest=DFILE ## 后端的数据库管理系统写入文件的绝对路径
+</code></pre>
 <p><strong>操作系统访问</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统
+<pre><code>Operating system access（操作系统访问）: 可以用于访问后端数据库管理系统的底层操作系统
 
---os-cmd&#x3D;OSCMD ## 执行操作系统命令
+--os-cmd=OSCMD ## 执行操作系统命令
 
 --os-shell ## 交互式的操作系统的shell
 
@@ -547,12 +547,12 @@ Options（选项）:
 --priv-esc Database process user privilege escalation
 ## 数据库进程用户权限提升
 
---msf-path&#x3D;MSFPATH ## 本地的安装路径
+--msf-path=MSFPATH ## 本地的安装路径
 
---tmp-path&#x3D;TMPPATH ## 远程临时文件目录的绝对路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+--tmp-path=TMPPATH ## 远程临时文件目录的绝对路径
+</code></pre>
 <p><strong>Windows注册表访问</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。
+<pre><code>Windows registry access（Windows注册表访问）: 可以被用来访问后端数据库管理系统Windows注册表。
 
 --reg-read ## 读一个Windows注册表项值
 
@@ -560,15 +560,15 @@ Options（选项）:
 
 --reg-del ## 删除Windows注册表键值
 
---reg-key&#x3D;REGKEY ## Windows注册表键
+--reg-key=REGKEY ## Windows注册表键
 
---reg-value&#x3D;REGVAL ##  Windows注册表项值
+--reg-value=REGVAL ##  Windows注册表项值
 
---reg-data&#x3D;REGDATA ## Windows注册表键值数据
+--reg-data=REGDATA ## Windows注册表键值数据
 
---reg-type&#x3D;REGTYPE ## Windows注册表项值类型<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><pre class="line-numbers language-none"><code class="language-none">General : 可以用来设置一些一般的工作参数
+--reg-type=REGTYPE ## Windows注册表项值类型
+</code></pre>
+<h2 id="0x0C-常用参数"><a href="#0x0C-常用参数" class="headerlink" title="0x0C 常用参数"></a>0x0C 常用参数</h2><pre><code>General : 可以用来设置一些一般的工作参数
 
 -s SESSIONFILE ## 保存和恢复检索会话文件的所有数据
 
@@ -576,17 +576,17 @@ Options（选项）:
 
 --batch ## 从不询问用户输入，使用所有默认配置
 
---binary-fields&#x3D;.. ## 具有二进制值的结果字段
+--binary-fields=.. ## 具有二进制值的结果字段
 
---charset&#x3D;CHARSET ## 强制用于数据检索的字符编码
+--charset=CHARSET ## 强制用于数据检索的字符编码
 
---crawl&#x3D;CRAWLDEPTH ## 从目标网址开始抓取网站
+--crawl=CRAWLDEPTH ## 从目标网址开始抓取网站
 
---crawl-exclude&#x3D;.. ## 正则表达式排除网页抓取
+--crawl-exclude=.. ## 正则表达式排除网页抓取
 
---csv-del&#x3D;CSVDEL ## 分隔CSV输出中使用的字符
+--csv-del=CSVDEL ## 分隔CSV输出中使用的字符
 
---dump-format&#x3D;DU.. ## 转储数据的格式 (CSV (default), HTML or SQLITE)
+--dump-format=DU.. ## 转储数据的格式 (CSV (default), HTML or SQLITE)
 
 --eta ## 显示每个输出的预计到达时间
 
@@ -598,28 +598,27 @@ Options（选项）:
 
 --hex ## 使用DBMS hex函数进行数据检索
 
---output-dir&#x3D;OUT.. ## 自定义输出目录路径
+--output-dir=OUT.. ## 自定义输出目录路径
 
 --parse-errors ## 解析和显示响应中的DBMS错误消息
 
---save&#x3D;SAVECONFIG ## 保存选项到INI配置文件
+--save=SAVECONFIG ## 保存选项到INI配置文件
 
---scope&#x3D;SCOPE ## 使用正则表达式从提供的代理日志中过滤目标
+--scope=SCOPE ## 使用正则表达式从提供的代理日志中过滤目标
 
---test-filter&#x3D;TE.. ## 根据有效负载和&#x2F;或标题(e.g. ROW)选择测试
+--test-filter=TE.. ## 根据有效负载和/或标题(e.g. ROW)选择测试
 
---test-skip&#x3D;TEST.. ## 根据有效负载和&#x2F;或标题跳过测试（e.g. BENCHMARK）
+--test-skip=TEST.. ## 根据有效负载和/或标题跳过测试（e.g. BENCHMARK）
 
 --update  ## 更新SqlMap
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
+<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><pre><code>Miscellaneous（杂项）:
 
-<h2 id="0x0D-杂项"><a href="#0x0D-杂项" class="headerlink" title="0x0D 杂项"></a>0x0D 杂项</h2><pre class="line-numbers language-none"><code class="language-none">Miscellaneous（杂项）:
+-z ## 使用简短的助记符 (如 &quot;flu,bat,ban,tec=EU&quot;)
 
--z ## 使用简短的助记符 (如 &quot;flu,bat,ban,tec&#x3D;EU&quot;)
+--alert=ALERT ## 在找到SQL注入时运行主机操作系统命令
 
---alert&#x3D;ALERT ## 在找到SQL注入时运行主机操作系统命令
-
---answers&#x3D;ANSWERS ## 设置问题答案
+--answers=ANSWERS ## 设置问题答案
 
 --beep ## 发现SQL 注入时提醒
 
@@ -629,11 +628,11 @@ Options（选项）:
 
 --disable-coloring ## 禁用控制台输出颜色
 
---gpage&#x3D;GOOGLEPAGE ## 使用Google dork结果指定页码
+--gpage=GOOGLEPAGE ## 使用Google dork结果指定页码
 
---identify-waf ## 对WAF&#x2F;IPS&#x2F;IDS保护进行全面测试
+--identify-waf ## 对WAF/IPS/IDS保护进行全面测试
 
---skip-waf ## 跳过启发式检测WAF&#x2F;IPS&#x2F;IDS保护
+--skip-waf ## 跳过启发式检测WAF/IPS/IDS保护
 
 --mobile ## 通过HTTP User-Agent标头模仿智能手机
 
@@ -647,8 +646,8 @@ Options（选项）:
 
 --sqlmap-shell ## 提示交互式 sqlmap shell
 
---wizard ## 给初级用户的简单向导界面<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+--wizard ## 给初级用户的简单向导界面
+</code></pre>
 <h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/sqlmapproject/sqlmap/wiki/Usage">https://github.com/sqlmapproject/sqlmap/wiki/Usage</a></li>
 </ul>

@@ -261,14 +261,14 @@
 <p><strong>操作内存修改内核</strong>：指在系统不支持lkm机制时修改内核的一种方法，通过写入 &#x2F;dev&#x2F;kmem、&#x2F;dev&#x2F;mem等设备可以在运行时覆盖内核，从而执行任意修改</p>
 <p><strong>3）硬件级rootkit</strong></p>
 <p>主要指bios rootkit，可以在系统加载前获得控制权，通过向磁盘中写入文件，再由引导程序加载该文件重新获得控制权，也可以采用虚拟机技术，控制整个操作系统运行</p>
-<h3 id="3-目的功能"><a href="#3-目的功能" class="headerlink" title="3. 目的功能"></a>3. 目的功能</h3><pre class="line-numbers language-none"><code class="language-none">1. 隐藏文件
+<h3 id="3-目的功能"><a href="#3-目的功能" class="headerlink" title="3. 目的功能"></a>3. 目的功能</h3><pre><code>1. 隐藏文件
 通过strace ls可以发现ls命令其实是通过sys_getdents64获得文件目录的，因此可以通过修改sys_getdents64系统调用或者更底层的readdir实现隐藏文件及目录 
 
  2. 隐藏进程
-隐藏进程的方法和隐藏文件类似，ps命令是通过读取&#x2F;proc文件系统下的进程目录获得进程信息的，只要能够隐藏&#x2F;proc文件系统下的进程目录就可以达到隐藏进程的效果，即hook sys_getdents64和readdir等。   
+隐藏进程的方法和隐藏文件类似，ps命令是通过读取/proc文件系统下的进程目录获得进程信息的，只要能够隐藏/proc文件系统下的进程目录就可以达到隐藏进程的效果，即hook sys_getdents64和readdir等。   
 
 3. 隐藏连接
-netstat命令是通过读取&#x2F;proc文件系统下的net&#x2F;tcp和net&#x2F;udp文件获得当前连接信息，因此可以通过hook sys_read调用实现隐藏连接，也可以修改tcp4_seq_show和udp4_seq_show等函数实现。   
+netstat命令是通过读取/proc文件系统下的net/tcp和net/udp文件获得当前连接信息，因此可以通过hook sys_read调用实现隐藏连接，也可以修改tcp4_seq_show和udp4_seq_show等函数实现。   
 
 4. 隐藏模块
 lsmod命令主要是通过sys_query_module系统调用获得模块信息，可以通过hook sys_query_module系统调用隐藏模块，也可以通过将模块从内核模块链表中摘除从而达到隐藏效果  
@@ -283,41 +283,41 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
 
 7. 日志擦除
 传统的unix日志主要在
-    1) &#x2F;var&#x2F;log&#x2F;messages
-    2) &#x2F;var&#x2F;log&#x2F;lastlog
-    3) &#x2F;var&#x2F;run&#x2F;utmp
-    4) &#x2F;var
-    5) &#x2F;log&#x2F;wtmp下
-可以通过编写相应的工具对日志文件进行修改，还可以将HISTFILE等环境变设为&#x2F;dev&#x2F;null隐藏用户的一些操作信息
+    1) /var/log/messages
+    2) /var/log/lastlog
+    3) /var/run/utmp
+    4) /var
+    5) /log/wtmp下
+可以通过编写相应的工具对日志文件进行修改，还可以将HISTFILE等环境变设为/dev/null隐藏用户的一些操作信息
 
 8. 内核后门
     1) 本地的提权后门
     本地的提权可以通过对内核模块发送定制命令实现
     2) 网络的监听后门
-    网络内核后门可以在IP层对进入主机的数据包进行监听，发现匹配的指定数据包后立刻启动回连进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x02-隐藏技术"><a href="#0x02-隐藏技术" class="headerlink" title="0x02 隐藏技术"></a>0x02 隐藏技术</h2><pre class="line-numbers language-none"><code class="language-none">1. 灵活的指令配置
-    1) 通过创建&#x2F;proc下虚拟目录的读写接口函数接收ring3层的指令、指令灵活配置
+    网络内核后门可以在IP层对进入主机的数据包进行监听，发现匹配的指定数据包后立刻启动回连进程
+</code></pre>
+<h2 id="0x02-隐藏技术"><a href="#0x02-隐藏技术" class="headerlink" title="0x02 隐藏技术"></a>0x02 隐藏技术</h2><pre><code>1. 灵活的指令配置
+    1) 通过创建/proc下虚拟目录的读写接口函数接收ring3层的指令、指令灵活配置
     2) 通过netlink技术实现ring3和ring0的通信，向rootkit下发指令
 
 2. 内核模块隐藏(包括隐藏rootkit自身分模块) 
     1) 基于断链法的内核模块隐藏技术
 
 3. 文件、目录隐藏
-    1) 基于对&#x2F;etc目录文件读取枚举接口函数劫持的的文件隐藏
+    1) 基于对/etc目录文件读取枚举接口函数劫持的的文件隐藏
     2) 隐藏文件中&quot;特定的内容&quot;
     3) 替换关键系统指令程序，例如ls、ll
     4) 基于sys_execv系统调用劫持实现可执行程序执行重定向技术
 
 4. 进程隐藏
-    1) 基于&#x2F;proc的目录读取函数劫持的进程隐藏
+    1) 基于/proc的目录读取函数劫持的进程隐藏
     2) 基于系统调用hook的进程隐藏
     3) 替换关键系统指令程序，例如ps、top
     4) 基于getdents64系统调用劫持实现可执行程序执行重定向技术
 
 5. 网络连接状态隐藏
     1) netfilter注册回调实现网络连接状态隐藏
-    2) &#x2F;proc&#x2F;net&#x2F;tcp修改过滤实现网络连接状态隐藏
+    2) /proc/net/tcp修改过滤实现网络连接状态隐藏
     
 6. 获取root权限的shell
     1) 通过内核API(prepare_creds()、commit_creds())获得rootkit权限shell
@@ -334,153 +334,153 @@ lsmod命令主要是通过sys_query_module系统调用获得模块信息，可�
     2) 借助HTTP、或DNS协议进行通信
  
 9. 键盘记录
-    1) 密码记录(ssh, su, mysql, pop3, passwd etc)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    1) 密码记录(ssh, su, mysql, pop3, passwd etc)
+</code></pre>
 <h2 id="0x03-驻留技术"><a href="#0x03-驻留技术" class="headerlink" title="0x03 驻留技术"></a>0x03 驻留技术</h2><h3 id="1-用户态驻留点"><a href="#1-用户态驻留点" class="headerlink" title="1. 用户态驻留点"></a>1. 用户态驻留点</h3><h4 id="a-INIT自启动利用"><a href="#a-INIT自启动利用" class="headerlink" title="a. INIT自启动利用"></a>a. INIT自启动利用</h4><p><strong>Linux init</strong></p>
 <p>在systemd成为主流之前，sysvinit是大多数发行版的选择。作为Linux的init程序，也就是PID 1，负责启动之后的所有进程，所有的服务都是由它管理，可用其实现rootkit驻留</p>
 <p>对于sysvinit，常见的驻留点需要以root身份写入：</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;init.d
-&#x2F;etc&#x2F;rc[runlevel].d
-&#x2F;etc&#x2F;rc.local<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>/etc/init.d
+/etc/rc[runlevel].d
+/etc/rc.local
+</code></pre>
 <p>对于systemd，可以用更多手段实现驻留，不需要root权限也可以：</p>
-<pre class="line-numbers language-none"><code class="language-none">etc&#x2F;systemd&#x2F;system
-&#x2F;etc&#x2F;systemd&#x2F;user
-&#x2F;lib&#x2F;systemd&#x2F;system
-&#x2F;lib&#x2F;systemd&#x2F;user
-~&#x2F;.local&#x2F;share&#x2F;systemd&#x2F;user
-~&#x2F;.config&#x2F;systemd&#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>etc/systemd/system
+/etc/systemd/user
+/lib/systemd/system
+/lib/systemd/user
+~/.local/share/systemd/user
+~/.config/systemd/user
+</code></pre>
 <p><code>systemctl --user enable ervice</code>使服务随用户登录启动， <code>systemctl enable service</code> 让服务随系统启动。</p>
 <p><strong>bashrc</strong></p>
 <p>bashrc或者zshrc等文件会随着shell的运行而被执行，利用时只需在里面加入恶意的shell script</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;profile
-~&#x2F;.bashrc
-~&#x2F;.bash_profile
-~&#x2F;.bash_logout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>/etc/profile
+~/.bashrc
+~/.bash_profile
+~/.bash_logout
+</code></pre>
 <p><strong>xinitrc</strong></p>
 <p>当目标主机有安装Xorg，也可以以下位置写入shell script实现rootkit驻留，不需要root权限</p>
-<pre class="line-numbers language-none"><code class="language-none">～&#x2F;.xinitrc
-~&#x2F;.xserverrc
-&#x2F;etc&#x2F;X11&#x2F;xinit&#x2F;xinitrc
-&#x2F;etc&#x2F;X11&#x2F;xinit&#x2F;xserverrc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>～/.xinitrc
+~/.xserverrc
+/etc/X11/xinit/xinitrc
+/etc/X11/xinit/xserverrc
+</code></pre>
 <p><strong>用户initrc</strong></p>
 <p>任何应用程序都可能在启动时执行代码，而且它们可能会执行用户home目录的rc文件，可用于rootkit驻留</p>
 <p><strong>vimrc</strong></p>
 <p>可以在vimrc里 写入vimscript来执行代码实现rookit的驻留，可以不需要root权限</p>
 <h4 id="b-CROND计划任务利用"><a href="#b-CROND计划任务利用" class="headerlink" title="b. CROND计划任务利用"></a>b. CROND计划任务利用</h4><p>写入软件包使用的crontab里面，如&#x2F;etc&#x2F;cron.d目录，模拟正常程序隐藏rootkit</p>
 <p><strong>定时任务文件</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1) 系统配置项：系统执行的计划任务
+<pre><code>1) 系统配置项：系统执行的计划任务
 
-    &#x2F;etc&#x2F;crontab 
-    &#x2F;etc&#x2F;cron.d&#x2F;
+    /etc/crontab 
+    /etc/cron.d/
 
-2) 用户允许&#x2F;禁止配置文件
+2) 用户允许/禁止配置文件
 
-    &#x2F;etc&#x2F;cron.deny ：用来禁止一些用户使用cron服务的配置文件
-    &#x2F;etc&#x2F;cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高
+    /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件
+    /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高
 
 3) 用户配置项：执行crontab命令操作的目录
 
-    &#x2F;var&#x2F;spool&#x2F;cron
+    /var/spool/cron
 
 4) 其他计划任务文件
 
-    &#x2F;etc&#x2F;cron.daily
-    &#x2F;etc&#x2F;cron.deny
-    &#x2F;etc&#x2F;cron.hourly
-    &#x2F;etc&#x2F;cron.monthly
-    &#x2F;etc&#x2F;cron.weekly<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    /etc/cron.daily
+    /etc/cron.deny
+    /etc/cron.hourly
+    /etc/cron.monthly
+    /etc/cron.weekly
+</code></pre>
 <h4 id="c-命令-x2F-文件替换"><a href="#c-命令-x2F-文件替换" class="headerlink" title="c. 命令&#x2F;文件替换"></a>c. 命令&#x2F;文件替换</h4><p><strong>常用替换命令</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1) bin目录
+<pre><code>1) bin目录
 
-    &#x2F;bin&#x2F;ls
+    /bin/ls
 
-    &#x2F;bin&#x2F;ps
+    /bin/ps
 
-    &#x2F;bin&#x2F;bash
+    /bin/bash
 
-    &#x2F;bin&#x2F;netstat
+    /bin/netstat
 
-    &#x2F;bin&#x2F;login
+    /bin/login
 
-    &#x2F;bin&#x2F;find
+    /bin/find
 
-    &#x2F;bin&#x2F;lsmod
+    /bin/lsmod
 
-    &#x2F;bin&#x2F;pidof
+    /bin/pidof
 
-    &#x2F;bin&#x2F;lsof
+    /bin/lsof
 
-    &#x2F;bin&#x2F;ss
+    /bin/ss
 
 2) usr目录
 
-    &#x2F;usr&#x2F;bin&#x2F;ls
+    /usr/bin/ls
 
-    &#x2F;usr&#x2F;bin&#x2F;ps
+    /usr/bin/ps
 
-    &#x2F;usr&#x2F;sbin&#x2F;ps
+    /usr/sbin/ps
 
-    &#x2F;usr&#x2F;bin&#x2F;bash
+    /usr/bin/bash
 
-    &#x2F;usr&#x2F;bin&#x2F;netstat
+    /usr/bin/netstat
 
-    &#x2F;usr&#x2F;sbin&#x2F;netstat
+    /usr/sbin/netstat
 
-    &#x2F;usr&#x2F;sbin&#x2F;rsyslogd
+    /usr/sbin/rsyslogd
 
-    &#x2F;usr&#x2F;sbin&#x2F;ifconfig
+    /usr/sbin/ifconfig
 
-    &#x2F;usr&#x2F;bin&#x2F;login
+    /usr/bin/login
 
-    &#x2F;usr&#x2F;bin&#x2F;find
+    /usr/bin/find
 
-    &#x2F;usr&#x2F;sbin&#x2F;lsmod
+    /usr/sbin/lsmod
 
-    &#x2F;usr&#x2F;sbin&#x2F;pidof
+    /usr/sbin/pidof
 
-    &#x2F;usr&#x2F;bin&#x2F;lsof
+    /usr/bin/lsof
 
-    &#x2F;usr&#x2F;sbin&#x2F;lsof
+    /usr/sbin/lsof
 
-    &#x2F;usr&#x2F;sbin&#x2F;tcpd
+    /usr/sbin/tcpd
 
-    &#x2F;usr&#x2F;bin&#x2F;passwd
+    /usr/bin/passwd
 
-    &#x2F;usr&#x2F;bin&#x2F;top
+    /usr/bin/top
 
-    &#x2F;usr&#x2F;bin&#x2F;du
+    /usr/bin/du
 
-    &#x2F;usr&#x2F;bin&#x2F;chfn
+    /usr/bin/chfn
 
-    &#x2F;usr&#x2F;bin&#x2F;chsh
+    /usr/bin/chsh
 
-    &#x2F;usr&#x2F;bin&#x2F;killall
+    /usr/bin/killall
 
-    &#x2F;usr&#x2F;bin&#x2F;ss
+    /usr/bin/ss
 
-    &#x2F;usr&#x2F;sbin&#x2F;ss
+    /usr/sbin/ss
 
-    &#x2F;usr&#x2F;bin&#x2F;ssh
+    /usr/bin/ssh
 
-    &#x2F;usr&#x2F;bin&#x2F;scp
+    /usr/bin/scp
 
 3）sbin目录
 
-    &#x2F;sbin&#x2F;ifconfig
+    /sbin/ifconfig
 
-    &#x2F;sbin&#x2F;lsmod
+    /sbin/lsmod
 
-    &#x2F;sbin&#x2F;pidof
+    /sbin/pidof
 
-    &#x2F;sbin&#x2F;syslog-ng
+    /sbin/syslog-ng
 
-    &#x2F;sbin&#x2F;rsyslogd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    /sbin/rsyslogd
+</code></pre>
 <p><strong>程序文件替换</strong></p>
 <p>替换或者patch一些会被服务或用户本身执行的程序文件，同时执行恶意代码，是比较常见的驻留方式</p>
 <p>如果目标主机是git或svn服务器，如果能获取项目源码，可以通过修改目标的源码植入恶意代码，或者利用编译环境，在项目构建时插入恶意代码，比如在configure脚本里或者Makefile里插入代码，既可以在本机运行，又有可能在编译之后在更多主机上运行，进一步扩大感染范围</p>

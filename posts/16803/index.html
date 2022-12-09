@@ -257,7 +257,7 @@
 <hr>
 <h2 id="0x01-基本介绍"><a href="#0x01-基本介绍" class="headerlink" title="0x01 基本介绍"></a>0x01 基本介绍</h2><h3 id="1-架构图"><a href="#1-架构图" class="headerlink" title="1. 架构图"></a>1. 架构图</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/msfarch2.png"></p>
 <h3 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h3><p><strong>源码结构</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">├── bin
+<pre><code>├── bin
 │   ├── msfbinscan
 │   ├── msfconsole
 │   ├── msfd
@@ -281,41 +281,41 @@
 ├── LICENSE
 ├── LICENSES
 ├── version-manifest.json
-└── version-manifest.txt  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+└── version-manifest.txt  
+</code></pre>
 <p><strong>Metasploit框架</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1）framework目录
+<pre><code>1）framework目录
 
-$ tree -L 1 &#x2F;opt&#x2F;metasploit-framework&#x2F;embedded&#x2F;framework
+$ tree -L 1 /opt/metasploit-framework/embedded/framework
 .
-|-- config      &#x2F;&#x2F;metasploit的环境配置信息，数据库配置信息
-|-- data        &#x2F;&#x2F;存放meterpreter，exploits，wordlists等数据信息
-|-- external    &#x2F;&#x2F;metasploit的一些基础扩展模块
-|-- lib         &#x2F;&#x2F;metasploit的一些基础类和第三方模块类
-|-- modules     &#x2F;&#x2F;metasploit模块
-|-- msfconsole  &#x2F;&#x2F;metasploit的基本命令行
-|-- msfd        &#x2F;&#x2F;metasploit服务
-|-- msfrpc      &#x2F;&#x2F;metasploit的服务端
-|-- msfrpcd     &#x2F;&#x2F;持久性的metasploit本地服务，可以给远程用户提供rpc服务以及其他的http服务
-|-- msfupdate   &#x2F;&#x2F;metasploit更新模块
-|-- msfvenom    &#x2F;&#x2F;集成了msfpayload和msfencode的功能，效率更高
-|-- plugins     &#x2F;&#x2F;metasploit的第三方插件接口
-|-- scripts     &#x2F;&#x2F;存放一些msf用到的脚本，如meterpreter，ps，resource，shell
-|-- tools       &#x2F;&#x2F;第三方脚本工具
+|-- config      //metasploit的环境配置信息，数据库配置信息
+|-- data        //存放meterpreter，exploits，wordlists等数据信息
+|-- external    //metasploit的一些基础扩展模块
+|-- lib         //metasploit的一些基础类和第三方模块类
+|-- modules     //metasploit模块
+|-- msfconsole  //metasploit的基本命令行
+|-- msfd        //metasploit服务
+|-- msfrpc      //metasploit的服务端
+|-- msfrpcd     //持久性的metasploit本地服务，可以给远程用户提供rpc服务以及其他的http服务
+|-- msfupdate   //metasploit更新模块
+|-- msfvenom    //集成了msfpayload和msfencode的功能，效率更高
+|-- plugins     //metasploit的第三方插件接口
+|-- scripts     //存放一些msf用到的脚本，如meterpreter，ps，resource，shell
+|-- tools       //第三方脚本工具
 
 2）Metasploit模块
 
-$ tree -L 2 &#x2F;opt&#x2F;metasploit-framework&#x2F;embedded&#x2F;framework&#x2F;modules
+$ tree -L 2 /opt/metasploit-framework/embedded/framework/modules
 .
-|-- auxiliary    &#x2F;&#x2F;辅助模块:包含端口扫描器、嗅探器、fuzzers、暴力破解等
-|-- encoders     &#x2F;&#x2F;编码器模块:对payload进行编码加密，绕过杀软
-|-- evasion      &#x2F;&#x2F;检测规避模块
-|-- exploits     &#x2F;&#x2F;漏洞利用模块:对某些可能存在漏洞的目标进行漏洞利用
-|-- nops         &#x2F;&#x2F;空指令模块:不影响进程运行的空命令或无关命令，用于填充
-|-- payloads     &#x2F;&#x2F;攻击载荷:攻击成功后在目标机执行的代码，如反弹shell、bind shell等
-&#96;-- post         &#x2F;&#x2F;后渗透模块:用于内网渗透<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x02-常用命令"><a href="#0x02-常用命令" class="headerlink" title="0x02 常用命令"></a>0x02 常用命令</h2><h3 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1. 基础命令"></a>1. 基础命令</h3><pre class="line-numbers language-none"><code class="language-none">show exploits – 查看所有可用的渗透攻击程序代码 
+|-- auxiliary    //辅助模块:包含端口扫描器、嗅探器、fuzzers、暴力破解等
+|-- encoders     //编码器模块:对payload进行编码加密，绕过杀软
+|-- evasion      //检测规避模块
+|-- exploits     //漏洞利用模块:对某些可能存在漏洞的目标进行漏洞利用
+|-- nops         //空指令模块:不影响进程运行的空命令或无关命令，用于填充
+|-- payloads     //攻击载荷:攻击成功后在目标机执行的代码，如反弹shell、bind shell等
+`-- post         //后渗透模块:用于内网渗透
+</code></pre>
+<h2 id="0x02-常用命令"><a href="#0x02-常用命令" class="headerlink" title="0x02 常用命令"></a>0x02 常用命令</h2><h3 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1. 基础命令"></a>1. 基础命令</h3><pre><code>show exploits – 查看所有可用的渗透攻击程序代码 
 show auxiliary – 查看所有可用的辅助攻击工具 
 show options – 查看该模块所有可用选项 
 show payloads – 查看该模块适用的所有载荷代码 
@@ -327,28 +327,28 @@ use – 进入使用某渗透攻击模块
 back – 回退 
 check - 检查目标是否可漏洞利用
 grep - 匹配指定内容
-set&#x2F;unset – 设置&#x2F;禁用模块中的某个参数 
-setg&#x2F;unsetg – 设置&#x2F;禁用适用于所有模块的全局参数 
-save – 将当前设置值保存下来，以便下次启动MSF终端时仍可使用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+set/unset – 设置/禁用模块中的某个参数 
+setg/unsetg – 设置/禁用适用于所有模块的全局参数 
+save – 将当前设置值保存下来，以便下次启动MSF终端时仍可使用
+</code></pre>
 <p><strong>命令示例</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">msf &gt; grep http search mysql
+<pre><code>msf &gt; grep http search mysql
 
-msf &gt; search name:mysql  &#x2F;&#x2F;根据名称搜索
+msf &gt; search name:mysql  //根据名称搜索
 
-msf &gt; search platform:linux  &#x2F;&#x2F;搜索指定平台模块
+msf &gt; search platform:linux  //搜索指定平台模块
 
-msf &gt; search type:post  &#x2F;&#x2F;根据auxiliary, post, exploit等模块类型进行搜索
+msf &gt; search type:post  //根据auxiliary, post, exploit等模块类型进行搜索
 
-msf &gt; search cve:2019 type:exploit platform:linux  &#x2F;&#x2F;组合搜索
+msf &gt; search cve:2019 type:exploit platform:linux  //组合搜索
 
-msf exploit(3proxy) &gt; sessions -l    &#x2F;&#x2F;列出活动的会话
+msf exploit(3proxy) &gt; sessions -l    //列出活动的会话
 
-msf exploit(3proxy) &gt; sessions -i 1   &#x2F;&#x2F;指定会话ID进行交互
+msf exploit(3proxy) &gt; sessions -i 1   //指定会话ID进行交互
 
-msf exploit(3proxy) &gt; sessions -s checkvm -i 2-4  &#x2F;&#x2F;在指定会话上执行脚本<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-Meterpreter命令"><a href="#2-Meterpreter命令" class="headerlink" title="2. Meterpreter命令"></a>2. Meterpreter命令</h3><pre class="line-numbers language-none"><code class="language-none">meterpreter &gt; background  放回后台
+msf exploit(3proxy) &gt; sessions -s checkvm -i 2-4  //在指定会话上执行脚本
+</code></pre>
+<h3 id="2-Meterpreter命令"><a href="#2-Meterpreter命令" class="headerlink" title="2. Meterpreter命令"></a>2. Meterpreter命令</h3><pre><code>meterpreter &gt; background  放回后台
 meterpreter &gt; exit  关闭会话
 meterpreter &gt; help  帮助信息
 meterpreter &gt; Sysinfo系统平台信息
@@ -360,12 +360,12 @@ meterpreter &gt; getwd  查看目录
 meterpreter &gt; ls 查看文件目录列表
 meterpreter &gt; cd  切换目录 
 meterpreter &gt; rm  删除文件 
-meterpreter &gt; download &#x2F;data&#x2F;1.txt 1.txt 下载文件
-meterpreter &gt; upload &#x2F;var&#x2F;www&#x2F;wce.exe wce.exe  上传文件
+meterpreter &gt; download /data/1.txt 1.txt 下载文件
+meterpreter &gt; upload /var/www/wce.exe wce.exe  上传文件
 meterpreter &gt; search -d c:  -f *.doc  搜索文件
-meterpreter &gt; execute -f  cmd.exe -i   执行程序&#x2F;命令 
+meterpreter &gt; execute -f  cmd.exe -i   执行程序/命令 
 meterpreter &gt; ps  查看进程
-meterpreter &gt; run post&#x2F;windows&#x2F;capture&#x2F;keylog_recorder   键盘记录
+meterpreter &gt; run post/windows/capture/keylog_recorder   键盘记录
 meterpreter &gt; getuid  查看当前用户权限
 meterpreter &gt; use priv  加载特权模块
 meterpreter &gt; getsystem  提升到SYSTEM权限
@@ -381,10 +381,10 @@ meterpreter &gt; run get_local_subnets  获取内网网段信息
 meterpreter &gt; run autoroute -s &lt;内网网段&gt;  创建自动路由
 meterpreter &gt; run autoroute -p  查看自动路由表
 创建代理通道:
-msf &gt; use auxiliary&#x2F;server&#x2F;socks4a   设置socks4代理模块
+msf &gt; use auxiliary/server/socks4a   设置socks4代理模块
 msf auxiliary(socks4a) &gt; show options 
-msf auxiliary(socks4a) &gt; run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+msf auxiliary(socks4a) &gt; run
+</code></pre>
 <h2 id="0xFF-参考资源"><a href="#0xFF-参考资源" class="headerlink" title="0xFF 参考资源"></a>0xFF 参考资源</h2><ul>
 <li><p><a target="_blank" rel="noopener" href="https://metasploit.help.rapid7.com/docs">https://metasploit.help.rapid7.com/docs</a></p>
 </li>

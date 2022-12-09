@@ -357,9 +357,9 @@
 <td align="left">firewall.cpl</td>
 </tr>
 </tbody></table>
-<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><pre class="line-numbers language-none"><code class="language-none">msinfo32  #查看系统信息
+<h2 id="0x01-系统排查"><a href="#0x01-系统排查" class="headerlink" title="0x01 系统排查"></a>0x01 系统排查</h2><h3 id="1-系统信息"><a href="#1-系统信息" class="headerlink" title="1. 系统信息"></a>1. 系统信息</h3><pre><code>msinfo32  #查看系统信息
 
-systeminfo | findstr &#x2F;B &#x2F;C:&quot;OS Name&quot; &#x2F;C:&quot;OS Version&quot;
+systeminfo | findstr /B /C:&quot;OS Name&quot; /C:&quot;OS Version&quot;
 
 wmic qfe  # 补丁更新信息
 
@@ -367,16 +367,16 @@ wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%  # 体系架构
 
 wmic logicaldisk get caption || fsutil fsinfo drives   # 查看驱动信息
 wmic logicaldisk get caption,description,providername
-Get-PSDrive | where &#123;$_.Provider -like &quot;Microsoft.PowerShell.Core\FileSystem&quot;&#125;| ft Name,Root<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+Get-PSDrive | where &#123;$_.Provider -like &quot;Microsoft.PowerShell.Core\FileSystem&quot;&#125;| ft Name,Root
+</code></pre>
 <h3 id="2-用户账号"><a href="#2-用户账号" class="headerlink" title="2. 用户账号"></a>2. 用户账号</h3><p>系统被入侵后，需排查攻击者是否新建账户、激活系统默认账户、建立隐藏账户(账户名称最后加$)等</p>
 <p><strong>排查方法</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) 命令行查看
+<pre><code>(1) 命令行查看
 
 echo %USERNAME% || whoami  # 获取当前用户名
 
 net user                   # 列举所有用户，无法查看隐藏账户
-whoami &#x2F;all
+whoami /all
 Get-LocalUser | ft Name,Enabled,LastLogon
 Get-ChildItem C:\Users -Force | select Name
 
@@ -387,30 +387,30 @@ net user %USERNAME%
 net localgroup             # 枚举本地用户组
 Get-LocalGroup | ft Name
 
-whoami &#x2F;priv  # 查看用户权限
-whoami &#x2F;groups
+whoami /priv  # 查看用户权限
+whoami /groups
 
 net localgroup administrators   # 查看用户组详细信息
 Get-LocalGroupMember Administrators | ft Name, PrincipalSource
 Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
 
-nltest &#x2F;DCLIST:DomainName   # 枚举域控用户
-nltest &#x2F;DCNAME:DomainName
-nltest &#x2F;DSGETDC:DomainName
+nltest /DCLIST:DomainName   # 枚举域控用户
+nltest /DCNAME:DomainName
+nltest /DSGETDC:DomainName
 
 (2) 图形界面查看
 
-a. CMD输入compmgmt.msc(计算机管理) -&gt; 本地用户和组 -&gt; 用户  &#x2F;&#x2F;可查看隐藏账户
+a. CMD输入compmgmt.msc(计算机管理) -&gt; 本地用户和组 -&gt; 用户  //可查看隐藏账户
 
 b. 命令行输入lusrmgr.msc，查看用户信息
 
 (3) wmic 命令
 
-&gt; wmic useraccount get name,SID  &#x2F;&#x2F;可查看隐藏账户<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+&gt; wmic useraccount get name,SID  //可查看隐藏账户
+</code></pre>
 <h3 id="3-启动项"><a href="#3-启动项" class="headerlink" title="3. 启动项"></a>3. 启动项</h3><p>病毒后门等常用启动项来实现持久化驻留，检查服务器是否有异常的启动项</p>
 <p><strong>排查方法</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) 任务管理器查看
+<pre><code>(1) 任务管理器查看
 
 命令行中输入taskmgr命令，任务管理器 -&gt; 启动
 
@@ -428,96 +428,95 @@ b. 命令行输入lusrmgr.msc，查看用户信息
 
 (3) 通过组策略查看
 
-命令行运行gpedit.msc，计算机配置 -&gt; Windows设置 —&gt; 脚本(启动&#x2F;关机)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+命令行运行gpedit.msc，计算机配置 -&gt; Windows设置 —&gt; 脚本(启动/关机)
+</code></pre>
 <h3 id="4-计划任务"><a href="#4-计划任务" class="headerlink" title="4. 计划任务"></a>4. 计划任务</h3><p><strong>命令查看</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">schtasks &#x2F;query &#x2F;fo LIST 2&gt;nul | findstr TaskName
+<pre><code>schtasks /query /fo LIST 2&gt;nul | findstr TaskName
 
-schtasks &#x2F;query &#x2F;fo LIST &#x2F;v &gt; schtasks.txt; cat schtask.txt | grep &quot;SYSTEM\|Task To Run&quot; | grep -B 1 SYSTEM
+schtasks /query /fo LIST /v &gt; schtasks.txt; cat schtask.txt | grep &quot;SYSTEM\|Task To Run&quot; | grep -B 1 SYSTEM
 
 Get-ScheduledTask | where &#123;$_.TaskPath -notlike &quot;\Microsoft*&quot;&#125; | ft TaskName,TaskPath,State
 
-Get-ScheduledTask  &#x2F;&#x2F;powershell查看<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+Get-ScheduledTask  //powershell查看
+</code></pre>
 <p><strong>界面查看</strong></p>
-<pre class="line-numbers language-none"><code class="language-none"># 计算机管理
+<pre><code># 计算机管理
 
-CMD输入compmgmt.msc【计算机管理】 &gt; 【系统工具】&gt; 【任务计划程序】&gt; 【任务计划程序库】<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+CMD输入compmgmt.msc【计算机管理】 &gt; 【系统工具】&gt; 【任务计划程序】&gt; 【任务计划程序库】
+</code></pre>
 <h3 id="5-自启功服务"><a href="#5-自启功服务" class="headerlink" title="5. 自启功服务"></a>5. 自启功服务</h3><p><strong>查看命令</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">wmic startup get caption,command
+<pre><code>wmic startup get caption,command
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
 reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
 reg query HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
 dir &quot;C:\Documents and Settings\All Users\Start Menu\Programs\Startup&quot;
-dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+dir &quot;C:\Documents and Settings\%username%\Start Menu\Programs\Startup&quot;
+</code></pre>
 <p><strong>检查方法：</strong> 单击【开始】&gt;【运行】，输入services.msc，查看服务状态和启动类型，检查是否有异常服务</p>
-<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-排查思路"><a href="#1-排查思路" class="headerlink" title="1. 排查思路"></a>1. 排查思路</h3><pre class="line-numbers language-none"><code class="language-none">&gt; netstat -ano | findstr &quot;ESTABLISHED&quot; &#x2F;&#x2F;查看目前的网络连接，定位可疑的ESTABLISHED
+<h2 id="0x02-进程排查"><a href="#0x02-进程排查" class="headerlink" title="0x02 进程排查"></a>0x02 进程排查</h2><h3 id="1-排查思路"><a href="#1-排查思路" class="headerlink" title="1. 排查思路"></a>1. 排查思路</h3><pre><code>&gt; netstat -ano | findstr &quot;ESTABLISHED&quot; //查看目前的网络连接，定位可疑的ESTABLISHED
 
-&gt; tasklist | findstr “PID”  &#x2F;&#x2F;根据netstat定位出的pid，再通过tasklist命令排查进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h3><pre class="line-numbers language-none"><code class="language-none">(1) tasklist命令
+&gt; tasklist | findstr “PID”  //根据netstat定位出的pid，再通过tasklist命令排查进程
+</code></pre>
+<h3 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h3><pre><code>(1) tasklist命令
 
   a. 查看端口对应的PID： netstat -ano | findstr “port”
 
   ​b. 查看进程对应的PID：tasklist | findstr “PID”
 
-  c. 显示进程与服务对应关系：tasklist &#x2F;svc
+  c. 显示进程与服务对应关系：tasklist /svc
 
-  d. 查看加载DLL的进程：tasklist &#x2F;m | more
+  d. 查看加载DLL的进程：tasklist /m | more
 
-  e. 查看特定DLL的调用情况：tasklist &#x2F;m DLL名称
+  e. 查看特定DLL的调用情况：tasklist /m DLL名称
 
 (2) wmic命令
 
-  a. wmic process list full &#x2F;format:csv  &#x2F;&#x2F;以csv格式显示进程所有信息
+  a. wmic process list full /format:csv  //以csv格式显示进程所有信息
 
-  b. wmic process get name,parentprocessid,processid,commandline  &#x2F;format:csv  &#x2F;&#x2F;以csv格式显示进程特定列
+  b. wmic process get name,parentprocessid,processid,commandline  /format:csv  //以csv格式显示进程特定列
 
-  c. wmic process where process&#x3D;[pid] get parentprocessid  &#x2F;&#x2F;以pid的值为条件获取其父进程pid
+  c. wmic process where process=[pid] get parentprocessid  //以pid的值为条件获取其父进程pid
 
-  d. wmic process where processid&#x3D;[pid] delete  &#x2F;&#x2F;删除指定pid的进程
+  d. wmic process where processid=[pid] delete  //删除指定pid的进程
 
-  e. wmic process where name&#x3D;&quot;trojan.exe&quot; call terminate  &#x2F;&#x2F;删除指定进程名的进程
+  e. wmic process where name=&quot;trojan.exe&quot; call terminate  //删除指定进程名的进程
 
 (3) PowerShell
 
 PowerShell可查看存在守护进程的进程，查询时调用Wmi对象
 
-&gt; Get-WmiObject Win32_Process | select Name,ProcessId,ParentProcessId,Path,CommandLine  &#x2F;&#x2F;查看进程名、进程id，父进程id、进程路径、进程命令行等信息
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-system服务进程"><a href="#3-system服务进程" class="headerlink" title="3. system服务进程"></a>3. system服务进程</h3><pre class="line-numbers language-none"><code class="language-none">net start
+&gt; Get-WmiObject Win32_Process | select Name,ProcessId,ParentProcessId,Path,CommandLine  //查看进程名、进程id，父进程id、进程路径、进程命令行等信息
+</code></pre>
+<h3 id="3-system服务进程"><a href="#3-system服务进程" class="headerlink" title="3. system服务进程"></a>3. system服务进程</h3><pre><code>net start
 wmic service list brief
-tasklist &#x2F;SVC
+tasklist /SVC
 
-tasklist &#x2F;v &#x2F;fi &quot;username eq system&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x03-网络排查"><a href="#0x03-网络排查" class="headerlink" title="0x03 网络排查"></a>0x03 网络排查</h2><h3 id="1-网卡信息"><a href="#1-网卡信息" class="headerlink" title="1. 网卡信息"></a>1. 网卡信息</h3><pre class="line-numbers language-none"><code class="language-none">ipconfig &#x2F;all   # 查看网络网卡、ip、DNS信息
+tasklist /v /fi &quot;username eq system&quot;
+</code></pre>
+<h2 id="0x03-网络排查"><a href="#0x03-网络排查" class="headerlink" title="0x03 网络排查"></a>0x03 网络排查</h2><h3 id="1-网卡信息"><a href="#1-网卡信息" class="headerlink" title="1. 网卡信息"></a>1. 网卡信息</h3><pre><code>ipconfig /all   # 查看网络网卡、ip、DNS信息
 
 Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
 
-Get-DnsClientServerAddress -AddressFamily IPv4 | ft<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+Get-DnsClientServerAddress -AddressFamily IPv4 | ft
+</code></pre>
+<h3 id="2-路由表信息"><a href="#2-路由表信息" class="headerlink" title="2. 路由表信息"></a>2. 路由表信息</h3><pre><code>route print     
 
-<h3 id="2-路由表信息"><a href="#2-路由表信息" class="headerlink" title="2. 路由表信息"></a>2. 路由表信息</h3><pre class="line-numbers language-none"><code class="language-none">route print     
+Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex
+</code></pre>
+<h3 id="3-ARP信息"><a href="#3-ARP信息" class="headerlink" title="3. ARP信息"></a>3. ARP信息</h3><pre><code>arp -A
 
-Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State
+</code></pre>
+<h3 id="4-连接信息"><a href="#4-连接信息" class="headerlink" title="4. 连接信息"></a>4. 连接信息</h3><pre><code>netstat -ano # 查看当前连接
+</code></pre>
+<h3 id="5-网络共享信息"><a href="#5-网络共享信息" class="headerlink" title="5. 网络共享信息"></a>5. 网络共享信息</h3><pre><code>net share
+powershell Find-DomainShare -ComputerDomain domain.local
+</code></pre>
+<h3 id="6-SNMP配置信息"><a href="#6-SNMP配置信息" class="headerlink" title="6. SNMP配置信息"></a>6. SNMP配置信息</h3><pre><code>reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP /s  
 
-<h3 id="3-ARP信息"><a href="#3-ARP信息" class="headerlink" title="3. ARP信息"></a>3. ARP信息</h3><pre class="line-numbers language-none"><code class="language-none">arp -A
-
-Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-连接信息"><a href="#4-连接信息" class="headerlink" title="4. 连接信息"></a>4. 连接信息</h3><pre class="line-numbers language-none"><code class="language-none">netstat -ano # 查看当前连接<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="5-网络共享信息"><a href="#5-网络共享信息" class="headerlink" title="5. 网络共享信息"></a>5. 网络共享信息</h3><pre class="line-numbers language-none"><code class="language-none">net share
-powershell Find-DomainShare -ComputerDomain domain.local<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="6-SNMP配置信息"><a href="#6-SNMP配置信息" class="headerlink" title="6. SNMP配置信息"></a>6. SNMP配置信息</h3><pre class="line-numbers language-none"><code class="language-none">reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP &#x2F;s  
-
-Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="0x04-文件排查"><a href="#0x04-文件排查" class="headerlink" title="0x04 文件排查"></a>0x04 文件排查</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><pre class="line-numbers language-none"><code class="language-none">(1) 各个盘下temp目录
+Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
+</code></pre>
+<h2 id="0x04-文件排查"><a href="#0x04-文件排查" class="headerlink" title="0x04 文件排查"></a>0x04 文件排查</h2><h3 id="1-敏感目录"><a href="#1-敏感目录" class="headerlink" title="1. 敏感目录"></a>1. 敏感目录</h3><pre><code>(1) 各个盘下temp目录
 
 恶意程序运行时投放出的文件(释放子体)多存放于路径相对固定的临时目录
 
@@ -537,34 +536,34 @@ Prefetch为预读取文件夹，用于存放系统已访问过的文件预读取
 
 可查询应用程序的执行路径、上次执行的时间以及SHA1值
 
-【开始】&gt;【运行】，输入【%SystemRoot%\appcompat\Programs\】，排查Amcache.hve文件夹<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+【开始】&gt;【运行】，输入【%SystemRoot%\appcompat\Programs\】，排查Amcache.hve文件夹
+</code></pre>
 <h3 id="2-时间点查找"><a href="#2-时间点查找" class="headerlink" title="2. 时间点查找"></a>2. 时间点查找</h3><p>入侵事件发生后，需优先确认时间发生的时间点，排查时间点前后的文件变动情况</p>
 <p><strong>排查技巧</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) forfiles命令
+<pre><code>(1) forfiles命令
 
-FORFILES [&#x2F;P pathname] [&#x2F;M searchmask] [&#x2F;S]
-         [&#x2F;C command] [&#x2F;D [+ | -] &#123;yyyy&#x2F;MM&#x2F;dd | dd&#125;]
+FORFILES [/P pathname] [/M searchmask] [/S]
+         [/C command] [/D [+ | -] &#123;yyyy/MM/dd | dd&#125;]
 
 描述:
     选择一个文件(或一组文件)并在那个文件上
     执行一个命令。这有助于批处理作业。
 
 参数列表:
-    &#x2F;P    pathname      表示开始搜索的路径。默认文件夹是当前工作的
+    /P    pathname      表示开始搜索的路径。默认文件夹是当前工作的
                         目录 (.)。
 
 
-    &#x2F;M    searchmask    根据搜索掩码搜索文件。默认搜索掩码是 &#39;*&#39;。
+    /M    searchmask    根据搜索掩码搜索文件。默认搜索掩码是 &#39;*&#39;。
 
-    &#x2F;S                  指导 forfiles 递归到子目录。像 &quot;DIR &#x2F;S&quot;。
+    /S                  指导 forfiles 递归到子目录。像 &quot;DIR /S&quot;。
 
 
-    &#x2F;C    command       表示为每个文件执行的命令。命令字符串应该
+    /C    command       表示为每个文件执行的命令。命令字符串应该
                         用双引号括起来。
 
 
-                        默认命令是 &quot;cmd &#x2F;c echo @file&quot;。下列变量
+                        默认命令是 &quot;cmd /c echo @file&quot;。下列变量
                         可以用在命令字符串中:
 
                         @file    - 返回文件名。
@@ -587,11 +586,11 @@ FORFILES [&#x2F;P pathname] [&#x2F;M searchmask] [&#x2F;S]
                         要在命令行包括特殊字符，字符请以 0xHH
                         形式使用十六进制代码(例如，0x09 为 tab)。
 
-                        内部 CMD.exe 命令前面应以 &quot;cmd &#x2F;c&quot; 开始。
+                        内部 CMD.exe 命令前面应以 &quot;cmd /c&quot; 开始。
 
 
-    &#x2F;D    date          选择文件，其上一次修改日期大于或等于 (+)，
-                        或者小于或等于 (-) 用 &quot;yyyy&#x2F;MM&#x2F;dd&quot; 格式指定的日期;
+    /D    date          选择文件，其上一次修改日期大于或等于 (+)，
+                        或者小于或等于 (-) 用 &quot;yyyy/MM/dd&quot; 格式指定的日期;
 
                         或选择文件，其上一次修改日期大于或等于 (+)
                         当前日期加 &quot;dd&quot; 天，或者小于或等于 (-) 当前
@@ -601,24 +600,24 @@ FORFILES [&#x2F;P pathname] [&#x2F;M searchmask] [&#x2F;S]
 
                         &quot;+&quot; 被当作默认符号。
 
-    &#x2F;?                  显示此帮助消息。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    /?                  显示此帮助消息。
+</code></pre>
 <h2 id="0x04-日志分析"><a href="#0x04-日志分析" class="headerlink" title="0x04 日志分析"></a>0x04 日志分析</h2><h3 id="1-日志简介"><a href="#1-日志简介" class="headerlink" title="1. 日志简介"></a>1. 日志简介</h3><p>Windows主要有以下三类日志文件：应用程序日志、系统日志和安全日志</p>
 <p><strong>系统日志</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等
+<pre><code>记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等
 
-默认位置：%SystemRoot%\System32\Winevt\Logs\System.evtx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+默认位置：%SystemRoot%\System32\Winevt\Logs\System.evtx
+</code></pre>
 <p><strong>安全日志</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">记录系统的安全审计事件，包含各种类型的登录日志、对象访问日志、进程追踪日志、特权使用、帐号管理、策略变更、系统事件。默认设置下，安全性日志是关闭的，管理员可以使用组策略来启动安全性日志，或者在注册表中设置审核策略
+<pre><code>记录系统的安全审计事件，包含各种类型的登录日志、对象访问日志、进程追踪日志、特权使用、帐号管理、策略变更、系统事件。默认设置下，安全性日志是关闭的，管理员可以使用组策略来启动安全性日志，或者在注册表中设置审核策略
 
-默认位置：%SystemRoot%\System32\Winevt\Logs\Security.evtx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+默认位置：%SystemRoot%\System32\Winevt\Logs\Security.evtx
+</code></pre>
 <p><strong>应用日志</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误。如果某个应用程序出现崩溃情况，可以从程序事件日志中找到相应的记录
+<pre><code>包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误。如果某个应用程序出现崩溃情况，可以从程序事件日志中找到相应的记录
 
-默认位置：%SystemRoot%\System32\Winevt\Logs\Application.evtx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+默认位置：%SystemRoot%\System32\Winevt\Logs\Application.evtx
+</code></pre>
 <h3 id="2-日志事件ID"><a href="#2-日志事件ID" class="headerlink" title="2. 日志事件ID"></a>2. 日志事件ID</h3><p>对于Windows事件日志分析，不同的EVENT ID代表了不同的意义，摘录一些常见的安全事件的说明</p>
 <table>
 <thead>
@@ -708,7 +707,7 @@ FORFILES [&#x2F;P pathname] [&#x2F;M searchmask] [&#x2F;S]
 </tr>
 </tbody></table>
 <h3 id="3-日志分析技巧"><a href="#3-日志分析技巧" class="headerlink" title="3. 日志分析技巧"></a>3. 日志分析技巧</h3><p><strong>事件查看器</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">(1) 利用eventlog事件来查看系统账号登录情况
+<pre><code>(1) 利用eventlog事件来查看系统账号登录情况
 
   a. 在“开始”菜单上，依次指向“所有程序”、“管理工具”，然后单击“事件查看器”；
 
@@ -731,38 +730,38 @@ FORFILES [&#x2F;P pathname] [&#x2F;M searchmask] [&#x2F;S]
 
   6006 -- 服务已启动，开机
   6005 -- 服务已停止，关机
-  6009 -- 按ctrl、alt、delete键(非正常)关机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+  6009 -- 按ctrl、alt、delete键(非正常)关机
+</code></pre>
 <p><strong>Log Parser</strong></p>
 <p>Log Parser是微软公司出品的日志分析工具，功能强大，使用简单，可以分析基于文本的日志文件、XML 文件、CSV（逗号分隔符）文件，以及操作系统的事件日志、注册表、文件系统、Active Directory</p>
-<pre class="line-numbers language-none"><code class="language-none">(1) 基本查询语法
+<pre><code>(1) 基本查询语法
 
   Logparser.exe –i:EVT –o:DATAGRID &quot;SELECT * FROM c:\xx.evtx&quot;
 
 (2) 查询登录成功的事件
 
   a. 登录成功的所有事件
-  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID&#x3D;4624&quot;
+  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4624&quot;
 
   b. 指定登录时间范围的事件
-  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where TimeGenerated&gt;&#39;2018-06-19 23:32:11&#39; and TimeGenerated&lt;&#39;2018-06-20 23:34:00&#39; and EventID&#x3D;4624&quot;
+  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where TimeGenerated&gt;&#39;2018-06-19 23:32:11&#39; and TimeGenerated&lt;&#39;2018-06-20 23:34:00&#39; and EventID=4624&quot;
 
   c. 提取登录成功的用户名和IP
-  LogParser.exe -i:EVT  –o:DATAGRID  &quot;SELECT EXTRACT_TOKEN(Message,13,&#39; &#39;) as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,&#39;|&#39;) as Username,EXTRACT_TOKEN(Message,38,&#39; &#39;) as Loginip FROM c:\Security.evtx where EventID&#x3D;4624&quot;
+  LogParser.exe -i:EVT  –o:DATAGRID  &quot;SELECT EXTRACT_TOKEN(Message,13,&#39; &#39;) as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,&#39;|&#39;) as Username,EXTRACT_TOKEN(Message,38,&#39; &#39;) as Loginip FROM c:\Security.evtx where EventID=4624&quot;
 
 (3) 查询登录失败的事件
 
   a. 登录失败的所有事件
-  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID&#x3D;4625&quot;
+  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT *  FROM c:\Security.evtx where EventID=4625&quot;
 
   b. 提取登录失败用户名进行聚合统计
-  LogParser.exe  -i:EVT &quot;SELECT  EXTRACT_TOKEN(Message,13,&#39; &#39;)  as EventType,EXTRACT_TOKEN(Message,19,&#39; &#39;) as user,count(EXTRACT_TOKEN(Message,19,&#39; &#39;)) as Times,EXTRACT_TOKEN(Message,39,&#39; &#39;) as Loginip FROM c:\Security.evtx where EventID&#x3D;4625 GROUP BY Message&quot;
+  LogParser.exe  -i:EVT &quot;SELECT  EXTRACT_TOKEN(Message,13,&#39; &#39;)  as EventType,EXTRACT_TOKEN(Message,19,&#39; &#39;) as user,count(EXTRACT_TOKEN(Message,19,&#39; &#39;)) as Times,EXTRACT_TOKEN(Message,39,&#39; &#39;) as Loginip FROM c:\Security.evtx where EventID=4625 GROUP BY Message&quot;
 
 (4) 系统历史开关机记录
 
-  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID&#x3D;6005 or EventID&#x3D;6006&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-历史命令查看"><a href="#4-历史命令查看" class="headerlink" title="4. 历史命令查看"></a>4. 历史命令查看</h3><pre class="line-numbers language-none"><code class="language-none">type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+  LogParser.exe -i:EVT –o:DATAGRID  &quot;SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006&quot;
+</code></pre>
+<h3 id="4-历史命令查看"><a href="#4-历史命令查看" class="headerlink" title="4. 历史命令查看"></a>4. 历史命令查看</h3><pre><code>type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 
 type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 
@@ -770,8 +769,8 @@ type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.tx
 
 cat (Get-PSReadlineOption).HistorySavePath
 
-cat (Get-PSReadlineOption).HistorySavePath | sls passw<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+cat (Get-PSReadlineOption).HistorySavePath | sls passw
+</code></pre>
 <h2 id="0x05-工具集合"><a href="#0x05-工具集合" class="headerlink" title="0x05 工具集合"></a>0x05 工具集合</h2><h3 id="1-工具箱"><a href="#1-工具箱" class="headerlink" title="1. 工具箱"></a>1. 工具箱</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a> : <em>微软发布的一套强大的免费工具程序集，共包括将近70个windows工具</em></p>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="http://technet.microsoft.com/zh-cn/sysinternals/bb664922.aspx">AccessChk</a> <em>了解特定用户或用户组对文件、目录、注册表项和Windows服务等资源具有哪种访问权限</em></p>
@@ -795,7 +794,7 @@ cat (Get-PSReadlineOption).HistorySavePath | sls passw<span aria-hidden="true" c
 <li><p><a target="_blank" rel="noopener" href="https://technet.microsoft.com/en-us/sysinternals/bb896649">PsTools</a> <em>PsTools 套件，可列出本地或远程计算机上运行的进程、远程运行进程、重新启动计算机、转储事件日志，以及执行其他任务</em></p>
 </li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">PsExec——执行远程过程
+<pre><code>PsExec——执行远程过程
 
 PsFile——远程显示打开的文件
 
@@ -819,8 +818,8 @@ PsService——视图和控制服务
 
 PsShutdown——关闭,选择重新启动计算机
 
-PsSuspend——挂起和恢复过程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+PsSuspend——挂起和恢复过程
+</code></pre>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="http://technet.microsoft.com/zh-cn/sysinternals/bb897448.aspx">RegDelNull</a> <em>扫描并删除包含嵌入空字符的注册表项，标准注册表编辑工具不能删除这种注册表项</em></p>
 </li>

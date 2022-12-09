@@ -253,25 +253,28 @@
 
 <span id="more"></span>
 <hr>
-<h2 id="0x01-基本配置"><a href="#0x01-基本配置" class="headerlink" title="0x01 基本配置"></a>0x01 基本配置</h2><h3 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1. 配置文件"></a>1. 配置文件</h3><pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;audit&#x2F;audit.rules  # 审计规则文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="2-基本参数"><a href="#2-基本参数" class="headerlink" title="2. 基本参数"></a>2. 基本参数</h3><pre class="line-numbers language-none"><code class="language-none">-D        # 删除所有以前存在的规则
+<h2 id="0x01-基本配置"><a href="#0x01-基本配置" class="headerlink" title="0x01 基本配置"></a>0x01 基本配置</h2><h3 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1. 配置文件"></a>1. 配置文件</h3><pre><code>/etc/audit/audit.rules  # 审计规则文件
+</code></pre>
+<h3 id="2-基本参数"><a href="#2-基本参数" class="headerlink" title="2. 基本参数"></a>2. 基本参数</h3><pre><code>-D        # 删除所有以前存在的规则
 -b 8192   # 设置用于容纳审计消息的缓冲区数目
--f 1      # 设置当内核需要处理严重错误时要使用的故障标志。可能的值为 0（静默）、1（printk，列显故障消息）和 2（恐慌，暂停系统）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+-f 1      # 设置当内核需要处理严重错误时要使用的故障标志。可能的值为 0（静默）、1（printk，列显故障消息）和 2（恐慌，暂停系统）
+</code></pre>
 <h3 id="3-启动停止"><a href="#3-启动停止" class="headerlink" title="3. 启动停止"></a>3. 启动停止</h3><p>systemctl is-enabled auditd<br>systemctl disable auditd<br>systemctl stop auditd</p>
 <h2 id="0x02-审计监测"><a href="#0x02-审计监测" class="headerlink" title="0x02 审计监测"></a>0x02 审计监测</h2><h3 id="1-监测审计日志及配置文件"><a href="#1-监测审计日志及配置文件" class="headerlink" title="1. 监测审计日志及配置文件"></a>1. 监测审计日志及配置文件</h3><p>添加审计配置文件和日志文件本身的监测项可确保您能够跟踪任何尝试篡改配置文件的操作，或检测任何尝试访问日志文件的操作</p>
-<pre class="line-numbers language-none"><code class="language-none">-w &#x2F;var&#x2F;log&#x2F;audit&#x2F;               # 设置审计日志所在目录的监测项，对任何类型访问此目录的尝试均触发事件
--w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit.log
+<pre><code>-w /var/log/audit/               # 设置审计日志所在目录的监测项，对任何类型访问此目录的尝试均触发事件
+-w /var/log/audit/audit.log
 
--w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.1
--w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.2
--w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.3
--w &#x2F;var&#x2F;log&#x2F;audit&#x2F;audit_log.4
+-w /var/log/audit/audit_log.1
+-w /var/log/audit/audit_log.2
+-w /var/log/audit/audit_log.3
+-w /var/log/audit/audit_log.4
 
--w &#x2F;etc&#x2F;audit&#x2F;auditd.conf -p wa  # 设置审计配置文件的监测项，记录对此文件的所有写入和属性更改尝试
--w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa
--w &#x2F;etc&#x2F;libaudit.conf -p wa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-w /etc/audit/auditd.conf -p wa  # 设置审计配置文件的监测项，记录对此文件的所有写入和属性更改尝试
+-w /etc/audit/audit.rules -p wa
+-w /etc/libaudit.conf -p wa
+</code></pre>
 <h3 id="2-审计系统调用"><a href="#2-审计系统调用" class="headerlink" title="2. 审计系统调用"></a>2. 审计系统调用</h3><p>审计文件系统对象系统调用有助于跟踪高于应用程序级别的系统活动，发现异常系统调用</p>
-<pre class="line-numbers language-none"><code class="language-none">1）审计文件系统系统调用
+<pre><code>1）审计文件系统系统调用
 
 -a entry,always -S chmod -S fchmod -S chown -S chown32 -S fchown -S fchown32 -S lchown -S lchown32  # 对更改文件所有权和权限相关的系统调用启用审计环境
 
@@ -298,92 +301,95 @@
 
 -a entry,always -S umask   # 审计umask系统调用以跟踪进程是如何修改创建掩码
 
--a entry,always -S adjtimex -S settimeofday   # 跟踪尝试更改系统时间的操作：使用adjtimex来调整时间，settimeofday会设置绝对时间<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-a entry,always -S adjtimex -S settimeofday   # 跟踪尝试更改系统时间的操作：使用adjtimex来调整时间，settimeofday会设置绝对时间
+</code></pre>
 <h3 id="3-审计安全配置文件"><a href="#3-审计安全配置文件" class="headerlink" title="3. 审计安全配置文件"></a>3. 审计安全配置文件</h3><p>跟踪系统配置的更改（内核、服务、时间等）有助于发现他人尝试操纵您系统的基础功能的任何行为，适用于与安全身份验证和通讯相关的任何其他配置文件</p>
-<pre class="line-numbers language-none"><code class="language-none">1）定时任务监测
+<pre><code>1）定时任务监测
 
--w &#x2F;var&#x2F;spool&#x2F;atspool        # at配置监测
--w &#x2F;etc&#x2F;at.allow
--w &#x2F;etc&#x2F;at.deny
+-w /var/spool/atspool        # at配置监测
+-w /etc/at.allow
+-w /etc/at.deny
 
--w &#x2F;etc&#x2F;cron.allow -p wa     # cron配置监测
--w &#x2F;etc&#x2F;cron.deny -p wa
--w &#x2F;etc&#x2F;cron.d&#x2F; -p wa
--w &#x2F;etc&#x2F;cron.daily&#x2F; -p wa
--w &#x2F;etc&#x2F;cron.hourly&#x2F; -p wa
--w &#x2F;etc&#x2F;cron.monthly&#x2F; -p wa
--w &#x2F;etc&#x2F;cron.weekly&#x2F; -p wa
--w &#x2F;etc&#x2F;crontab -p wa
--w &#x2F;var&#x2F;spool&#x2F;cron&#x2F;root
+-w /etc/cron.allow -p wa     # cron配置监测
+-w /etc/cron.deny -p wa
+-w /etc/cron.d/ -p wa
+-w /etc/cron.daily/ -p wa
+-w /etc/cron.hourly/ -p wa
+-w /etc/cron.monthly/ -p wa
+-w /etc/cron.weekly/ -p wa
+-w /etc/crontab -p wa
+-w /var/spool/cron/root
 
 2）用户及登录监测
 
--w &#x2F;etc&#x2F;group -p wa
--w &#x2F;etc&#x2F;passwd -p wa
--w &#x2F;etc&#x2F;shadow
+-w /etc/group -p wa
+-w /etc/passwd -p wa
+-w /etc/shadow
 
--w &#x2F;etc&#x2F;login.defs -p wa
--w &#x2F;etc&#x2F;securetty
--w &#x2F;var&#x2F;log&#x2F;lastlog
+-w /etc/login.defs -p wa
+-w /etc/securetty
+-w /var/log/lastlog
 
 3）主机及系统配置监测
 
--w &#x2F;etc&#x2F;hosts -p wa     # 静态主机名配置设置监测
--w &#x2F;etc&#x2F;sysconfig&#x2F;      # 系统配置目录监测
-w &#x2F;etc&#x2F;init.d&#x2F;          # 引导配置监测
-w &#x2F;etc&#x2F;ld.so.conf -p wa # 链接器配置监测
-w &#x2F;etc&#x2F;localtime -p wa  # 本地时间监测
+-w /etc/hosts -p wa     # 静态主机名配置设置监测
+-w /etc/sysconfig/      # 系统配置目录监测
+w /etc/init.d/          # 引导配置监测
+w /etc/ld.so.conf -p wa # 链接器配置监测
+w /etc/localtime -p wa  # 本地时间监测
 
-w &#x2F;etc&#x2F;sysctl.conf -p wa # 内核配置监测
-w &#x2F;etc&#x2F;modprobe.d&#x2F;
-w &#x2F;etc&#x2F;modprobe.conf.local -p wa
-w &#x2F;etc&#x2F;modprobe.conf -p wa
+w /etc/sysctl.conf -p wa # 内核配置监测
+w /etc/modprobe.d/
+w /etc/modprobe.conf.local -p wa
+w /etc/modprobe.conf -p wa
 
 4）PAM配置目录监测
 
-w &#x2F;etc&#x2F;pam.d&#x2F;
+w /etc/pam.d/
 
 5）别名文件监测
 
--w &#x2F;etc&#x2F;aliases -p wa
+-w /etc/aliases -p wa
 
 6）SSH等配置文件监测
 
--w &#x2F;etc&#x2F;ssh&#x2F;sshd_config
+-w /etc/ssh/sshd_config
 
--w &#x2F;etc&#x2F;stunnel&#x2F;stunnel.conf
--w &#x2F;etc&#x2F;stunnel&#x2F;stunnel.pem
+-w /etc/stunnel/stunnel.conf
+-w /etc/stunnel/stunnel.pem
 
--w &#x2F;etc&#x2F;vsftpd.ftpusers
--w &#x2F;etc&#x2F;vsftpd.conf
+-w /etc/vsftpd.ftpusers
+-w /etc/vsftpd.conf
 
 7）主机名设置及系统标识配置监测
 
 -a exit,always -S sethostname
--w &#x2F;etc&#x2F;issue -p wa
--w &#x2F;etc&#x2F;issue.net -p wa<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+-w /etc/issue -p wa
+-w /etc/issue.net -p wa
+</code></pre>
 <h3 id="4-过滤系统调用参数"><a href="#4-过滤系统调用参数" class="headerlink" title="4. 过滤系统调用参数"></a>4. 过滤系统调用参数</h3><p>审计系统调用会产生高负载的日志记录活动，而后者又会给内核带来繁重的负载，应用过滤器有助于将审计重点放在您主要关注的方面<br><strong>过滤非多路转换系统调用</strong><br>access 系统调用会检查是否允许某个进程读取、写入文件或文件系统对象或者测试该对象是否存在。请使用 -F 过滤标志以 -F a1&#x3D;ACCESS_MODE 格式构建与特定 access 调用匹配的规则。在 &#x2F;usr&#x2F;include&#x2F;fcntl.h 中检查 access 系统调用的可能参数列表</p>
-<pre class="line-numbers language-none"><code class="language-none">-a entry,always -S access -F a1&#x3D;4  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 4 (R_OK) 时会进行审计。此规则过滤所有用于测试对用户或进程所访问的文件或文件系统是否拥有足够读取权限的 access 调用
--a entry,always -S access -F a1&#x3D;6  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 6（表示 4 OR 2，相当于 R_OK OR W_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取和写入权限的 access 调用
--a entry,always -S access -F a1&#x3D;7  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 7（表示 4 OR 2 OR 1，相当于 R_OK OR W_OK OR X_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取、写入和执行权限的 access 调用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>-a entry,always -S access -F a1=4  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 4 (R_OK) 时会进行审计。此规则过滤所有用于测试对用户或进程所访问的文件或文件系统是否拥有足够读取权限的 access 调用
+-a entry,always -S access -F a1=6  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 6（表示 4 OR 2，相当于 R_OK OR W_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取和写入权限的 access 调用
+-a entry,always -S access -F a1=7  # 审计 access 系统调用，但仅当该系统调用的第二个参数 (mode) 为 7（表示 4 OR 2 OR 1，相当于 R_OK OR W_OK OR X_OK）时会进行审计。此规则过滤用于测试是否拥有足够读取、写入和执行权限的 access 调用
+</code></pre>
 <p><strong>过滤多路转换系统调用</strong><br>socketcall 系统调用是多路转换系统调用。多路转换是指在所有可能的调用中只存在一个系统调用，并且 libc 会传递实际的系统调用作为第一个参数 (a0)。有关可能的参数值和系统调用名称的列表，请参见 &#x2F;usr&#x2F;src&#x2F;linux&#x2F;include&#x2F;linux&#x2F;net.h。审计支持使用 -F a0&#x3D;SYSCALL_NUMBER 过滤特定的系统调用</p>
-<pre class="line-numbers language-none"><code class="language-none">-a entry,always -S socketcall -F a0&#x3D;1 -F a1&#x3D;10   # 审计 socket(PF_INET6) 系统调用。-F a0&#x3D;1 过滤器会匹配所有 socket 系统调用，-F a1&#x3D;10 过滤器可将匹配范围缩小为传递 IPv6 协议系列域参数 (PF_INET6) 的 socket 系统调用。有关第一个参数 (a0)，请查看 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;net.h；有关第二个参数 (a1)，请查看 &#x2F;usr&#x2F;src&#x2F;linux&#x2F;include&#x2F;linux&#x2F;socket.h。AMD64&#x2F;Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加对 PF_INET6 进行过滤的普通系统调用规则
+<pre><code>-a entry,always -S socketcall -F a0=1 -F a1=10   # 审计 socket(PF_INET6) 系统调用。-F a0=1 过滤器会匹配所有 socket 系统调用，-F a1=10 过滤器可将匹配范围缩小为传递 IPv6 协议系列域参数 (PF_INET6) 的 socket 系统调用。有关第一个参数 (a0)，请查看 /usr/include/linux/net.h；有关第二个参数 (a1)，请查看 /usr/src/linux/include/linux/socket.h。AMD64/Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加对 PF_INET6 进行过滤的普通系统调用规则
 ## Use this line on x86_64, ia64 instead
-#-a entry,always -S socket -F a0&#x3D;10
+#-a entry,always -S socket -F a0=10
 
--a entry,always -S socketcall -F a0&#x3D;5           # 审计 socketcall 系统调用。过滤标志设置为过滤 a0&#x3D;5（socketcall 的第一个参数），如果您检查 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;net.h，会发现此设置转换为 accept 系统调用。AMD64&#x2F;Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加不含参数过滤的普通系统调用规则
+-a entry,always -S socketcall -F a0=5           # 审计 socketcall 系统调用。过滤标志设置为过滤 a0=5（socketcall 的第一个参数），如果您检查 /usr/include/linux/net.h，会发现此设置转换为 accept 系统调用。AMD64/Intel 64 等 64 位平台不会对 socketcall 系统调用使用多路转换。对于这些平台，请将规则注释掉，并添加不含参数过滤的普通系统调用规则
 ## Use this line on x86_64, ia64 instead
-#-a entry, always -S accept<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#-a entry, always -S accept
+</code></pre>
 <p>ipc 系统调用是多路转换系统调用的另一个示例。要调用的实际调用由传递给 ipc 系统调用的第一个参数决定。过滤这些参数有助于您将重点放在要关注的 IPC 调用上。在 &#x2F;usr&#x2F;include&#x2F;linux&#x2F;ipc.h 中查看可能的参数值</p>
-<pre class="line-numbers language-none"><code class="language-none">1) 审计与 IPC SYSV 消息队列相关的系统调用
+<pre><code>1) 审计与 IPC SYSV 消息队列相关的系统调用
 
-a0 值指定要针对 msgctl 和 msgget 系统调用（14 和 13）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
+a0 值指定要针对 msgctl 和 msgget 系统调用（14 和 13）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
 
 ## msgctl
--a entry,always -S ipc -F a0&#x3D;14
+-a entry,always -S ipc -F a0=14
 ## msgget
--a entry,always -S ipc -F a0&#x3D;13
+-a entry,always -S ipc -F a0=13
 ## Use these lines on x86_64, ia64 instead
 #-a entry,always -S msgctl
 #-a entry,always -S msgget
@@ -391,16 +397,16 @@ a0 值指定要针对 msgctl 和 msgget 系统调用（14 和 13）添加审计�
 
 2) 审计与 IPC SYSV 消息信号相关的系统调用
 
-a0 值指定要针对 semctl、semget、semop 和 semtimedop 系统调用（3、2、1 和 4）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前四条规则注释掉，并添加不含参数过滤的普通系统调用规则
+a0 值指定要针对 semctl、semget、semop 和 semtimedop 系统调用（3、2、1 和 4）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前四条规则注释掉，并添加不含参数过滤的普通系统调用规则
 
 ## semctl
--a entry,always -S ipc -F a0&#x3D;3
+-a entry,always -S ipc -F a0=3
 ## semget
--a entry,always -S ipc -F a0&#x3D;2
+-a entry,always -S ipc -F a0=2
 ## semop
--a entry,always -S ipc -F a0&#x3D;1
+-a entry,always -S ipc -F a0=1
 ## semtimedop
--a entry,always -S ipc -F a0&#x3D;4
+-a entry,always -S ipc -F a0=4
 ## Use these lines on x86_64, ia64 instead
 #-a entry,always -S semctl
 #-a entry,always -S semget
@@ -409,21 +415,23 @@ a0 值指定要针对 semctl、semget、semop 和 semtimedop 系统调用（3、
 
 3) 审计与 IPC SYSV 共享内存相关的系统调用
 
-a0 值指定要针对 shmctl 和 shmget 系统调用（24 和 23）添加审计。AMD64&#x2F;Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
+a0 值指定要针对 shmctl 和 shmget 系统调用（24 和 23）添加审计。AMD64/Intel 64 等 64 位平台不会对 ipc 系统调用使用多路转换。对于这些平台，请将前两条规则注释掉，并添加不含参数过滤的普通系统调用规则
 
 ## shmctl
--a entry,always -S ipc -F a0&#x3D;24
+-a entry,always -S ipc -F a0=24
 ## shmget
--a entry,always -S ipc -F a0&#x3D;23
+-a entry,always -S ipc -F a0=23
 ## Use these lines on x86_64, ia64 instead
 #-a entry,always -S shmctl
-#-a entry,always -S shmget<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#-a entry,always -S shmget
+</code></pre>
 <h3 id="5-使用键管理审计事件记录"><a href="#5-使用键管理审计事件记录" class="headerlink" title="5. 使用键管理审计事件记录"></a>5. 使用键管理审计事件记录</h3><p>使用 ausearch 命令可以根据不同的准则过滤日志。通过使用 ausearch -m MESSAGE_TYPE，可以过滤特定类型的事件。但是，要过滤与特定规则相关的事件，需要在 &#x2F;etc&#x2F;audit&#x2F;audit.rules 文件中将一个键添加到此规则。然后，每次该规则记录一个事件时，此键就会添加到相应事件记录。要检索这些日志项，只需运行 ausearch -k YOUR_KEY 获取与该规则相关且带有此特定键的记录列表</p>
-<pre class="line-numbers language-none"><code class="language-none">-w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa
+<pre><code>-w /etc/audit/audit.rules -p wa
 
--w &#x2F;etc&#x2F;audit&#x2F;audit.rules -p wa -k CFG_audit.rules  # 使用 -k 选项将一个键添加到上述规则
+-w /etc/audit/audit.rules -p wa -k CFG_audit.rules  # 使用 -k 选项将一个键添加到上述规则
 
-查找记录：ausearch -k CFG_audit.rules<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+查找记录：ausearch -k CFG_audit.rules
+</code></pre>
 <p>可以指定任何文本字符串作为键。使用不同的键前缀（CFG、LOG 等）后接文件名来区分与不同文件类型（配置文件或日志文件）相关的各监测项</p>
 <h2 id="0xFF-参考链接"><a href="#0xFF-参考链接" class="headerlink" title="0xFF 参考链接"></a>0xFF 参考链接</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://documentation.suse.com/zh-cn/sled/15-SP3/html/SLED-all/cha-audit-scenarios.html">https://documentation.suse.com/zh-cn/sled/15-SP3/html/SLED-all/cha-audit-scenarios.html</a></li>
