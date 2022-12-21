@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文总结文件操作漏洞(文件上传、文件包含、文件读取、目录穿越等）漏洞原理、利用方式及防御方法...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传漏洞详解">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/50058/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文总结文件操作漏洞(文件上传、文件包含、文件读取、目录穿越等）漏洞原理、利用方式及防御方法...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-28T13:52:20.000Z">
+<meta property="article:modified_time" content="2022-12-21T04:27:57.487Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Execution">
+<meta property="article:tag" content="Vulnerability">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/50058/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/50058/","path":"posts/50058/","title":"文件上传漏洞详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>文件上传漏洞详解 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="nav-text">0x01 文件上传漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%BC%8F%E6%B4%9E%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 漏洞简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF"><span class="nav-text">a. 攻击场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-text">b. 利用条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E6%BC%8F%E6%B4%9E%E7%B1%BB%E5%9E%8B"><span class="nav-text">c. 漏洞类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%95%E8%BF%87%E5%A7%BF%E5%8A%BF"><span class="nav-text">2. 绕过姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BB%95%E8%BF%87"><span class="nav-text">a. 客户端绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BB%95%E8%BF%87"><span class="nav-text">b. 服务端绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E7%99%BD%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="nav-text">c. 白名单绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-WAF%E7%BB%95%E8%BF%87"><span class="nav-text">d. WAF绕过</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E5%8F%8A%E4%BF%AE%E5%A4%8D"><span class="nav-text">3. 防御及修复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%A1%E9%AA%8C"><span class="nav-text">a. 客户端校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%A1%E9%AA%8C"><span class="nav-text">b. 服务端校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-WAF%E6%8B%A6%E6%88%AA"><span class="nav-text">c. WAF拦截</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="nav-text">d. 漏洞修复</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E"><span class="nav-text">0x02 文件读取漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6"><span class="nav-text">1. 敏感文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E5%87%BD%E6%95%B0"><span class="nav-text">2. 文件读取函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-text">0x03 文件包含漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0"><span class="nav-text">1. 漏洞成因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-PHP%E5%8D%B1%E9%99%A9%E5%87%BD%E6%95%B0"><span class="nav-text">2. PHP危险函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%BC%8F%E6%B4%9E%E5%88%86%E7%B1%BB"><span class="nav-text">3. 漏洞分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-text">4. PHP伪协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-php-x2F-x2F-filter"><span class="nav-text">a. php:&#x2F;&#x2F;filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-php-x2F-x2F-input"><span class="nav-text">b. php:&#x2F;&#x2F;input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-zip-x2F-x2F-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-text">c. zip:&#x2F;&#x2F;伪协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d-phar-x2F-x2F-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-text">d. phar:&#x2F;&#x2F;伪协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-data-text-x2F-plain"><span class="nav-text">e. data:text&#x2F;plain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-file-x2F-x2F-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-text">f. file:&#x2F;&#x2F;伪协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%98%B2%E5%BE%A1%E4%BF%AE%E5%A4%8D"><span class="nav-text">5. 防御修复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A%E6%BC%8F%E6%B4%9E"><span class="nav-text">0x04 目录穿越漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7"><span class="nav-text">2. 攻击载荷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 绕过方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/50058/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="文件上传漏洞详解 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文件上传漏洞详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-28 21:52:20" itemprop="dateCreated datePublished" datetime="2018-12-28T21:52:20+08:00">2018-12-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">漏洞研究</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文总结文件操作漏洞(文件上传、文件包含、文件读取、目录穿越等）漏洞原理、利用方式及防御方法...</center>
+
+<span id="more"></span>
+<hr>
+<p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
+<h2 id="0x01-文件上传漏洞"><a href="#0x01-文件上传漏洞" class="headerlink" title="0x01 文件上传漏洞"></a>0x01 文件上传漏洞</h2><h3 id="1-漏洞简介"><a href="#1-漏洞简介" class="headerlink" title="1. 漏洞简介"></a>1. 漏洞简介</h3><p>File upload（任意文件上传漏洞），Web 应用程序在处理用户上传的文件时，没有判断文件的扩展名或文件类型是否在允许的范围内，就把文件保存在服务器上，导致恶意用户可以上传任意文件，甚至上传脚本木马到web 服务器上，直接控制 web 服务器。</p>
+<h4 id="a-攻击场景"><a href="#a-攻击场景" class="headerlink" title="a. 攻击场景"></a>a. 攻击场景</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1) 上传文件是Web脚本语言，Web服务器解释并执行了用户上传的脚本，导致代码执行</span><br><span class="line"></span><br><span class="line">(2) 上传文件是病毒或者木马时，可用于诱骗用户或者管理员下载执行或者直接自动运行</span><br><span class="line"></span><br><span class="line">(3) 上传文件是Flash的策略文件crossdomain.xml，黑客用以控制Flash在该域下的行为</span><br><span class="line"></span><br><span class="line">(4) 上传文件是钓鱼图片或包含了脚本的图片，在某些版本的浏览器中会被作为脚本执行，被用于钓鱼和欺诈</span><br><span class="line"></span><br><span class="line">(5) 上传一个合法的文本文件，其内容包含了PHP脚本，再通过&quot;本地文件包含漏洞(Local  File  Include)&quot;执行此脚本</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-利用条件"><a href="#b-利用条件" class="headerlink" title="b. 利用条件"></a>b. 利用条件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) 上传的文件能够被Web容器解释执行，文件上传后所在的目录需是Web容器所覆盖到的路径</span><br><span class="line"></span><br><span class="line">(2) 上传的文件能够从Web上访问</span><br><span class="line"></span><br><span class="line">(3) 上传的文件未被安全检查、格式化、图片压缩等功能改变内容</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-漏洞类型"><a href="#c-漏洞类型" class="headerlink" title="c. 漏洞类型"></a>c. 漏洞类型</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.服务器配置不当</span><br><span class="line"></span><br><span class="line">2.开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">3.本地文件上传限制被绕过</span><br><span class="line"></span><br><span class="line">4.过滤不严或被绕过</span><br><span class="line"></span><br><span class="line">5.文件解析漏洞导致文件执行</span><br><span class="line"></span><br><span class="line">6.文件路径截断</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-绕过姿势"><a href="#2-绕过姿势" class="headerlink" title="2. 绕过姿势"></a>2. 绕过姿势</h3><h4 id="a-客户端绕过"><a href="#a-客户端绕过" class="headerlink" title="a. 客户端绕过"></a>a. 客户端绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 通过火狐插件NOscript插件或者禁用IE中JS脚本</span><br><span class="line"></span><br><span class="line">2. 通过firbug插件元素审核修改代码（如删除onsubm:t=&quot;return checkFile()&quot;事件）</span><br><span class="line"></span><br><span class="line">3. 通过firbug元素审核javascirpt脚本中添加上传文件类型</span><br><span class="line"></span><br><span class="line">4. 通过利用burp抓包改包，先上传一个gif类型的木马，然后通过burp将其改为asp/php/jsp后缀名，请求头中的Content-Length的值也要修改</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-服务端绕过"><a href="#b-服务端绕过" class="headerlink" title="b. 服务端绕过"></a>b. 服务端绕过</h4><p>(1) 黑名单扩展名绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1) 利用黑名单未包含的扩展名进行绕过：如iis6.0中的asa 和cer，</span><br><span class="line"></span><br><span class="line">2) 黑名单特殊后缀名绕过：pht, phpt, phtml, php3,php4,php5,php6，需满足http.conf中设置AddTypeapplication/x-httpd-php .php1(php的版本小于等于5.3.29以下)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2）利用可能存在大小写绕过漏洞：如aSp(iis6.0中）和pHp（能在小于php5.3.39中的linux中）</span><br><span class="line"></span><br><span class="line">3）利用能被WEB容器解析的文件其他扩展名列表绕过</span><br><span class="line"></span><br><span class="line">  jsp,jspx ,jspfasp </span><br><span class="line"></span><br><span class="line">  asa cer cdx,htr,xml,html</span><br><span class="line"></span><br><span class="line">  aspx,ashx,asmx,asax,ascx</span><br></pre></td></tr></table></figure>
+
+<p>(2) 利用系统文件命名规则绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1) windows系统下，如果文件名以&quot;.&quot;或者空格作为结尾，系统会自动删除&quot;.&quot;不空格，利用此特性也可以绕过黑名单验证；apache中可以利用点结尾和空格绕过，asp和aspx中可以用空格绕过</span><br><span class="line"></span><br><span class="line">2）linux中当php版本小于php5.3.39，可用pHp大小写绕过</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>(3) 服务端MIME文件类型(Content-Type)绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">1）MIME作用</span><br><span class="line"></span><br><span class="line">使客户端软件，区分不同种类的数据，例如web浏览器就是通过MIME类型来判断文件是GIF图片，还是可打印的PostScript文件。web服务器使用MIME来说明发送数据的种类，web客户端使用MIME来说明希望接收到的数据种类，它是服务器用来判断浏览器传递文件格式癿重要标记项</span><br><span class="line"></span><br><span class="line">2）常用文件上传类型的MIME表:</span><br><span class="line"></span><br><span class="line">  text/plain（纯文本）</span><br><span class="line">  text/html（HTML文档）</span><br><span class="line">  text/javascript（js代码）</span><br><span class="line">  application/xhtml+xml（XHTML文档）</span><br><span class="line">  image/gif（GIF图像）</span><br><span class="line">  image/jpeg（JPEG图像）</span><br><span class="line">  image/png（PNG图像）</span><br><span class="line">  video/mpeg（MPEG动画）</span><br><span class="line">  application/octet-stream（二进制数据）</span><br><span class="line">  application/pdf（PDF文档）</span><br><span class="line">  application/(编程语言) 该种语言的代码</span><br><span class="line">  application/msword（Microsoft Word文件）</span><br><span class="line">  message/rfc822（RFC 822形式）</span><br><span class="line">  multipart/alternative（HTML邮件的HTML形式和纯文本形式，相同内容使用不同形式表示）</span><br><span class="line">  application/x-www-form-urlencoded（POST方法提交癿表单）multipart/form-data（POST提交时伴随文件上传的表单）</span><br><span class="line"></span><br><span class="line">3）绕过方法</span><br><span class="line"></span><br><span class="line">上传对文件类型做了限制，可通过burpsuit将其他类文件类型修改为如：Content-Type：image/gif和image/jpeg等运行的文件类型</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>(4) 利用文件包含漏洞绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1) 运行上传文件包含脚本木马和一句话木马</span><br><span class="line"></span><br><span class="line">  前提：校验规则只校验当文件后缀名为asp/php/jsp癿文件内容是否为木马</span><br><span class="line"></span><br><span class="line">  (a) 先上传一个内容为木马癿txt后缀文件，因为后缀名的关系没有检验内容；</span><br><span class="line"></span><br><span class="line">  (b) 然后再上传一个.php的文件，内容为&lt;?php Include(&quot;上传的txt文件路径&quot;);?&gt; </span><br><span class="line"></span><br><span class="line">  此时，这个php文件就会去引用txt文件的内容，从而绕过校验</span><br><span class="line"></span><br><span class="line">(2) 存在本地文件包含漏洞，并可上传一句话内容马</span><br><span class="line"></span><br><span class="line">  上传一个符合条件格式的文档，文档内容为一句话木马，利用文件包含漏洞包含上传癿木马文件</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-白名单绕过"><a href="#c-白名单绕过" class="headerlink" title="c. 白名单绕过"></a>c. 白名单绕过</h4><p>(1) 利用web服务器解析漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) nginx空字节漏洞</span><br><span class="line"></span><br><span class="line">xxx.jpg%00.php 这样的文件名会被解析为php代码运行</span><br><span class="line"></span><br><span class="line">2）apache解析漏洞</span><br><span class="line"></span><br><span class="line">上传如a.php.rar a.php.gif 类型的文件名，可以避免对于php文件的过滤机制，但由于apache在解析文件名的时候是从右向左读，如果遇到不能识别的扩展名则跳过，rar等扩展名是apache不能识别癿，因此就会直接将类型识别为php，从而达到注入php代码的目的</span><br></pre></td></tr></table></figure>
+
+<p>(2) .htaccess 文件重写绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置，可以实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录访问、禁止目录列表、配置默认文档等功能</span><br><span class="line"></span><br><span class="line">配合黑名单列表绕过，上传一个自定义的.htaccess和一句话图片木马，可绕过各种检测</span><br></pre></td></tr></table></figure>
+
+<p>(3) 文件头检测绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">文件头过滤主要是通过验证图片的文件头的方式来判断是不是图片文件，针对这种情况，在要上传文件的文件头里面加上图片文件头即可绕过；如图片文件是否文件头含有gif89,可以通过一句话图片木马生成工具edjpgcom或者通过编辑器在木马内容基础上再加一些文件信息</span><br><span class="line"></span><br><span class="line">不同的图片文件都有不同文件头，如：</span><br><span class="line"></span><br><span class="line">  PNG：文件头标识(8 bytes) 89 50 4E 47 0D 0A 1A 0A</span><br><span class="line">  JPEG：文件头标识(2 bytes): 0xff, 0xd8 (SOI) (JPEG 文件标识)</span><br><span class="line">  GIF：文件头标识(6 bytes) 4749 46 38 39(37) 61</span><br></pre></td></tr></table></figure>
+
+<p>(4) CMS、编辑器漏洞绕过CMS漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">针对不同CMS存在的上传漏洞进行绕过</span><br><span class="line"></span><br><span class="line">编辑器漏洞：如FCK，Ewebeditor等，可以针对编辑器的漏洞进行绕过</span><br></pre></td></tr></table></figure>
+
+<p>(5) 对渲染&#x2F;加载测试攻击内容检查绕过</p>
+<pre><code>通过向图片中加入代码注入，这里一般为一句话图片木马，可能正常访问图片
+</code></pre>
+<h4 id="d-WAF绕过"><a href="#d-WAF绕过" class="headerlink" title="d. WAF绕过"></a>d. WAF绕过</h4><p>(1) WAF检查的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">文件名：解析文件名，判断是否在黑名单内</span><br><span class="line"></span><br><span class="line">文件内容：解析文件内容，判断是否为webshell</span><br><span class="line"></span><br><span class="line">文件目录权限</span><br><span class="line"></span><br><span class="line">请求的url</span><br><span class="line"></span><br><span class="line">Boundary边界</span><br><span class="line"></span><br><span class="line">MIME文件类型</span><br></pre></td></tr></table></figure>
+
+<p>(2) 绕过WAF方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1) 填充垃圾数据绕过</span><br><span class="line"></span><br><span class="line">有些主机WAF软件会对校验的用户数据设置大小上限，此种情况可以构造一个大文件，在木马内容前填充垃圾内容，可以绕过WAF对文件内容的校验; 可在Content-Type类型数据后添加垃圾数据，也可以将垃圾数据放在数据包最开头、绕过对文件名的校验</span><br><span class="line"></span><br><span class="line">2) POST/GET的更改方法绕过</span><br><span class="line"></span><br><span class="line">有些WAF的规则是：如果数据包为POST类型，则校验数据包内容。此种情况可以上传一个POST型的数据包，抓包将POST改为GET</span><br><span class="line"></span><br><span class="line">3) 删除实体里面的Conten-Type字段绕过</span><br><span class="line"></span><br><span class="line">4) 删除Content-Disposition字段里的空格绕过</span><br><span class="line"></span><br><span class="line">5) 修改Content-Disposition字段值的大小写绕过  </span><br><span class="line"></span><br><span class="line">6) 文件扩展名出回车绕过（只支持php）</span><br><span class="line"></span><br><span class="line">7) 利用NTFS ADS特性绕过</span><br><span class="line"></span><br><span class="line">ADS是NTFS磁盘格式的一个特性，用亍NTFS交换数据流。在上传文件时，如果waf对请求正文的filename匹配不当的话可能会导致绕过</span><br><span class="line"></span><br><span class="line">8) 文件重命名绕过</span><br><span class="line"></span><br><span class="line">如果web程序会将filename除了扩展名的那段重命名的话，可以构造更多的点、符号等绕过</span><br><span class="line"></span><br><span class="line">9) 特殊的长文件名绕过</span><br><span class="line"></span><br><span class="line">文件名使用非字母数字，比如中文等最大程度的拉长</span><br><span class="line"></span><br><span class="line">10) 引号去掉，双引号变单引号绕过</span><br><span class="line"></span><br><span class="line">11) 删除Content-Disposition值的form-data绕过</span><br><span class="line"></span><br><span class="line">12) 多个分号绕过</span><br><span class="line"></span><br><span class="line">当WAF遇到name=&quot;myfile&quot;;;时，认为没有解析到filename。而后端容器继续解析到的文件名是bk.php，导致WAF被绕过</span><br><span class="line"></span><br><span class="line">13) name和filename添加任意字符串(长度大于等于508）</span><br><span class="line"></span><br><span class="line">14) head头的content-type：tab绕过</span><br><span class="line"></span><br><span class="line">15) head头的content-type: multipart/form-data改成大写绕过</span><br><span class="line"></span><br><span class="line">16) head头的Content-Type: multipart/form-data;\n绕过</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-防御及修复"><a href="#3-防御及修复" class="headerlink" title="3. 防御及修复"></a>3. 防御及修复</h3><p>当一个文件以HTTP协议进行上传时，将以POST请求发送至Web服务器，Web服务器接收到请求并同意后，用户与Web服务器将建立连接，并传输数据，针对文件上传过程检测校验措施如下：</p>
+<h4 id="a-客户端校验"><a href="#a-客户端校验" class="headerlink" title="a. 客户端校验"></a>a. 客户端校验</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过javascript来校验上传文件的后缀是否合法，可以采用白名单/黑名单的方式；在浏览加载文件，但还未点击上传按钮时便弹出对话框，内容如：只允许上传.jpg/.jpeg/.png后缀名的文件，而此时并没有发送数据包</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-服务端校验"><a href="#b-服务端校验" class="headerlink" title="b. 服务端校验"></a>b. 服务端校验</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1) 文件头content-type字段校验（image/gif）</span><br><span class="line"></span><br><span class="line">2) 文件内容头校验，通过正则匹配来判断文件幻数(文件头)内容是否符合要求，常见的文件头（文件头标志位）如下:</span><br><span class="line"></span><br><span class="line">  a) .JPEG;.JPE;.JPG，&quot;JPGGraphicFile&quot;（FFD8FFFE00）</span><br><span class="line"></span><br><span class="line">  b）.gif，&quot;GIF89A&quot;（474946383961）</span><br><span class="line"></span><br><span class="line">  c）.zip，&quot;ZipCompressed&quot;（504B0304）</span><br><span class="line"></span><br><span class="line">  d）.doc;.xls;.xlt;.ppt;.apr，&quot;MSCompoundDocumentv1orLotusApproachAPRfile&quot;（D0CF11E0A1B11AE1</span><br><span class="line"></span><br><span class="line">3）目录路经检测（检测跟Path参数相关的内容）</span><br><span class="line"></span><br><span class="line">4）文件扩展名检测(检测跟文件extension 相关的内容)</span><br><span class="line"></span><br><span class="line">5）后缀名黑名单校验</span><br><span class="line"></span><br><span class="line">6）后缀名白名单校验</span><br><span class="line"></span><br><span class="line">7）自定义正则校验</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-WAF拦截"><a href="#c-WAF拦截" class="headerlink" title="c. WAF拦截"></a>c. WAF拦截</h4><p>使用不同的WAF产品来进行过滤，通常是独立于服务程序的一段中间程序或者硬件</p>
+<h4 id="d-漏洞修复"><a href="#d-漏洞修复" class="headerlink" title="d. 漏洞修复"></a>d. 漏洞修复</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(1) 将文件上传的目录设置为不可执行：只要web容器无法解析该目录下面的文件，即使攻击者上传了脚本文件，服务器本身也不会受到影响</span><br><span class="line"></span><br><span class="line">(3) 文件类型检查(白名单)</span><br><span class="line"></span><br><span class="line">在判断文件类型时，可以结合使用MIME Type、后缀检查等方式，在文件类型检查中，推荐白名单方式；此外对于图片的处理可使用压缩函数或resize函数，处理图片的同时破坏其包含的HTML代码</span><br><span class="line"></span><br><span class="line">(4) 改写文件名和文件路径</span><br><span class="line"></span><br><span class="line">文件上传如果要执行代码，则需要用户能够访问到这个文件。在某些环境中，用户能上传，但不能访问。如果应用了随机数改写了文件名和路径，将极大地增加攻击的成本</span><br><span class="line"></span><br><span class="line">(4) 本地文件上传限制被绕过：在服务器后端对上传的文件进行过滤</span><br><span class="line"></span><br><span class="line">(5) 单独设置文件服务器的域名</span><br><span class="line"></span><br><span class="line">由于浏览器同源策略的关系，一系列客户端攻击将失效，比如上传crossdomain.xml、上传包含Javascript癿XSS利用等问题将得到解决</span><br><span class="line"></span><br><span class="line">(6) 开源编辑器上传漏洞</span><br><span class="line"></span><br><span class="line">更新编辑器版本,修复已知漏洞</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-文件读取漏洞"><a href="#0x02-文件读取漏洞" class="headerlink" title="0x02 文件读取漏洞"></a>0x02 文件读取漏洞</h2><p>任意文件读取是属于文件操作漏洞的一种，任意文件读取漏洞可以读取配置信息甚至系统重要文件。</p>
+<h3 id="1-敏感文件"><a href="#1-敏感文件" class="headerlink" title="1. 敏感文件"></a>1. 敏感文件</h3><p><strong>用户目录下的敏感文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.bash_history</span><br><span class="line">.zsh_history</span><br><span class="line">.profile</span><br><span class="line">.bashrc</span><br><span class="line">.gitconfig</span><br><span class="line">.viminfo</span><br><span class="line">/etc/passwd</span><br><span class="line">/etc/hosts</span><br><span class="line">/etc/group</span><br><span class="line">/etc/shadow</span><br><span class="line">/root/.ssh/authorized_keys</span><br><span class="line">/root/.ssh/id_rsa</span><br><span class="line">/root/.ssh/id_rsa.keystore</span><br><span class="line">/root/.ssh/known_hosts</span><br></pre></td></tr></table></figure>
+
+<p><strong>应用的配置文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/etc/apache2/apache2.conf</span><br><span class="line">/etc/nginx/nginx.conf</span><br><span class="line">/.htaccess</span><br><span class="line">/phpinfo.php</span><br><span class="line">/inc/db.php</span><br><span class="line">/inc/conn.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>应用的日志文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/var/log/apache2/access.log</span><br><span class="line">/var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+
+<p><strong>站点目录下的敏感文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.svn/entries</span><br><span class="line">.git/HEAD</span><br><span class="line">WEB-INF/web.xml</span><br><span class="line">.htaccess</span><br></pre></td></tr></table></figure>
+
+<p><strong>特殊的备份文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.swp</span><br><span class="line">.swo</span><br><span class="line">.bak</span><br><span class="line">index.php~</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python的Cache</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__pycache__\__init__.cpython-35.pyc</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-文件读取函数"><a href="#2-文件读取函数" class="headerlink" title="2. 文件读取函数"></a>2. 文件读取函数</h3><p>readfile()、file_get_contents()、fopen()中，$filename没有经过校验或者校验不合格，用户可控制变量读取任意文件</p>
+<h2 id="0x03-文件包含漏洞"><a href="#0x03-文件包含漏洞" class="headerlink" title="0x03 文件包含漏洞"></a>0x03 文件包含漏洞</h2><p>为了更好地使用代码的重用性，引入了文件包含函数，通过文件包含函数将文件包含进来，直接使用包含文件的代码。</p>
+<h3 id="1-漏洞成因"><a href="#1-漏洞成因" class="headerlink" title="1. 漏洞成因"></a>1. 漏洞成因</h3><p>文件包含函数加载的参数没有经过过滤或者严格的定义，可以被用户控制，包含其他恶意文件，导致了执行了非预期的代码。</p>
+<h3 id="2-PHP危险函数"><a href="#2-PHP危险函数" class="headerlink" title="2. PHP危险函数"></a>2. PHP危险函数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">include()</span><br><span class="line">include_once()</span><br><span class="line">require()</span><br><span class="line">require_once()</span><br><span class="line"></span><br><span class="line">include()如果在包含过程中出错，只会提出警告，但不影响后续语句的执行</span><br><span class="line">require()如果在包含过程中出错，就会直接退出，不执行后续语句</span><br><span class="line">require_once() 和 include_once() 功能与require() 和 include() 类似。但如果一个文件已经被包含过了，则 require_once() 和 include_once() 则不会再包含它，以避免函数重定义或变量重赋值等问题</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-漏洞分类"><a href="#3-漏洞分类" class="headerlink" title="3. 漏洞分类"></a>3. 漏洞分类</h3><p><strong>本地文件包含漏洞(LFI)</strong></p>
+<p>指能打开并包含本地文件的漏洞，较为普遍。</p>
+<p>文件包含可以包含任意文件，如图片，文本文件，压缩包等等，如果文件中有服务器能识别的脚本语言，就按照当前脚本语言执行，否则就直接显示出源代码。</p>
+<p><strong>远程文件包含漏洞(RFI)</strong></p>
+<p>指能够包含远程服务器上的文件并执行。由于远程服务器的文件是我们可控的，因此漏洞一旦存在，危害性会很大。</p>
+<p>利用条件较苛刻，需要php.ini中配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow_url_fopen=On</span><br><span class="line">allow_url_include=On</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-PHP伪协议"><a href="#4-PHP伪协议" class="headerlink" title="4. PHP伪协议"></a>4. PHP伪协议</h3><p>PHP 带有很多内置 URL 风格的封装协议，可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。 除了这些封装协议，还能通过 stream_wrapper_register() 来注册自定义的封装协议。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">file:// — 访问本地文件系统</span><br><span class="line"></span><br><span class="line">http:// — 访问 HTTP(s) 网址</span><br><span class="line"></span><br><span class="line">ftp:// — 访问 FTP(s) URLs</span><br><span class="line"></span><br><span class="line">php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符， 内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br><span class="line"></span><br><span class="line">zlib:// — 压缩流</span><br><span class="line"></span><br><span class="line">data:// — 数据（RFC 2397）</span><br><span class="line"></span><br><span class="line">glob:// — 查找匹配的文件路径模式</span><br><span class="line"></span><br><span class="line">phar:// — PHP 归档</span><br><span class="line"></span><br><span class="line">ssh2:// — Secure Shell 2</span><br><span class="line"></span><br><span class="line">rar:// — RAR</span><br><span class="line"></span><br><span class="line">ogg:// — 音频流</span><br><span class="line"></span><br><span class="line">expect:// — 处理交互式的流</span><br></pre></td></tr></table></figure>
+
+<h4 id="a-php-x2F-x2F-filter"><a href="#a-php-x2F-x2F-filter" class="headerlink" title="a. php:&#x2F;&#x2F;filter"></a>a. php:&#x2F;&#x2F;filter</h4><p><strong>利用条件：</strong></p>
+<p>只是读取，所以需要开启<code>allow_url_fopen</code>，对 <code>allow_url_include</code>不做要求</p>
+<p><strong>用法：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?file=php://filter/read=convert.base64-encode/resource=xxx.php</span><br></pre></td></tr></table></figure>
+
+<p>通过指定末尾文件，可以读取经base64加密后的文件源码，能够读取敏感文件</p>
+<h4 id="b-php-x2F-x2F-input"><a href="#b-php-x2F-x2F-input" class="headerlink" title="b. php:&#x2F;&#x2F;input"></a>b. php:&#x2F;&#x2F;input</h4><p>可以访问请求的原始数据的只读流, 将post请求中的数据作为PHP代码执行</p>
+<p><strong>利用条件：</strong></p>
+<p>需要开启allow_url_include&#x3D;on，对allow_url_fopen不做要求</p>
+<p>用法：<code>?file=php://input</code> 数据利用POST传过去，可以写入木马、命令执行</p>
+<h4 id="c-zip-x2F-x2F-伪协议"><a href="#c-zip-x2F-x2F-伪协议" class="headerlink" title="c. zip:&#x2F;&#x2F;伪协议"></a>c. zip:&#x2F;&#x2F;伪协议</h4><p>zip:&#x2F;&#x2F;可以访问压缩文件中的文件</p>
+<p>条件： 使用zip协议，需要将#编码为%23，所以需要PHP 的版本&gt; &#x3D;5.3.0，要是因为版本的问题无法将#编码成%23，可以手动把#改成%23。</p>
+<p>用法：<code>?file=zip://[压缩文件路径]#[压缩文件内的子文件名]</code></p>
+<h4 id="d-phar-x2F-x2F-伪协议"><a href="#d-phar-x2F-x2F-伪协议" class="headerlink" title="d. phar:&#x2F;&#x2F;伪协议"></a>d. phar:&#x2F;&#x2F;伪协议</h4><p>与zip:&#x2F;&#x2F;协议类似，但用法不同，zip:&#x2F;&#x2F;伪协议中是用#把压缩文件路径和压缩文件的子文件名隔开，而phar:&#x2F;&#x2F;伪协议中是用&#x2F;把压缩文件路径和压缩文件的子文件名隔开，即 <code>file=phar://[压缩文件路径]/[压缩文件内的子文件名]</code></p>
+<h4 id="e-data-text-x2F-plain"><a href="#e-data-text-x2F-plain" class="headerlink" title="e. data:text&#x2F;plain"></a>e. data:text&#x2F;plain</h4><p>和php伪协议的input类似，也可以执行任意代码，但利用条件和用法不同</p>
+<p>条件：allow_url_fopen参数与allow_url_include都需开启</p>
+<p>用法1：<code>?file=data:text/plain,&lt;?php 执行内容 ?&gt;</code><br>用法2：<code>?file=data:text/plain;base64,编码后的php代码</code></p>
+<p>经base64编码后的加号和等号要手动的url编码</p>
+<h4 id="f-file-x2F-x2F-伪协议"><a href="#f-file-x2F-x2F-伪协议" class="headerlink" title="f. file:&#x2F;&#x2F;伪协议"></a>f. file:&#x2F;&#x2F;伪协议</h4><p>file:&#x2F;&#x2F; 用于访问本地文件系统，且不受allow_url_fopen与allow_url_include的影响。<br>用法：<code>?file=file://文件绝对路径</code></p>
+<h3 id="5-防御修复"><a href="#5-防御修复" class="headerlink" title="5. 防御修复"></a>5. 防御修复</h3><p>1、PHP 中使用 open_basedir 配置限制访问在指定的区域<br>2、过滤.（点）&#x2F;（反斜杠）\（反斜杠）等特殊字符<br>3、尽量关闭allow_url_include配置</p>
+<h2 id="0x04-目录穿越漏洞"><a href="#0x04-目录穿越漏洞" class="headerlink" title="0x04 目录穿越漏洞"></a>0x04 目录穿越漏洞</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>目录穿越（目录遍历&#x2F;directory traversal&#x2F;path traversal）是通过使用 ..&#x2F; 等目录控制序列或者文件的绝对路径来访问存储在文件系统上的任意文件和目录，攻击者可以利用该漏洞读取运行应用程序的服务器上的任意文件。</p>
+<h3 id="2-攻击载荷"><a href="#2-攻击载荷" class="headerlink" title="2. 攻击载荷"></a>2. 攻击载荷</h3><p><strong>常用路径</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/../../../../../../../../../../../../../../../../../etc/passwd%00</span><br><span class="line">../../../../../../../../../../../../../../etc/passwd%00</span><br><span class="line">../../../../../../../../../../etc/passwd</span><br><span class="line">....//....//static/xx.php%00.png</span><br><span class="line"></span><br><span class="line">../../../WEB-INF/web.xml   #Java Web项目配置文件 </span><br><span class="line"></span><br><span class="line"># Tomcat</span><br><span class="line">/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd  </span><br><span class="line"></span><br><span class="line">C:/boot.ini</span><br><span class="line">C:\boot.ini</span><br></pre></td></tr></table></figure>
+
+<p><strong>URL参数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">../</span><br><span class="line">..\</span><br><span class="line">..;/</span><br></pre></td></tr></table></figure>
+
+<p><strong>Nginx Off by Slash</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://vuln.site.com/files../</span><br></pre></td></tr></table></figure>
+
+<p><strong>UNC Bypass</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\\localhost\c$\windows\win.ini</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-绕过方式"><a href="#3-绕过方式" class="headerlink" title="3. 绕过方式"></a>3. 绕过方式</h3><p><strong>基础目录遍历</strong></p>
+<p>直接利用 ..&#x2F; 返回上一级来遍历任意文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">../../../etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><strong>绝对路径</strong></p>
+<p>web网站有时候会采取目录遍历的防御措施，如过滤 ..&#x2F; 上一级等关键字，然后简单的过滤通常会被绕过。可以直接采用绝对路径，无须 ..&#x2F; 返回上一级目录遍历</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><strong>双写..&#x2F;绕过</strong></p>
+<p>遇到防御措施是直接将 ..&#x2F; 替换为空的情况，可以直接采用双写直接绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">....//....//....///etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><strong>绝对路径配合 ..&#x2F;</strong></p>
+<p>有些 web 在获取文件时，会首先判断是否以一个固定的路径开头，那么就可以配合 ..&#x2F; 来返回上一级遍历任意文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/www/html/../../../etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><strong>截断文件后缀</strong></p>
+<p>某些 web 对文件类型作了限制，只有当后缀为图片时才解析，可以利用 %00 来截断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">../../../etc/passwd%00.jpg</span><br></pre></td></tr></table></figure>
+
+<p><strong>URL编码绕过</strong></p>
+<p>可以采用 URL 编码来绕过服务器对 . 或者 &#x2F; 的检测</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. =&gt; %2c</span><br><span class="line">/ =&gt; %2f</span><br><span class="line">% =&gt; %25 (双重URL编码)</span><br></pre></td></tr></table></figure>
+
+<p><strong>16位Unicode编码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\u002e</span><br></pre></td></tr></table></figure>
+
+<p><strong>超长UTF-8编码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\%e0%40%ae</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/file-path-traversal">https://portswigger.net/web-security/file-path-traversal</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/file-upload">https://book.hacktricks.xyz/pentesting-web/file-upload</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://i.blackhat.com/us-18/Wed-August-8/us-18-Orange-Tsai-Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out-2.pdf">Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out</a></li>
+<li><a target="_blank" rel="noopener" href="https://highon.coffee/blog/lfi-cheat-sheet/">https://highon.coffee/blog/lfi-cheat-sheet/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/almandin/fuxploider">https://github.com/almandin/fuxploider</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/c0ny1/upload-labs">https://github.com/c0ny1/upload-labs</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/c0ny1/upload-fuzz-dic-builder">https://github.com/c0ny1/upload-fuzz-dic-builder</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Execution/" rel="tag" <i class="fa fa-tag"></i> Execution</a>
+              <a href="/tags/Vulnerability/" rel="tag" <i class="fa fa-tag"></i> Vulnerability</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/22336/" rel="prev" title="Python编程之核心特性与常用库">
+                  <i class="fa fa-chevron-left"></i> Python编程之核心特性与常用库
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/10235/" rel="next" title="弱口令爆破技术探究">
+                  弱口令爆破技术探究 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
