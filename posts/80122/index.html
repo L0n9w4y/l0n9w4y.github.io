@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Osquery 是跨平台 Windows、OS X (macOS) 和 Linux 的威胁检测框架，由FaceBook开源，用于对系统进行查询、监控以及分析的一款软件，核心特性是支持SQL的方式来获取操作系统的数据，本文介绍Osquery使用方法、检测原理及安全能力...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源HIDS之Osquery详解">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/80122/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="Osquery 是跨平台 Windows、OS X (macOS) 和 Linux 的威胁检测框架，由FaceBook开源，用于对系统进行查询、监控以及分析的一款软件，核心特性是支持SQL的方式来获取操作系统的数据，本文介绍Osquery使用方法、检测原理及安全能力...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-12T13:46:22.000Z">
+<meta property="article:modified_time" content="2022-12-22T15:18:43.101Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Intrusion Detection">
+<meta property="article:tag" content="HIDS">
+<meta property="article:tag" content="Osquery">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/80122/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/80122/","path":"posts/80122/","title":"开源HIDS之Osquery详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>开源HIDS之Osquery详解 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="nav-text">0x01 基础使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="nav-text">1. 安装部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-osqueryi"><span class="nav-text">2. osqueryi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-osqueryd"><span class="nav-text">3. osqueryd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-SQL%E6%9F%A5%E8%AF%A2"><span class="nav-text">4. SQL查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A0%87%E5%BF%97"><span class="nav-text">5. 命令行标志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Osquery%E9%85%8D%E7%BD%AE"><span class="nav-text">0x02 Osquery配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E7%BB%84%E4%BB%B6"><span class="nav-text">1. 配置组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9F%A5%E8%AF%A2Packs"><span class="nav-text">2. 查询Packs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E"><span class="nav-text">3. 配置说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95"><span class="nav-text">0x03 日志记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Logger%E6%8F%92%E4%BB%B6"><span class="nav-text">1. Logger插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Status-logs"><span class="nav-text">a. Status logs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Results-logs"><span class="nav-text">b. Results logs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-%E6%97%A5%E5%BF%97%E6%8E%A5%E5%85%A5kafka%E7%94%9F%E4%BA%A7%E8%80%85"><span class="nav-text">c. 日志接入kafka生产者</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Schedule-%E7%BB%93%E6%9E%9C"><span class="nav-text">2. Schedule 结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Event%E6%A0%BC%E5%BC%8F"><span class="nav-text">a. Event格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Snapshot%E6%A0%BC%E5%BC%8F"><span class="nav-text">b. Snapshot格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-Batch%E6%A0%BC%E5%BC%8F"><span class="nav-text">c. Batch格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%89%B9%E6%AE%8Atop-level%E5%AD%97%E6%AE%B5"><span class="nav-text">3. 特殊top-level字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%97%A5%E5%BF%97%E8%81%9A%E5%90%88"><span class="nav-text">4. 日志聚合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-Logstash"><span class="nav-text">a. Logstash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-Splunk"><span class="nav-text">b. Splunk</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%AE%89%E5%85%A8%E8%83%BD%E5%8A%9B"><span class="nav-text">0x04 安全能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E5%AE%8C%E6%95%B4%E6%80%A7%E7%9B%91%E6%8E%A7"><span class="nav-text">1. 文件完整性监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%BF%9B%E7%A8%8B-x2F-socket%E5%AE%A1%E8%AE%A1"><span class="nav-text">2. 进程&#x2F;socket审计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%9B%86%E6%88%90-YARA-%E6%89%AB%E6%8F%8F"><span class="nav-text">3. 集成 YARA 扫描</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/80122/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="开源HIDS之Osquery详解 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          开源HIDS之Osquery详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-12 21:46:22" itemprop="dateCreated datePublished" datetime="2022-03-12T21:46:22+08:00">2022-03-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">威胁检测</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>Osquery 是跨平台 Windows、OS X (macOS) 和 Linux 的威胁检测框架，由FaceBook开源，用于对系统进行查询、监控以及分析的一款软件，核心特性是支持SQL的方式来获取操作系统的数据，本文介绍Osquery使用方法、检测原理及安全能力...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-基础使用"><a href="#0x01-基础使用" class="headerlink" title="0x01 基础使用"></a>0x01 基础使用</h2><h3 id="1-安装部署"><a href="#1-安装部署" class="headerlink" title="1. 安装部署"></a>1. 安装部署</h3><p>记录Osquery在Linux平台下安装方法</p>
+<p><strong>目录文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/osqueryd</span><br><span class="line">/etc/osquery/</span><br><span class="line">/etc/sysconfig/osqueryd</span><br><span class="line">/opt/osquery/bin/osqueryctl</span><br><span class="line">/opt/osquery/bin/osqueryd</span><br><span class="line">/usr/local/bin/osqueryi -&gt; /opt/osquery/bin/osqueryd</span><br><span class="line">/usr/local/bin/osqueryctl -&gt; /opt/osquery/bin/osqueryctl</span><br><span class="line">/usr/lib/systemd/system/osqueryd.service</span><br><span class="line">/opt/osquery/share/osquery/certs/certs.pem</span><br><span class="line">/opt/osquery/share/osquery/lenses/&#123;*&#125;.aug</span><br><span class="line">/opt/osquery/share/osquery/packs/&#123;*&#125;.conf</span><br><span class="line">/opt/osquery/share/osquery/osquery.example.conf</span><br><span class="line">/var/log/osquery/</span><br><span class="line">/var/osquery/</span><br></pre></td></tr></table></figure>
+
+<p><strong>PRM安装</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://pkg.osquery.io/rpm/GPG | sudo tee /etc/pki/rpm-gpg/RPM-GPG-KEY-osquery</span><br><span class="line">sudo yum-config-manager --add-repo https://pkg.osquery.io/rpm/osquery-s3-rpm.repo</span><br><span class="line">sudo yum-config-manager --enable osquery-s3-rpm-repo</span><br><span class="line">sudo yum install osquery</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行模式</strong></p>
+<ul>
+<li><p>osqueryi：启动一个独立的 osquery，交互式查询控制台 osqueryi 提供了一个 SQL 界面来尝试新的查询并探索您的操作系统</p>
+</li>
+<li><p>osqueryd：启动守护进程，使用它来深入了解整个基础架构的安全性、性能、配置和状态</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /opt/osquery/share/osquery/osquery.example.conf /etc/osquery/osquery.conf</span><br><span class="line"></span><br><span class="line">sudo systemctl start osqueryd</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-osqueryi"><a href="#2-osqueryi" class="headerlink" title="2. osqueryi"></a>2. osqueryi</h3><p>osqueryi 是 osquery 交互式查询控制台&#x2F;shell。在这种模式下，它是完全独立的，不与守护进程通信，也不需要以管理员身份运行。在这种模式下，它是完全独立的，不与守护进程通信，也不需要以管理员身份运行。</p>
+<p><strong>执行 SQL 查询</strong></p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ osqueryi</span><br><span class="line">osquery&gt; SELECT DISTINCT</span><br><span class="line">    ...&gt;   process.name,</span><br><span class="line">    ...&gt;   listening.port,</span><br><span class="line">    ...&gt;   process.pid</span><br><span class="line">    ...&gt; FROM processes AS process</span><br><span class="line">    ...&gt; JOIN listening_ports AS listening</span><br><span class="line">    ...&gt; ON process.pid = listening.pid</span><br><span class="line">    ...&gt; WHERE listening.address = &#x27;0.0.0.0&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>输出 JSON 或 CSV 值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ osqueryi --json &quot;SELECT * FROM routes WHERE destination = &#x27;::1&#x27;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用管道符(注意添加’;’使用标准输入时的查询)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;SELECT * FROM routes WHERE destination = &#x27;::1&#x27;;&quot; | osqueryi --json</span><br></pre></td></tr></table></figure>
+
+<p><strong>元命令</strong></p>
+<p>osqueryi 是 SQLite shell 的修改版本。它接受几个以”.”为前缀的元命令：</p>
+<ul>
+<li>列出所有表：.tables </li>
+<li>列出特定表的架构（列、类型）：.schema table_name 或 pragma table_info(table_name)</li>
+<li>列出所有可用命令：.help </li>
+<li>退出控制台：.exit 或 ^D</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .tables</span><br><span class="line">osquery&gt; .schema routes</span><br><span class="line">osquery&gt; PRAGMA table_info(routes);</span><br><span class="line">osquery&gt; .exit</span><br></pre></td></tr></table></figure>
+
+<p>osqueryi 默认使用内存数据库。要连接到现有的事件数据库，需使用标志 <code>--database_path=/var/osquery/osquery.db</code></p>
+<h3 id="3-osqueryd"><a href="#3-osqueryd" class="headerlink" title="3. osqueryd"></a>3. osqueryd</h3><p>osqueryd 是主机监控守护进程，允许管理查询和记录操作系统状态更改，守护进程随时间聚合查询结果并生成日志，这些日志根据每个查询指示状态变化。守护进程还使用操作系统事件 API 来记录受监控的文件和目录更改、硬件事件、网络事件等。</p>
+<p><strong>配置定时查询</strong></p>
+<p>守护程序主要功能是执行定时查询，这个调度在 osquery 配置中定义，可配置查询时间频率</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;usb_devices&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT vendor, model FROM usb_devices;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述usb_devices 查询将在运行 osqueryd 的主机上大约每 60 秒运行一次。</p>
+<p><strong>记录和报告</strong></p>
+<p>每个查询代表您的操作系统的一个监控视图。计划查询第一次运行时，它会使用”added”操作记录结果表中的每一行。</p>
+<p>如果设备上没有添加或移除 USB 设备，则此查询将永远不会再次记录结果。查询仍将每 60 秒运行一次，但结果将与上一次运行相匹配，因此不会检测到任何状态更改。</p>
+<h3 id="4-SQL查询"><a href="#4-SQL查询" class="headerlink" title="4. SQL查询"></a>4. SQL查询</h3><p>osquery 以 SQL 为中心, SQL 支持入侵检测、事件响应、流程审计、文件完整性监控等。</p>
+<p><strong>查询示例</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; SELECT pid, name, path FROM processes LIMIT 1;</span><br><span class="line">osquery&gt; .mode line   // 使用 .mode 行在较小的终端视图中获得最佳输出</span><br><span class="line">osquery&gt; SELECT pid, name, path FROM processes LIMIT 1;</span><br><span class="line">osquery&gt; SELECT * FROM osquery_info;</span><br><span class="line">osquery&gt; .mode pretty</span><br><span class="line"></span><br><span class="line">osquery&gt; SELECT pid, name, path FROM osquery_info JOIN processes USING (pid);   //join查询</span><br><span class="line">osquery&gt; SELECT p.pid, name, p.path as process_path, pf.path as open_path</span><br><span class="line">    ...&gt;   FROM osquery_info i</span><br><span class="line">    ...&gt;   JOIN processes p ON p.pid = i.pid</span><br><span class="line">    ...&gt;   JOIN process_open_files pf ON pf.pid = p.pid</span><br><span class="line">    ...&gt;   WHERE pf.path LIKE &#x27;/dev/%&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>带参数的表</strong></p>
+<p>文件表操作，使用 file 表中的 path 和 directory 作为输入参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; SELECT * FROM file;</span><br><span class="line">osquery&gt; SELECT * FROM file WHERE path = &#x27;/dev/zero&#x27;;</span><br><span class="line">osquery&gt; SELECT count(1) FROM file WHERE path LIKE &#x27;/dev/%&#x27;;</span><br><span class="line"></span><br><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; SELECT path, inode, size, type</span><br><span class="line">    ...&gt;   FROM file</span><br><span class="line">    ...&gt;   WHERE path IN (SELECT &#x27;/dev/zero&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>hash表，查询&#x2F;etc 中最后修改的文件的哈希值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; SELECT path, mtime, sha256</span><br><span class="line">    ...&gt;   FROM file</span><br><span class="line">    ...&gt;   JOIN hash USING (path)</span><br><span class="line">    ...&gt;   WHERE file.directory = &#x27;/etc&#x27;</span><br><span class="line">    ...&gt;   ORDER BY mtime DESC LIMIT 1;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Math 函数</strong></p>
+<p>osquery 包括以下 C-math 函数：sqrt、log、log10、ceil、floor、power、pi</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; select power(disk_size) as disk_size from disk_info;</span><br><span class="line">osquery&gt; select pi() * disk_size as disk_size from disk_info;</span><br></pre></td></tr></table></figure>
+
+<p>三角函数：sin、cos、tan、cot、asin、acos、atan 和 radians(弧度) 到 degrees(度数) 的转换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">osquery .mode line </span><br><span class="line">osquery&gt; select sin(30);</span><br><span class="line">osquery&gt; select radians(60);</span><br><span class="line">osquery&gt; select degrees(1.3);</span><br></pre></td></tr></table></figure>
+
+<p><strong>String 函数</strong></p>
+<p>1）concate(ARG1, ARG2, ARG3…)：连接参数，忽略空值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; select concat(&#x27;hello&#x27;, NULL, &#x27; &#x27;, &#x27;world&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>2）concat_ws(SEPARATOR, ARG1, ARG2, ARG3…)：连接参数，忽略空值，并与 SEPARATOR 连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; select concat_ws(&#x27; &#x27;, &#x27;hello&#x27;, NULL, &#x27;world&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>3）split(COLUMN, TOKENS, INDEX)：使用 TOKENS 中的任何字符标记拆分 COLUMN 并返回 INDEX 结果。如果 INDEX 结果不存在，则返回 NULL 类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; select uid from users;</span><br><span class="line">osquery&gt; select split(uid, 1, 0) from users;</span><br></pre></td></tr></table></figure>
+
+<p>4）regex_match(COLUMN, PATTERN, INDEX)：对列运行正则表达式匹配，并返回匹配的子组（0 索引是完全匹配，后面的数字是组）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line">osquery&gt; select regex_match(&#x27;hello world. Goodbye&#x27;, &#x27;(\w+) \w+&#x27;, 0) as m0, regex_match(&#x27;hello world. Goodbye&#x27;, &#x27;(\w+) \w+&#x27;, 1) as m1;</span><br></pre></td></tr></table></figure>
+
+<p>5）inet_aton(IPv4_STRING)：返回 IPv4 字符串的整数表示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line"></span><br><span class="line">osquery&gt; select inet_aton(&quot;1.0.1.5&quot;) as ipInt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>哈希函数</strong></p>
+<p>添加了 sha1、sha256 和 md5 函数，它们采用单个参数并返回散列值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line </span><br><span class="line">osquery&gt; select username from users;</span><br><span class="line">osquery&gt; select sha1(username) as usernameHash from users;</span><br><span class="line">osquery&gt; select sha256(username) as usernameHash from users;</span><br><span class="line">osquery&gt; select md5(username) as usernameHash from users; </span><br></pre></td></tr></table></figure>
+
+<p><strong>编码函数</strong></p>
+<p>1）to_base64: base64 编码一个字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line"></span><br><span class="line">osquery&gt; select device_id from cpu_info;</span><br><span class="line"></span><br><span class="line">osquery&gt; select to_base64(device_id) as device_id from cpu_info;</span><br></pre></td></tr></table></figure>
+
+<p>2）from_base64：解码 base64 编码的字符串。如果字符串不是有效的 base64，则返回一个空字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line"></span><br><span class="line">osquery&gt; select device_id from cpu_info;</span><br><span class="line"></span><br><span class="line">osquery&gt; select to_base64(device_id) as device_id from cpu_info;</span><br><span class="line"></span><br><span class="line">osquery&gt; select from_base64(to_base64(device_id)) as device_id from cpu_info;</span><br></pre></td></tr></table></figure>
+
+<p>3）conditional_to_base64：当且仅当字符串包含非 ASCII 字符时才对字符串进行编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line"></span><br><span class="line">osquery&gt; select device_id from cpu_info;</span><br><span class="line"></span><br><span class="line">osquery&gt; select conditional_to_base64(device_id) as device_id from cpu_info;</span><br><span class="line"></span><br><span class="line">osquery&gt; select conditional_to_base64(device_id + char(183)) as device_id from cpu_info;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Network 函数</strong></p>
+<p>in_cidr_block(CIDR_RANGE, IP_ADDRESS)：如果 IP 地址在 CIDR 块内，则返回 1，否则返回 0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; .mode line</span><br><span class="line"></span><br><span class="line">osquery&gt; SELECT in_cidr_block(&#x27;10.0.0.0/26&#x27;, &#x27;10.0.0.24&#x27;);</span><br><span class="line"></span><br><span class="line">osquery&gt; SELECT in_cidr_block(&#x27;2001:db8::/48&#x27;, &#x27;2001:db8:0:ffff:ffff:ffff:ffff:ffff&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-命令行标志"><a href="#5-命令行标志" class="headerlink" title="5. 命令行标志"></a>5. 命令行标志</h3><p>要查看 osquery 的完整标志列表，使用 –help 或从 osquery_flags 表中选择:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ osqueryi</span><br><span class="line">osquery&gt; SELECT * FROM osquery_flags;</span><br></pre></td></tr></table></figure>
+
+<p>查看已配置、标志文件或 shell 更新的标志:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; SELECT * FROM osquery_flags WHERE default_value &lt;&gt; value;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Flagfile</strong></p>
+<p>在 macOS 和 Linux 上，此 –flagfile 是添加&#x2F;删除以下仅 CLI 初始化标志的推荐方法。</p>
+<p><code>--flagfile /etc/osquery/osquery.flags</code></p>
+<p>包括要解释和用作 CLI 标志的行分隔开关：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--config_plugin=custom_plugin</span><br><span class="line">--logger_plugin=custom_plugin</span><br><span class="line">--distributed_plugin=custom_plugin</span><br><span class="line">--watchdog_level=0</span><br></pre></td></tr></table></figure>
+
+<p>如果未提供 –flagfile，osquery 将尝试在 &#x2F;etc&#x2F;osquery&#x2F;osquery.flags.default 中查找并使用”default”标志文件。 shell 和守护进程都会发现并使用默认值。</p>
+<p><strong>配置控制标志</strong></p>
+<p><code>--config_plugin=filesystem</code>：配置插件名称，配置检索的类型，默认文件系统插件从磁盘读取配置 JSON，内置选项包括filesystem, tls</p>
+<p><code>--config_path=/etc/osquery/osquery.conf</code>：文件系统配置插件的 JSON 文件路径。默认路径是 &#x2F;var&#x2F;osquery&#x2F;osquery.conf，如果从多个配置路径读取，创建一个目录：&#x2F;etc&#x2F;osquery&#x2F;osquery.conf.d&#x2F;，该可选目录中的所有文件都将按词法顺序读取和合并</p>
+<p><code>--config_refresh=0</code>：可选的配置刷新间隔（以秒为单位）。默认情况下，配置仅在 osquery 加载时获取。如果配置应该自动更新，请将刷新时间设置为大于 0 的秒数。</p>
+<p><code>--config_accelerated_refresh=300</code>：如果使用配置刷新 (config_refresh &gt; 0) 并且刷新尝试失败，则将使用加速刷新</p>
+<p><code>--config_check=false</code>：检查 osquery 配置的格式并退出。可以使用任意配置插件。如果解析失败，osquery 将返回非 0 退出。</p>
+<p><code>--config_dump=false</code>：请求在更新之前将配置 JSON 打印到标准输出，然后退出该过程。</p>
+<p><strong>守护进程控制标志</strong></p>
+<p><code>--force=false</code>：强制 osqueryd 杀死以前运行的守护进程。</p>
+<p><code>--pidfile=/var/osquery/osqueryd.pidfile</code>：守护程序 pidfile 互斥锁的路径，该文件用于防止启动多个 osqueryd 进程。</p>
+<p><code>--disable_watchdog=false</code>：禁用用户态watchdog进程，osqueryd 使用watchdog进程来监视执行查询计划的线程的内存和 CPU 使用率</p>
+<p><code>--watchdog_level=0</code>：性能限制级别（0&#x3D;正常，1&#x3D;限制，-1&#x3D;禁用）。watchdog进程使用”level”来配置性能限制，级别限制如下： 内存：默认200M，限制100M CPU：默认10%（持续12秒），限制5%（持续6秒）</p>
+<p><code>--watchdog_memory_limit=0</code>：如果此值 &gt;0，则覆盖最大内存的watchdog级别 (–watchdog_level)。</p>
+<p><code>--watchdog_utilization_limit=0</code>：如果此值 &gt;0，则覆盖最大持续 CPU 使用率的watchdog级别 (–watchdog_level)。</p>
+<p><strong>事件控制标志</strong></p>
+<p><code>--disable_events=false</code>：禁用或启用 osquery 操作系统事件发布-订阅 API。将此设置为 true（这是默认值）会禁用报告事件数据的表（名称以 _events 结尾的表）并且查询它们将生成警告</p>
+<p><code>--events_expiry=3600</code>：事件数据的过期时间（以秒为单位），在查询数据后应用。</p>
+<p><code>--events_optimize=true</code>：在 osquery 守护程序的查询计划中进行优化。</p>
+<p><code>--events_max=50000</code>：在等待查询”耗尽”它们时要在后备存储中缓冲的最大事件数</p>
+<p><code>--events_enforce_denylist=false</code>：控制是否对使用”*_events”（基于事件的）表的查询强制执行 watchdog 拒绝列表</p>
+<p><strong>Logging&#x2F;results标志</strong></p>
+<p><code>--logger_plugin=filesystem</code>：记录器插件名称，默认记录器是文件系统。这会将各种日志类型作为 JSON 写入特定文件路径</p>
+<p><code>--logger_plugin=filesystem,syslog</code>：指定多个记录器插件</p>
+<p><code>--disable_logging=false</code>：禁用 ERROR&#x2F;WARNING&#x2F;INFO（又名状态日志）和查询结果日志记录</p>
+<p><code>--logger_event_type=true</code>：将预定结果记录为事件</p>
+<p><code>--logger_snapshot_event_type=false</code>：将计划的快照结果记录为事件，类似于差异结果</p>
+<p><code>--logger_min_status=0</code>：状态日志记录的最低级别。使用以下值：INFO &#x3D; 0、WARNING &#x3D; 1、ERROR &#x3D; 2。要禁用所有状态消息，请使用 3 或更高值。使用 –verbose 时，该值将被忽略</p>
+<p><code>--logger_min_stderr=0</code>：写入 stderr 的状态日志的最低级别。使用以下值：INFO &#x3D; 0、WARNING &#x3D; 1、ERROR &#x3D; 2</p>
+<p><code>--logger_stderr=true</code>：默认行为是还将状态日志写入 stderr。将此标志设置为 false 以禁止将状态日志写入（复制）到 stderr</p>
+<p><code>--logger_path=/var/log/osquery/</code>：文件系统插件记录 ERROR&#x2F;WARN&#x2F;INFO 和查询结果的目录路径</p>
+<p><code>--logger_mode=0640</code>：文件系统插件输出日志文件的文件模式，以八进制字符串形式提供</p>
+<p><code>--logger_kafka_brokers</code>：要连接的 Kafka 代理的逗号分隔列表。格式可以是 protocol:&#x2F;&#x2F;host:port</p>
+<p><code>--logger_kafka_topic</code>：将日志发布到的 Kafka 主题。当使用多个topic时，此配置成为未配置查询回退到的基本topic</p>
+<p><code>--host_identifier=hostname</code>：用于标识运行 osquery 的主机的字段(hostname、uuid、ephemeral、instance、specified)</p>
+<h2 id="0x02-Osquery配置"><a href="#0x02-Osquery配置" class="headerlink" title="0x02 Osquery配置"></a>0x02 Osquery配置</h2><h3 id="1-配置组件"><a href="#1-配置组件" class="headerlink" title="1. 配置组件"></a>1. 配置组件</h3><p>osquery”配置”是从配置插件中读取的。该插件是一种数据检索方式，默认设置为文件系统。其他检索和运行时更新方法可能包括使用 tls 配置插件的 HTTP&#x2F;TLS 请求。在所有情况下，响应数据都必须是 JSON 格式。</p>
+<p><strong>配置相关的组件：</strong></p>
+<ul>
+<li>守护进程选项和功能设置 </li>
+<li>查询计划任务：一组 SQL 查询和间隔 </li>
+<li>文件变更监控：监控的文件和目录的类别和路径</li>
+</ul>
+<p><strong>默认配置文件：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Linux: /etc/osquery/osquery.conf 和 /etc/osquery/osquery.conf.d/</span><br><span class="line">macOS: /var/osquery/osquery.conf 和 /var/osquery/osquery.conf.d/</span><br><span class="line">Windows: C:\Program Files\osquery\osquery.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 <code>--config_path=/path/to/osquery.conf</code> 覆盖配置文件的路径</p>
+<h3 id="2-查询Packs"><a href="#2-查询Packs" class="headerlink" title="2. 查询Packs"></a>2. 查询Packs</h3><p>配置支持帮助定义计划任务的查询集（称为Packs）。Packs使用 osquery 分发，并根据广泛的信息类别和可见性进行标记。</p>
+<p>例如，”compliance”包将包括检查锁定操作系统功能和用户设置更改的查询；”vulnerability management”包可以执行一般资产管理查询，这些查询围绕包和软件安装更改构建事件日志。</p>
+<p>在 osquery 配置 JSON 中，包被定义为top-level-key ，由包名称组成，用于打包内容 JSON 数据结构:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>...<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;internal_stuff&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;discovery&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;SELECT pid FROM processes WHERE name = &#x27;ldap&#x27;;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;platform&quot;</span><span class="punctuation">:</span> <span class="string">&quot;linux&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.5.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;queries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;active_directory&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM ad_config;&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1200&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Check each user&#x27;s active directory cached settings.&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;testing&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;shard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;queries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;suid_bins&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM suid_bins;&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3600&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>pack值也可以是字符串，如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;packs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;external_pack&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/path/to/external_pack.conf&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;internal_stuff&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="punctuation">[</span>...<span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用字符串而不是内联 JSON 字典，将要求配置插件”生成”该资源。在默认文件系统插件的情况下，这些字符串被视为路径。</p>
+<p>文件系统插件支持另一种添加包目录的约定：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;packs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;*&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/path/to/*&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的 * 要求插件将值全局化并构造一个multi-pack</p>
+<p><strong>Discovery queries</strong></p>
+<p>Discovery queries是查询包的一项功能，可以更轻松地大规模监控服务。</p>
+<p>示例：该包将仅在运行名为”foobar”的进程并且具有以”www”开头的用户的主机上执行</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;discovery&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;SELECT pid FROM processes WHERE name = &#x27;foobar&#x27;;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;SELECT 1 FROM users WHERE username like &#x27;www%&#x27;;&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;queries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-配置说明"><a href="#3-配置说明" class="headerlink" title="3. 配置说明"></a>3. 配置说明</h3><p>介绍所有（read：most）默认配置键，称为默认规范。提到”default”是因为可以使用 ConfigParser 插件扩展配置。</p>
+<p><strong>Options</strong></p>
+<p>options 键定义选项名称到选项值的映射，名称必须是”osquery 配置选项”集中的 CLI 标志</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;options&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;read_max&quot;</span><span class="punctuation">:</span> <span class="number">100000</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;events_max&quot;</span><span class="punctuation">:</span> <span class="number">100000</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;host_identifier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uuid&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Schedule</strong></p>
+<p>schedule 键定义计划查询名称到查询详细信息的映射，每个schedule的值也是一个映射，我们称这些计划查询，它们的键是显示在结果日志中的名称。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;users_browser_plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM users JOIN browser_plugins USING (uid);&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hashes_of_bin&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT path, hash.sha256 FROM file JOIN hash USING (path) WHERE file.directory = &#x27;/bin/&#x27;;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">3600</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;removed&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;platform&quot;</span><span class="punctuation">:</span> <span class="string">&quot;darwin&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.4.5&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;shard&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>基本的 scheduled 查询规范包括：</p>
+<ul>
+<li>query：要运行的 SQL 查询 </li>
+<li>interval：运行查询的间隔（以秒为单位）（取决于splay&#x2F;smoothing） </li>
+<li>removed：一个布尔值，用于确定是否应记录”removed”操作，默认为 true</li>
+<li>snapshot：设置”snapshot”模式的布尔值，默认为 false </li>
+<li>platform：将此查询限制在给定平台，默认为”所有”平台；您可以使用逗号来设置多个平台</li>
+<li>version：仅在大于或等于此版本字符串的 osquery 版本上运行 </li>
+<li>shard：将此查询限制为目标主机的百分比（1-100）</li>
+<li>denylist：一个布尔值，用于确定此查询是否可能被列入拒绝列表（当看门狗因资源消耗过多而停止时），默认为 true</li>
+</ul>
+<p>platform key 可以是：</p>
+<ul>
+<li>darwin：macOS 主机</li>
+<li>linux：RedHat 或 Debian-based 主机</li>
+<li>posix：darwin 和 linux 主机</li>
+<li>windows：Windows desktop 或 server 主机</li>
+<li>any&#x2F;all：全部平台</li>
+</ul>
+<p><strong>Packs</strong></p>
+<p>Packs 使用 packs 键，一个映射，其中键是包名称，值可以是字符串或字典（对象）</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;packs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pack_name_1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/path/to/pack.json&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pack_name_2&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;queries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;shard&quot;</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.7.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;platform&quot;</span><span class="punctuation">:</span> <span class="string">&quot;linux&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;discovery&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;SELECT * FROM processes WHERE name = &#x27;osqueryi&#x27;;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如上，每个pack 都用了platform, version, 和 shard选择器和限制。queries 键模仿配置的 schedule 键，上面的包部分详细描述了 discovery 查询集功能。</p>
+<p><strong>File Paths</strong></p>
+<p>file_paths 键定义文件完整性监控 (FIM) 类别到文件系统 globbing 行集的映射</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;custom_category&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/etc/**&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;/tmp/.*&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;device_nodes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/dev/*&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;file_accesses&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;custom_category&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>文件路径集有一个姊妹键：file_accesses，它包含一组选择加入文件系统访问监控的类别名称</p>
+<p><strong>YARA</strong></p>
+<p>yara 键使用两个子键来配置 YARA 签名：signatures，并定义签名集到”file paths”配置中定义的file_paths类别的映射</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;yara&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;signatures&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;signature_group_1&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;/path/to/signature.sig&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;custom_category&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;signature_group_1&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Prometheus</strong></p>
+<p>prometheus_targets 键可用于配置要查询的 Prometheus 目标。接收到目标响应时取毫秒精度的度量时间戳，prometheus_targets 父键由子键 urls 组成</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;prometheus_targets&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;urls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;http://localhost:9100/metrics&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;http://localhost:9101/metrics&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Views</strong></p>
+<p>视图是表示为表的已保存查询。大型子查询或复杂的连接逻辑通常可以移动到视图中，使查询更简洁</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;views&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;kernel_hashes&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;SELECT hash.path AS kernel_binary, version, hash.sha256 AS sha256, hash.sha1 AS sha1, hash.md5 AS md5 FROM (SELECT path || &#x27;/Contents/MacOS/&#x27; AS directory, name, version FROM kernel_extensions) JOIN hash USING (directory);&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> kernel_hashes <span class="keyword">WHERE</span> kernel_binary <span class="keyword">NOT</span> <span class="keyword">LIKE</span> &quot;%apple%&quot;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Decorator queries</strong></p>
+<p>装饰器查询存在于 osquery 版本 1.7.3+ 中，用于向结果和快照日志添加额外的”装饰”，根据需要装饰数据的时间和方式，存在三种类型的装饰器查询</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;decorators&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;load&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;SELECT version FROM osquery_info;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;SELECT uuid AS host_uuid FROM system_info;&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;always&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;SELECT user AS username FROM logged_in_users WHERE user &lt;&gt; &#x27;&#x27; ORDER BY time LIMIT 1;&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;3600&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;SELECT total_seconds AS uptime FROM uptime;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>装饰器的类型：</p>
+<ul>
+<li>load：在配置加载（或重新加载）时运行这些装饰器 </li>
+<li>always：在计划中的每个查询之前运行这些装饰器 </li>
+<li>interval：定义间隔时间映射的特殊键</li>
+</ul>
+<p>每个装饰器查询最多应返回 1 行。如果返回超过 1 行，将生成警告，</p>
+<p><strong>Events</strong></p>
+<p>“Events”是指基于事件的表。事件通过操作系统或特定于应用程序的 API 发布到 osquery；在 osquery 中，某些表”订阅”这些发布者。发布者和订阅者之间通常是一对多的关系。</p>
+<p>该配置支持一种显式允许和拒绝事件订阅者的方法，如果选择明确允许订阅者，则除允许列表中指定的订阅者外，所有订阅者都将被禁用；如果选择明确拒绝订阅者，则除了拒绝列表中指定的订阅者外，所有订阅者都将被启用。</p>
+<p>示例配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>...<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;events&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;disable_subscribers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;yara_events&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用查询 <code>SELECT * FROM osquery_events where type = &#39;subscriber&#39;;</code> 检查订阅者列表，如果启用订阅者，此表将显示 1 作为活动列。</p>
+<p><strong>Chef 配置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Service name installed by the osquery package.</span><br><span class="line">service_name = &#x27;osqueryd&#x27;</span><br><span class="line"></span><br><span class="line">cookbook_file &#x27;/etc/osquery/osquery.conf&#x27; do</span><br><span class="line">  source &#x27;osquery.conf&#x27;</span><br><span class="line">  mode 0444</span><br><span class="line">  owner &#x27;root&#x27;</span><br><span class="line">  group &#x27;wheel&#x27;</span><br><span class="line">  notifies :restart, &quot;service[#&#123;service_name&#125;]&quot;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">service service_name do</span><br><span class="line">  action [:enable, :start]</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p><strong>osqueryctl 助手</strong></p>
+<p>为了测试部署或配置，我们包含了一个名为 osqueryctl 的简短帮助脚本。有几个操作包括适用于 macOS 和 Linux 的start、stop和config-check</p>
+<h2 id="0x03-日志记录"><a href="#0x03-日志记录" class="headerlink" title="0x03 日志记录"></a>0x03 日志记录</h2><p>osquery 守护进程使用默认的文件系统记录器插件。与配置一样，文件系统插件的输出以 JSON 格式编写。查询计划的结果写入 <code>/var/log/osquery/osqueryd.results.log</code></p>
+<p>有两种类型的日志：</p>
+<ul>
+<li>状态日志 (INFO, WARNING, ERROR)</li>
+<li>查询计划结果日志，包括来自快照查询的日志</li>
+</ul>
+<p><strong>日志文件位置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/var/log/osquery/  # Linux</span><br><span class="line"></span><br><span class="line">C:\Program Files\osquery\log  # Windows</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-Logger插件"><a href="#1-Logger插件" class="headerlink" title="1. Logger插件"></a>1. Logger插件</h3><p>osquery 包括支持可配置记录到各种接口的记录器插件。内置的记录器插件是filesystem（默认）、tls、syslog（适用于POSIX）、windows_event_log（适用于Windows）、kinesis、firehose 和 kafka_producer。</p>
+<p>可以同时使用多个记录器插件，有效地将日志复制到每个接口，要启用多个记录器，将 <code>--logger_plugin</code> 选项设置为以逗号分隔的请求插件列表，不包括空格。通过 osquery flagfile 设置记录器插件和记录器设置。</p>
+<h4 id="a-Status-logs"><a href="#a-Status-logs" class="headerlink" title="a. Status logs"></a>a. Status logs</h4><p>状态日志由 Glog 日志记录框架生成，默认的文件系统记录器插件以与 Glog 相同的方式将这些日志写入磁盘，记录器插件可能会拦截这些状态日志并将它们写入系统或其他地方。</p>
+<p>osqueryd.INFO 是指向最近执行的 INFO 日志的符号链接，WARNING、ERROR 和 FATAL 日志也是如此。</p>
+<p>注：osqueryi shell 只显示 WARNING 和 ERROR 状态日志，INFO 日志被禁用。</p>
+<p>默认情况下，osqueryd 守护进程将 INFO、WARNING 和 ERROR 日志发送到配置的记录器插件和进程的 stderr。可以使用 CLI flags 中记录的几个标志来配置此行为</p>
+<ul>
+<li>禁止将状态日志写入 stderr，使用 <code>--logger_stderr=false</code></li>
+<li>设置写入 stderr 的最低状态日志严重性 (INFO&#x3D;0)，使用 <code>--logger_min_stderr=0</code></li>
+<li>设置写入 stderr 和记录器插件的最小状态日志，使用 <code>--logger_min_status=0</code></li>
+</ul>
+<p>住：在 osquery 包中提供的 LaunchDaemon、systemd 和 initscript 中，最小的 stderr 报告仅限于 WARNING 以帮助最小化复制到 syslog 的内容</p>
+<h4 id="b-Results-logs"><a href="#b-Results-logs" class="headerlink" title="b. Results logs"></a>b. Results logs</h4><p><strong>Differential logs</strong></p>
+<p>预定查询的结果将记录到”results log”中。这些是上次（最近）查询执行和当前执行之间的差异变化。每个日志行都是一个 JSON 字符串，指示哪个查询已添加&#x2F;删除了哪些数据。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;osquery_monitor&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT ... t.minutes AS c FROM time t WHERE ...&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;removed&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Snapshot logs</strong></p>
+<p>快照日志是查询结果日志记录的另一种形式，快照是一组”精确时间点”的结果，没有差异。如果想要一个挂载列表，而不是添加和删除的挂载列表，可使用快照。</p>
+<p>文件系统记录器插件将快照结果写入 <code>/var/log/osquery/osqueryd.snapshots.log</code></p>
+<p>定时启动快照查询：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mounts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM mounts;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">3600</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;snapshot&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="c-日志接入kafka生产者"><a href="#c-日志接入kafka生产者" class="headerlink" title="c. 日志接入kafka生产者"></a>c. 日志接入kafka生产者</h4><p>用户可以将日志配置为直接发布到 Kafka Topic</p>
+<p><strong>配置</strong></p>
+<p>有 3 个 Kafka 配置作为选项公开：一个逗号分隔的代理列表，有或没有端口（默认 9092）[default value: localhost]，默认topic [default value: “”] 和 acks（记录器在考虑请求完成之前要求 Kafka leader确认的数量）[default: all; valid values: 0, 1, all]</p>
+<p>要发布对特定主题的查询，请在 osquery.conf 的顶层添加一个 kafka_topics 字段，建议在使用多个主题时显式配置 kafka_topics 中的所有计划查询。</p>
+<p><strong>示例文件</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;options&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;logger_kafka_brokers&quot;</span><span class="punctuation">:</span> <span class="string">&quot;some.example1.com:9092,some.example2.com:9092&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;logger_kafka_topic&quot;</span><span class="punctuation">:</span> <span class="string">&quot;base_topic&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;logger_kafka_compression&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gzip&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;logger_kafka_acks&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;system-snapshot&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;queries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;some_query1&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;select * from system_info&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;snapshot&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;some_query2&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;select * from md_devices&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;snapshot&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;some_query3&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;select * from md_drives&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;snapshot&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;kafka_topics&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;test1_topic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;pack_system-snapshot_some_query1&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;test2_topic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;pack_system-snapshot_some_query2&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;test3_topic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;pack_system-snapshot_some_query3&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用的客户端 ID 和消息密钥是操作系统主机名和二进制名称 (argv[0]) 的串联。目前只能将一个Topic传递到配置中，因此所有日志都将发布到同一Topic。</p>
+<h3 id="2-Schedule-结果"><a href="#2-Schedule-结果" class="headerlink" title="2. Schedule 结果"></a>2. Schedule 结果</h3><h4 id="a-Event格式"><a href="#a-Event格式" class="headerlink" title="a. Event格式"></a>a. Event格式</h4><p>事件是默认的结果格式，每条日志行代表一个状态变化。这种格式适用于 Logstash 或 Splunk 等日志聚合系统。</p>
+<p><code>SELECT name, path, pid FROM processes</code> 的示例输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;added&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;columns&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/osquery/bin/osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;97830&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;processes&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hostname.local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;calendarTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tue Sep 30 17:37:30 2014&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1412123850&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;epoch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;314159265&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;counter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;removed&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;columns&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/osquery/bin/osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;97650&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;processes&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hostname.local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;calendarTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tue Sep 30 17:37:30 2014&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1412123850&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;epoch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;314159265&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;counter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这告诉我们一个名为 osqueryd 的二进制文件已停止并启动了一个具有相同名称的新二进制文件（注意不同的 pid）。数据是通过保留先前查询结果的缓存并仅在缓存更改时记录来生成的。如果没有启动或停止新进程，查询将不会记录任何结果。</p>
+<h4 id="b-Snapshot格式"><a href="#b-Snapshot格式" class="headerlink" title="b. Snapshot格式"></a>b. Snapshot格式</h4><p>快照查询试图模仿差异事件格式，而不是发出”列”，快照数据使用”快照”存储</p>
+<p><strong>示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;snapshot&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;snapshot&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/sbin/launchd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/sbin/syslogd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;51&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/libexec/UserEventAgent&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;52&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/libexec/kextd&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;54&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;process_snapshot&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostIdentifier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hostname.local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;calendarTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Mon May  2 22:27:32 2016 UTC&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1462228052&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;epoch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;314159265&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;counter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="c-Batch格式"><a href="#c-Batch格式" class="headerlink" title="c. Batch格式"></a>c. Batch格式</h4><p>如果查询识别出多个状态更改，则批处理格式会将所有结果包含在单个日志行中。如果您以编程方式解析行并将它们加载到后端数据存储中，这可能是最好的解决方案。</p>
+<p>要启用批处理日志行，需使用 <code>--logger_event_type=false</code> 参数启动 osqueryd。</p>
+<p><code>SELECT name, path, pid FROM processes</code> 的示例输出；</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;diffResults&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;added&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/osquery/bin/osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;97830&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;removed&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/osquery/bin/osqueryd&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;97650&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;processes&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hostname.local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;calendarTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Tue Sep 30 17:37:30 2014&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1412123850&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;epoch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;314159265&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;counter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-特殊top-level字段"><a href="#3-特殊top-level字段" class="headerlink" title="3. 特殊top-level字段"></a>3. 特殊top-level字段</h3><p><strong>Schedule epoch</strong></p>
+<p>osquery 维护一个 epoch 标记以及每个计划的查询执行，并且仅当最后一次运行的epoch与当前epoch匹配时才计算差异，如果没有，则它将当前执行的查询视为初始运行。</p>
+<p>可以通过使用 <code>--schedule_epoch=&lt;some 64bit int&gt;</code> 标志启动 osquery 或通过从 TLS 后端远程更新 <code>schedule_epoch</code> 标志来设置epoch标记，epoch 与每个日志结果一起传输，因此很容易识别哪些结果属于计划查询的哪些执行</p>
+<p><strong>Schedule counter</strong></p>
+<p>为差异日志数据设置警报时，可能希望跳过最初添加的记录。counter可用于识别添加的记录是否都是来自初始查询的记录，如果它们是新记录。</p>
+<p><strong>Numerics</strong></p>
+<p>这是所有结果的指示符，如果 osquery 尝试将数字记录为数字，则为 true，否则为 false 表示它们被记录为字符串</p>
+<p><strong>Unique host identification</strong></p>
+<p>如果您需要一种方法来唯一标识嵌入到 osqueryd 结果日志中的主机，可用 <code>--host_identifier</code> 标志。默认情况下，host_identifier 设置为”hostname”。</p>
+<p>主机的主机名将用作结果日志中的主机标识符。如果主机名在您的环境中不唯一或不一致，可以使用 <code>--host_identifier=uuid</code> 启动 osqueryd</p>
+<h3 id="4-日志聚合"><a href="#4-日志聚合" class="headerlink" title="4. 日志聚合"></a>4. 日志聚合</h3><h4 id="a-Logstash"><a href="#a-Logstash" class="headerlink" title="a. Logstash"></a>a. Logstash</h4><p>LogStash 是一个开源工具，能够收集、解析、索引和转发日志，Logstash 能够使用其文件输入插件摄取 osquery 日志，然后通过输出插件列表将数据发送到聚合器。</p>
+<p><strong>ElasticSearch 配置的 Logstash 示例：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">input <span class="punctuation">&#123;</span></span><br><span class="line">  file <span class="punctuation">&#123;</span></span><br><span class="line">    path =&gt; <span class="string">&quot;/var/log/osquery/osqueryd.results.log&quot;</span></span><br><span class="line">    type =&gt; <span class="string">&quot;osquery_json&quot;</span></span><br><span class="line">    codec =&gt; <span class="string">&quot;json&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">filter <span class="punctuation">&#123;</span></span><br><span class="line">   if <span class="punctuation">[</span>type<span class="punctuation">]</span> == <span class="string">&quot;osquery_json&quot;</span> <span class="punctuation">&#123;</span></span><br><span class="line">      date <span class="punctuation">&#123;</span></span><br><span class="line">        match =&gt; <span class="punctuation">[</span> <span class="string">&quot;unixTime&quot;</span><span class="punctuation">,</span> <span class="string">&quot;UNIX&quot;</span> <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">output <span class="punctuation">&#123;</span></span><br><span class="line">  stdout <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">  elasticsearch <span class="punctuation">&#123;</span></span><br><span class="line">     hosts=&gt; <span class="string">&quot;127.0.0.1:9200&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="b-Splunk"><a href="#b-Splunk" class="headerlink" title="b. Splunk"></a>b. Splunk</h4><p>Splunk 转发器配置 (inputs.conf) :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[monitor:///var/log/osquery/osqueryd.results.log]</span><br><span class="line">index = main</span><br><span class="line">sourcetype = osquery:results</span><br><span class="line"></span><br><span class="line">[monitor:///var/log/osquery/osqueryd.*INFO*]</span><br><span class="line">index = main</span><br><span class="line">sourcetype = osquery:info</span><br><span class="line"></span><br><span class="line">[monitor:///var/log/osquery/osqueryd.*ERROR*]</span><br><span class="line">index = main</span><br><span class="line">sourcetype = osquery:error</span><br><span class="line"></span><br><span class="line">[monitor:///var/log/osquery/osqueryd.*WARNING*]</span><br><span class="line">index = main</span><br><span class="line">sourcetype = osquery:warning</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-安全能力"><a href="#0x04-安全能力" class="headerlink" title="0x04 安全能力"></a>0x04 安全能力</h2><h3 id="1-文件完整性监控"><a href="#1-文件完整性监控" class="headerlink" title="1. 文件完整性监控"></a>1. 文件完整性监控</h3><p>文件完整性监控 (FIM) 可用于 Linux（在 file_events 中使用 inotify 子系统，在 process_file_events 中使用 Audit 子系统），Windows（在 ntfs_journal_events 中，使用 NTFS Journaling）和 macOS（在 file_events 中，使用 FSEvents）。</p>
+<p><strong>配置</strong></p>
+<p>在 osquery 中收集文件事件需要先指定要从 osquery 配置中监视的文件&#x2F;目录列表。然后，与这些选定文件相关的事件将填充每个平台上的相应表格。</p>
+<p>FIM 在 osquery 中也是默认禁用的。要启用它，首先确保在 <code>osquery (--disable_events=false)</code> 中启用了事件，然后确保使用相应的 CLI 标志启用所需的 FIM 表（–enable_file_events&#x3D;true 对 file_events，–disable_audit&#x3D;false 对 process_file_events，–enable_ntfs_event_publisher&#x3D;true 对 ntfs_journal_events）</p>
+<p>要指定要监视的文件和目录，必须使用 fnmatch 样式或文件系统通配模式来表示目标路径。您可以使用标准通配符 <code>*/**</code> 或 SQL 样式通配符 <code>*%*</code></p>
+<p><strong>匹配通配符规则</strong></p>
+<ul>
+<li>%：匹配一级的所有文件和文件夹。 </li>
+<li>%%：递归匹配所有文件和文件夹。 </li>
+<li>%abc：匹配所有以”abc”结尾的内容。 </li>
+<li>abc%：匹配所有以”abc”开头的内容。</li>
+</ul>
+<p><strong>匹配实例</strong></p>
+<p>osquery 中 FIM 配置的三个元素：(a) 针对 file_events 的计划查询，(b) 添加的 file_paths 部分，以及 (c) exclude_paths 部分。</p>
+<p>file_events 查询计划以五分钟的间隔收集在 file_paths 中指定的路径内的任何文件上发生的所有 FIM 事件，但不包括 exclude_paths 中指定的路径。</p>
+<p>确定要监视的文件和目录后，将它们的匹配规则添加到 osquery FIM 配置中的 file_paths 部分：</p>
+<ul>
+<li>&#x2F;Users&#x2F;%&#x2F;Library：监视对每个用户的 Library 文件夹的更改，但不监视其中的内容。 </li>
+<li>&#x2F;Users&#x2F;%&#x2F;Library&#x2F;：监视每个库文件夹中文件的更改，但不监视其子目录的内容</li>
+<li>&#x2F;Users&#x2F;%&#x2F;Library&#x2F;%：相同，对每个 Library 文件夹中的文件进行更改。 </li>
+<li>&#x2F;Users&#x2F;%&#x2F;Library&#x2F;%%：在每个库中递归地监视更改。 </li>
+<li>&#x2F;bin&#x2F;%sh：监控bin目录是否有以sh结尾的变化</li>
+</ul>
+<p><strong>FIM监控示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;crontab&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM crontab;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">300</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;file_events&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT * FROM file_events;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;removed&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">300</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;homes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/root/.ssh/%%&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;/home/%/.ssh/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;etc&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/etc/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tmp&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/tmp/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;exclude_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;homes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/home/not_to_monitor/.ssh/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tmp&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/tmp/too_many_events/&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>不要在 exclude_paths 节点下使用任意类别名称；只允许使用有效名称</p>
+<ul>
+<li>有效类别: 在 file_paths 节点下引用的类别。在上面的示例中，config、homes 等和 tmp 都是有效的类别</li>
+<li>无效类别: 任何未在 file_paths 下引用的名称。在上面的示例中，除 homes 等和 tmp 之外的任何名称都是无效的</li>
+</ul>
+<p>除file_paths 之外，还可以使用 file_paths_query 将要监视的文件路径指定为给定查询结果的路径列：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;file_paths_query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;category_name&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;SELECT DISTINCT &#x27;/home/&#x27; || username || &#x27;/.gitconfig&#x27; as path FROM last WHERE username != &#x27;&#x27; AND username != &#x27;root&#x27;;&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>示例事件输出</strong></p>
+<p>当文件发生变化时，事件将出现在 file_events 表中。在文件更改事件期间，可能计算文件的 md5、sha1 和 sha256</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span><span class="string">&quot;ATTRIBUTES_MODIFIED&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span><span class="string">&quot;homes&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;md5&quot;</span><span class="punctuation">:</span><span class="string">&quot;bf3c734e1e161d739d5bf436572c32bf&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sha1&quot;</span><span class="punctuation">:</span><span class="string">&quot;9773cf934440b7f121344c253a25ae6eac3e3182&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sha256&quot;</span><span class="punctuation">:</span><span class="string">&quot;d0d3bf53d6ae228122136f11414baabcdc3d52a7db9736dd256ad81229c8bfac&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;target_path&quot;</span><span class="punctuation">:</span><span class="string">&quot;\/root\/.ssh\/authorized_keys&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;time&quot;</span><span class="punctuation">:</span><span class="string">&quot;1429208712&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;transaction_id&quot;</span><span class="punctuation">:</span><span class="string">&quot;0&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>调整 Linux inotify 限制</strong></p>
+<p>Linux 上，osquery 中的 file_events 表使用 inotify 来订阅文件更改，调整限制可以帮助增加文件限制</p>
+<p>sysctl.conf 修改:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#/proc/sys/fs/inotify/max_user_watches = 8192</span><br><span class="line">fs.inotify.max_user_watches = 524288</span><br><span class="line"></span><br><span class="line">#/proc/sys/fs/inotify/max_user_instances = 128</span><br><span class="line">fs.inotify.max_user_instances = 256</span><br><span class="line"></span><br><span class="line">#/proc/sys/fs/inotify/max_queued_events = 16384</span><br><span class="line">fs.inotify.max_queued_events = 32768</span><br></pre></td></tr></table></figure>
+
+<p><strong>文件访问监控</strong></p>
+<p>除了在创建&#x2F;修改&#x2F;删除文件时生成事件的 FIM 之外，osquery 还支持文件访问监控，如果文件被访问则可以生成事件。</p>
+<p>在 file_paths 中定义监控特定的文件，减少性能开销：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;homes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/root/.ssh/%%&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;/home/%/.ssh/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;etc&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/etc/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tmp&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;/tmp/%%&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;file_accesses&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;homes&quot;</span><span class="punctuation">,</span> <span class="string">&quot;etc&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的配置将为 homes 等和 tmp 启用文件完整性监控，但只为 homes 和 etc 目录启用访问监控</p>
+<h3 id="2-进程-x2F-socket审计"><a href="#2-进程-x2F-socket审计" class="headerlink" title="2. 进程&#x2F;socket审计"></a>2. 进程&#x2F;socket审计</h3><p>osquery 可以利用 BPF、Audit、OpenBSM 或 EndpointSecurity 子系统在 Linux 和 macOS 系统上近乎实时地记录进程执行和网络连接。</p>
+<p>不同的平台有不同的选择来收集实时事件数据，osquery 根据来源和平台有多个表格来呈现这些信息：</p>
+<table>
+<thead>
+<tr>
+<th align="left">事件类型</th>
+<th align="left">osquery表</th>
+<th align="left">数据源</th>
+<th align="left">支持平台</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Process events</td>
+<td align="left">process_events</td>
+<td align="left">Audit</td>
+<td align="left">(Linux), OpenBSM (macOS)	Linux, macOS (10.15 and older)</td>
+</tr>
+<tr>
+<td align="left">Process events</td>
+<td align="left">bpf_process_events</td>
+<td align="left">BPF</td>
+<td align="left">Linux (kernel 4.18 and newer)</td>
+</tr>
+<tr>
+<td align="left">Process events</td>
+<td align="left">es_process_events</td>
+<td align="left">EndpointSecurity</td>
+<td align="left">macOS (10.15 and newer)</td>
+</tr>
+<tr>
+<td align="left">Socket events</td>
+<td align="left">socket_events</td>
+<td align="left">Audit (Linux), OpenBSM (macOS)</td>
+<td align="left">Linux, macOS (10.15 and older)</td>
+</tr>
+<tr>
+<td align="left">Socket events</td>
+<td align="left">bpf_socket_events</td>
+<td align="left">BPF</td>
+<td align="left">Linux (kernel 4.18 and newer)</td>
+</tr>
+</tbody></table>
+<p>要采集进程事件，可以将如下查询添加到查询 schedule 或查询 pack 中：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> process_events;</span><br></pre></td></tr></table></figure>
+
+<p>这些审计功能中的每一个都是使用额外的 osquery 配置设置在每个源的基础上启用的。</p>
+<p><strong>检查配置标志</strong></p>
+<p>验证 osquery 的标志是否设置正确，可以查询 osquery_flags 表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; select * from osquery_flags where name in (&quot;disable_events&quot;, &quot;disable_audit&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查事件表</strong></p>
+<p>osquery 在 osquery_events 表中保存关于事件子系统的状态，注意 events 列，尝试触发一个事件，然后确认事件计数不为 0：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; select * from osquery_events;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 Audit 进行 Linux 进程审计</strong></p>
+<p>在 Linux 上，osquery 可以通过 Audit 系统来收集和处理事件。它通过监视 execve() 和 execveat() 等系统调用来实现，auditd 在使用 osquery 的进程审计时不应运行，因为它会与 osqueryd 在访问审计 netlink 套接字时发生冲突。不需要安装 auditd 或 libaudit，Osquery 仅使用内核中存在的审计功能。</p>
+<p>process_events示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;added&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;columns&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;uid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;time&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1527895541&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;30219&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/bin/curl&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;auid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1000&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;cmdline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;curl google.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ctime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1503452096&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;egid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;euid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;gid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;parent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="number">1527895550</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostIdentifier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vagrant&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;process_events&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>关注4个配置选项，这些标志可以在命令行设置或放入 osquery.flags 文件中：</p>
+<ol>
+<li><p><code>--disable_audit=false</code> 默认设置为 true 并防止 osquery 打开内核审计的 n​ettlink 套接字。通过将其设置为 false，告诉 osquery 启用审计功能。</p>
+</li>
+<li><p><code>--audit_allow_config=true</code> 默认设置为 false 并防止 osquery 更改审计配置设置</p>
+</li>
+</ol>
+<p>3）<code>--audit_persist=true</code> 但默认情况下这是 true 并指示 osquery 在另一个进程也访问它时”重新获得”审计 netlink 套接字</p>
+<p>4）<code>--audit_allow_process_events=true</code> 这个标志表示想记录进程事件</p>
+<p><strong>使用 Audit 进行 Linux 套接字审计</strong></p>
+<p>Osquery 也可以通过启用 socket_events 来记录网络连接。此表使用系统调用 bind() 和 connect() 来收集有关网络连接的信息。要启用套接字事件，使用 <code>--audit_allow_sockets</code> 标志</p>
+<p>socket_event示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;added&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;columns&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;time&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1527895541&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;succeeded&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;remote_port&quot;</span><span class="punctuation">:</span> <span class="string">&quot;80&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;connect&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;auid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1000&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;family&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;local_address&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;local_port&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/bin/curl&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;30220&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;remote_address&quot;</span><span class="punctuation">:</span> <span class="string">&quot;172.217.164.110&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;unixTime&quot;</span><span class="punctuation">:</span> <span class="number">1527895545</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hostIdentifier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vagrant&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;socket_events&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;numerics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用以下布尔值更改 socket_events 表的行为：</p>
+<table>
+<thead>
+<tr>
+<th align="left">标志</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">–audit_allow_sockets</td>
+<td align="left">允许审计者安装套接字相关规则</td>
+</tr>
+<tr>
+<td align="left">–audit_allow_unix</td>
+<td align="left">允许套接字事件收集domain套接字</td>
+</tr>
+<tr>
+<td align="left">–audit_allow_failed_socket_events</td>
+<td align="left">包括失败的套接字事件的行</td>
+</tr>
+<tr>
+<td align="left">–audit_allow_accept_socket_events</td>
+<td align="left">包括接受套接字事件的行</td>
+</tr>
+<tr>
+<td align="left">–audit_allow_null_accept_socket_events</td>
+<td align="left">允许返回 EAGAIN&#x2F;EWOULDBLOCK 的非阻塞 accept() 系统调用</td>
+</tr>
+</tbody></table>
+<p><strong>使用 BPF 进行 Linux 进程和套接字审计</strong></p>
+<h3 id="3-集成-YARA-扫描"><a href="#3-集成-YARA-扫描" class="headerlink" title="3. 集成 YARA 扫描"></a>3. 集成 YARA 扫描</h3><p>osquery中有两个YARA相关的表，第一个表，称为 <code>yara_events</code>，使用 osquery 的事件框架来监视文件系统更改，并在文件更改事件触发时执行 YARA。第二个表，称为 <code>yara</code>，是一个用于执行按需 YARA 扫描的表。</p>
+<p><strong>YARA 配置</strong></p>
+<p>示例配置，将本地文件系统中的一些 YARA 规则文件分组：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// Description of the YARA feature.</span></span><br><span class="line">  <span class="attr">&quot;yara&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;signatures&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="comment">// Each key is an arbitrary group name to give the signatures listed</span></span><br><span class="line">      <span class="attr">&quot;sig_group_1&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;/Users/wxs/sigs/foo.yar&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/Users/wxs/sigs/bar.yar&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sig_group_2&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;/Users/wxs/sigs/baz.yar&quot;</span> <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="comment">// Each key is a key from file_paths</span></span><br><span class="line">      <span class="comment">// The value is a list of signature groups to run when an event fires</span></span><br><span class="line">      <span class="comment">// These will be watched for and scanned when the event framework</span></span><br><span class="line">      <span class="comment">// fire off an event to yara_events table</span></span><br><span class="line">      <span class="attr">&quot;system_binaries&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;sig_group_1&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;tmp&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;sig_group_1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;sig_group_2&quot;</span> <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Paths to watch for filesystem events</span></span><br><span class="line">  <span class="attr">&quot;file_paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;system_binaries&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;/usr/bin/%&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/usr/sbin/%&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tmp&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;/Users/%/tmp/%%&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/tmp/%&quot;</span> <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>file_paths 部分，该部分用于描述要监视哪些路径的变化；</p>
+</li>
+<li><p>yara 部分，它包含在 osquery 中用于 YARA 的配置，yara 部分包含两个键：signatures 和 file_paths，signatures包含一组任意key名称，称”签名组”，每个组的值都是将在 osquery 中编译和存储的签名文件的路径；file_paths将全局 file_paths 部分中描述的事件的类别名称映射到签名分组</p>
+</li>
+</ul>
+<p><strong>在运行时检索 YARA 规则</strong></p>
+<p>yara 表的默认行为是使用 osquery 主机上文件中指定的 YARA 规则。可使用 signature_urls 部分配置 osquery 以允许在运行时获取 YARA 规则。这是一个数组，可以是指向单个 Yara 规则的完整 URL 或部分 URL 的混合，其中路径部分可以是将用于匹配多个 URL 和规则的正则表达式。</p>
+<p>配置示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;yara&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;signature_urls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://raw.githubusercontent.com/Yara-Rules/rules/master/cve_rules/CVE-2010-0805\\.yar&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://raw.githubusercontent.com/Yara-Rules/rules/master/crypto/crypto_signatures\\.yar&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://raw.githubusercontent.com/Yara-Rules/rules/master/malware/APT_APT3102\\.yar&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;https://raw.githubusercontent.com/Yara-Rules/rules/devel/CVE_Rules/CVE-.*&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>查询示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># This is valid</span><br><span class="line">SELECT * FROM yara WHERE path=<span class="string">&quot;/usr/bin/ls&quot;</span> AND sigurl=&#x27;https<span class="punctuation">:</span><span class="comment">//raw.githubusercontent.com/Yara-Rules/rules/master/cve_rules/CVE-2010-0805.yar&#x27;;</span></span><br><span class="line"></span><br><span class="line"># This too</span><br><span class="line">SELECT * FROM yara WHERE path=<span class="string">&quot;/usr/bin/ls&quot;</span> AND sigurl=&#x27;https<span class="punctuation">:</span><span class="comment">//raw.githubusercontent.com/Yara-Rules/rules/devel/CVE_Rules/CVE-2010-0805.yar&#x27;;</span></span><br><span class="line"></span><br><span class="line"># This is not allowed</span><br><span class="line">SELECT * FROM yara WHERE path=<span class="string">&quot;/usr/bin/ls&quot;</span> AND sigurl=&#x27;https<span class="punctuation">:</span><span class="comment">//raw.githubusercontent.com/Yara-Rules/rules/devel/malware/APT_APT3102.yar&#x27;;</span></span><br></pre></td></tr></table></figure>
+
+<p>YARA 规则字符串默认从输出中省略，以防止在 osquery 的结果和日志中泄露。要在 sigrule 列中包含 YARA 规则，需将 enable_yara_string 标志设置为 true。</p>
+<p><strong>使用 yara_events 表持续监控</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; SELECT * FROM file_events;</span><br><span class="line"></span><br><span class="line">osquery&gt; SELECT * FROM yara_events;</span><br></pre></td></tr></table></figure>
+
+<p><strong>按需 YARA 扫描</strong></p>
+<p>yara 表用于按需扫描，使用此表，可以使用配置中的任何可用签名文件或签名组任意 YARA 扫描文件系统上的任何可用文件。如果要使用通配符模式，则必须使用 LIKE。</p>
+<p>一旦 where 被排除在外，您必须指定”what”部分，这是通过 sigfile 或 sig_group 约束来完成的。sigfile 约束是文件系统上签名文件的绝对路径，sig_group 约束必须包含配置文件中的命名签名分组。</p>
+<p>yara应用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 使用两个不同的签名组扫描同一个文件并得到不同的结果</span><br><span class="line">osquery&gt; SELECT * FROM yara WHERE path=&quot;/bin/ls&quot; AND sig_group=&quot;sig_group_1&quot;;</span><br><span class="line">osquery&gt; SELECT * FROM yara WHERE path=&quot;/bin/ls&quot; AND sig_group=&quot;sig_group_2&quot;;</span><br><span class="line"></span><br><span class="line">// 使用路径 LIKE 约束扫描带有签名组的 /bin/%sh</span><br><span class="line">osquery&gt; SELECT * FROM yara WHERE path LIKE &quot;/bin/%sh&quot; AND sig_group=&quot;sig_group_1&quot;;</span><br><span class="line"></span><br><span class="line">// sigfile使用绝对路径结合路径LIKE示例</span><br><span class="line">osquery&gt; select * from yara where path LIKE &#x27;C:\tmp\%&#x27; and sigfile = &quot;C:\tmp\test.yar.txt&quot;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 sirule 内联 YARA 规则</strong></p>
+<p>YARA 规则也可以与查询一起提供，使用隐藏列 sigrule 作为约束，YARA 规则采用<code>rule rulename &#123; condition: [whatever] &#125;</code>的形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; select * from yara where path = &#x27;/etc/passwd&#x27; and sigrule = &#x27;rule always_true &#123; condition: true &#125;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>YARA 规则没有行终止符，要输入多行 YARA 规则，需使用换行符，也适用于 osqueryi：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">osquery&gt; select * from yara where path LIKE &#x27;C:\tmp\%&#x27; and sigrule = &#x27;rule hello_world &#123;</span><br><span class="line">    ...&gt; strings:</span><br><span class="line">    ...&gt; $a = &quot;Hello world&quot;</span><br><span class="line">    ...&gt; condition: $a</span><br><span class="line">    ...&gt; &#125;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/osquery/osquery">https://github.com/osquery/osquery</a></li>
+<li><a target="_blank" rel="noopener" href="https://osquery.readthedocs.io/en/stable/">https://osquery.readthedocs.io/en/stable/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/osquery/osquery/tree/master/packs">https://github.com/osquery/osquery/tree/master/packs</a></li>
+<li><a target="_blank" rel="noopener" href="https://osquery.io/blog/community-articles">https://osquery.io/blog/community-articles</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kolide/fleet">https://github.com/kolide/fleet</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jmpsec/osctrl">https://github.com/jmpsec/osctrl</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kolide.com/blog/osquery-under-the-hood">https://www.kolide.com/blog/osquery-under-the-hood</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Intrusion-Detection/" rel="tag" <i class="fa fa-tag"></i> Intrusion Detection</a>
+              <a href="/tags/HIDS/" rel="tag" <i class="fa fa-tag"></i> HIDS</a>
+              <a href="/tags/Osquery/" rel="tag" <i class="fa fa-tag"></i> Osquery</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/22306/" rel="prev" title="开源HIDS之Wazuh探究">
+                  <i class="fa fa-chevron-left"></i> 开源HIDS之Wazuh探究
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/19880/" rel="next" title="反弹shell检测技术研究">
+                  反弹shell检测技术研究 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
