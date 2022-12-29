@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文介绍入侵检测技术(Intrusion Detection)发展史、分类、通用框架及误用检测、异常检测等和核心技术...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="入侵检测技术概述">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/33201/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文介绍入侵检测技术(Intrusion Detection)发展史、分类、通用框架及误用检测、异常检测等和核心技术...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E5%8F%91%E5%B1%95%E5%8F%B2.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/CIDF.png">
+<meta property="article:published_time" content="2020-11-28T13:36:20.000Z">
+<meta property="article:modified_time" content="2022-12-29T03:26:39.141Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="Intrusion Detection">
+<meta property="article:tag" content="CIDF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E5%8F%91%E5%B1%95%E5%8F%B2.png">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/33201/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/33201/","path":"posts/33201/","title":"入侵检测技术概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>入侵检测技术概述 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-navicon fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-IDS%E7%AE%80%E4%BB%8B"><span class="nav-text">0x01 IDS简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-IDS%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="nav-text">0x02 IDS发展史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-IDS%E5%88%86%E7%B1%BB"><span class="nav-text">0x03 IDS分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A0%B9%E6%8D%AE%E5%AF%B9%E8%B1%A1%E5%88%92%E5%88%86"><span class="nav-text">1. 根据对象划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A0%B9%E6%8D%AE%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF%E5%88%92%E5%88%86"><span class="nav-text">2. 根据检测技术划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="nav-text">0x04 关键技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%AF%AF%E7%94%A8%E6%A3%80%E6%B5%8B"><span class="nav-text">1. 误用检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B"><span class="nav-text">2. 异常检测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-text">0x05 通用模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-CIDF%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">1. CIDF体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-CIDF%E8%A7%84%E8%8C%83%E8%AF%AD%E8%A8%80"><span class="nav-text">2. CIDF规范语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-CIDF%E5%86%85%E9%83%A8%E9%80%9A%E8%AE%AF"><span class="nav-text">3. CIDF内部通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-CIDF%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3"><span class="nav-text">4. CIDF程序接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-text">0x06 评价指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">攻防对抗，問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/33201/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="攻防对抗，問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="入侵检测技术概述 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          入侵检测技术概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-28 21:36:20" itemprop="dateCreated datePublished" datetime="2020-11-28T21:36:20+08:00">2020-11-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A8%81%E8%83%81%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">威胁检测</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文介绍入侵检测技术(Intrusion Detection)发展史、分类、通用框架及误用检测、异常检测等和核心技术...</center>
+
+<span id="more"></span>
+
+<h2 id="0x01-IDS简介"><a href="#0x01-IDS简介" class="headerlink" title="0x01 IDS简介"></a>0x01 IDS简介</h2><p>入侵检测(Intrusion Detection)，指对系统的运行状态进行监视，发现各种攻击企图、攻击行为或者攻击结果，以保证系统资源的机密性、完整性和可用性。</p>
+<p>入侵检测系统（英语：Intrusion-detection system，缩写为 IDS）是一种网络安全设备或应用软件，可以监控网络传输或者系统，检查是否有可疑活动或者违反企业的政策。</p>
+<h2 id="0x02-IDS发展史"><a href="#0x02-IDS发展史" class="headerlink" title="0x02 IDS发展史"></a>0x02 IDS发展史</h2><p>入侵检测系统（英语：Intrusion-detection system，缩写为 IDS）是一种网络安全设备或应用软件，可以监控网络传输或者系统，检查是否有可疑活动或者违反企业的政策。</p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B%E5%8F%91%E5%B1%95%E5%8F%B2.png"></p>
+<p>1980年4月，James P. Anderson为美国空军做了一份题为《Computer Security Threat Monitoring and Surveillance》的技术报告，第一次详细阐述了入侵检测的概念。James P. Anderson 针对计算机系统威胁进行了分类，将威胁分为外部渗透、内部渗透和非法行为三种，还提出了利用审计记录监视入侵行为的思想。</p>
+<p>1986年，为检测用户对数据库异常访问，W.T.Tener 在 IBM 主机上用 COBOL 开发了 Discovery 系统，是最早的基于主机的入侵检测系统（Host-based Intrusion Detection System, HIDS）原型。</p>
+<p>1988年的莫里斯蠕虫事件发生之后，网络安全才真正引起了军方、学术界和企业的高度重视。开展对分布式入侵检测系统（Distributed Intrusion Detection System, DIDS）的研究，将基于主机和基于网络的检测方法集成到一起，DIDS 是分布式入侵检测系统历史上的一个里程碑式的产品，它的检测模型采用了分层结构，包括数据、事件、主体、上下文、威胁、安全状态等6层。同年，SRI&#x2F;CSL 的 Teresa Lunt 等人改进了 Denning 的入侵检测模型，并实际开发出了一个入侵检测专家系统(Intrusion Detection Expert System, IDES）。该系统用于检测单一主机的入侵尝试，提出了与系统平台无关的实时检测思想，包括一个异常检测器和一个专家系统，分别用于统计异常模型的建立和基于规则的特征分析检测。</p>
+<p>1990年是入侵检测系统发展史上的一个分水岭。这一年，加州大学戴维斯分校的L. T.Heberlein等人开发出了NSM（Network Security Monitor）。入侵检测系统的两大阵营正式形成：基于网络的IDS和基于主机的IDS。</p>
+<p>从20世纪90年代到现在，入侵检测系统的研发呈现出百家争鸣的繁荣局面，并在智能化和分布式两个方向取得了长足的进展。1995年，下一代入侵检测专家系统（Next Generation IDES, NG-IDES）产生，可以检测多个主机上的入侵。1996年，基于图的入侵检测系统（Graph-based Intrusion Detection System, GrIDS）出现，主要用于针对大规模协同、自动化检测。</p>
+<p>1998年，S.Staniford 等人提出一个公共入侵检测框架（Common Intrusion Detection Framework, CIDF）。2007年，CIDF 工作组再次发布了3篇 IETF RFC 标准草稿，分别为 RFC 4765 入侵检测消息交换格式（The Intrusion Detection Message Exchange Format, IDMEF）、RFC 4766 入侵检测消息交换要求（The Intrusion Detection Message Exchange Format, IDMEF）和 RFC 4767 入侵检测交换协议（The Intrusion Detection Exchange Protocol, IDXP）。</p>
+<h2 id="0x03-IDS分类"><a href="#0x03-IDS分类" class="headerlink" title="0x03 IDS分类"></a>0x03 IDS分类</h2><h3 id="1-根据对象划分"><a href="#1-根据对象划分" class="headerlink" title="1. 根据对象划分"></a>1. 根据对象划分</h3><p><strong>1）基于主机的入侵检测系统（HIDS）</strong>：系统分析的数据是计算机操作系统的事件日志、应用程序的事件日志、系统调用、端口调用和安全审计记录。主机型入侵检测系统保护的一般是所在的主机系统。是由代理（agent）来实现的，代理是运行在目标主机上的小的可执行程序，它们与命令控制台（console）通信。</p>
+<p><strong>2）基于网络的入侵检测系统（NIDS）</strong>：系统分析的数据是网络上的数据包。网络型入侵检测系统担负着保护整个网段的任务，基于网络的入侵检测系统由遍及网络的传感器（sensor）组成，传感器是一台将以太网卡置于混杂模式的计算机，用于嗅探网络上的数据包。</p>
+<p><strong>3）混合型入侵检测系统</strong>：综合了基于网络和基于主机的混合型入侵检测系统，可以发现网络、主机、应用日志中的攻击信息。</p>
+<h3 id="2-根据检测技术划分"><a href="#2-根据检测技术划分" class="headerlink" title="2. 根据检测技术划分"></a>2. 根据检测技术划分</h3><p><strong>1）误用检测模型（MisuseDetection）</strong></p>
+<p>检测与已知的非正常行为之间的匹配程度。如果可以定义所有的非正常行为，那么每种能够与之匹配的行为都会引起告警。收集非正常操作的行为特征，建立相关的特征库，当监测的用户或系统行为与库中的记录相匹配时，系统就认为这种行为是入侵。这种检测模型误报率低、漏报率高。对于已知的攻击，它可以详细、准确地报告出攻击类型，但是对未知攻击却效果有限，而且特征库必须不断更新。</p>
+<p><strong>2）异常检测模型（AnomalyDetection）</strong></p>
+<p>检测与正常行为之间的偏差。如果可以定义每项正常操作，那么每项非正常行为就应该是入侵。首先总结正常操作应该具有的特征（用户轮廓），当用户活动与正常行为有重大偏离时即被认为是入侵。这种检测模型漏报率低，误报率高。因为不需要对每种入侵行为进行定义，所以能有效检测未知的入侵。</p>
+<h2 id="0x04-关键技术"><a href="#0x04-关键技术" class="headerlink" title="0x04 关键技术"></a>0x04 关键技术</h2><h3 id="1-误用检测"><a href="#1-误用检测" class="headerlink" title="1. 误用检测"></a>1. 误用检测</h3><p>误用检测是较早出现的入侵检测分析方法，属于第二代入侵检测技术，它是基于知识（模式）的检测方法，根据已知的入侵模式来检测入侵。</p>
+<p>基于标志的误用检测技术的核心是维护一个知识库。对于已知的攻击，它可以详细、准确的报告出攻击类型，但是对未知攻击却效果有限，而且知识库必须不断更新。</p>
+<p><strong>1）模式匹配方法</strong></p>
+<p>这是最基本、最简单的误用检测方法，它将已知的入侵特征转换为模式，存放在模式数据库中，在检测过程中将捕获的事件与模式数据库中的入侵模式进行匹配，若匹配成功则认为有入侵行为发生。</p>
+<p>入侵者通常会利用系统或网络中的弱点来实施攻击，而这些弱点可以被编成某种模式，形成一个模式库，如果入侵者的攻击方式正好能匹配上入侵检测系统中的模式库，那么就可以认为入侵行为发生。</p>
+<p>误用检测非常依赖于模式库，这个模式库是对误用行为的一个解释集，包含了大量对入侵指示器已知的具体行为的描述信息。</p>
+<p><strong>2）专家系统方法</strong></p>
+<p>基于专家系统的入侵检测方法是通过将安全专家的知识表示成IF-THEN规则，形成专家知识库，然后，运用推理算法进行检测入侵。</p>
+<p>编码规则说明攻击的必要条件作为IF的组成部分，当规则的左边的全部条件都满足时，规则的右边的动作才会执行。 </p>
+<p>入侵检测的开发者并不需要理解专家系统的内部功能和过程，但需要编写决定规则引擎和规则的代码，规则集的每条入侵检测规则都对应某个入侵脚本场景。</p>
+<p>从本质上说，专家系统方法是模式匹配方法的升级，在很多工业实践场景中，专家系统的IF-THEN规则，就是由模式匹配规则组成，也即所谓的”与或非组合模式匹配规则”，通过组合多个模式匹配规则，来获得单个模式匹配规则所无法取得的效果</p>
+<p><strong>3）状态迁移方法</strong></p>
+<p>状态转换方法使用系统状态和状态转换表达式描述和检测已知的入侵。</p>
+<p>状态状态分析由R.Kemmerer提出，即将状态转换图应用于入侵行为的分析。状态转换法将入侵过程看作是一个行为序列，这个行为序列使得系统由初始状态转入被入侵状态。</p>
+<p>分析时首先针对每一种入侵方法确定系统的初始状态和被入侵状态，以及导致状态转换的条件，即导致系统进入被入侵状态必须执行的操作（特征事件）。然后用状态转换图来表示每一个状态和特征事件，这些事件被集成于模型中，所以检测时不需要一个个地审计记录。</p>
+<p>但是，状态转换时针对事件序列分析，所以不善于分析复杂的事件，而且不能检测与系统状态无关的入侵。</p>
+<h3 id="2-异常检测"><a href="#2-异常检测" class="headerlink" title="2. 异常检测"></a>2. 异常检测</h3><p>异常检测（anormaly detection）是指根据非正常行为（系统或用户）和资源非正常使用情况检测出入侵行为。异常检测是一种基于行为的检测方法，它的通用性较强，可以检测出未知的攻击模式。</p>
+<p>异常检测的关键问题在于正常使用轮廓（profile）的建立以及如何利用该轮廓对当前的系统&#x2F;用户行为进行比较，从而判断出于正常轮廓的偏离程度。</p>
+<p><strong>1）基于统计的异常检测方法</strong></p>
+<p>统计方法首先给信息对象，针对这些信息对象，创建一个统计描述，统计正常使用时的一些测量属性，测量属性的平均值将被用来与网络、系统的行为进行比较，任何观察值在正常偏差之外时，就认为有入侵发生。其优点是可检测到未知的入侵和更为复杂的入侵，缺点是误报、漏报率高，且不适应用户正常行为的突然改变。</p>
+<p>基于统计的异常检测方法主要包括以下关键技术：</p>
+<ul>
+<li><p>选取合适的统计量：在入侵检测系统中，采用统计量描述系统和用户的行为，统计量也包括系统、主机、用户的信息，而且每种统计量的表达方式也不尽相同。选择能够明确表达入侵的统计量是十分重要的。</p>
+</li>
+<li><p>基于统计的入侵检测系统应该具有自学习和自适应能力：得到了系统信息元素的统计量之后，接下来的步骤就是确定当前系统运行轮廓，根据统计窗口的不同，可以分为两种思路</p>
+<ul>
+<li>单统计量窗口：不做任何统计量的聚合，将每一个统计量向量当成一个信息元素，在后续的异常判断阶段通过一个确定的阈值来判别异常</li>
+<li>多统计量窗口（即生成统计量之上的统计量）：设定一个滑动的窗口，对统计量再进行一次聚合，例如</li>
+</ul>
+</li>
+<li><p>统计数据的分析和入侵的判断：在选取合适的统计量之后，就要每隔一段时间对系统数据进行采样，同时分析该统计量的概率分布特性。将多个统计量联合分析，最终得出当前系统的评价值，当该评价值超过预设的阈值，就表明存在入侵行为。阈值的设定是非常重要的。</p>
+<ul>
+<li>阈值可以是根据历史信息、窗口统计信息动态自动生成的</li>
+<li>专家经验设定的阈值</li>
+</ul>
+</li>
+</ul>
+<p><strong>2）无监督异常检测方法</strong></p>
+<p>通过寻找与其他数据最不匹配的实例来检测出未标记测试数据的异常</p>
+<p><strong>3）监督式异常检测方法</strong></p>
+<p>需要一个已经被标记”正常”与”异常”的数据集，并涉及到训练分类器（与许多其他的统计分类问题的关键区别是异常检测的内在不均衡性）</p>
+<p><strong>4）半监督式异常检测方法</strong></p>
+<p>根据一个给定的正常训练数据集创建一个表示正常行为的模型，然后检测由学习模型生成的测试实例的可能性</p>
+<p><strong>异常检测算法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1. 基于贝叶斯推理检测法：是通过在任何给定的时刻，测量变量值，推理判断系统是否发生入侵事件。</span><br><span class="line"></span><br><span class="line">2. 基于特征选择检测法：指从一组度量中挑选出能检测入侵的度量，用它来对入侵行为进行预测或分类。</span><br><span class="line"></span><br><span class="line">3. 基于贝叶斯网络检测法：用图形方式表示随机变量之间的关系。通过指定的与邻接节点相关一个小的概率集来计算随机变量的联接概率分布。按给定全部节点组合，所有根节点的先验概率和非根节点概率构成这个集。贝叶斯网络是一个有向图，弧表示父、子结点之间的依赖关系。当随机变量的值变为已知时，就允许将它吸收为证据，为其他的剩余随机变量条件值判断提供计算框架。</span><br><span class="line"></span><br><span class="line">4. 基于模式预测的检测法：事件序列不是随机发生的而是遵循某种可辨别的模式是基于模式预测的异常检测法的假设条件，其特点是事件序列及相互联系被考虑到了，只关心少数相关安全事件是该检测法的最大优点。</span><br><span class="line"></span><br><span class="line">5. 基于统计的异常检测法：是根据用户对象的活动为每个用户都建立一个特征轮廓表，通过对当前特征与以前已经建立的特征进行比较，来判断当前行为的异常性。用户特征轮廓表要根据审计记录情况不断更新，其保护去多衡量指标，这些指标值要根据经验值或一段时间内的统计而得到。</span><br><span class="line"></span><br><span class="line">6. 基于机器学习检测法：是根据离散数据临时序列学习获得网络、系统和个体的行为特征，并提出了一个实例学习法IBL，IBL是基于相似度，该方法通过新的序列相似度计算将原始数据（如离散事件流和无序的记录）转化成可度量的空间。然后，应用IBL学习技术和一种新的基于序列的分类方法，发现异常类型事件，从而检测入侵行为。其中，成员分类的概率由阈值的选取来决定。</span><br><span class="line"></span><br><span class="line">7. 数据挖掘检测法：数据挖掘的目的是要从海量的数据中提取出有用的数据信息。网络中会有大量的审计记录存在，审计记录大多都是以文件形式存放的。如果靠手工方法来发现记录中的异常现象是远远不够的，所以将数据挖掘技术应用于入侵检测中，可以从审计数据中提取有用的知识，然后用这些知识区检测异常入侵和已知的入侵。采用的方法有KDD算法，其优点是善于处理大量数据的能力与数据关联分析的能力，但是实时性较差。</span><br><span class="line"></span><br><span class="line">8. 基于应用模式的异常检测法：该方法是根据服务请求类型、服务请求长度、服务请求包大小分布计算网络服务的异常值。通过实时计算的异常值和所训练的阈值比较，从而发现异常行为。</span><br><span class="line"></span><br><span class="line">9. 基于文本分类的异常检测法：该方法是将系统产生的进程调用集合转换为&quot;文档&quot;。利用K邻聚类文本分类算法，计算文档的相似性。</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-通用模型"><a href="#0x05-通用模型" class="headerlink" title="0x05 通用模型"></a>0x05 通用模型</h2><p>DARPA提出的CIDF（公共入侵检测框架）阐述了入侵检测的通用模型，CIDF是一套规范，它定义了IDS表达检测信息的标准语言以及IDS组件之间的通信协议。符合CIDF规范的IDS可以共享检测信息，相互通信，协同工作，还可以与其他系统配合实施统一的配置响应和恢复策略。</p>
+<p>CIDF的主要作用在于集成各种IDS使之协同工作，实现各IDS之间的组件重用，所以CIDF也是构建分布式IDS的基础。</p>
+<p>CIDF的规格文档由四部分组成，分别为：</p>
+<ul>
+<li>体系结构（the common intrusion detection framework architecture）：体系结构阐述了一个标准的IDS的通用模型</li>
+<li>规范语言（a common intrusion specification language）：规范语言定义了一个用来描述各种检测信息的标准语言</li>
+<li>内部通讯（communication in the common intrusion detection framework）：内部通讯定义了IDS组件之间进行通信的标准协议</li>
+<li>程序接口（common intrusion detection framework APIs）：程序接口提供了一套标准的应用程序接口（API函数）</li>
+</ul>
+<h3 id="1-CIDF体系结构"><a href="#1-CIDF体系结构" class="headerlink" title="1. CIDF体系结构"></a>1. CIDF体系结构</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/CIDF.png"></p>
+<p>CIDF的体系结构文档阐述了一个IDS的通用模型，它将一个IDS分为以下四个组件：</p>
+<ul>
+<li>事件产生器（event generators）</li>
+<li>事件分析器（event analyers）</li>
+<li>事件数据库（event databases）</li>
+<li>响应单元（response units）</li>
+</ul>
+<p><strong>1）事件产生器（event generators）</strong></p>
+<p>CIDF将IDS需要分析的数据统称为事件（event），它可以是基于网络的IDS从网络中提取的数据包，也可以是基于主机的IDS从系统日志等其他途径得到的数据信息。</p>
+<p>CIDF组件之间是以通用入侵检测对象（generalized intrusion detection objects，GIDO）的形式交换数据的，一个GIDO可以表示在一些特定时刻发生的一些特定事件，也可以表示从一系列事件中得出的一些结论，还可以表示执行某个行动的指令。</p>
+<p>CIDF中的事件产生器负责从整个计算环境中获取事件，但它并不处理这些事件，而是将事件转化为GIDO标准格式提交给其他组件使用，显然事件产生器是所有IDS所需要的，同时也是可以重用的。</p>
+<p><strong>2）事件分析器（event analyers）</strong></p>
+<p>CIDF中的事件分析器接收GIDO，并分析他们，然后以一个新的GIDO形式返回分析结果。</p>
+<p><strong>3）事件数据库（event databases）</strong></p>
+<p>CIDF中的事件数据库负责CIDO的存储，它可以是复杂的数据库，也可以是简单的文本文件。</p>
+<p><strong>4）响应单元（response units）</strong></p>
+<p>CIDF中的响应单元根据CIDO做出反应，它可以是终止进程、切断连接、改变文件属性，也可以只是简单的报警。</p>
+<h3 id="2-CIDF规范语言"><a href="#2-CIDF规范语言" class="headerlink" title="2. CIDF规范语言"></a>2. CIDF规范语言</h3><p>CIDF的规范语言文档定义了一个公共入侵标准语言（Common intrusion specification language，CISL），各IDS使用统一的CISL来表示原始事件信息、分析结果和响应指令，从而建立了IDS之前信息共享的基础。CISL是CIDF的最核心也是最重要的内容。</p>
+<h3 id="3-CIDF内部通讯"><a href="#3-CIDF内部通讯" class="headerlink" title="3. CIDF内部通讯"></a>3. CIDF内部通讯</h3><p>CIDF将各组件之间的通信划分为三个层次结构：</p>
+<ul>
+<li>GIDO层（GIDO layer）：GIDO层负责对传输信息的格式化（例如标准json结构体），正是因为有了GIDO这种统一的信息表达格式，才使得各个IDS之间的互操作成为可能</li>
+<li>消息层（Message layer）：消息层负责对传输的信息进行加密认证，然后将其可靠地从源传输到目的地。消息层不关心传输的内容，它只负责建立一个可靠的传输通道</li>
+<li>传输层（Negotiated Transport layer）：不属于CIDF规范，可以采用很多现有的传输机制来实现</li>
+</ul>
+<h3 id="4-CIDF程序接口"><a href="#4-CIDF程序接口" class="headerlink" title="4. CIDF程序接口"></a>4. CIDF程序接口</h3><p>CIDF也对各组件之间的信息传递格式、通信方法和标准API进行了标准化。在现有的IDS中，经常用数据采集部分、分析部分、响应部分和日志来分别代替事件产生器、事件分析器、响应单元和事件数据库这些术语。 </p>
+<h2 id="0x06-评价指标"><a href="#0x06-评价指标" class="headerlink" title="0x06 评价指标"></a>0x06 评价指标</h2><p>入侵检测系统通过如下指标进行评价：</p>
+<ul>
+<li>准确性：指系统正确识别入侵行为的能力，通过误报率和漏报率进行评估。</li>
+<li>可靠性：指系统的容错能力和可持续运行能力；</li>
+<li>可用性：指系统开销大小，对网络性能影响的大小；</li>
+<li>适用性：指系统应对不同安全场景是否适用;</li>
+<li>实时性：指系统能够及早发现入侵企图；</li>
+<li>可测试，指系统能够通过模拟攻击进行检测测试；</li>
+<li>安全性：指系统可确保自身的安全。</li>
+</ul>
+<p>准确性主要通过误报率和漏报率进行评估，误报率和漏报率是衡量入侵检测系统效率的两个重要指标。</p>
+<p>误报率（False Positive Rate ，FPR）的计算公式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FPR = FP / N</span><br></pre></td></tr></table></figure>
+
+<p>漏报率（False Negative Rate ，FNR)的计算公式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FNR = FN / N</span><br></pre></td></tr></table></figure>
+
+<p>其中，N 是警报总数，FP 是误报事件总数，FN 为漏报事件总数。理想的入侵检测系统的评估结果是误报率 FPR&#x3D;0 且漏报率 FNR&#x3D;0，但实际上误报率和漏报率常常成反比。</p>
+<p>使用上述指标可以对误用检测和异常检测两种模型进行比较：</p>
+<table>
+<thead>
+<tr>
+<th align="left">指标</th>
+<th align="left">误用检测</th>
+<th align="left">异常检测</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">准确性</td>
+<td align="left">漏报率较高</td>
+<td align="left">误报率较高</td>
+</tr>
+<tr>
+<td align="left">可靠性</td>
+<td align="left">较稳定</td>
+<td align="left">不稳定</td>
+</tr>
+<tr>
+<td align="left">可用性</td>
+<td align="left">较高</td>
+<td align="left">较低</td>
+</tr>
+<tr>
+<td align="left">可测试</td>
+<td align="left">测试结果较稳定</td>
+<td align="left">测试结果波动较大</td>
+</tr>
+<tr>
+<td align="left">适应性</td>
+<td align="left">较弱（难以检测未知攻击）</td>
+<td align="left">较强</td>
+</tr>
+<tr>
+<td align="left">实时性</td>
+<td align="left">延时较小</td>
+<td align="left">易造成延时</td>
+</tr>
+</tbody></table>
+<h2 id="0xFF-Reference"><a href="#0xFF-Reference" class="headerlink" title="0xFF Reference"></a>0xFF Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://insecure.org/stf/secnet_ids/secnet_ids.html">https://insecure.org/stf/secnet_ids/secnet_ids.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://csrc.nist.gov/csrc/media/publications/conference-paper/1998/10/08/proceedings-of-the-21st-nissc-1998/documents/early-cs-papers/ande80.pdf">Computer Security Threat Monitoring and Surveillance</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cs.unc.edu/~fabian/course_papers/PtacekNewsham98.pdf">Insertion, Evasion, and Denial of Service: Eluding Network Intrusion Detection</a></li>
+<li><a target="_blank" rel="noopener" href="https://eprints.whiterose.ac.uk/767/1/">A survey of outlier detection methodologies</a></li>
+<li><a target="_blank" rel="noopener" href="https://gost.isi.edu/cidf/">https://gost.isi.edu/cidf/</a></li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/wg/cidf/about/">https://datatracker.ietf.org/wg/cidf/about/</a></li>
+<li><a target="_blank" rel="noopener" href="https://sites.google.com/site/pcsjunteam/references/di11zhang-ru-qin-jian-ce">https://sites.google.com/site/pcsjunteam/references/di11zhang-ru-qin-jian-ce</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.pkuexploit.com/files/paper9.pdf">http://www.pkuexploit.com/files/paper9.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/p/12322437.html">https://www.cnblogs.com/LittleHann/p/12322437.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Intrusion_detection_system">https://en.wikipedia.org/wiki/Intrusion_detection_system</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Intrusion-Detection/" rel="tag" <i class="fa fa-tag"></i> Intrusion Detection</a>
+              <a href="/tags/CIDF/" rel="tag" <i class="fa fa-tag"></i> CIDF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/50959/" rel="prev" title="服务渗透指北">
+                  <i class="fa fa-chevron-left"></i> 服务渗透指北
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/11235/" rel="next" title="HIDS建设经验总结">
+                  HIDS建设经验总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
