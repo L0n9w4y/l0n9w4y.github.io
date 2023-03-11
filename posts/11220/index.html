@@ -25,13 +25,13 @@
 
     <meta name="description" content="OWASP Top 10 漏洞指南简要记录...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OWASP TOP 10 漏洞指南">
+<meta property="og:title" content="OWASP TOP 10 漏洞详解">
 <meta property="og:url" content="https://l0n9w4y.cc/posts/11220/index.html">
 <meta property="og:site_name" content="L0n9w4y">
 <meta property="og:description" content="OWASP Top 10 漏洞指南简要记录...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-04-23T12:38:23.000Z">
-<meta property="article:modified_time" content="2022-12-21T01:42:42.218Z">
+<meta property="article:modified_time" content="2023-03-11T11:41:54.514Z">
 <meta property="article:author" content="L0n9w4y">
 <meta property="article:tag" content="Vulnerability">
 <meta property="article:tag" content="OWASP">
@@ -42,10 +42,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/11220/","path":"posts/11220/","title":"OWASP TOP 10 漏洞指南"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/11220/","path":"posts/11220/","title":"OWASP TOP 10 漏洞详解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>OWASP TOP 10 漏洞指南 | L0n9w4y</title>
+<title>OWASP TOP 10 漏洞详解 | L0n9w4y</title>
   
 
 
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%B3%A8%E5%85%A5"><span class="nav-text">0x01 注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="nav-text">1. 注入点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%A4%B1%E6%95%88%E7%9A%84%E8%BA%AB%E4%BB%BD%E6%8E%A7%E5%88%B6"><span class="nav-text">0x02 失效的身份控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-1"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-1"><span class="nav-text">3. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF"><span class="nav-text">4. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2"><span class="nav-text">0x03 敏感数据泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%94%BB%E5%87%BB%E5%90%91%E9%87%8F"><span class="nav-text">1. 攻击向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%84%86%E5%BC%B1%E7%82%B9"><span class="nav-text">2. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-2"><span class="nav-text">3. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF-1"><span class="nav-text">4. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-XML-%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%EF%BC%88XXE%EF%BC%89"><span class="nav-text">0x04 XML 外部实体（XXE）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-1"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-2"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-3"><span class="nav-text">3. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF-2"><span class="nav-text">4. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E5%A4%B1%E6%95%88%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-text">0x05 失效的访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-2"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-3"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-4"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="nav-text">0x06 安全配置错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-3"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-text">2. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF"><span class="nav-text">3. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%EF%BC%88XSS%EF%BC%89"><span class="nav-text">0x07 跨站脚本（XSS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-XSS%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. XSS类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-4"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-5"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">0x08 不安全的反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-4"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-1"><span class="nav-text">2. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF-1"><span class="nav-text">3. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E4%BD%BF%E7%94%A8%E5%90%AB%E6%9C%89%E5%B7%B2%E7%9F%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-text">0x09 使用含有已知漏洞的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-5"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-2"><span class="nav-text">2. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E4%B8%8D%E8%B6%B3%E7%9A%84%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E6%8E%A7"><span class="nav-text">0x0A 不足的日志记录和监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-6"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-3"><span class="nav-text">2. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%BC%8F%E6%B4%9E%E7%AE%80%E8%BF%B0"><span class="nav-text">0x00 漏洞简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%B3%A8%E5%85%A5"><span class="nav-text">0x01 注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="nav-text">1. 注入点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%BB%95%E8%BF%87%E5%A7%BF%E5%8A%BF"><span class="nav-text">3. 绕过姿势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-text">4. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%A4%B1%E6%95%88%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%92%8C%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="nav-text">0x02 失效的身份认证和会话管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-1"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2"><span class="nav-text">0x03 敏感数据泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0"><span class="nav-text">1. 漏洞成因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%84%86%E5%BC%B1%E7%82%B9"><span class="nav-text">2. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-1"><span class="nav-text">3. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF"><span class="nav-text">4. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-XML-%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%EF%BC%88XXE%EF%BC%89"><span class="nav-text">0x04 XML 外部实体（XXE）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%BA%E7%8E%B0%E5%9C%BA%E6%99%AF"><span class="nav-text">1. 出现场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-2"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-text">3. 攻击方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-2"><span class="nav-text">3. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF-1"><span class="nav-text">4. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E5%A4%B1%E6%95%88%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-text">0x05 失效的访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-1"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-3"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-3"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="nav-text">0x06 安全配置错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-2"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-text">2. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF"><span class="nav-text">3. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%EF%BC%88XSS%EF%BC%89"><span class="nav-text">0x07 跨站脚本（XSS）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-XSS%E7%B1%BB%E5%9E%8B"><span class="nav-text">1. XSS类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BD%B1%E5%93%8D%E5%8D%B1%E5%AE%B3-4"><span class="nav-text">2. 影响危害</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-4"><span class="nav-text">3. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">0x08 不安全的反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-3"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-1"><span class="nav-text">2. 防御措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%94%BB%E5%87%BB%E5%9C%BA%E6%99%AF-1"><span class="nav-text">3. 攻击场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E4%BD%BF%E7%94%A8%E5%90%AB%E6%9C%89%E5%B7%B2%E7%9F%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-text">0x09 使用含有已知漏洞的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-4"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-2"><span class="nav-text">2. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0A-%E4%B8%8D%E8%B6%B3%E7%9A%84%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E6%8E%A7"><span class="nav-text">0x0A 不足的日志记录和监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%84%86%E5%BC%B1%E7%82%B9-5"><span class="nav-text">1. 脆弱点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD-3"><span class="nav-text">2. 防御措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-Reference"><span class="nav-text">0xFF Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -211,12 +211,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="OWASP TOP 10 漏洞指南 | L0n9w4y">
+      <meta itemprop="name" content="OWASP TOP 10 漏洞详解 | L0n9w4y">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OWASP TOP 10 漏洞指南
+          OWASP TOP 10 漏洞详解
         </h1>
 
         <div class="post-meta-container">
@@ -253,7 +253,29 @@
 
 <span id="more"></span>
 
-<h2 id="0x01-注入"><a href="#0x01-注入" class="headerlink" title="0x01 注入"></a>0x01 注入</h2><p>将不受信任的数据作为命令或查询的一部分发送到解析器时，会产生诸如SQL注入、NoSQL注入、OS注入和LDAP注入的注入缺陷。攻击者的恶意数据可以诱使解析器在没有适当授权的情况下执行非预期命令或访问数据。</p>
+<h2 id="0x00-漏洞简述"><a href="#0x00-漏洞简述" class="headerlink" title="0x00 漏洞简述"></a>0x00 漏洞简述</h2><ol>
+<li><p>注入攻击（Injection）：注入攻击是一种通过输入非法字符或者数据来欺骗程序自行执行恶意代码或者命令的攻击方式。最常见的注入攻击是 SQL 注入攻击和 OS 命令注入攻击。</p>
+</li>
+<li><p>失效的身份认证和会话管理（Broken Authentication and Session Management）：该漏洞主要是指应用程序中身份认证和会话管理方案的设计不够严密，导致攻击者可以盗取用户的身份凭证，包括用户名、密码、会话ID等，从而获取用户的权限。</p>
+</li>
+<li><p>敏感数据泄露（Sensitive Data Exposure）：该漏洞主要是指应用程序未能保护存储在数据库中的敏感数据，如信用卡号码、密码等，这些数据被攻击者盗取后可能会导致用户隐私泄露。</p>
+</li>
+<li><p>XML外部实体注入漏洞（XML External Entities, XXE）：XML外部实体注入漏洞是一种基于XML解析器的漏洞，攻击者可以通过注入恶意实体来读取文件、执行命令等，最终导致应用程序的机密数据泄露。</p>
+</li>
+<li><p>失效的访问控制（Broken Access Control）：失效的访问控制指应用程序中对资源的访问控制机制存在缺陷，攻击者可以通过暴力破解、会话劫持、参数篡改等方式绕过访问控制机制，访问未授权的资源。</p>
+</li>
+<li><p>安全配置错误（Security Misconfiguration）：安全配置错误指应用程序的安全配置不当，比如不安全的默认设置、过度授权等，导致攻击者可以通过轻松的方式获取系统的权限和机密数据。</p>
+</li>
+<li><p>跨站脚本攻击（XSS）：跨站脚本攻击是一种利用 Web 页面脚本漏洞实施的攻击，攻击者可以通过注入脚本代码，例如恶意 JavaScript 脚本等，来盗取用户的身份信息或者在用户的浏览器中执行恶意代码。</p>
+</li>
+<li><p>不安全的反序列化（Insecure Deserialization）：反序列化是将序列化后的对象还原成原始对象的过程。不安全的反序列化攻击是一种通过篡改序列化数据来执行任意代码的攻击。攻击者可以在序列化数据中注入恶意数据，当反序列化时，这些恶意数据会被解析并执行。</p>
+</li>
+<li><p>使用含有已知漏洞的组件（Using Components with Known Vulnerabilities）：许多 Web 应用程序使用第三方组件和库来实现特定功能，如图像处理、邮件发送等。如果这些组件和库存在已知漏洞，攻击者可以利用这些漏洞来攻击应用程序。</p>
+</li>
+<li><p>不足的日志记录和监控（Insufficient Logging and Monitoring）：不足的日志记录和监控使得应用程序很难检测和响应攻击事件。攻击者可以通过绕过日志记录、擦除日志等方式来隐藏攻击痕迹，从而逃避检测和追踪。</p>
+</li>
+</ol>
+<h2 id="0x01-注入"><a href="#0x01-注入" class="headerlink" title="0x01 注入"></a>0x01 注入</h2><p><strong>原理：</strong> 注入攻击（Injection）是一种利用应用程序的输入验证不严格或缺乏输入验证机制，从而允许攻击者通过构造恶意输入，将恶意代码或命令注入到应用程序的后台数据库或操作系统中，访问敏感数据甚至获取系统权限。</p>
 <h3 id="1-注入点"><a href="#1-注入点" class="headerlink" title="1. 注入点"></a>1. 注入点</h3><p>当应用在如下时点时，是脆弱的并易受到攻击：</p>
 <ul>
 <li>用户提供的数据没有经过应用程序的验证、过滤或净化。</li>
@@ -263,19 +285,72 @@
 </ul>
 <p>注入漏洞通常能在SQL、LDAP、XPath或是NoSQL查询语句、OS命令、XML解析器、SMTP包头、表达式语句及ORM查询语句中找到。</p>
 <p>一些常见的注入，包括：SQL、OS命令、ORM、LDAP和表达式语言（EL）或OGNL注入。</p>
-<h3 id="2-影响危害"><a href="#2-影响危害" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>注入能导致数据丢失、破坏或泄露给无授权方，缺乏可审计性或是拒绝服务。注入有时甚至能导致主机被完全接管</p>
-<h3 id="3-防御措施"><a href="#3-防御措施" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>防止注入漏洞需要将数据与命令语句、查询语句分隔开来。</p>
+<p><strong>注入类型</strong></p>
 <ul>
-<li><p>最佳选择是使用安全的API，完全避免使用解释器，或提供参数化界面的接口，或迁移到ORM或实体框架。<br>注意：当参数化时，存储过程仍然可以引入SQL注入，如果PL&#x2F;SQL或T-SQL将查询和数据连接在一起，或者执行带有立即执行或exec()的恶意数据。</p>
+<li><p>SQL 注入攻击：攻击者通过在 SQL 查询语句中注入恶意代码，从而获取数据库中的机密数据或者控制数据库的操作。例如，攻击者可以通过在用户名或密码输入框中输入 ‘ or ‘1’&#x3D;’1 这样的语句，绕过验证，获取所有用户信息的权限。</p>
 </li>
-<li><p>使用正确的或”白名单”的具有恰当规范化的输入验证方法同样会有助于防止注入攻击，但这不是一个完整的防御，因为许多应用程序在输入中需要特殊字符，例如文本区域或移动应用程序的API。</p>
+<li><p>OS 命令注入攻击：攻击者通过在应用程序的命令行参数中注入恶意代码，执行任意的操作，例如上传或者下载文件，执行系统命令等。例如，攻击者可以在应用程序的搜索框中输入 &amp;&amp; ls，来执行系统命令 ls 并列出文件列表。</p>
 </li>
-<li><p>对于任何剩余的动态查询，可以使用该解释器的特定转义语法转义特殊字符。OWASP的Java Encoder和类似的库提供了这样的转义例程。<br>注意：SQL结构，比如：表名、列名等无法转义，因此用户提供的结构名是非常危险的。这是编写软件中的一个常见问题。</p>
+<li><p>LDAP 注入攻击：攻击者通过在 LDAP 查询语句中注入恶意代码，从而获取目录服务器中的机密数据或者控制服务器的操作。例如，攻击者可以通过在用户名或密码输入框中输入 <code>)(&amp;(objectClass=))</code> 这样的语句，获取所有用户信息的权限。</p>
 </li>
-<li><p>在查询中使用LIMIT和其他SQL控件，以防止在SQL注入时大量地泄露记录。</p>
+<li><p>ORM注入攻击：ORM (Object-Relational Mapping) 是一种编程技术，用于将关系数据库中的数据转换为面向对象的编程语言中的对象。ORM 注入是指攻击者利用不当使用ORM的漏洞，向ORM框架注入恶意代码来获取或者篡改数据。</p>
+</li>
+<li><p>表达式语言（EL）或OGNL注入：表达式语言（EL）和OGNL (Object-Graph Navigation Language) 是一种用于在 Web 应用程序中动态执行表达式的语言。EL 和 OGNL 注入是指攻击者利用不当使用 EL 或 OGNL 的漏洞，向 Web 应用程序注入恶意代码来获取或篡改数据。</p>
+</li>
+<li><p>XPath 注入攻击：攻击者通过在 XML 数据中注入恶意代码，执行任意的操作，例如获取机密数据或者控制系统。例如，攻击者可以通过在搜索框中输入 ‘ or 1&#x3D;1 or ‘a’&#x3D;’a，来绕过验证并获取所有用户信息。</p>
+</li>
+<li><p>CRLF注入：CRLF注入攻击是通过在HTTP头中注入CRLF字符（Carriage Return和Line Feed），从而实现在Web应用程序中执行任意操作的攻击。</p>
 </li>
 </ul>
-<h2 id="0x02-失效的身份控制"><a href="#0x02-失效的身份控制" class="headerlink" title="0x02 失效的身份控制"></a>0x02 失效的身份控制</h2><p>通常，通过错误使用应用程序的身份认证和会话管理功能，攻击者能够破译密码、密钥或会话令牌，或者利用其它开发缺陷来暂时性或永久性冒充其他用户的身份。</p>
+<p><strong>注入点</strong></p>
+<ul>
+<li><p>用户输入参数：包括用户名、密码、搜索查询、表单字段等。</p>
+</li>
+<li><p>HTTP 请求头：包括 Cookie、Referer 等。</p>
+</li>
+<li><p>SQL 语句参数：应用程序中直接使用用户输入的参数构建 SQL 语句。</p>
+</li>
+<li><p>LDAP 查询参数：应用程序中直接使用用户输入的参数构建 LDAP 查询语句。</p>
+</li>
+<li><p>操作系统命令参数：应用程序中直接使用用户输入的参数构建操作系统命令。</p>
+</li>
+<li><p>Cookie：如果攻击者能够注入Cookie值，就能够伪造用户身份并执行恶意操作。</p>
+</li>
+</ul>
+<h3 id="2-影响危害"><a href="#2-影响危害" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>注入能导致数据丢失、破坏或泄露给无授权方，缺乏可审计性或是拒绝服务。注入有时甚至能导致主机被完全接管。</p>
+<h3 id="3-绕过姿势"><a href="#3-绕过姿势" class="headerlink" title="3. 绕过姿势"></a>3. 绕过姿势</h3><ul>
+<li><p>使用编码绕过：攻击者使用特殊的编码方式对注入载荷进行编码，使得它可以绕过输入验证和过滤机制。例如，将特殊字符编码成十六进制或Unicode编码。</p>
+</li>
+<li><p>使用注释符绕过：攻击者可以使用注释符（例如 “–”）将载荷分成两部分，注释符后面的部分可以被忽略，这样就可以绕过输入验证和过滤机制。</p>
+</li>
+<li><p>使用空格绕过：攻击者可以在注入载荷中使用空格，从而使得输入验证和过滤机制无法识别注入载荷的存在。</p>
+</li>
+<li><p>混淆语句结构绕过：攻击者可以使用特殊的语句结构和关键字组合，使得注入语句可以绕过输入验证和过滤机制，例如使用UNION SELECT语句，或者使用特殊的MySQL函数等。</p>
+</li>
+<li><p>使用时间延迟绕过：攻击者可以在注入语句中使用时间延迟函数，使得注入语句的执行时间变长，从而绕过输入验证和过滤机制。</p>
+</li>
+<li><p>使用多重查询绕过：攻击者可以在注入语句中使用多重查询，使得注入语句可以绕过输入验证和过滤机制。</p>
+</li>
+<li><p>使用分段绕过：攻击者可以将攻击载荷分成多个片段，每个片段都可以通过WAF的检测，然后再将它们组合起来执行攻击。</p>
+</li>
+<li><p>使用代理绕过：攻击者可以使用代理服务器来转发攻击请求，以绕过WAF的检测。</p>
+</li>
+</ul>
+<h3 id="4-防御措施"><a href="#4-防御措施" class="headerlink" title="4. 防御措施"></a>4. 防御措施</h3><ul>
+<li><p>使用参数化查询或预处理语句：在编写 SQL 查询语句时，应该使用参数化查询或预处理语句来减少 SQL 注入的风险。</p>
+</li>
+<li><p>验证与过滤用户输入：在接受和处理用户输入数据时，需要对数据进行过滤和验证，以确保输入数据符合预期的格式和类型，并不包含任何恶意代码。</p>
+</li>
+<li><p>限制数据库用户权限：应该将数据库用户的权限最小化，只赋予其必要的权限，以限制注入攻击的危害范围。</p>
+</li>
+<li><p>最小化信息泄露：系统应该尽可能减少对攻击者有用的错误信息和调试信息的泄露，例如，错误消息应该尽可能不包含敏感信息。</p>
+</li>
+<li><p>使用最新版本的软件和框架：使用最新版本的软件和框架可以减少已知漏洞的风险。</p>
+</li>
+<li><p>加强敏感数据保护：对于敏感数据，采用加密、隔离等措施，确保数据的机密性和完整性。</p>
+</li>
+</ul>
+<h2 id="0x02-失效的身份认证和会话管理"><a href="#0x02-失效的身份认证和会话管理" class="headerlink" title="0x02 失效的身份认证和会话管理"></a>0x02 失效的身份认证和会话管理</h2><p>原理：攻击者利用系统中存在的安全漏洞，绕过或破解身份认证或会话管理机制，从而获得未经授权的访问或操作权限。</p>
 <h3 id="1-脆弱点"><a href="#1-脆弱点" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>如果您的应用程序存在如下问题，那么可能存在身份验证的脆弱性：</p>
 <ul>
 <li>允许凭证填充，这使得攻击者获得有效用户名和密码的列表。</li>
@@ -288,26 +363,51 @@
 <li>在成功登录后不会更新会话ID。</li>
 <li>不正确地使会话ID失效。当用户不活跃的时候，用户会话或认证令牌（特别是单点登录（SSO）令牌）没有正确注销或失效。</li>
 </ul>
-<h3 id="2-影响危害-1"><a href="#2-影响危害-1" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>攻击者可以获得数百万的有效用户名和密码组合，包括证书填充、默认的管理帐户列表、自动的暴力破解和字典攻击工具，以及高级的GPU破解工具。</p>
-<p>攻击者只需要访问几个帐户，或者只需要一个管理员帐户就可以破坏我们的系统。根据应用程序领域的不同，可能会导致放任洗钱、社会安全欺诈以及用户身份盗窃、泄露法律高度保护的敏感信息。</p>
-<h3 id="3-防御措施-1"><a href="#3-防御措施-1" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>在可能的情况下，实现多因素身份验证，以防止自动、凭证填充、暴力破解和被盗凭据再利用攻击。</p>
+<h3 id="2-影响危害-1"><a href="#2-影响危害-1" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>失效的身份认证和会话管理漏洞可能导致攻击者窃取用户身份、越权访问、篡改数据等严重后果。</p>
 <ul>
-<li>不要使用发送或部署默认的凭证，特别是管理员用户。</li>
-<li>执行弱密码检查，例如测试新或变更的密码，以纠正”排名前10000个弱密码” 列表。</li>
-<li>将密码长度、复杂性和循环策略与现代的基于证据的密码策略相一致。</li>
-<li>确认注册、凭据恢复和API路径，通过对所有输出结果使用相同的消息，用以抵御账户枚举攻击。</li>
-<li>限制或逐渐延迟失败的登录尝试。记录所有失败信息并在凭据填充、暴力破解或其他攻击被检测时提醒管理员。</li>
-<li>使用服务器端安全的内置会话管理器，在登录后生成高度复杂的新随机会话ID。会话ID不能在URL中，可以安全地存储和当登出、闲置、绝对超时后使其失效。</li>
+<li><p>身份验证绕过：攻击者可以使用无效的身份验证绕过身份验证机制，获得未授权的访问权限。</p>
+</li>
+<li><p>帐户劫持：攻击者可以通过会话劫持或会话固定攻击获取已认证用户的会话令牌，并利用该令牌访问用户帐户。</p>
+</li>
+<li><p>数据泄露：攻击者可以访问未经授权的数据，例如，用户凭据、敏感数据和客户机存储的信息等。</p>
+</li>
+<li><p>篡改数据：攻击者可以使用劫持的会话令牌篡改数据，例如修改个人资料、更改密码等。</p>
+</li>
+<li><p>恶意用户假冒：攻击者可以使用劫持的会话令牌冒充认证用户，执行各种恶意操作，例如转移资金或修改订单等。</p>
+</li>
+<li><p>泄露机密数据：攻击者可以利用受攻击的会话绕过访问控制机制，访问敏感数据或机密信息。</p>
+</li>
 </ul>
-<h3 id="4-攻击场景"><a href="#4-攻击场景" class="headerlink" title="4. 攻击场景"></a>4. 攻击场景</h3><p><strong>场景一</strong></p>
-<p>凭证填充，使用已知密码的列表，是常见的攻击。如果应用程序不限制身份验证尝试，则可以将应用程序用作密码oracle，以确定凭证是否有效。</p>
-<p><strong>场景二</strong></p>
-<p>大多数身份验证攻击都是由于使用密码作为唯一的因素。依据最佳实践，最新的密码轮换和复杂性要求鼓励用户使用、重用以及重用弱密码。建议组织在NIST-800-63中停止这些实践，并使用多因素身份验证。</p>
-<p><strong>场景三</strong></p>
-<p>应用会话超时设置不正确。用户使用公共计算机访问应用程序。用户直接关闭浏览器选项卡就离开，而不是选择”注销”。攻击者一小时后使用同一个浏览器浏览网页，而当前用户状态仍然是经过身份验证的。</p>
-<h2 id="0x03-敏感数据泄露"><a href="#0x03-敏感数据泄露" class="headerlink" title="0x03 敏感数据泄露"></a>0x03 敏感数据泄露</h2><p>许多Web应用程序和API都无法正确保护敏感数据，例如：财务数据、医疗数据和PII数据。攻击者可以通过窃取或修改未加密的数据来实施信用卡诈骗、身份盗窃或其他犯罪行为。未加密的敏感数据容易受到破坏，因此，我们需要对敏感数据加密，这些数据包括：传输过程中的数据、存储的数据以及浏览器的交互数据。</p>
-<h3 id="1-攻击向量"><a href="#1-攻击向量" class="headerlink" title="1. 攻击向量"></a>1. 攻击向量</h3><p>攻击者不是直接攻击密码，而是在传输过程中或从客户端（例如：浏览器）窃取密钥、发起中间人攻击，或从服务器端窃取明文数据。</p>
-<p>最常见的漏洞是不对敏感信息进行加密。在数据加密过程中，常见的问题是不安全的密钥生成和管理以及使用弱加密算法、弱协议和弱密码。特别是使用弱的哈希算法来保护密码。</p>
+<h3 id="3-防御措施"><a href="#3-防御措施" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>在可能的情况下，实现多因素身份验证，以防止自动、凭证填充、暴力破解和被盗凭据再利用攻击。</p>
+<ul>
+<li><p>使用强密码：强密码包括大小写字母、数字和特殊字符，避免使用易于猜测的密码，比如生日、常用数字、常见单词等。</p>
+</li>
+<li><p>实施多重身份验证：使用多因素身份验证可以提高系统的安全性，例如使用短信验证码、动态口令令牌等。</p>
+</li>
+<li><p>禁止使用默认密码：在部署新系统时，需要修改默认密码，否则可能被攻击者轻易破解。</p>
+</li>
+<li><p>限制登录尝试次数：在系统中设置登录失败次数限制，过多的失败尝试将锁定账号或者增加等待时间，以减少暴力破解的风险。</p>
+</li>
+<li><p>定期更新和轮换密码：对于敏感账号或者管理账号，建议定期更新和轮换密码，避免长期使用同一密码。</p>
+</li>
+<li><p>增强会话安全性：使用HTTPS协议传输会话数据，避免使用HTTP明文传输，同时确保会话仅在必要时才处于活动状态，并在会话过期后自动注销。</p>
+</li>
+<li><p>避免暴露会话ID：不要在URL中明文传递会话ID，因为URL可能会被攻击者窃取或者劫持。</p>
+</li>
+<li><p>在服务器端验证用户输入：始终在服务器端对用户输入进行验证和过滤，以确保输入的安全性。</p>
+</li>
+</ul>
+<h2 id="0x03-敏感数据泄露"><a href="#0x03-敏感数据泄露" class="headerlink" title="0x03 敏感数据泄露"></a>0x03 敏感数据泄露</h2><p>敏感数据泄露（Sensitive Data Exposure）漏洞指的是应用程序中存储的敏感数据没有得到足够的保护，导致攻击者非法获取这些敏感数据。敏感数据通常包括个人身份信息、财务信息、医疗记录等，如果这些数据被窃取，会造成严重的隐私泄露和经济损失。</p>
+<h3 id="1-漏洞成因"><a href="#1-漏洞成因" class="headerlink" title="1. 漏洞成因"></a>1. 漏洞成因</h3><ul>
+<li><p>加密不足：数据在传输或存储时未经加密或者加密方式不够强健，导致数据容易被窃取或者破解。</p>
+</li>
+<li><p>不安全的存储：应用程序将敏感数据存储在不安全的地方，如明文存储在数据库中、存储在可被公开访问的文件中等，使得攻击者可以轻松获取这些数据。</p>
+</li>
+<li><p>不安全的传输：应用程序在传输敏感数据时未经加密，使得攻击者可以通过网络嗅探等方式获取这些数据。</p>
+</li>
+<li><p>未及时更新软件或补丁：应用程序或相关组件存在漏洞时，攻击者可以利用这些漏洞来获取敏感数据。</p>
+</li>
+</ul>
 <h3 id="2-脆弱点"><a href="#2-脆弱点" class="headerlink" title="2. 脆弱点"></a>2. 脆弱点</h3><p>首先需要确认的是哪些数据是敏感数据（包含：传输过程中的数据、存储数据）而需要被加密。例如：密码、信用卡卡号、医疗记录、个人信息应该被加密，特别是隐私法律或条例中规定需要加密的数据，如：欧盟《通用数据保护条例》（GDPR）、 属于”金融数据保护条例”的《支付卡行业数据安全标准》（PIC DSS）。对于这些数据，要确定：</p>
 <ul>
 <li>在数据传输过程中是否使用明文传输？这和传输协议相关，如：HTTP、SMTP和FTP。外部网络流量非常危险。验证所有的内部通信，如：负载平衡器、Web服务器或后端系统之间的通信。</li>
@@ -317,7 +417,7 @@
 <li>是否强制加密敏感数据，例如：用户代理（如：浏览器）指令和传输协议是否被加密？</li>
 <li>用户代理（如：应用程序、邮件客户端）是否未验证服务器端证书的有效性？</li>
 </ul>
-<h3 id="3-防御措施-2"><a href="#3-防御措施-2" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>对一些需要加密的敏感数据，应该做到以下几点：</p>
+<h3 id="3-防御措施-1"><a href="#3-防御措施-1" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>对一些需要加密的敏感数据，应该做到以下几点：</p>
 <ul>
 <li>对系统处理、存储或传输的数据分类，并根据分类进行访问控制。- 熟悉与敏感数据保护相关的法律和条例，并根据每项法规要求保护敏感数据。</li>
 <li>对于没必要存放的、重要的敏感数据，应当尽快清除，或者通过PCI DSS标记或拦截。未存储的数据不能被窃取。</li>
@@ -328,33 +428,57 @@
 <li>确保使用密码专用算法存储密码，如：Argon2 、 scrypt 、bcrypt 或者PBKDF2 。将工作因素（延迟因素）设置在可接受范围。</li>
 <li>单独验证每个安全配置项的有效性。</li>
 </ul>
-<h3 id="4-攻击场景-1"><a href="#4-攻击场景-1" class="headerlink" title="4. 攻击场景"></a>4. 攻击场景</h3><p><strong>场景一</strong></p>
+<h3 id="4-攻击场景"><a href="#4-攻击场景" class="headerlink" title="4. 攻击场景"></a>4. 攻击场景</h3><p><strong>场景一</strong></p>
 <p>一个应用程序使用自动化的数据加密系统加密信用卡信息，并存储在数据库中。但是，当数据被检索时被自动解密，这就使得SQL注入漏洞能够以明文形式获得所有信用卡卡号。</p>
 <p><strong>场景二</strong></p>
 <p>一个网站上对所有网页没有使用或强制使用TLS，或者使用弱加密。攻击者通过监测网络流量（如：不安全的无线网络），将网络连接从HTTPS降级到HTTP，就可以截取请求并窃取用户会话cookie。 之后，攻击者可以复制用户cookie并成功劫持经过认证的用户会话、访问或修改用户个人信息。除此之外，攻击者还可以更改所有传输过程中的数据，例如：转款的接接收者。</p>
 <p><strong>场景三</strong></p>
 <p>密码数据库使用未加盐的哈希算法或弱哈希算法去存储每个人的密码。一个文件上传漏洞使黑客能够获取密码文件。所有这些未加盐哈希的密码通过彩虹表暴力破解方式破解。 由简单或快速散列函数生成加盐的哈希，也可以通过GPU破解。</p>
-<h2 id="0x04-XML-外部实体（XXE）"><a href="#0x04-XML-外部实体（XXE）" class="headerlink" title="0x04 XML 外部实体（XXE）"></a>0x04 XML 外部实体（XXE）</h2><p>许多较早的或配置错误的XML处理器评估了XML文件中的外部实体引用。攻击者可以利用外部实体窃取使用URI文件处理器的内部文件和共享文件、监听内部扫描端口、执行远程代码和实施拒绝服务攻击。</p>
-<h3 id="1-脆弱点-1"><a href="#1-脆弱点-1" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>应用程序和特别是基于XML的Web服务或向下集成，可能在以下方面容易受到攻击：</p>
+<h2 id="0x04-XML-外部实体（XXE）"><a href="#0x04-XML-外部实体（XXE）" class="headerlink" title="0x04 XML 外部实体（XXE）"></a>0x04 XML 外部实体（XXE）</h2><p><strong>原理：</strong> 攻击者利用 XML 解析器的功能，通过在 XML 文档中插入恶意实体来触发漏洞。</p>
+<p>攻击者构造一个恶意XML文件，并将其提交到目标应用程序中进行解析。在解析过程中，攻击者在XML文档中注入一些恶意的实体和引用，利用这些实体和引用来读取文件、访问网络资源、执行系统命令等操作，从而导致敏感数据泄露、服务器被控制等危害。</p>
+<p><strong>成因：</strong> 在应用程序对XML文件进行解析时，没有对外部实体进行正确的限制或过滤。</p>
+<h3 id="1-出现场景"><a href="#1-出现场景" class="headerlink" title="1. 出现场景"></a>1. 出现场景</h3><p>应用程序和特别是基于XML的Web服务或向下集成，可能在以下方面容易受到攻击：</p>
 <ul>
-<li>您的应用程序直接接受XML文件或者接受XML文件上传，特别是来自不受信任源的文件，或者将不受信任的数据插入XML文件，并提交给XML处理器解析。</li>
-<li>在应用程序或基于Web服务的SOAP中，所有XML处理器都启用了文档类型定义（DTDs）。因为禁用DTD进程的确切机制因处理器而不同，更多资料请参考：《OWASP Cheat Sheet ‘XXE Prevention’ 》。</li>
-<li>如果为了实现安全性或单点登录（SSO），您的应用程序使用SAML进行身份认证。而SAML使用XML进行身份确认，那么您的应用程序就容易受到XXE攻击。</li>
-<li>如果您的应用程序使用第1.2版之前的SOAP，并将XML实体传递到SOAP框架，那么它可能受到XXE攻击。</li>
-<li>存在XXE缺陷的应用程序更容易受到拒绝服务攻击，包括：Billion Laughs 攻击。</li>
+<li>直接接受XML文件或上传XML文件，特别是来自不受信任的源。</li>
+<li>将不受信任的数据插入XML文件并提交给XML处理器解析。</li>
+<li>在应用程序或Web服务中，启用了文档类型定义（DTDs）并且处理器没有禁用DTDs。</li>
+<li>使用SAML进行身份认证时，由于SAML使用XML进行身份确认，因此容易受到XXE攻击。</li>
+<li>应用程序使用早于1.2版本的SOAP，并且将XML实体传递到SOAP框架。</li>
 </ul>
 <h3 id="2-影响危害-2"><a href="#2-影响危害-2" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>XXE缺陷可用于提取数据、执行远程服务器请求、扫描内部系统、执行拒绝服务攻击和其他攻击。业务影响取决于所有受影响的应用程序和数据保护需求。</p>
-<h3 id="3-防御措施-3"><a href="#3-防御措施-3" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>开发人员培训是识别和减少XXE缺陷的关键，此外，防止XXE 缺陷还需要：</p>
 <ul>
-<li>尽可能使用简单的数据格式（如：JSON），避免对敏感数据进行序列化。</li>
-<li>及时修复或更新应用程序或底层操作系统使用的所有XML处理器和库。同时，通过依赖项检测，将SOAP更新到1.2版本或更高版本。</li>
-<li>参考《 OWASP Cheat Sheet ‘XXE Prevention’ 》，在应用程序的所有XML解析器中禁用XML外部实体和DTD进程。</li>
-<li>在服务器端实施积极的（”白名单”）输入验证、过滤和清理，以防止在XML文档、标题或节点中出现恶意数据。</li>
-<li>验证XML或XSL文件上传功能是否使用XSD验证或其他类似验证方法来验证上传的XML文件。</li>
-<li>尽管在许多集成环境中，手动代码审查是大型、复杂应用程序的最佳选择，但是SAST 工具可以检测源代码中的XXE漏洞。</li>
-<li>如果无法实现这些控制，请考虑使用虚拟修复程序、API安全网关或Web应用程序防火墙（ WAF ）来检测、监控和防止XXE攻击。</li>
+<li><p>敏感数据泄露：攻击者可以读取服务器上的敏感数据并将其泄露给未授权的第三方。</p>
+</li>
+<li><p>拒绝服务攻击：攻击者可以通过恶意的XML文件来耗尽服务器的资源，导致服务不可用。</p>
+</li>
+<li><p>服务器被控制：攻击者可以通过注入恶意代码来控制服务器，并执行恶意操作，如删除、修改、上传等。</p>
+</li>
 </ul>
-<h3 id="4-攻击场景-2"><a href="#4-攻击场景-2" class="headerlink" title="4. 攻击场景"></a>4. 攻击场景</h3><p>大量XXE缺陷已经被发现并被公开，这些缺陷包括嵌入式设备的XXE缺陷。 XXE缺陷存在于许多意想不到的地方，这些地方包括深嵌套的依赖项。最简单的方法是上传可被接受的恶意XML文件：</p>
+<h3 id="3-攻击方式"><a href="#3-攻击方式" class="headerlink" title="3. 攻击方式"></a>3. 攻击方式</h3><p>XXE漏洞的攻击方式通常包括以下几种：</p>
+<ul>
+<li><p>基于响应的攻击（Response-based attacks）：攻击者将恶意代码嵌入XML文件中，然后将文件上传到目标网站。当目标网站对该XML文件进行解析时，攻击者可以通过观察响应内容（如错误信息、返回时间等）来判断攻击是否成功，并从中获取敏感信息。</p>
+</li>
+<li><p>盲注攻击（Blind XXE attacks）：攻击者通过在XML文件中插入恶意代码并请求目标网站解析该文件，然后观察目标网站的响应来判断攻击是否成功，并获取敏感信息。与基于响应的攻击不同的是，攻击者无法直接从响应中获得有用的信息，而需要进行多次请求和观察。</p>
+</li>
+<li><p>带外攻击（Out-of-Band XXE attacks）：攻击者通过在XML文件中插入恶意代码并请求目标网站解析该文件，然后触发目标网站向攻击者控制的外部服务器发送请求，从而将敏感信息泄漏到攻击者的服务器上。这种攻击方式通常用于绕过目标网站的防火墙或其他安全设施。</p>
+</li>
+<li><p>直接攻击（Direct XXE attacks）：攻击者直接向目标网站发送包含恶意代码的XML请求，从而触发目标网站解析该请求并执行其中的恶意代码。这种攻击方式通常需要攻击者事先获取目标网站的XML解析器的相关信息（如URL、参数等），因此相对较难实施。</p>
+</li>
+</ul>
+<h3 id="3-防御措施-2"><a href="#3-防御措施-2" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>开发人员培训是识别和减少XXE缺陷的关键，此外，防止XXE 缺陷还需要：</p>
+<ul>
+<li><p>禁用外部实体：禁用XML解析器中的外部实体可以有效防止XXE漏洞。对于一些语言和库，这可以通过设置特定选项或属性来实现。</p>
+</li>
+<li><p>白名单过滤输入数据：应用程序应该只接受预期格式的XML数据，并根据需要实现白名单过滤。可以在输入数据中排除任何不必要的元素，以减少攻击面。</p>
+</li>
+<li><p>使用最新版本的XML解析器和库：XML解析器和库的最新版本通常包含对XXE漏洞的修复和防御措施。因此，使用最新版本的库和解析器可以减少受到XXE攻击的风险。</p>
+</li>
+<li><p>使用安全的XML解析器：使用被广泛认可为安全的XML解析器，如SAX或DOM，以防止恶意XML数据的注入和攻击。</p>
+</li>
+<li><p>实现输入验证和过滤：应用程序应该对所有输入数据进行验证和过滤，以确保输入数据符合预期格式和模式。这可以减少攻击面，并提高应用程序的安全性。</p>
+</li>
+</ul>
+<h3 id="4-攻击场景-1"><a href="#4-攻击场景-1" class="headerlink" title="4. 攻击场景"></a>4. 攻击场景</h3><p>大量XXE缺陷已经被发现并被公开，这些缺陷包括嵌入式设备的XXE缺陷。 XXE缺陷存在于许多意想不到的地方，这些地方包括深嵌套的依赖项。最简单的方法是上传可被接受的恶意XML文件：</p>
 <p>场景 1：攻击者尝试从服务端提取数据：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;ISO-8859-1&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">foo</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="keyword">foo</span> <span class="keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span> &gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -364,8 +488,8 @@
 <p>场景 3：攻击者通过恶意文件执行拒绝服务攻击：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///dev/random&quot;</span> &gt;</span>]&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="0x05-失效的访问控制"><a href="#0x05-失效的访问控制" class="headerlink" title="0x05 失效的访问控制"></a>0x05 失效的访问控制</h2><p>未对通过身份验证的用户实施恰当的访问控制。攻击者可以利用这些缺陷访问未经授权的功能或数据，例如：访问其他用户的帐户、查看敏感文件、修改其他用户的数据、更改访问权限等。</p>
-<h3 id="1-脆弱点-2"><a href="#1-脆弱点-2" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>访问控制强制实施策略，使用户无法在其预期的权限之外执行行为。失败的访问控制通常导致未经授权的信息泄露、修改或销毁所有数据、或在用户权限之外执行业务功能。常见的访问控制脆弱点包括：</p>
+<h2 id="0x05-失效的访问控制"><a href="#0x05-失效的访问控制" class="headerlink" title="0x05 失效的访问控制"></a>0x05 失效的访问控制</h2><p>失效的访问控制（Broken Access Control）是指在应用程序中缺乏恰当的访问控制措施，使得攻击者可以未经授权地访问系统资源或执行操作。一般来说，访问控制机制包括身份验证、授权和会话管理等方面，而失效的访问控制漏洞可能发生在这些方面的任何一个或多个环节。</p>
+<h3 id="1-脆弱点-1"><a href="#1-脆弱点-1" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>访问控制强制实施策略，使用户无法在其预期的权限之外执行行为。失败的访问控制通常导致未经授权的信息泄露、修改或销毁所有数据、或在用户权限之外执行业务功能。常见的访问控制脆弱点包括：</p>
 <ul>
 <li>通过修改 URL、内部应用程序状态或 HTML 页面绕过访问控制检查，或简单地使用自定义的 API 攻击工具。</li>
 <li>允许将主键更改为其他用户的记录，例如查看或编辑他人的帐户。</li>
@@ -375,19 +499,19 @@
 <li>以未通过身份验证的用户身份强制浏览的通过身份验证时才能看到的页面、或作为标准用户访问具有相关权限的页面、或API没有对POST、PUT和DELETE强制执行访问控制。</li>
 </ul>
 <h3 id="2-影响危害-3"><a href="#2-影响危害-3" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>攻击者可以冒充用户、管理员或拥有特权的用户，或者创建、访问、更新或删除任何记录。</p>
-<h3 id="3-防御措施-4"><a href="#3-防御措施-4" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>访问控制只有在受信服务器端代码或没有服务器的 API 中有效，这样这样攻击者才无法修改访问控制检查或元数据。</p>
+<h3 id="3-防御措施-3"><a href="#3-防御措施-3" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>访问控制只有在受信服务器端代码或没有服务器的 API 中有效，这样这样攻击者才无法修改访问控制检查或元数据。</p>
 <ul>
-<li>除公有资源外，默认情况下拒绝访问。</li>
-<li>使用一次性的访问控制机制，并在整个应用程序中不断重用它们，包括最小化CORS使用。</li>
+<li>除公有资源外，默认情况下拒绝访问</li>
+<li>使用一次性的访问控制机制，并在整个应用程序中不断重用它们，包括最小化跨域资源共享 (CORS) 的使用。</li>
 <li>建立访问控制模型以强制执行所有权记录，而不是接受用户创建、读取、更新或删除的任何记录。</li>
-<li>域访问控制对每个应用程序都是唯一的，但业务限制要求应由域模型强制执行。</li>
-<li>禁用 Web服务器目录列表，并确保文件元数据（如：git）不存在于 Web的根目录中。</li>
-<li>记录失败的访问控制，并在适当时向管理员告警（如：重复故障）。</li>
-<li>对API和控制器的访问进行速率限制，以最大限度地降低自动化攻击工具的危害。</li>
-<li>当用户注销后，服务器上的JWT令牌应失效。</li>
+<li>在域模型中强制执行业务限制。</li>
+<li>禁用 Web 服务器目录列表，并确保文件元数据（如 Git）不存在于 Web 的根目录中。</li>
+<li>记录失败的访问控制，并在适当时向管理员发出警报。</li>
+<li>对 API 和控制器的访问进行速率限制，以最大限度地降低自动化攻击工具的危害。</li>
+<li>当用户注销后，服务器上的 JSON Web Token (JWT) 令牌应失效。</li>
 </ul>
-<h2 id="0x06-安全配置错误"><a href="#0x06-安全配置错误" class="headerlink" title="0x06 安全配置错误"></a>0x06 安全配置错误</h2><p>安全配置错误是最常见的安全问题，这通常是由于不安全的默认配置、不完整的临时配置、开源云存储、错误的 HTTP 标头配置以及包含敏感信息的详细错误信息所造成的。因此，我们不仅需要对所有的操作系统、框架、库和应用程序进行安全配置，而且必须及时修补和升级它们。</p>
-<h3 id="1-脆弱点-3"><a href="#1-脆弱点-3" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>您的应用程序可能受到攻击，如果应用程序是：</p>
+<h2 id="0x06-安全配置错误"><a href="#0x06-安全配置错误" class="headerlink" title="0x06 安全配置错误"></a>0x06 安全配置错误</h2><p>安全配置错误是系统管理员或开发人员在配置安全措施时出现了疏漏或错误，使得攻击者可以利用这些漏洞绕过安全控制，从而达到攻击的目的。</p>
+<h3 id="1-脆弱点-2"><a href="#1-脆弱点-2" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>您的应用程序可能受到攻击，如果应用程序是：</p>
 <ul>
 <li>应用程序栈堆的任何部分都缺少适当的安全加固，或者云服务的<br>权限配置错误。</li>
 <li>应用程序启用或安装了不必要的功能（例如：不必要的端口、服<br>务、网页、帐户或权限）。</li>
@@ -421,7 +545,7 @@
 <p>会动态的将攻击者可控的内容加入页面的JavaScript框架、单页面程序或API存在这种类型的漏洞。理想的来说，你应该避免将攻击者可控的数据发送给不安全的JavaScriptAPI。</p>
 <h3 id="2-影响危害-4"><a href="#2-影响危害-4" class="headerlink" title="2. 影响危害"></a>2. 影响危害</h3><p>典型的XSS攻击可导致盗取session、账户、绕过MFA、DIV替换、对用户浏览器的攻击（例如：恶意软件下载、键盘记录）以及其他用户侧的攻击。</p>
 <p>XSS对于反射和DOM的影响是中等的，而对于存储的XSS，XSS的影响更为严重，譬如在受攻击者的浏览器上执行远程代码。</p>
-<h3 id="3-防御措施-5"><a href="#3-防御措施-5" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>防止XSS需要将不可信数据与动态的浏览器内容区分开。这可以通过如下步骤实现：</p>
+<h3 id="3-防御措施-4"><a href="#3-防御措施-4" class="headerlink" title="3. 防御措施"></a>3. 防御措施</h3><p>防止XSS需要将不可信数据与动态的浏览器内容区分开。这可以通过如下步骤实现：</p>
 <ul>
 <li>使用设计上就会自动编码来解决XSS问题的框架，如：Ruby 3.0或 React JS。了解每个框架的XSS保护的局限性，并适当地处理未覆盖的用例。</li>
 <li>为了避免反射式或存储式的XSS漏洞，最好的办法是根据HTML输出的上下文（包括：主体、属性、JavaScript、CSS或URL）对所有不可信的HTTP请求数据进行恰当的转义 。</li>
@@ -429,7 +553,7 @@
 <li>使用内容安全策略（CSP）是对抗XSS的深度防御策略。如果不存在可以通过本地文件放置恶意代码的其他漏洞（例如：路径遍历覆盖和允许在网络中传输的易受攻击的库），则该策略是有效的。</li>
 </ul>
 <h2 id="0x08-不安全的反序列化"><a href="#0x08-不安全的反序列化" class="headerlink" title="0x08 不安全的反序列化"></a>0x08 不安全的反序列化</h2><p>不安全的反序列化会导致远程代码执行。即使反序列化缺陷不会导致远程代码执行，攻击者也可以利用它们来执行攻击，包括：重播攻击、注入攻击和特权升级攻击。</p>
-<h3 id="1-脆弱点-4"><a href="#1-脆弱点-4" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>如果反序列化进攻者提供的敌意或者篡改过的对象将会使将应用程序和API变的脆弱。</p>
+<h3 id="1-脆弱点-3"><a href="#1-脆弱点-3" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>如果反序列化进攻者提供的敌意或者篡改过的对象将会使将应用程序和API变的脆弱。</p>
 <p>这可能导致两种主要类型的攻击：</p>
 <ul>
 <li>如果应用中存在可以在反序列化过程中或者之后被改变行为的类，则攻击者可以通过改变应用逻辑或者实现远程代码执行攻击。我们将其称为对象和数据结构攻击。</li>
@@ -460,7 +584,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a:4:&#123;i:0;i:132;i:1;s:7:&quot;Mallory&quot;;i:2;s:4:&quot;user&quot;;i:3;s:32:&quot;b6a8b3bea87fe0e05022f8f3c88bc960&quot;;&#125;</span><br><span class="line"></span><br><span class="line">攻击者更改序列化对象以授予自己为admin权限：</span><br><span class="line"></span><br><span class="line">a:4:&#123;i:0;i:1;i:1;s:5:&quot;Alice&quot;;i:2;s:5:&quot;admin&quot;;i:3;s:32:&quot;b6a8b3bea87fe0e05022f8f3c88bc960&quot;;&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="0x09-使用含有已知漏洞的组件"><a href="#0x09-使用含有已知漏洞的组件" class="headerlink" title="0x09 使用含有已知漏洞的组件"></a>0x09 使用含有已知漏洞的组件</h2><p>组件（例如：库、框架和其他软件模块）拥有和应用程序相同的权限。如果应用程序中含有已知漏洞的组件被攻击者利用，可能会造成严重的数据丢失或服务器接管。同时，使用含有已知漏洞的组件的应用程序和API可能会破坏应用程序防御、造成各种攻击并产生严重影响。</p>
-<h3 id="1-脆弱点-5"><a href="#1-脆弱点-5" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>如果满足下面的某个条件，那么你的应用就易受此类攻击：</p>
+<h3 id="1-脆弱点-4"><a href="#1-脆弱点-4" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>如果满足下面的某个条件，那么你的应用就易受此类攻击：</p>
 <ul>
 <li>如果你不知道所有使用的组件版本信息（包括：服务端和客户端）。这包括了直接使用的组件或其依赖的组件。</li>
 <li>如果软件易受攻击，不再支持或者过时。这包括：OS、Web服务器、应用程序服务器、数据库管理系统（DBMS）、应用程序、API和所有的组件、运行环境和库。</li>
@@ -477,7 +601,7 @@
 <li>监控那些不再维护或者不发布安全补丁的库和组件。如果不能打补丁，可以考虑部署虚拟补丁来监控、检测或保护。</li>
 </ul>
 <h2 id="0x0A-不足的日志记录和监控"><a href="#0x0A-不足的日志记录和监控" class="headerlink" title="0x0A 不足的日志记录和监控"></a>0x0A 不足的日志记录和监控</h2><p>不足的日志记录和监控，以及事件响应缺失或无效的集成，使攻击者能够进一步攻击系统、保持持续性或转向更多系统，以及篡改、提取或销毁数据。大多数缺陷研究显示，缺陷被检测出的时间超过200天，且通常通过外部检测方检测，而不是通过内部流程或监控检测。</p>
-<h3 id="1-脆弱点-6"><a href="#1-脆弱点-6" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>下列情况会导致不足的日志记录、检测、监控和响应：</p>
+<h3 id="1-脆弱点-5"><a href="#1-脆弱点-5" class="headerlink" title="1. 脆弱点"></a>1. 脆弱点</h3><p>下列情况会导致不足的日志记录、检测、监控和响应：</p>
 <ul>
 <li>未记录可审计性事件，如：登录、登录失败和高额交易。</li>
 <li>告警和错误事件未能产生或产生不足的和不清晰的日志信息。</li>
