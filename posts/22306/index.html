@@ -102,7 +102,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-shield-halved fa-fw"></i>攻防</a></li><li class="menu-item menu-item-大模型"><a href="/LLM/" rel="section"><i class="fa fa-microchip fa-fw"></i>大模型</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-shield-halved fa-fw"></i>攻防</a></li><li class="menu-item menu-item-阅读"><a href="/Reading/" rel="section"><i class="fa fa-book fa-fw"></i>阅读</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
   </ul>
 </nav>
 
@@ -142,7 +142,7 @@
     <img class="site-author-image" itemprop="image" alt="L0n9w4y"
       src="/images/hexo.png">
   <p class="site-author-name" itemprop="name">L0n9w4y</p>
-  <div class="site-description" itemprop="description">問道遠兮，求索未止...</div>
+  <div class="site-description" itemprop="description">读书与学习，永远在路上...</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
@@ -219,7 +219,7 @@
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="L0n9w4y">
-      <meta itemprop="description" content="問道遠兮，求索未止...">
+      <meta itemprop="description" content="读书与学习，永远在路上...">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
@@ -398,7 +398,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart wazuh-manager</span><br></pre></td></tr></table></figure>
 
 <h4 id="e-生成自动化报告"><a href="#e-生成自动化报告" class="headerlink" title="e. 生成自动化报告"></a>e. 生成自动化报告</h4><p>可使用 ossec.conf 文件中的 report 选项来配置您自己的自定义报告</p>
-<p>将所有 syscheck 警报的每日报告发送到 <a href="mailto:&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#109;">&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#109;</a></p>
+<p>将所有 syscheck 警报的每日报告发送到 <a href="mailto:&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#x63;&#111;&#109;">&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#x63;&#111;&#109;</a></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ossec_config</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">reports</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">category</span>&gt;</span>syscheck<span class="tag">&lt;/<span class="name">category</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">title</span>&gt;</span>Daily report: File changes<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">email_to</span>&gt;</span>example@test.com<span class="tag">&lt;/<span class="name">email_to</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">reports</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ossec_config</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>规则也可以按级别、来源、用户名、规则 ID 等进行过滤</p>
@@ -415,7 +415,7 @@
 
 <p><strong>精细化邮件配置</strong></p>
 <p>基于级别的邮件</p>
-<p>当级别大于或等于 4 的规则被触发时，向 <a href="mailto:&#121;&#x6f;&#117;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#117;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a> 发送电子邮件</p>
+<p>当级别大于或等于 4 的规则被触发时，向 <a href="mailto:&#121;&#111;&#117;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;">&#121;&#111;&#117;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a> 发送电子邮件</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">email_alerts</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">email_to</span>&gt;</span>you@example.com<span class="tag">&lt;/<span class="name">email_to</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">level</span>&gt;</span>4<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">do_not_delay</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">email_alerts</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>基于级别和agent的邮件</p>
